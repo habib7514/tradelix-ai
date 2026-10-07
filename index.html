@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tradelix AI - Smarter Crypto Trading</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23181A20' stroke='%23F0B90B' stroke-width='3'/%3E%3Ctext x='50' y='68' font-family='Arial' font-size='52' font-weight='900' fill='%23F0B90B' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-main: #181A20;
+            --bg-card: #1E2329;
+            --bg-hover: #2B3139;
+            --gold: #F0B90B;
+            --gold-dark: #D4A017;
+            --green: #0ECB81;
+            --red: #F6465D;
+            --text-main: #EAECEF;
+            --text-muted: #848E9C;
+            --border: #2B3139;
+            --btn-gold: linear-gradient(135deg, #F0B90B, #FCD535);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* SPLASH SCREEN - 5 seconds */
+        #splash {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+            background: radial-gradient(circle at center, #1E2329 0%, #181A20 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        #splash.hide { opacity: 0; visibility: hidden; }
+
+        .splash-logo {
+            width: 180px; height: 180px;
+            position: relative;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .splash-logo-circle {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            border: 4px solid transparent;
+            border-top-color: var(--gold);
+            border-right-color: var(--gold);
+            border-bottom-color: var(--red);
+            border-left-color: var(--red);
+            animation: splashSpin 2s linear infinite;
+        }
+        .splash-logo-inner {
+            font-size: 90px;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(240, 185, 11, 0.8);
+            animation: splashPulse 1.5s ease-in-out infinite;
+            z-index: 2;
+        }
+        @keyframes splashSpin { to { transform: rotate(360deg); } }
+        @keyframes splashPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.85; }
+        }
+
+        .splash-title {
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+        .splash-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            animation: fadeInUp 1s ease 1s both;
+        }
+        .splash-tagline {
+            font-size: 18px;
+            color: var(--text-main);
+            text-align: center;
+            padding: 0 30px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease 1.5s both;
+        }
+        .splash-loading {
+            width: 220px; height: 4px;
+            background: #2B3139;
+            border-radius: 4px;
+            overflow: hidden;
+            animation: fadeInUp 1s ease 2s both;
+        }
+        .splash-loading-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), #FCD535);
+            border-radius: 4px;
+            animation: loadBar 5s linear forwards;
+        }
+        @keyframes loadBar { from { width: 0%; } to { width: 100%; } }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SCREENS */
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+        .screen.active { display: block; }
+
+        /* AUTH */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .auth-logo-img {
+            width: 80px; height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #181A20, #2B3139);
+            border: 2px solid var(--gold);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--gold);
+            margin-bottom: 16px;
+            box-shadow: 0 0 30px rgba(240, 185, 11, 0.4);
+        }
+        .auth-logo h1 {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+        .auth-logo p {
+            color: var(--text-muted);
+            font-size: 12px;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+        .auth-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .input-group { margin-bottom: 14px; }
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 14px;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(240, 185, 11, 0.1);
+        }
+        .input-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23848E9C' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 14px center;
+            padding-left: 36px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .btn-block {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 900;
+            font-size: 15px;
+            cursor: pointer;
+            border: none;
+            background: var(--btn-gold);
+            color: #181A20;
+            margin-top: 8px;
+            transition: 0.2s;
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+        .btn-block:active { transform: scale(0.98); opacity: 0.9; }
+        .btn-outline {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            margin-top: 8px;
+            font-family: inherit;
+        }
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .auth-switch a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-logo {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--gold), #FCD535);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            color: #181A20;
+            box-shadow: 0 0 15px rgba(240, 185, 11, 0.5);
+        }
+        .header-title {
+            display: flex;
+            flex-direction: column;
+        }
+        .header-title h1 {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+        .header-title span {
+            font-size: 9px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .bell-icon {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--gold);
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* TICKER */
+        .ticker-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 0;
+            overflow: hidden;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .ticker-track {
+            display: flex;
+            gap: 30px;
+            animation: tickerMove 40s linear infinite;
+            padding: 0 20px;
+            white-space: nowrap;
+        }
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .ticker-item .sym { color: var(--gold); }
+        .ticker-item .price { color: var(--text-main); }
+        .ticker-item .up { color: var(--green); }
+        .ticker-item .down { color: var(--red); }
+        @keyframes tickerMove {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            letter-spacing: 1px;
+        }
+        .section-title .more {
+            font-size: 12px;
+            color: var(--gold);
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* MARKET COINS */
+        .markets-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .coin-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .coin-card:active { transform: scale(0.98); border-color: var(--gold); }
+        .coin-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .coin-icon {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+        }
+        .coin-icon.btc { background: #F7931A; color: #fff; }
+        .coin-icon.eth { background: #627EEA; color: #fff; }
+        .coin-icon.bnb { background: #F3BA2F; color: #000; }
+        .coin-icon.sol { background: linear-gradient(135deg, #9945FF, #14F195); color: #fff; }
+        .coin-icon.xrp { background: #23292F; color: #fff; }
+        .coin-icon.ada { background: #0033AD; color: #fff; }
+        .coin-symbol {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+        .coin-price {
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .coin-change {
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .coin-change.up { color: var(--green); }
+        .coin-change.down { color: var(--red); }
+
+        /* VIP PLANS */
+        .plan-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .plan-card.premium {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%);
+        }
+        .plan-card.vip-lifetime {
+            border-color: #FCD535;
+            background: linear-gradient(135deg, #2B3139 0%, #3C4451 100%);
+            box-shadow: 0 0 20px rgba(240, 185, 11, 0.3);
+        }
+        .plan-info h4 {
+            font-size: 14px;
+            color: var(--gold);
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+        .plan-info .duration {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .plan-buy {
+            background: var(--btn-gold);
+            color: #181A20;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .plan-badge {
+            position: absolute;
+            top: -8px;
+            right: 16px;
+            background: var(--gold);
+            color: #181A20;
+            font-size: 9px;
+            font-weight: 900;
+            padding: 3px 10px;
+            border-radius: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 14px 0;
+            z-index: 9999;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            color: var(--text-muted);
+            font-size: 9px;
+            text-decoration: none;
+            width: 16.66%;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 8px 4px;
+            transition: 0.2s;
+        }
+        .nav-item.active { color: var(--gold); }
+        .nav-item .icon { font-size: 20px; }
+        .nav-item:active { transform: scale(0.92); }
+
+        /* MISC */
+        .hidden { display: none !important; }
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--gold);
+            color: #181A20;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 900;
+            font-size: 14px;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 99999;
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+  <!-- ================= SPLASH SCREEN ================= -->
+<div id="splash">
+    <div class="splash-logo">
+        <div class="splash-logo-circle"></div>
+        <div class="splash-logo-inner">T</div>
+    </div>
+    <h1 class="splash-title">TRADELIX AI</h1>
+    <p class="splash-subtitle">SMARTER TRADING</p>
+    <p class="splash-tagline">منصة تداول العملات الرقمية<br>بالذكاء الاصطناعي</p>
+    <div class="splash-loading">
+        <div class="splash-loading-fill"></div>
+    </div>
+</div>
+
+<!-- ================= SIGN UP SCREEN ================= -->
+<div id="signupScreen" class="screen">
+    <div class="auth-container">
+        <div class="auth-logo">
+            <div class="auth-logo-img">T</div>
+            <h1>TRADELIX AI</h1>
+            <p>SMARTER TRADING</p>
+        </div>
+        <h2 class="auth-title">إنشاء حساب جديد</h2>
+
+        <div class="input-group">
+            <label>الاسم الكامل</label>
+            <input type="text" id="signupName" placeholder="أدخل اسمك الكامل">
+        </div>
+        <div class="input-group">
+            <label>رقم الهاتف</label>
+            <input type="tel" id="signupPhone" placeholder="+974 1234 5678">
+        </div>
+        <div class="input-group">
+            <label>الدولة</label>
+            <select id="signupCountry">
+                <option value="">اختر دولتك</option>
+                <option value="QA">🇶🇦 قطر</option>
+                <option value="SA">🇸🇦 السعودية</option>
+                <option value="AE">🇦🇪 الإمارات</option>
+                <option value="KW">🇰🇼 الكويت</option>
+                <option value="BH">🇧🇭 البحرين</option>
+                <option value="OM">🇴🇲 عمان</option>
+                <option value="EG">🇪🇬 مصر</option>
+                <option value="JO">🇯🇴 الأردن</option>
+                <option value="MA">🇲🇦 المغرب</option>
+                <option value="DZ">🇩🇿 الجزائر</option>
+                <option value="TN">🇹🇳 تونس</option>
+                <option value="IQ">🇮🇶 العراق</option>
+                <option value="SY">🇸🇾 سوريا</option>
+                <option value="LB">🇱🇧 لبنان</option>
+                <option value="YE">🇾🇪 اليمن</option>
+                <option value="SD">🇸🇩 السودان</option>
+                <option value="LY">🇱🇾 ليبيا</option>
+                <option value="PS">🇵🇸 فلسطين</option>
+                <option value="TR">🇹🇷 تركيا</option>
+                <option value="OTHER">🌍 أخرى</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="signupEmail" placeholder="your@email.com">
+        </div>
+        <div class="input-group">
+            <label>كلمة السر</label>
+            <input type="password" id="signupPassword" placeholder="••••••••">
+        </div>
+        <div class="input-group">
+            <label>تأكيد كلمة السر</label>
+            <input type="password" id="signupConfirm" placeholder="••••••••">
+        </div>
+
+        <button class="btn-block" onclick="handleSignup()">إنشاء الحساب</button>
+
+        <div class="auth-switch">
+            لديك حساب بالفعل؟ <a onclick="showScreen('loginScreen')">تسجيل الدخول</a>
+        </div>
+    </div>
+</div>
+
+<!-- ================= LOGIN SCREEN ================= -->
+<div id="loginScreen" class="screen">
+    <div class="auth-container">
+        <div class="auth-logo">
+            <div class="auth-logo-img">T</div>
+            <h1>TRADELIX AI</h1>
+            <p>SMARTER TRADING</p>
+        </div>
+        <h2 class="auth-title">تسجيل الدخول</h2>
+
+        <div class="input-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="loginEmail" placeholder="your@email.com">
+        </div>
+        <div class="input-group">
+            <label>كلمة السر</label>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+        </div>
+
+        <button class="btn-block" onclick="handleLogin()">دخول</button>
+
+        <div class="auth-switch">
+            ليس لديك حساب؟ <a onclick="showScreen('signupScreen')">إنشاء حساب</a>
+        </div>
+    </div>
+</div>
+
+<!-- ================= HOME SCREEN ================= -->
+<div id="homeScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo">T</div>
+            <div class="header-title">
+                <h1>TRADELIX AI</h1>
+                <span>SMARTER TRADING</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+    </div>
+
+    <!-- Welcome Card -->
+    <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <p style="color: var(--text-muted); font-size:11px; margin-bottom:4px;">مرحباً بك</p>
+                <h2 id="welcomeName" style="font-size:18px; color: var(--text-main); margin-bottom:8px;">مستخدم</h2>
+                <p id="welcomeEmail" style="font-size:11px; color: var(--text-muted);">-</p>
+            </div>
+            <div style="text-align:center;">
+                <div id="statusBadge" style="display:inline-block; padding:6px 14px; border-radius:20px; font-size:11px; font-weight:900; background:rgba(246,70,93,0.15); color:var(--red); border:1px solid var(--red);">INACTIVE</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker-track" id="tickerTrack">
+            <span class="ticker-item"><span class="sym">BTC</span><span class="price" id="tBTC">$0</span><span class="up" id="cBTC">+0.00%</span></span>
+            <span class="ticker-item"><span class="sym">ETH</span><span class="price" id="tETH">$0</span><span class="up" id="cETH">+0.00%</span></span>
+            <span class="ticker-item"><span class="sym">BNB</span><span class="price" id="tBNB">$0</span><span class="up" id="cBNB">+0.00%</span></span>
+            <span class="ticker-item"><span class="sym">SOL</span><span class="price" id="tSOL">$0</span><span class="up" id="cSOL">+0.00%</span></span>
+        </div>
+    </div>
+
+    <!-- Markets -->
+    <div class="section-title">
+        <span>📊 السوق الحي</span>
+        <span class="more" onclick="refreshMarkets()">تحديث ↻</span>
+    </div>
+    <div class="markets-grid" id="marketsGrid">
+        <div class="coin-card" onclick="openCoinChart('BTC')">
+            <div class="coin-head">
+                <div class="coin-icon btc">₿</div>
+                <div class="coin-symbol">BTC</div>
+            </div>
+            <div class="coin-price" id="pBTC">$0</div>
+            <div class="coin-change up" id="chBTC">+0.00%</div>
+        </div>
+        <div class="coin-card" onclick="openCoinChart('ETH')">
+            <div class="coin-head">
+                <div class="coin-icon eth">Ξ</div>
+                <div class="coin-symbol">ETH</div>
+            </div>
+            <div class="coin-price" id="pETH">$0</div>
+            <div class="coin-change up" id="chETH">+0.00%</div>
+        </div>
+        <div class="coin-card" onclick="openCoinChart('BNB')">
+            <div class="coin-head">
+                <div class="coin-icon bnb">B</div>
+                <div class="coin-symbol">BNB</div>
+            </div>
+            <div class="coin-price" id="pBNB">$0</div>
+            <div class="coin-change up" id="chBNB">+0.00%</div>
+        </div>
+        <div class="coin-card" onclick="openCoinChart('SOL')">
+            <div class="coin-head">
+                <div class="coin-icon sol">S</div>
+                <div class="coin-symbol">SOL</div>
+            </div>
+            <div class="coin-price" id="pSOL">$0</div>
+            <div class="coin-change up" id="chSOL">+0.00%</div>
+        </div>
+        <div class="coin-card" onclick="openCoinChart('XRP')">
+            <div class="coin-head">
+                <div class="coin-icon xrp">X</div>
+                <div class="coin-symbol">XRP</div>
+            </div>
+            <div class="coin-price" id="pXRP">$0</div>
+            <div class="coin-change up" id="chXRP">+0.00%</div>
+        </div>
+        <div class="coin-card" onclick="openCoinChart('ADA')">
+            <div class="coin-head">
+                <div class="coin-icon ada">A</div>
+                <div class="coin-symbol">ADA</div>
+            </div>
+            <div class="coin-price" id="pADA">$0</div>
+            <div class="coin-change up" id="chADA">+0.00%</div>
+        </div>
+    </div>
+
+    <!-- VIP Plans -->
+    <div class="section-title">
+        <span>💎 خطط الاشتراك</span>
+    </div>
+
+    <div class="plan-card">
+        <div class="plan-info">
+            <h4>Weekly</h4>
+            <div class="duration">7 أيام</div>
+        </div>
+        <button class="plan-buy" onclick="goToDeposit(15, 'Weekly')">$15</button>
+    </div>
+
+    <div class="plan-card">
+        <div class="plan-info">
+            <h4>Monthly</h4>
+            <div class="duration">30 يوم</div>
+        </div>
+        <button class="plan-buy" onclick="goToDeposit(45, 'Monthly')">$45</button>
+    </div>
+
+    <div class="plan-card premium">
+        <span class="plan-badge">BEST</span>
+        <div class="plan-info">
+            <h4>3 Months</h4>
+            <div class="duration">90 يوم</div>
+        </div>
+        <button class="plan-buy" onclick="goToDeposit(125, 'Quarterly')">$125</button>
+    </div>
+
+    <div class="plan-card vip-lifetime">
+        <span class="plan-badge">👑 VIP</span>
+        <div class="plan-info">
+            <h4>VIP Lifetime</h4>
+            <div class="duration">مدى الحياة</div>
+        </div>
+        <button class="plan-buy" onclick="goToDeposit(400, 'Lifetime')">$400</button>
+    </div>
+
+    <!-- Academy Preview -->
+    <div class="section-title" style="margin-top: 24px;">
+        <span>📚 تعلم التداول من الصفر</span>
+    </div>
+    <div class="card" style="text-align:center; padding: 20px;">
+        <p style="color: var(--text-muted); font-size: 13px; line-height:1.8; margin-bottom: 14px;">
+            احترف تداول العملات الرقمية مع 4 كورسات احترافية
+        </p>
+        <button class="btn-block" onclick="showScreen('academyScreen')">عرض الكورسات</button>
+    </div>
+
+    <!-- Tradix AI Section -->
+    <div class="section-title" style="margin-top: 24px;">
+        <span>🚀 تطبيق Tradix AI</span>
+    </div>
+    <div class="card" style="text-align:center; padding: 20px; border-color: var(--gold);">
+        <div style="font-size: 40px; margin-bottom: 10px;">📱</div>
+        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 16px;">Tradix AI</h3>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 14px;">
+            تطبيقنا الأول لإشارات الذهب<br>احصل عليه مجاناً
+        </p>
+        <a href="https://tinyurl.com/tradix-ai-2026" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 تحميل Tradix AI</a>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="showScreen('homeScreen')">
+            <span class="icon">🏠</span>
+            <span>الرئيسية</span>
+        </button>
+        <button class="nav-item" onclick="goToSignals()">
+            <span class="icon">📊</span>
+            <span>الصفقات</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('academyScreen')">
+            <span class="icon">📚</span>
+            <span>الأكاديمية</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')">
+            <span class="icon">📅</span>
+            <span>الاجتماعات</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')">
+            <span class="icon">💎</span>
+            <span>اشتراكي</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('profileScreen')">
+            <span class="icon">👤</span>
+            <span>حسابي</span>
+        </button>
+    </div>
+</div>
+<!-- ================= SIGNALS SCREEN ================= -->
+<div id="signalsScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo">T</div>
+            <div class="header-title">
+                <h1>الصفقات</h1>
+                <span>SIGNALS</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+    </div>
+
+    <!-- Active Signal Box -->
+    <div id="activeSignalBox" class="hidden">
+        <div class="card" style="border-color: var(--green); background: linear-gradient(135deg, #1E2329 0%, #0ECB811A 100%);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
+                <div id="signalPair" style="font-size: 18px; font-weight: 900; color: var(--gold);">BTC/USDT</div>
+                <div id="signalDirectionBadge" style="padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 900; background: rgba(14, 203, 129, 0.15); color: var(--green); border: 1px solid var(--green);">BUY</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;">
+                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">ENTRY</div>
+                    <div id="signalEntry" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div>
+                </div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;">
+                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">STOP LOSS</div>
+                    <div id="signalSL" style="font-size: 15px; font-weight: 900; color: var(--red);">-</div>
+                </div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;">
+                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">TAKE PROFIT</div>
+                    <div id="signalTP" style="font-size: 15px; font-weight: 900; color: var(--green);">-</div>
+                </div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;">
+                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">CONFIDENCE</div>
+                    <div id="signalConf" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div>
+                </div>
+            </div>
+            <div id="signalNotes" style="margin-top: 12px; padding: 10px; background: #181A20; border-radius: 8px; font-size: 12px; color: var(--text-muted); line-height: 1.5; display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Locked Box -->
+    <div id="lockedSignalBox" class="card" style="text-align: center; padding: 40px 20px;">
+        <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
+        <h3 style="color: var(--gold); margin-bottom: 8px;">مطلوب اشتراك</h3>
+        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+            اختر خطة اشتراك لعرض الإشارات الحية مع Entry / SL / TP
+        </p>
+        <button class="btn-block" onclick="showScreen('homeScreen')">عرض الخطط</button>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+    </div>
+</div>
+
+<!-- ================= ACADEMY SCREEN ================= -->
+<div id="academyScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo">T</div>
+            <div class="header-title">
+                <h1>الأكاديمية</h1>
+                <span>ACADEMY</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">📚 تعلم التداول من الصفر</h2>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6;">
+            4 كورسات احترافية لتعلم تداول العملات الرقمية
+        </p>
+    </div>
+
+    <div class="section-title">🎓 الكورسات المتوفرة</div>
+
+    <div class="card" style="border-color: var(--border);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
+            <div style="flex: 1;">
+                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ أساسيات التداول</h4>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">تعلم المفاهيم الأساسية للتداول والعملات الرقمية</p>
+                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 حصص</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
+                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics')">شراء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
+            <div style="flex: 1;">
+                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ التحليل الفني</h4>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">الشموع اليابانية والمؤشرات الفنية</p>
+                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 حصص</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
+                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical')">شراء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
+            <div style="flex: 1;">
+                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ إدارة المخاطر</h4>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">كيفية حماية رأس المال وتحديد المخاطر</p>
+                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 حصص</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
+                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk')">شراء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
+            <div style="flex: 1;">
+                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ استراتيجيات متقدمة</h4>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">استراتيجيات احترافية للتداول اليومي</p>
+                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 حصص</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
+                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">شراء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
+        <button class="nav-item active" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+    </div>
+</div>
+
+<!-- ================= DEPOSIT SCREEN ================= -->
+<div id="depositScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo">T</div>
+            <div class="header-title">
+                <h1>الإيداع</h1>
+                <span>DEPOSIT</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
+    </div>
+
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">💳 تفاصيل الدفع</h3>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+            <span style="color: var(--text-muted);">الخطة</span>
+            <span id="depositPlan" style="color: var(--gold); font-weight: 700;">-</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+            <span style="color: var(--text-muted);">المبلغ</span>
+            <span id="depositAmount" style="color: var(--gold); font-weight: 700;">$0</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+            <span style="color: var(--text-muted);">الشبكة</span>
+            <span style="color: var(--text-main); font-weight: 700;">BNB Smart Chain</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
+            <span style="color: var(--text-muted);">العملة</span>
+            <span style="color: var(--text-main); font-weight: 700;">USDT (BEP20)</span>
+        </div>
+    </div>
+
+    <div class="section-title">💰 عنوان المحفظة</div>
+    <div style="background: #181A20; border: 1px dashed var(--gold); border-radius: 10px; padding: 14px; text-align: center; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--gold); margin-bottom: 10px;" id="walletAddr">
+        0x4E11E978119cAAB300b5439B909D06341C24a2A7
+    </div>
+    <button class="btn-block" onclick="copyWallet()">📋 نسخ العنوان</button>
+
+    <div style="margin-top: 24px;">
+        <div class="section-title">🔗 رقم المعاملة (TX Hash)</div>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.6;">
+            بعد إرسال المبلغ، الصق رقم المعاملة هنا للتحقق
+        </p>
+        <div class="input-group">
+            <input type="text" id="txHash" placeholder="الصق رقم المعاملة هنا">
+        </div>
+        <button class="btn-block" onclick="submitDeposit()">📤 إرسال للمراجعة</button>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+    </div>
+</div>
+
+<!-- ================= MEETING SCREEN ================= -->
+<div id="meetingScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo">T</div>
+            <div class="header-title">
+                <h1>الاجتماعات</h1>
+                <span>MEETINGS</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
+        <div style="font-size: 60px; margin-bottom: 12px;">📅</div>
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">اجتماعات Zoom</h2>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 16px;">
+            انضم لجلسات التداول الحية مع المدرب
+        </p>
+        <a href="https://zoom.us/download" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 تحميل تطبيق Zoom</a>
+    </div>
+
+    <div class="section-title">🔗 روابط الاجتماعات</div>
+    <div id="meetingsList" class="card">
+        <p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">لا توجد اجتماعات حالياً</p>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
+        <button class="nav-item active" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+    </div>
+</div>
+
+<!-- ================= SUBSCRIPTION SCREEN ================= -->
+<div id="subscriptionScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo">T</div>
+            <div class="header-title">
+                <h1>اشتراكي</h1>
+                <span>MY SUBSCRIPTION</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+    </div>
+
+    <div id="subActive" class="hidden">
+        <div class="card" style="text-align: center; border-color: var(--green);">
+            <div style="font-size: 60px; margin-bottom: 12px;">✅</div>
+            <h2 style="color: var(--green); font-size: 18px; margin-bottom: 8px;">اشتراك نشط</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">لديك وصول كامل لجميع الصفقات</p>
+        </div>
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+                <span style="color: var(--text-muted);">الخطة</span>
+                <span id="subPlan" style="color: var(--gold); font-weight: 700;">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+                <span style="color: var(--text-muted);">تاريخ البداية</span>
+                <span id="subStart" style="color: var(--text-main); font-weight: 700;">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+                <span style="color: var(--text-muted);">تاريخ الانتهاء</span>
+                <span id="subEnd" style="color: var(--text-main); font-weight: 700;">-</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
+                <span style="color: var(--text-muted);">الأيام المتبقية</span>
+                <span id="subDays" style="color: var(--green); font-weight: 900;">-</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="subInactive" class="card" style="text-align: center; padding: 40px 20px;">
+        <div style="font-size: 60px; margin-bottom: 12px;">💎</div>
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">لا يوجد اشتراك نشط</h2>
+        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+            اختر خطة اشتراك للوصول إلى الصفقات الحية
+        </p>
+        <button class="btn-block" onclick="showScreen('homeScreen')">اختر اشتراك</button>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
+        <button class="nav-item active" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+    </div>
+</div>
+
+<!-- ================= PROFILE SCREEN ================= -->
+<div id="profileScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo">T</div>
+            <div class="header-title">
+                <h1>حسابي</h1>
+                <span>PROFILE</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #FCD535); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #181A20;">T</div>
+        <h2 id="profileName" style="font-size: 18px; margin-bottom: 4px;">-</h2>
+        <p id="profileEmail" style="color: var(--text-muted); font-size: 12px;">-</p>
+    </div>
+
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">📋 معلوماتي</h3>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+            <span style="color: var(--text-muted);">الاسم</span>
+            <span id="profName" style="color: var(--text-main); font-weight: 700;">-</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+            <span style="color: var(--text-muted);">البريد</span>
+            <span id="profEmail" style="color: var(--text-main); font-weight: 700;">-</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
+            <span style="color: var(--text-muted);">الهاتف</span>
+            <span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
+            <span style="color: var(--text-muted);">الدولة</span>
+            <span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span>
+        </div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">💬 تواصل مع الأدمن</h3>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">للاستفسارات والدعم المباشر</p>
+        <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ إرسال إيميل</a>
+    </div>
+
+    <button class="btn-outline" onclick="handleLogout()">🚪 تسجيل الخروج</button>
+
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
+        <button class="nav-item active" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+    </div>
+</div>
+
+<!-- ================= COIN CHART SCREEN ================= -->
+<div id="coinChartScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo" id="coinChartIcon">₿</div>
+            <div class="header-title">
+                <h1 id="coinChartName">BTC/USDT</h1>
+                <span id="coinChartSub">BINANCE LIVE</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <div id="coinChartPrice" style="font-size: 28px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$0.00</div>
+        <div id="coinChartChange" style="font-size: 14px; font-weight: 700; color: var(--green);">+0.00%</div>
+    </div>
+
+    <div class="card" style="padding: 10px;">
+        <div id="chartContainer" style="width: 100%; height: 300px; position: relative; background: #181A20; border-radius: 10px; overflow: hidden;">
+            <canvas id="priceChart" style="width: 100%; height: 100%;"></canvas>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 10px; font-size: 14px;">📊 إحصائيات 24 ساعة</h3>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">أعلى سعر</div>
+                <div id="coinHigh" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
+            </div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">أدنى سعر</div>
+                <div id="coinLow" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
+            </div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">حجم 24h</div>
+                <div id="coinVol" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
+            </div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">التغيير</div>
+                <div id="coinChg" style="font-size: 13px; font-weight: 900; color: var(--green);">-</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+    </div>
+</div>
+
+<!-- ================= NOTIFICATIONS MODAL ================= -->
+<div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
+    <div style="background:#1E2329; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto;">
+        <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; font-family:Tajawal,sans-serif;">🔔 الإشعارات</h3>
+        <div id="notifList" style="font-family:Tajawal,sans-serif;"></div>
+        <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer;">إغلاق</button>
+    </div>
+</div>
+
+<!-- ================= TOAST ================= -->
+<div id="toast" class="toast">Message</div>
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+    // ===== Firebase Config (Tradix - مؤقتاً، سنغيره لاحقاً) =====
+    const firebaseConfig = {
+        apiKey: "AIzaSyClehKAxJTZjsHA1ye8mDyRQcPBMPmPC3c",
+        authDomain: "tradix-ai.firebaseapp.com",
+        projectId: "tradix-ai",
+        storageBucket: "tradix-ai.firebasestorage.app",
+        messagingSenderId: "154893572354",
+        appId: "1:154893572354:web:cd017c0413c7df41950a1b"
+    };
+
+    // ===== Firebase SDK =====
+    let auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged;
+    let doc, setDoc, getDoc, serverTimestamp;
+
+    async function initFirebase() {
+        const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
+        const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
+        const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+
+        const app = appModule.initializeApp(firebaseConfig);
+        auth = authModule.getAuth(app);
+        db = fsModule.getFirestore(app);
+
+        signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
+        createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
+        signOut = authModule.signOut;
+        onAuthStateChanged = authModule.onAuthStateChanged;
+
+        doc = fsModule.doc;
+        setDoc = fsModule.setDoc;
+        getDoc = fsModule.getDoc;
+        serverTimestamp = fsModule.serverTimestamp;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await loadUserData(user.uid);
+            }
+        });
+        console.log('✅ Firebase initialized');
+    }
+
+    // ===== SPLASH SCREEN (5 ثواني) =====
+    setTimeout(() => {
+        document.getElementById('splash').classList.add('hide');
+        setTimeout(() => {
+            showScreen('signupScreen');
+        }, 800);
+    }, 5000);
+
+    // ===== SCREEN NAVIGATION =====
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const screen = document.getElementById(id);
+        if (screen) screen.classList.add('active');
+        window.scrollTo(0, 0);
+        updateUI();
+    }
+
+    // ===== SIGN UP =====
+    async function handleSignup() {
+        const name = document.getElementById('signupName').value.trim();
+        const phone = document.getElementById('signupPhone').value.trim();
+        const country = document.getElementById('signupCountry').value;
+        const email = document.getElementById('signupEmail').value.trim();
+        const pass = document.getElementById('signupPassword').value;
+        const confirm = document.getElementById('signupConfirm').value;
+
+        if (!name || !phone || !country || !email || !pass) {
+            showToast('❌ يرجى ملء جميع الحقول');
+            return;
+        }
+        if (pass !== confirm) {
+            showToast('❌ كلمة السر غير متطابقة');
+            return;
+        }
+        if (pass.length < 6) {
+            showToast('❌ كلمة السر 6 أحرف على الأقل');
+            return;
+        }
+        if (!auth) {
+            showToast('⏳ انتظر...');
+            return;
+        }
+
+        try {
+            showToast('⏳ جاري إنشاء الحساب...');
+            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+            const user = userCredential.user;
+
+            await setDoc(doc(db, 'tradelix_users', user.uid), {
+                name: name,
+                phone: phone,
+                country: country,
+                email: email,
+                status: 'inactive',
+                plan: null,
+                startDate: null,
+                expiryDate: null,
+                txHash: null,
+                createdAt: serverTimestamp()
+            });
+
+            showToast('✅ تم إنشاء الحساب!');
+            setTimeout(() => showScreen('loginScreen'), 1500);
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/email-already-in-use') {
+                showToast('❌ الإيميل مستخدم بالفعل');
+            } else if (error.code === 'auth/invalid-email') {
+                showToast('❌ إيميل غير صحيح');
+            } else {
+                showToast('❌ خطأ: ' + error.message);
+            }
+        }
+    }
+
+    // ===== LOGIN =====
+    async function handleLogin() {
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPassword').value;
+
+        if (!email || !pass) {
+            showToast('❌ أدخل الإيميل وكلمة السر');
+            return;
+        }
+        if (!auth) {
+            showToast('⏳ انتظر...');
+            return;
+        }
+
+        try {
+            showToast('⏳ جاري الدخول...');
+            const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+            await loadUserData(userCredential.user.uid);
+            showToast('✅ مرحباً بك!');
+            setTimeout(() => {
+                showScreen('homeScreen');
+                updateUI();
+            }, 1000);
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+                showToast('❌ إيميل أو كلمة سر خاطئة');
+            } else if (error.code === 'auth/user-not-found') {
+                showToast('❌ الحساب غير موجود');
+            } else {
+                showToast('❌ خطأ في الدخول');
+            }
+        }
+    }
+
+    // ===== LOAD USER DATA =====
+    let currentUserData = null;
+
+    async function loadUserData(uid) {
+        try {
+            const userDoc = await getDoc(doc(db, 'tradelix_users', uid));
+            if (userDoc.exists()) {
+                currentUserData = { uid: uid, ...userDoc.data() };
+                localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
+                updateUI();
+            }
+        } catch (error) {
+            console.error('Error loading user:', error);
+        }
+    }
+
+    // ===== LOGOUT =====
+    async function handleLogout() {
+        try {
+            await signOut(auth);
+        } catch (e) { console.error(e); }
+        localStorage.removeItem('tradelix_user');
+        currentUserData = null;
+        showToast('👋 تم تسجيل الخروج');
+        setTimeout(() => showScreen('loginScreen'), 800);
+    }
+
+    // ===== UPDATE UI =====
+    function updateUI() {
+        const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+
+        // Home
+        if (document.getElementById('welcomeName')) {
+            document.getElementById('welcomeName').textContent = user.name || 'مستخدم';
+            document.getElementById('welcomeEmail').textContent = user.email || '-';
+        }
+
+        // Status Badge
+        const badge = document.getElementById('statusBadge');
+        if (badge) {
+            if (user.status === 'active') {
+                badge.style.background = 'rgba(14, 203, 129, 0.15)';
+                badge.style.color = '#0ECB81';
+                badge.style.borderColor = '#0ECB81';
+                badge.textContent = 'ACTIVE';
+            } else if (user.status === 'pending') {
+                badge.style.background = 'rgba(240, 185, 11, 0.15)';
+                badge.style.color = '#F0B90B';
+                badge.style.borderColor = '#F0B90B';
+                badge.textContent = 'PENDING';
+            } else {
+                badge.style.background = 'rgba(246, 70, 93, 0.15)';
+                badge.style.color = '#F6465D';
+                badge.style.borderColor = '#F6465D';
+                badge.textContent = 'INACTIVE';
+            }
+        }
+
+        // Signals Box
+        const activeBox = document.getElementById('activeSignalBox');
+        const lockedBox = document.getElementById('lockedSignalBox');
+        if (activeBox && lockedBox) {
+            if (user.status === 'active') {
+                activeBox.classList.remove('hidden');
+                lockedBox.classList.add('hidden');
+            } else {
+                activeBox.classList.add('hidden');
+                lockedBox.classList.remove('hidden');
+            }
+        }
+
+        // Subscription Screen
+        const subActive = document.getElementById('subActive');
+        const subInactive = document.getElementById('subInactive');
+        if (subActive && subInactive) {
+            if (user.status === 'active') {
+                subActive.classList.remove('hidden');
+                subInactive.classList.add('hidden');
+                document.getElementById('subPlan').textContent = user.plan || '-';
+                document.getElementById('subStart').textContent = user.startDate || '-';
+                document.getElementById('subEnd').textContent = user.expiryDate || '-';
+                if (user.expiryDate) {
+                    const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
+                    document.getElementById('subDays').textContent = days > 0 ? days + ' يوم' : 'منتهي';
+                }
+            } else {
+                subActive.classList.add('hidden');
+                subInactive.classList.remove('hidden');
+            }
+        }
+
+        // Profile
+        if (document.getElementById('profileName')) {
+            document.getElementById('profileName').textContent = user.name || '-';
+            document.getElementById('profileEmail').textContent = user.email || '-';
+            document.getElementById('profName').textContent = user.name || '-';
+            document.getElementById('profEmail').textContent = user.email || '-';
+            document.getElementById('profPhone').textContent = user.phone || '-';
+            document.getElementById('profCountry').textContent = user.country || '-';
+        }
+    }
+
+    // ===== SIGNALS NAVIGATION =====
+    function goToSignals() {
+        const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        showScreen('signalsScreen');
+    }
+
+    // ===== DEPOSIT =====
+    let currentPlan = { price: 0, name: '' };
+
+    function goToDeposit(price, name) {
+        currentPlan = { price, name };
+        document.getElementById('depositPlan').textContent = name;
+        document.getElementById('depositAmount').textContent = '$' + price;
+        showScreen('depositScreen');
+    }
+
+    function copyWallet() {
+        const wallet = document.getElementById('walletAddr').textContent.trim();
+        navigator.clipboard.writeText(wallet).then(() => {
+            showToast('✅ تم نسخ العنوان');
+        }).catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = wallet;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('✅ تم نسخ العنوان');
+        });
+    }
+
+    async function submitDeposit() {
+        const hash = document.getElementById('txHash').value.trim();
+        if (!hash) {
+            showToast('❌ أدخل رقم المعاملة');
+            return;
+        }
+
+        const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        if (!user.uid) {
+            showToast('❌ سجّل دخولك أولاً');
+            return;
+        }
+
+        try {
+            await setDoc(doc(db, 'tradelix_users', user.uid), {
+                status: 'pending',
+                plan: currentPlan.name,
+                depositAmount: currentPlan.price,
+                txHash: hash
+            }, { merge: true });
+
+            currentUserData.status = 'pending';
+            currentUserData.plan = currentPlan.name;
+            currentUserData.txHash = hash;
+            localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
+
+            showToast('✅ تم الإرسال! بانتظار التأكيد');
+            setTimeout(() => {
+                showScreen('homeScreen');
+                updateUI();
+            }, 1500);
+        } catch (error) {
+            console.error(error);
+            showToast('❌ خطأ في الإرسال');
+        }
+    }
+
+    // ===== BINANCE API - Live Prices =====
+    const COINS = ['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA'];
+    let prices = {};
+
+    async function fetchPrices() {
+        try {
+            const symbols = COINS.map(c => `"${c}USDT"`).join(',');
+            const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('API Error');
+            const data = await res.json();
+
+            data.forEach(item => {
+                const coin = item.symbol.replace('USDT', '');
+                prices[coin] = {
+                    price: parseFloat(item.lastPrice),
+                    change: parseFloat(item.priceChangePercent),
+                    high: parseFloat(item.highPrice),
+                    low: parseFloat(item.lowPrice),
+                    vol: parseFloat(item.volume)
+                };
+                updateCoinUI(coin, prices[coin]);
+            });
+        } catch (e) {
+            console.error('Binance fetch error:', e);
+        }
+    }
+
+    function updateCoinUI(coin, data) {
+        const fmt = (n) => {
+            if (n >= 1000) return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+            if (n >= 1) return '$' + n.toFixed(2);
+            return '$' + n.toFixed(4);
+        };
+
+        // Cards
+        const pEl = document.getElementById('p' + coin);
+        const cEl = document.getElementById('ch' + coin);
+        if (pEl) pEl.textContent = fmt(data.price);
+        if (cEl) {
+            cEl.textContent = (data.change >= 0 ? '+' : '') + data.change.toFixed(2) + '%';
+            cEl.classList.remove('up', 'down');
+            cEl.classList.add(data.change >= 0 ? 'up' : 'down');
+        }
+
+        // Ticker
+        const tEl = document.getElementById('t' + coin);
+        const tcEl = document.getElementById('c' + coin);
+        if (tEl) tEl.textContent = fmt(data.price);
+        if (tcEl) {
+            tcEl.textContent = (data.change >= 0 ? '+' : '') + data.change.toFixed(2) + '%';
+            tcEl.classList.remove('up', 'down');
+            tcEl.classList.add(data.change >= 0 ? 'up' : 'down');
+        }
+    }
+
+    function refreshMarkets() {
+        showToast('🔄 جاري التحديث...');
+        fetchPrices();
+    }
+
+    // ===== COIN CHART =====
+    let currentChartSymbol = 'BTC';
+
+    function openCoinChart(coin) {
+        currentChartSymbol = coin;
+        const coinNames = { BTC: 'Bitcoin', ETH: 'Ethereum', BNB: 'BNB', SOL: 'Solana', XRP: 'XRP', ADA: 'Cardano' };
+        const icons = { BTC: '₿', ETH: 'Ξ', BNB: 'B', SOL: 'S', XRP: 'X', ADA: 'A' };
+
+        document.getElementById('coinChartName').textContent = coin + '/USDT';
+        document.getElementById('coinChartSub').textContent = (coinNames[coin] || coin).toUpperCase();
+        document.getElementById('coinChartIcon').textContent = icons[coin] || coin[0];
+
+        if (prices[coin]) {
+            const fmt = (n) => '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+            document.getElementById('coinChartPrice').textContent = fmt(prices[coin].price);
+            document.getElementById('coinChartChange').textContent = (prices[coin].change >= 0 ? '+' : '') + prices[coin].change.toFixed(2) + '%';
+            document.getElementById('coinChartChange').style.color = prices[coin].change >= 0 ? '#0ECB81' : '#F6465D';
+            document.getElementById('coinHigh').textContent = fmt(prices[coin].high);
+            document.getElementById('coinLow').textContent = fmt(prices[coin].low);
+            document.getElementById('coinVol').textContent = prices[coin].vol.toLocaleString('en-US', { maximumFractionDigits: 0 });
+            document.getElementById('coinChg').textContent = (prices[coin].change >= 0 ? '+' : '') + prices[coin].change.toFixed(2) + '%';
+            document.getElementById('coinChg').style.color = prices[coin].change >= 0 ? '#0ECB81' : '#F6465D';
+        }
+
+        showScreen('coinChartScreen');
+        setTimeout(loadTradingViewChart, 300);
+    }
+
+    function loadTradingViewChart() {
+        const container = document.getElementById('chartContainer');
+        container.innerHTML = '';
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:${currentChartSymbol}USDT&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=f1f3f6&studies=[]&theme=dark&style=1&timezone=Etc/UTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=&utm_medium=widget&utm_campaign=chart`;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.style.borderRadius = '10px';
+        container.appendChild(iframe);
+    }
+
+    // ===== NOTIFICATIONS =====
+    let notifs = JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
+
+    function openNotifModal() {
+        const list = document.getElementById('notifList');
+        if (notifs.length === 0) {
+            list.innerHTML = '<p style="color:#848E9C; text-align:center; padding:20px; font-size:13px;">لا توجد إشعارات</p>';
+        } else {
+            list.innerHTML = notifs.map(n => 
+                '<div style="background:#181A20; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#2B3139' : '#F0B90B') + ';">' +
+                    '<div style="color:#F0B90B; font-weight:700; font-size:13px; margin-bottom:4px;">' + n.message + '</div>' +
+                    '<div style="color:#848E9C; font-size:11px;">' + n.time + '</div>' +
+                '</div>'
+            ).join('');
+        }
+        document.getElementById('notifModal').style.display = 'block';
+        notifs.forEach(n => n.read = true);
+        localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
+    }
+
+    function closeNotifModal() {
+        document.getElementById('notifModal').style.display = 'none';
+    }
+
+    function addNotif(message) {
+        notifs.unshift({
+            id: Date.now(),
+            message: message,
+            time: new Date().toLocaleString('en-GB'),
+            read: false
+        });
+        if (notifs.length > 50) notifs = notifs.slice(0, 50);
+        localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
+        if (Notification.permission === 'granted') {
+            try { new Notification('Tradelix AI', { body: message }); } catch(e){}
+        }
+        try {
+            const c = new (window.AudioContext || window.webkitAudioContext)();
+            [0, 0.3].forEach(d => {
+                const o = c.createOscillator();
+                const g = c.createGain();
+                o.connect(g); g.connect(c.destination);
+                o.frequency.value = 880;
+                g.gain.setValueAtTime(0.3, c.currentTime + d);
+                g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + d + 0.2);
+                o.start(c.currentTime + d);
+                o.stop(c.currentTime + d + 0.2);
+            });
+        } catch(e){}
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    }
+
+    // ===== TOAST =====
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ===== REQUEST NOTIFICATION PERMISSION =====
+    async function requestNotifPermission() {
+        if (!('Notification' in window)) return;
+        if (Notification.permission === 'default') {
+            try { await Notification.requestPermission(); } catch(e){}
+        }
+    }
+
+    // ===== INIT =====
+    window.addEventListener('load', async () => {
+        await initFirebase();
+        fetchPrices();
+        setInterval(fetchPrices, 10000);
+        setTimeout(requestNotifPermission, 3000);
+    });
+</script>
+
+</body>
+</html>
