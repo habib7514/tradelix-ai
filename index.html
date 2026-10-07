@@ -1746,6 +1746,19 @@ const firebaseConfig = {
             try { await Notification.requestPermission(); } catch(e){}
         }
     }
+// ===== إخفاء Netlify Badge =====
+function hideNetlifyBadge() {
+    const selectors = [
+        '[data-netlify-badge]', '#netlify-badge', '.netlify-badge',
+        'iframe[title="Netlify"]', 'a[href*="netlify.com"]',
+        'div[class*="netlify"]', 'div[id*="netlify"]'
+    ];
+    selectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => el.remove());
+    });
+}
+hideNetlifyBadge();
+setInterval(hideNetlifyBadge, 1000);
 
     // ===== INIT =====
     window.addEventListener('load', async () => {
