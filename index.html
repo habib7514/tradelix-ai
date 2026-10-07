@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -39,7 +39,6 @@
             overflow-x: hidden;
         }
 
-        /* SPLASH SCREEN - 5 seconds */
         #splash {
             position: fixed;
             top: 0; left: 0;
@@ -131,7 +130,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* SCREENS */
         .screen {
             display: none;
             width: 100%;
@@ -143,7 +141,6 @@
         }
         .screen.active { display: block; }
 
-        /* AUTH */
         .auth-container {
             display: flex;
             flex-direction: column;
@@ -153,10 +150,7 @@
             max-width: 420px;
             margin: 0 auto;
         }
-        .auth-logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .auth-logo { text-align: center; margin-bottom: 30px; }
         .auth-logo-img {
             width: 80px; height: 80px;
             border-radius: 20px;
@@ -219,8 +213,8 @@
         .input-group select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23848E9C' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: left 14px center;
-            padding-left: 36px;
+            background-position: right 14px center;
+            padding-right: 36px;
             -webkit-appearance: none;
             appearance: none;
         }
@@ -266,7 +260,6 @@
             cursor: pointer;
         }
 
-        /* HEADER */
         .header {
             display: flex;
             justify-content: space-between;
@@ -322,7 +315,6 @@
             position: relative;
         }
 
-        /* TICKER */
         .ticker-wrap {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -355,7 +347,6 @@
             to { transform: translateX(-50%); }
         }
 
-        /* CARDS */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -380,7 +371,6 @@
             font-weight: 700;
         }
 
-        /* MARKET COINS */
         .markets-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -435,7 +425,6 @@
         .coin-change.up { color: var(--green); }
         .coin-change.down { color: var(--red); }
 
-        /* VIP PLANS */
         .plan-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -490,7 +479,6 @@
             letter-spacing: 1px;
         }
 
-        /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -521,7 +509,6 @@
         .nav-item .icon { font-size: 20px; }
         .nav-item:active { transform: scale(0.92); }
 
-        /* MISC */
         .hidden { display: none !important; }
         .toast {
             position: fixed;
@@ -547,7 +534,7 @@
     </style>
 </head>
 <body>
-  <!-- ================= SPLASH SCREEN ================= -->
+    <!-- ================= SPLASH SCREEN ================= -->
 <div id="splash">
     <div class="splash-logo">
         <div class="splash-logo-circle"></div>
@@ -555,7 +542,7 @@
     </div>
     <h1 class="splash-title">TRADELIX AI</h1>
     <p class="splash-subtitle">SMARTER TRADING</p>
-    <p class="splash-tagline">منصة تداول العملات الرقمية<br>بالذكاء الاصطناعي</p>
+    <p class="splash-tagline">AI-Powered Crypto Trading Platform<br>Live Signals • Real-Time Markets</p>
     <div class="splash-loading">
         <div class="splash-loading-fill"></div>
     </div>
@@ -569,59 +556,63 @@
             <h1>TRADELIX AI</h1>
             <p>SMARTER TRADING</p>
         </div>
-        <h2 class="auth-title">إنشاء حساب جديد</h2>
+        <h2 class="auth-title">Create Account</h2>
 
         <div class="input-group">
-            <label>الاسم الكامل</label>
-            <input type="text" id="signupName" placeholder="أدخل اسمك الكامل">
+            <label>Full Name</label>
+            <input type="text" id="signupName" placeholder="Enter your full name">
         </div>
         <div class="input-group">
-            <label>رقم الهاتف</label>
+            <label>Phone Number</label>
             <input type="tel" id="signupPhone" placeholder="+974 1234 5678">
         </div>
         <div class="input-group">
-            <label>الدولة</label>
+            <label>Country</label>
             <select id="signupCountry">
-                <option value="">اختر دولتك</option>
-                <option value="QA">🇶🇦 قطر</option>
-                <option value="SA">🇸🇦 السعودية</option>
-                <option value="AE">🇦🇪 الإمارات</option>
-                <option value="KW">🇰🇼 الكويت</option>
-                <option value="BH">🇧🇭 البحرين</option>
-                <option value="OM">🇴🇲 عمان</option>
-                <option value="EG">🇪🇬 مصر</option>
-                <option value="JO">🇯🇴 الأردن</option>
-                <option value="MA">🇲🇦 المغرب</option>
-                <option value="DZ">🇩🇿 الجزائر</option>
-                <option value="TN">🇹🇳 تونس</option>
-                <option value="IQ">🇮🇶 العراق</option>
-                <option value="SY">🇸🇾 سوريا</option>
-                <option value="LB">🇱🇧 لبنان</option>
-                <option value="YE">🇾🇪 اليمن</option>
-                <option value="SD">🇸🇩 السودان</option>
-                <option value="LY">🇱🇾 ليبيا</option>
-                <option value="PS">🇵🇸 فلسطين</option>
-                <option value="TR">🇹🇷 تركيا</option>
-                <option value="OTHER">🌍 أخرى</option>
+                <option value="">Select your country</option>
+                <option value="QA">🇶🇦 Qatar</option>
+                <option value="SA">🇸🇦 Saudi Arabia</option>
+                <option value="AE">🇦🇪 UAE</option>
+                <option value="KW">🇰🇼 Kuwait</option>
+                <option value="BH">🇧🇭 Bahrain</option>
+                <option value="OM">🇴🇲 Oman</option>
+                <option value="EG">🇪🇬 Egypt</option>
+                <option value="JO">🇯🇴 Jordan</option>
+                <option value="MA">🇲🇦 Morocco</option>
+                <option value="DZ">🇩🇿 Algeria</option>
+                <option value="TN">🇹🇳 Tunisia</option>
+                <option value="IQ">🇮🇶 Iraq</option>
+                <option value="SY">🇸🇾 Syria</option>
+                <option value="LB">🇱🇧 Lebanon</option>
+                <option value="YE">🇾🇪 Yemen</option>
+                <option value="SD">🇸🇩 Sudan</option>
+                <option value="LY">🇱🇾 Libya</option>
+                <option value="PS">🇵🇸 Palestine</option>
+                <option value="TR">🇹🇷 Turkey</option>
+                <option value="US">🇺🇸 United States</option>
+                <option value="UK">🇬🇧 United Kingdom</option>
+                <option value="FR">🇫🇷 France</option>
+                <option value="DE">🇩🇪 Germany</option>
+                <option value="OTHER">🌍 Other</option>
             </select>
         </div>
         <div class="input-group">
-            <label>البريد الإلكتروني</label>
+            <label>Email Address</label>
             <input type="email" id="signupEmail" placeholder="your@email.com">
         </div>
         <div class="input-group">
-            <label>كلمة السر</label>
+            <label>Password</label>
             <input type="password" id="signupPassword" placeholder="••••••••">
         </div>
         <div class="input-group">
-            <label>تأكيد كلمة السر</label>
+            <label>Confirm Password</label>
             <input type="password" id="signupConfirm" placeholder="••••••••">
         </div>
 
-        <button class="btn-block" onclick="handleSignup()">إنشاء الحساب</button>
+        <button class="btn-block" onclick="handleSignup()">Create Account</button>
 
         <div class="auth-switch">
-            لديك حساب بالفعل؟ <a onclick="showScreen('loginScreen')">تسجيل الدخول</a>
+            Already have an account? <a onclick="showScreen('loginScreen')">Login</a>
         </div>
     </div>
 </div>
@@ -634,21 +625,21 @@
             <h1>TRADELIX AI</h1>
             <p>SMARTER TRADING</p>
         </div>
-        <h2 class="auth-title">تسجيل الدخول</h2>
+        <h2 class="auth-title">Welcome Back</h2>
 
         <div class="input-group">
-            <label>البريد الإلكتروني</label>
+            <label>Email Address</label>
             <input type="email" id="loginEmail" placeholder="your@email.com">
         </div>
         <div class="input-group">
-            <label>كلمة السر</label>
+            <label>Password</label>
             <input type="password" id="loginPassword" placeholder="••••••••">
         </div>
 
-        <button class="btn-block" onclick="handleLogin()">دخول</button>
+        <button class="btn-block" onclick="handleLogin()">Login</button>
 
         <div class="auth-switch">
-            ليس لديك حساب؟ <a onclick="showScreen('signupScreen')">إنشاء حساب</a>
+            Don't have an account? <a onclick="showScreen('signupScreen')">Sign Up</a>
         </div>
     </div>
 </div>
@@ -670,8 +661,8 @@
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold);">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div>
-                <p style="color: var(--text-muted); font-size:11px; margin-bottom:4px;">مرحباً بك</p>
-                <h2 id="welcomeName" style="font-size:18px; color: var(--text-main); margin-bottom:8px;">مستخدم</h2>
+                <p style="color: var(--text-muted); font-size:11px; margin-bottom:4px;">Welcome back</p>
+                <h2 id="welcomeName" style="font-size:18px; color: var(--text-main); margin-bottom:8px;">User</h2>
                 <p id="welcomeEmail" style="font-size:11px; color: var(--text-muted);">-</p>
             </div>
             <div style="text-align:center;">
@@ -687,13 +678,15 @@
             <span class="ticker-item"><span class="sym">ETH</span><span class="price" id="tETH">$0</span><span class="up" id="cETH">+0.00%</span></span>
             <span class="ticker-item"><span class="sym">BNB</span><span class="price" id="tBNB">$0</span><span class="up" id="cBNB">+0.00%</span></span>
             <span class="ticker-item"><span class="sym">SOL</span><span class="price" id="tSOL">$0</span><span class="up" id="cSOL">+0.00%</span></span>
+            <span class="ticker-item"><span class="sym">XRP</span><span class="price" id="tXRP">$0</span><span class="up" id="cXRP">+0.00%</span></span>
+            <span class="ticker-item"><span class="sym">ADA</span><span class="price" id="tADA">$0</span><span class="up" id="cADA">+0.00%</span></span>
         </div>
     </div>
 
     <!-- Markets -->
     <div class="section-title">
-        <span>📊 السوق الحي</span>
-        <span class="more" onclick="refreshMarkets()">تحديث ↻</span>
+        <span>📊 Live Markets</span>
+        <span class="more" onclick="refreshMarkets()">Refresh ↻</span>
     </div>
     <div class="markets-grid" id="marketsGrid">
         <div class="coin-card" onclick="openCoinChart('BTC')">
@@ -748,13 +741,13 @@
 
     <!-- VIP Plans -->
     <div class="section-title">
-        <span>💎 خطط الاشتراك</span>
+        <span>💎 Subscription Plans</span>
     </div>
 
     <div class="plan-card">
         <div class="plan-info">
             <h4>Weekly</h4>
-            <div class="duration">7 أيام</div>
+            <div class="duration">7 Days Access</div>
         </div>
         <button class="plan-buy" onclick="goToDeposit(15, 'Weekly')">$15</button>
     </div>
@@ -762,16 +755,16 @@
     <div class="plan-card">
         <div class="plan-info">
             <h4>Monthly</h4>
-            <div class="duration">30 يوم</div>
+            <div class="duration">30 Days Access</div>
         </div>
         <button class="plan-buy" onclick="goToDeposit(45, 'Monthly')">$45</button>
     </div>
 
     <div class="plan-card premium">
-        <span class="plan-badge">BEST</span>
+        <span class="plan-badge">BEST VALUE</span>
         <div class="plan-info">
             <h4>3 Months</h4>
-            <div class="duration">90 يوم</div>
+            <div class="duration">90 Days Access</div>
         </div>
         <button class="plan-buy" onclick="goToDeposit(125, 'Quarterly')">$125</button>
     </div>
@@ -779,61 +772,61 @@
     <div class="plan-card vip-lifetime">
         <span class="plan-badge">👑 VIP</span>
         <div class="plan-info">
-            <h4>VIP Lifetime</h4>
-            <div class="duration">مدى الحياة</div>
+            <h4>Lifetime VIP</h4>
+            <div class="duration">Unlimited Access</div>
         </div>
         <button class="plan-buy" onclick="goToDeposit(400, 'Lifetime')">$400</button>
     </div>
 
     <!-- Academy Preview -->
     <div class="section-title" style="margin-top: 24px;">
-        <span>📚 تعلم التداول من الصفر</span>
+        <span>📚 Learn Trading From Zero</span>
     </div>
     <div class="card" style="text-align:center; padding: 20px;">
         <p style="color: var(--text-muted); font-size: 13px; line-height:1.8; margin-bottom: 14px;">
-            احترف تداول العملات الرقمية مع 4 كورسات احترافية
+            Master crypto trading with 4 professional courses
         </p>
-        <button class="btn-block" onclick="showScreen('academyScreen')">عرض الكورسات</button>
+        <button class="btn-block" onclick="showScreen('academyScreen')">View Courses</button>
     </div>
 
     <!-- Tradix AI Section -->
     <div class="section-title" style="margin-top: 24px;">
-        <span>🚀 تطبيق Tradix AI</span>
+        <span>🚀 Tradix AI App</span>
     </div>
     <div class="card" style="text-align:center; padding: 20px; border-color: var(--gold);">
         <div style="font-size: 40px; margin-bottom: 10px;">📱</div>
         <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 16px;">Tradix AI</h3>
         <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 14px;">
-            تطبيقنا الأول لإشارات الذهب<br>احصل عليه مجاناً
+            Our first app for Gold Signals<br>Get it for free
         </p>
-        <a href="https://tinyurl.com/tradix-ai-2026" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 تحميل Tradix AI</a>
+        <a href="https://tinyurl.com/tradix-ai-2026" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 Download Tradix AI</a>
     </div>
 
     <!-- Bottom Nav -->
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')">
             <span class="icon">🏠</span>
-            <span>الرئيسية</span>
+            <span>Home</span>
         </button>
         <button class="nav-item" onclick="goToSignals()">
             <span class="icon">📊</span>
-            <span>الصفقات</span>
+            <span>Signals</span>
         </button>
         <button class="nav-item" onclick="showScreen('academyScreen')">
             <span class="icon">📚</span>
-            <span>الأكاديمية</span>
+            <span>Academy</span>
         </button>
         <button class="nav-item" onclick="showScreen('meetingScreen')">
             <span class="icon">📅</span>
-            <span>الاجتماعات</span>
+            <span>Meetings</span>
         </button>
         <button class="nav-item" onclick="showScreen('subscriptionScreen')">
             <span class="icon">💎</span>
-            <span>اشتراكي</span>
+            <span>Plan</span>
         </button>
         <button class="nav-item" onclick="showScreen('profileScreen')">
             <span class="icon">👤</span>
-            <span>حسابي</span>
+            <span>Profile</span>
         </button>
     </div>
 </div>
@@ -843,14 +836,13 @@
         <div class="header-left">
             <div class="header-logo">T</div>
             <div class="header-title">
-                <h1>الصفقات</h1>
-                <span>SIGNALS</span>
+                <h1>Signals</h1>
+                <span>LIVE SIGNALS</span>
             </div>
         </div>
         <div class="bell-icon" onclick="openNotifModal()">🔔</div>
     </div>
 
-    <!-- Active Signal Box -->
     <div id="activeSignalBox" class="hidden">
         <div class="card" style="border-color: var(--green); background: linear-gradient(135deg, #1E2329 0%, #0ECB811A 100%);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
@@ -879,23 +871,22 @@
         </div>
     </div>
 
-    <!-- Locked Box -->
     <div id="lockedSignalBox" class="card" style="text-align: center; padding: 40px 20px;">
         <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
-        <h3 style="color: var(--gold); margin-bottom: 8px;">مطلوب اشتراك</h3>
+        <h3 style="color: var(--gold); margin-bottom: 8px;">Premium Required</h3>
         <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
-            اختر خطة اشتراك لعرض الإشارات الحية مع Entry / SL / TP
+            Subscribe to access live signals with Entry / SL / TP
         </p>
-        <button class="btn-block" onclick="showScreen('homeScreen')">عرض الخطط</button>
+        <button class="btn-block" onclick="showScreen('homeScreen')">View Plans</button>
     </div>
 
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
 
@@ -905,32 +896,32 @@
         <div class="header-left">
             <div class="header-logo">T</div>
             <div class="header-title">
-                <h1>الأكاديمية</h1>
-                <span>ACADEMY</span>
+                <h1>Academy</h1>
+                <span>LEARN TRADING</span>
             </div>
         </div>
         <div class="bell-icon" onclick="openNotifModal()">🔔</div>
     </div>
 
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
-        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">📚 تعلم التداول من الصفر</h2>
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">📚 Learn Trading From Zero</h2>
         <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6;">
-            4 كورسات احترافية لتعلم تداول العملات الرقمية
+            4 professional courses to master crypto trading
         </p>
     </div>
 
-    <div class="section-title">🎓 الكورسات المتوفرة</div>
+    <div class="section-title">🎓 Available Courses</div>
 
     <div class="card" style="border-color: var(--border);">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
             <div style="flex: 1;">
-                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ أساسيات التداول</h4>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">تعلم المفاهيم الأساسية للتداول والعملات الرقمية</p>
-                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 حصص</div>
+                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ Trading Basics</h4>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Learn core trading concepts and crypto fundamentals</p>
+                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div>
             </div>
             <div style="text-align: center;">
                 <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
-                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics')">شراء</button>
+                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics')">Buy</button>
             </div>
         </div>
     </div>
@@ -938,13 +929,13 @@
     <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
             <div style="flex: 1;">
-                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ التحليل الفني</h4>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">الشموع اليابانية والمؤشرات الفنية</p>
-                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 حصص</div>
+                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ Technical Analysis</h4>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Candlestick patterns and technical indicators</p>
+                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div>
             </div>
             <div style="text-align: center;">
                 <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
-                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical')">شراء</button>
+                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical')">Buy</button>
             </div>
         </div>
     </div>
@@ -952,13 +943,13 @@
     <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
             <div style="flex: 1;">
-                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ إدارة المخاطر</h4>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">كيفية حماية رأس المال وتحديد المخاطر</p>
-                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 حصص</div>
+                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ Risk Management</h4>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Protect your capital and manage risks effectively</p>
+                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div>
             </div>
             <div style="text-align: center;">
                 <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
-                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk')">شراء</button>
+                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk')">Buy</button>
             </div>
         </div>
     </div>
@@ -966,24 +957,24 @@
     <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
             <div style="flex: 1;">
-                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ استراتيجيات متقدمة</h4>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">استراتيجيات احترافية للتداول اليومي</p>
-                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 حصص</div>
+                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ Advanced Strategies</h4>
+                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Professional strategies for daily trading</p>
+                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div>
             </div>
             <div style="text-align: center;">
                 <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
-                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">شراء</button>
+                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">Buy</button>
             </div>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
-        <button class="nav-item active" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item active" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
 
@@ -993,57 +984,57 @@
         <div class="header-left">
             <div class="header-logo">T</div>
             <div class="header-title">
-                <h1>الإيداع</h1>
-                <span>DEPOSIT</span>
+                <h1>Deposit</h1>
+                <span>PAYMENT</span>
             </div>
         </div>
         <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
     </div>
 
     <div class="card">
-        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">💳 تفاصيل الدفع</h3>
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">💳 Payment Details</h3>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">الخطة</span>
+            <span style="color: var(--text-muted);">Plan</span>
             <span id="depositPlan" style="color: var(--gold); font-weight: 700;">-</span>
         </div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">المبلغ</span>
+            <span style="color: var(--text-muted);">Amount</span>
             <span id="depositAmount" style="color: var(--gold); font-weight: 700;">$0</span>
         </div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">الشبكة</span>
+            <span style="color: var(--text-muted);">Network</span>
             <span style="color: var(--text-main); font-weight: 700;">BNB Smart Chain</span>
         </div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
-            <span style="color: var(--text-muted);">العملة</span>
+            <span style="color: var(--text-muted);">Currency</span>
             <span style="color: var(--text-main); font-weight: 700;">USDT (BEP20)</span>
         </div>
     </div>
 
-    <div class="section-title">💰 عنوان المحفظة</div>
+    <div class="section-title">💰 Wallet Address</div>
     <div style="background: #181A20; border: 1px dashed var(--gold); border-radius: 10px; padding: 14px; text-align: center; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--gold); margin-bottom: 10px;" id="walletAddr">
         0x4E11E978119cAAB300b5439B909D06341C24a2A7
     </div>
-    <button class="btn-block" onclick="copyWallet()">📋 نسخ العنوان</button>
+    <button class="btn-block" onclick="copyWallet()">📋 Copy Address</button>
 
     <div style="margin-top: 24px;">
-        <div class="section-title">🔗 رقم المعاملة (TX Hash)</div>
+        <div class="section-title">🔗 Transaction Hash (TX)</div>
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.6;">
-            بعد إرسال المبلغ، الصق رقم المعاملة هنا للتحقق
+            After sending the payment, paste your transaction hash here
         </p>
         <div class="input-group">
-            <input type="text" id="txHash" placeholder="الصق رقم المعاملة هنا">
+            <input type="text" id="txHash" placeholder="Paste transaction hash">
         </div>
-        <button class="btn-block" onclick="submitDeposit()">📤 إرسال للمراجعة</button>
+        <button class="btn-block" onclick="submitDeposit()">📤 Submit for Review</button>
     </div>
 
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
 
@@ -1053,8 +1044,8 @@
         <div class="header-left">
             <div class="header-logo">T</div>
             <div class="header-title">
-                <h1>الاجتماعات</h1>
-                <span>MEETINGS</span>
+                <h1>Meetings</h1>
+                <span>ZOOM SESSIONS</span>
             </div>
         </div>
         <div class="bell-icon" onclick="openNotifModal()">🔔</div>
@@ -1062,25 +1053,25 @@
 
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
         <div style="font-size: 60px; margin-bottom: 12px;">📅</div>
-        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">اجتماعات Zoom</h2>
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">Zoom Meetings</h2>
         <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 16px;">
-            انضم لجلسات التداول الحية مع المدرب
+            Join live trading sessions with the coach
         </p>
-        <a href="https://zoom.us/download" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 تحميل تطبيق Zoom</a>
+        <a href="https://zoom.us/download" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 Download Zoom App</a>
     </div>
 
-    <div class="section-title">🔗 روابط الاجتماعات</div>
+    <div class="section-title">🔗 Meeting Links</div>
     <div id="meetingsList" class="card">
-        <p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">لا توجد اجتماعات حالياً</p>
+        <p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p>
     </div>
 
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
-        <button class="nav-item active" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item active" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
 
@@ -1090,8 +1081,8 @@
         <div class="header-left">
             <div class="header-logo">T</div>
             <div class="header-title">
-                <h1>اشتراكي</h1>
-                <span>MY SUBSCRIPTION</span>
+                <h1>My Plan</h1>
+                <span>SUBSCRIPTION</span>
             </div>
         </div>
         <div class="bell-icon" onclick="openNotifModal()">🔔</div>
@@ -1100,24 +1091,24 @@
     <div id="subActive" class="hidden">
         <div class="card" style="text-align: center; border-color: var(--green);">
             <div style="font-size: 60px; margin-bottom: 12px;">✅</div>
-            <h2 style="color: var(--green); font-size: 18px; margin-bottom: 8px;">اشتراك نشط</h2>
-            <p style="color: var(--text-muted); font-size: 13px;">لديك وصول كامل لجميع الصفقات</p>
+            <h2 style="color: var(--green); font-size: 18px; margin-bottom: 8px;">Active Subscription</h2>
+            <p style="color: var(--text-muted); font-size: 13px;">You have full access to all signals</p>
         </div>
         <div class="card">
             <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-                <span style="color: var(--text-muted);">الخطة</span>
+                <span style="color: var(--text-muted);">Plan</span>
                 <span id="subPlan" style="color: var(--gold); font-weight: 700;">-</span>
             </div>
             <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-                <span style="color: var(--text-muted);">تاريخ البداية</span>
+                <span style="color: var(--text-muted);">Start Date</span>
                 <span id="subStart" style="color: var(--text-main); font-weight: 700;">-</span>
             </div>
             <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-                <span style="color: var(--text-muted);">تاريخ الانتهاء</span>
+                <span style="color: var(--text-muted);">Expiry Date</span>
                 <span id="subEnd" style="color: var(--text-main); font-weight: 700;">-</span>
             </div>
             <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
-                <span style="color: var(--text-muted);">الأيام المتبقية</span>
+                <span style="color: var(--text-muted);">Days Left</span>
                 <span id="subDays" style="color: var(--green); font-weight: 900;">-</span>
             </div>
         </div>
@@ -1125,20 +1116,20 @@
 
     <div id="subInactive" class="card" style="text-align: center; padding: 40px 20px;">
         <div style="font-size: 60px; margin-bottom: 12px;">💎</div>
-        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">لا يوجد اشتراك نشط</h2>
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">No Active Subscription</h2>
         <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
-            اختر خطة اشتراك للوصول إلى الصفقات الحية
+            Choose a plan to access live signals
         </p>
-        <button class="btn-block" onclick="showScreen('homeScreen')">اختر اشتراك</button>
+        <button class="btn-block" onclick="showScreen('homeScreen')">Choose Plan</button>
     </div>
 
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
-        <button class="nav-item active" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item active" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
 
@@ -1148,8 +1139,8 @@
         <div class="header-left">
             <div class="header-logo">T</div>
             <div class="header-title">
-                <h1>حسابي</h1>
-                <span>PROFILE</span>
+                <h1>Profile</h1>
+                <span>MY ACCOUNT</span>
             </div>
         </div>
         <div class="bell-icon" onclick="openNotifModal()">🔔</div>
@@ -1162,40 +1153,40 @@
     </div>
 
     <div class="card">
-        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">📋 معلوماتي</h3>
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">📋 My Information</h3>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">الاسم</span>
+            <span style="color: var(--text-muted);">Name</span>
             <span id="profName" style="color: var(--text-main); font-weight: 700;">-</span>
         </div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">البريد</span>
+            <span style="color: var(--text-muted);">Email</span>
             <span id="profEmail" style="color: var(--text-main); font-weight: 700;">-</span>
         </div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">الهاتف</span>
+            <span style="color: var(--text-muted);">Phone</span>
             <span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span>
         </div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
-            <span style="color: var(--text-muted);">الدولة</span>
+            <span style="color: var(--text-muted);">Country</span>
             <span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span>
         </div>
     </div>
 
     <div class="card" style="text-align: center;">
-        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">💬 تواصل مع الأدمن</h3>
-        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">للاستفسارات والدعم المباشر</p>
-        <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ إرسال إيميل</a>
+        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">💬 Contact Admin</h3>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">For support and inquiries</p>
+        <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ Send Email</a>
     </div>
 
-    <button class="btn-outline" onclick="handleLogout()">🚪 تسجيل الخروج</button>
+    <button class="btn-outline" onclick="handleLogout()">🚪 Logout</button>
 
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
-        <button class="nav-item active" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item active" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
 
@@ -1219,48 +1210,47 @@
 
     <div class="card" style="padding: 10px;">
         <div id="chartContainer" style="width: 100%; height: 300px; position: relative; background: #181A20; border-radius: 10px; overflow: hidden;">
-            <canvas id="priceChart" style="width: 100%; height: 100%;"></canvas>
         </div>
     </div>
 
     <div class="card">
-        <h3 style="color: var(--gold); margin-bottom: 10px; font-size: 14px;">📊 إحصائيات 24 ساعة</h3>
+        <h3 style="color: var(--gold); margin-bottom: 10px; font-size: 14px;">📊 24h Statistics</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div style="background:#181A20; padding: 10px; border-radius: 8px;">
-                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">أعلى سعر</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h High</div>
                 <div id="coinHigh" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
             </div>
             <div style="background:#181A20; padding: 10px; border-radius: 8px;">
-                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">أدنى سعر</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Low</div>
                 <div id="coinLow" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
             </div>
             <div style="background:#181A20; padding: 10px; border-radius: 8px;">
-                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">حجم 24h</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Volume</div>
                 <div id="coinVol" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
             </div>
             <div style="background:#181A20; padding: 10px; border-radius: 8px;">
-                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">التغيير</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Change</div>
                 <div id="coinChg" style="font-size: 13px; font-weight: 900; color: var(--green);">-</div>
             </div>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>الرئيسية</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>الصفقات</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>الأكاديمية</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>الاجتماعات</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>اشتراكي</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>حسابي</span></button>
+        <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
 
 <!-- ================= NOTIFICATIONS MODAL ================= -->
 <div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
     <div style="background:#1E2329; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto;">
-        <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; font-family:Tajawal,sans-serif;">🔔 الإشعارات</h3>
+        <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; font-family:Tajawal,sans-serif;">🔔 Notifications</h3>
         <div id="notifList" style="font-family:Tajawal,sans-serif;"></div>
-        <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer;">إغلاق</button>
+        <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer;">Close</button>
     </div>
 </div>
 
@@ -1268,7 +1258,7 @@
 <div id="toast" class="toast">Message</div>
 <!-- ================= JAVASCRIPT ================= -->
 <script>
-    // ===== Firebase Config (Tradix - مؤقتاً، سنغيره لاحقاً) =====
+    // ===== Firebase Config (Temporary - uses Tradix for now) =====
     const firebaseConfig = {
         apiKey: "AIzaSyClehKAxJTZjsHA1ye8mDyRQcPBMPmPC3c",
         authDomain: "tradix-ai.firebaseapp.com",
@@ -1283,33 +1273,37 @@
     let doc, setDoc, getDoc, serverTimestamp;
 
     async function initFirebase() {
-        const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
-        const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
-        const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        try {
+            const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
+            const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
+            const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
 
-        const app = appModule.initializeApp(firebaseConfig);
-        auth = authModule.getAuth(app);
-        db = fsModule.getFirestore(app);
+            const app = appModule.initializeApp(firebaseConfig);
+            auth = authModule.getAuth(app);
+            db = fsModule.getFirestore(app);
 
-        signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
-        createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
-        signOut = authModule.signOut;
-        onAuthStateChanged = authModule.onAuthStateChanged;
+            signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
+            createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
+            signOut = authModule.signOut;
+            onAuthStateChanged = authModule.onAuthStateChanged;
 
-        doc = fsModule.doc;
-        setDoc = fsModule.setDoc;
-        getDoc = fsModule.getDoc;
-        serverTimestamp = fsModule.serverTimestamp;
+            doc = fsModule.doc;
+            setDoc = fsModule.setDoc;
+            getDoc = fsModule.getDoc;
+            serverTimestamp = fsModule.serverTimestamp;
 
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                await loadUserData(user.uid);
-            }
-        });
-        console.log('✅ Firebase initialized');
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    await loadUserData(user.uid);
+                }
+            });
+            console.log('✅ Firebase initialized');
+        } catch(e) {
+            console.error('Firebase error:', e);
+        }
     }
 
-    // ===== SPLASH SCREEN (5 ثواني) =====
+    // ===== SPLASH SCREEN (5 seconds) =====
     setTimeout(() => {
         document.getElementById('splash').classList.add('hide');
         setTimeout(() => {
@@ -1336,24 +1330,24 @@
         const confirm = document.getElementById('signupConfirm').value;
 
         if (!name || !phone || !country || !email || !pass) {
-            showToast('❌ يرجى ملء جميع الحقول');
+            showToast('❌ Please fill all fields');
             return;
         }
         if (pass !== confirm) {
-            showToast('❌ كلمة السر غير متطابقة');
+            showToast('❌ Passwords do not match');
             return;
         }
         if (pass.length < 6) {
-            showToast('❌ كلمة السر 6 أحرف على الأقل');
+            showToast('❌ Password must be 6+ characters');
             return;
         }
         if (!auth) {
-            showToast('⏳ انتظر...');
+            showToast('⏳ Please wait...');
             return;
         }
 
         try {
-            showToast('⏳ جاري إنشاء الحساب...');
+            showToast('⏳ Creating account...');
             const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
             const user = userCredential.user;
 
@@ -1370,16 +1364,18 @@
                 createdAt: serverTimestamp()
             });
 
-            showToast('✅ تم إنشاء الحساب!');
+            showToast('✅ Account created!');
             setTimeout(() => showScreen('loginScreen'), 1500);
         } catch (error) {
             console.error(error);
             if (error.code === 'auth/email-already-in-use') {
-                showToast('❌ الإيميل مستخدم بالفعل');
+                showToast('❌ Email already in use');
             } else if (error.code === 'auth/invalid-email') {
-                showToast('❌ إيميل غير صحيح');
+                showToast('❌ Invalid email');
+            } else if (error.code === 'auth/weak-password') {
+                showToast('❌ Password too weak');
             } else {
-                showToast('❌ خطأ: ' + error.message);
+                showToast('❌ Error: ' + error.message);
             }
         }
     }
@@ -1390,19 +1386,19 @@
         const pass = document.getElementById('loginPassword').value;
 
         if (!email || !pass) {
-            showToast('❌ أدخل الإيميل وكلمة السر');
+            showToast('❌ Enter email and password');
             return;
         }
         if (!auth) {
-            showToast('⏳ انتظر...');
+            showToast('⏳ Please wait...');
             return;
         }
 
         try {
-            showToast('⏳ جاري الدخول...');
+            showToast('⏳ Logging in...');
             const userCredential = await signInWithEmailAndPassword(auth, email, pass);
             await loadUserData(userCredential.user.uid);
-            showToast('✅ مرحباً بك!');
+            showToast('✅ Welcome back!');
             setTimeout(() => {
                 showScreen('homeScreen');
                 updateUI();
@@ -1410,11 +1406,11 @@
         } catch (error) {
             console.error(error);
             if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
-                showToast('❌ إيميل أو كلمة سر خاطئة');
+                showToast('❌ Wrong email or password');
             } else if (error.code === 'auth/user-not-found') {
-                showToast('❌ الحساب غير موجود');
+                showToast('❌ Account not found');
             } else {
-                showToast('❌ خطأ في الدخول');
+                showToast('❌ Login failed');
             }
         }
     }
@@ -1442,7 +1438,7 @@
         } catch (e) { console.error(e); }
         localStorage.removeItem('tradelix_user');
         currentUserData = null;
-        showToast('👋 تم تسجيل الخروج');
+        showToast('👋 Logged out');
         setTimeout(() => showScreen('loginScreen'), 800);
     }
 
@@ -1450,13 +1446,11 @@
     function updateUI() {
         const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
 
-        // Home
         if (document.getElementById('welcomeName')) {
-            document.getElementById('welcomeName').textContent = user.name || 'مستخدم';
+            document.getElementById('welcomeName').textContent = user.name || 'User';
             document.getElementById('welcomeEmail').textContent = user.email || '-';
         }
 
-        // Status Badge
         const badge = document.getElementById('statusBadge');
         if (badge) {
             if (user.status === 'active') {
@@ -1477,7 +1471,6 @@
             }
         }
 
-        // Signals Box
         const activeBox = document.getElementById('activeSignalBox');
         const lockedBox = document.getElementById('lockedSignalBox');
         if (activeBox && lockedBox) {
@@ -1490,7 +1483,6 @@
             }
         }
 
-        // Subscription Screen
         const subActive = document.getElementById('subActive');
         const subInactive = document.getElementById('subInactive');
         if (subActive && subInactive) {
@@ -1502,7 +1494,7 @@
                 document.getElementById('subEnd').textContent = user.expiryDate || '-';
                 if (user.expiryDate) {
                     const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
-                    document.getElementById('subDays').textContent = days > 0 ? days + ' يوم' : 'منتهي';
+                    document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
                 }
             } else {
                 subActive.classList.add('hidden');
@@ -1510,7 +1502,6 @@
             }
         }
 
-        // Profile
         if (document.getElementById('profileName')) {
             document.getElementById('profileName').textContent = user.name || '-';
             document.getElementById('profileEmail').textContent = user.email || '-';
@@ -1523,7 +1514,6 @@
 
     // ===== SIGNALS NAVIGATION =====
     function goToSignals() {
-        const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
         showScreen('signalsScreen');
     }
 
@@ -1540,7 +1530,7 @@
     function copyWallet() {
         const wallet = document.getElementById('walletAddr').textContent.trim();
         navigator.clipboard.writeText(wallet).then(() => {
-            showToast('✅ تم نسخ العنوان');
+            showToast('✅ Address copied!');
         }).catch(() => {
             const ta = document.createElement('textarea');
             ta.value = wallet;
@@ -1548,20 +1538,20 @@
             ta.select();
             document.execCommand('copy');
             document.body.removeChild(ta);
-            showToast('✅ تم نسخ العنوان');
+            showToast('✅ Address copied!');
         });
     }
 
     async function submitDeposit() {
         const hash = document.getElementById('txHash').value.trim();
         if (!hash) {
-            showToast('❌ أدخل رقم المعاملة');
+            showToast('❌ Enter transaction hash');
             return;
         }
 
         const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
         if (!user.uid) {
-            showToast('❌ سجّل دخولك أولاً');
+            showToast('❌ Login first');
             return;
         }
 
@@ -1578,14 +1568,14 @@
             currentUserData.txHash = hash;
             localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
 
-            showToast('✅ تم الإرسال! بانتظار التأكيد');
+            showToast('✅ Submitted! Awaiting review');
             setTimeout(() => {
                 showScreen('homeScreen');
                 updateUI();
             }, 1500);
         } catch (error) {
             console.error(error);
-            showToast('❌ خطأ في الإرسال');
+            showToast('❌ Submission failed');
         }
     }
 
@@ -1624,7 +1614,6 @@
             return '$' + n.toFixed(4);
         };
 
-        // Cards
         const pEl = document.getElementById('p' + coin);
         const cEl = document.getElementById('ch' + coin);
         if (pEl) pEl.textContent = fmt(data.price);
@@ -1634,7 +1623,6 @@
             cEl.classList.add(data.change >= 0 ? 'up' : 'down');
         }
 
-        // Ticker
         const tEl = document.getElementById('t' + coin);
         const tcEl = document.getElementById('c' + coin);
         if (tEl) tEl.textContent = fmt(data.price);
@@ -1646,7 +1634,7 @@
     }
 
     function refreshMarkets() {
-        showToast('🔄 جاري التحديث...');
+        showToast('🔄 Refreshing...');
         fetchPrices();
     }
 
@@ -1680,9 +1668,10 @@
 
     function loadTradingViewChart() {
         const container = document.getElementById('chartContainer');
+        if (!container) return;
         container.innerHTML = '';
         const iframe = document.createElement('iframe');
-        iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:${currentChartSymbol}USDT&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=f1f3f6&studies=[]&theme=dark&style=1&timezone=Etc/UTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=&utm_medium=widget&utm_campaign=chart`;
+        iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:${currentChartSymbol}USDT&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en&utm_source=&utm_medium=widget&utm_campaign=chart`;
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         iframe.style.border = 'none';
@@ -1696,7 +1685,7 @@
     function openNotifModal() {
         const list = document.getElementById('notifList');
         if (notifs.length === 0) {
-            list.innerHTML = '<p style="color:#848E9C; text-align:center; padding:20px; font-size:13px;">لا توجد إشعارات</p>';
+            list.innerHTML = '<p style="color:#848E9C; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
         } else {
             list.innerHTML = notifs.map(n => 
                 '<div style="background:#181A20; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#2B3139' : '#F0B90B') + ';">' +
@@ -1750,7 +1739,7 @@
         setTimeout(() => t.classList.remove('show'), 2500);
     }
 
-    // ===== REQUEST NOTIFICATION PERMISSION =====
+    // ===== NOTIFICATION PERMISSION =====
     async function requestNotifPermission() {
         if (!('Notification' in window)) return;
         if (Notification.permission === 'default') {
