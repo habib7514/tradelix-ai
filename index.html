@@ -141,7 +141,6 @@
     <div class="splash-loading"><div class="splash-loading-fill"></div></div>
 </div>
 
-<!-- SIGN UP SCREEN -->
 <div id="signupScreen" class="screen">
     <div class="auth-container">
         <div class="auth-logo">
@@ -190,7 +189,6 @@
     </div>
 </div>
 
-<!-- LOGIN SCREEN -->
 <div id="loginScreen" class="screen">
     <div class="auth-container">
         <div class="auth-logo">
@@ -206,7 +204,6 @@
     </div>
 </div>
 
-<!-- HOME SCREEN -->
 <div id="homeScreen" class="screen">
     <div class="header">
         <div class="header-left">
@@ -215,7 +212,6 @@
         </div>
         <div class="bell-icon" onclick="openNotifModal()">🔔</div>
     </div>
-
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold);">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div>
@@ -228,7 +224,6 @@
             </div>
         </div>
     </div>
-
     <div class="ticker-wrap">
         <div class="ticker-track" id="tickerTrack">
             <span class="ticker-item"><span class="sym">BTC</span><span class="price" id="tBTC">$0</span><span class="up" id="cBTC">+0.00%</span></span>
@@ -239,7 +234,6 @@
             <span class="ticker-item"><span class="sym">ADA</span><span class="price" id="tADA">$0</span><span class="up" id="cADA">+0.00%</span></span>
         </div>
     </div>
-
     <div class="section-title"><span>📊 Live Markets</span><span class="more" onclick="refreshMarkets()">Refresh ↻</span></div>
     <div class="markets-grid" id="marketsGrid">
         <div class="coin-card" onclick="openCoinChart('BTC')"><div class="coin-head"><div class="coin-icon btc">₿</div><div class="coin-symbol">BTC</div></div><div class="coin-price" id="pBTC">$0</div><div class="coin-change up" id="chBTC">+0.00%</div></div>
@@ -249,19 +243,16 @@
         <div class="coin-card" onclick="openCoinChart('XRP')"><div class="coin-head"><div class="coin-icon xrp">X</div><div class="coin-symbol">XRP</div></div><div class="coin-price" id="pXRP">$0</div><div class="coin-change up" id="chXRP">+0.00%</div></div>
         <div class="coin-card" onclick="openCoinChart('ADA')"><div class="coin-head"><div class="coin-icon ada">A</div><div class="coin-symbol">ADA</div></div><div class="coin-price" id="pADA">$0</div><div class="coin-change up" id="chADA">+0.00%</div></div>
     </div>
-
     <div class="section-title"><span>💎 Subscription Plans</span></div>
     <div class="plan-card"><div class="plan-info"><h4>Weekly</h4><div class="duration">7 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(15, 'Weekly')">$15</button></div>
     <div class="plan-card"><div class="plan-info"><h4>Monthly</h4><div class="duration">30 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(45, 'Monthly')">$45</button></div>
     <div class="plan-card premium"><span class="plan-badge">BEST VALUE</span><div class="plan-info"><h4>3 Months</h4><div class="duration">90 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(125, 'Quarterly')">$125</button></div>
     <div class="plan-card vip-lifetime"><span class="plan-badge">👑 VIP</span><div class="plan-info"><h4>Lifetime VIP</h4><div class="duration">Unlimited Access</div></div><button class="plan-buy" onclick="goToDeposit(400, 'Lifetime')">$400</button></div>
-
     <div class="section-title" style="margin-top: 24px;"><span>📚 Learn Trading From Zero</span></div>
     <div class="card" style="text-align:center; padding: 20px;">
         <p style="color: var(--text-muted); font-size: 13px; line-height:1.8; margin-bottom: 14px;">Master crypto trading with 4 professional courses</p>
         <button class="btn-block" onclick="showScreen('academyScreen')">View Courses</button>
     </div>
-
     <div class="section-title" style="margin-top: 24px;"><span>🚀 Tradix AI App</span></div>
     <div class="card" style="text-align:center; padding: 20px; border-color: var(--gold);">
         <img src="https://raw.githubusercontent.com/habib7514/TRADIX-ai/main/file_00000000e1988230bfa593ebe559c084.png" alt="Tradix AI" style="width: 80px; height: 80px; border-radius: 20px; margin-bottom: 10px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);">
@@ -269,7 +260,6 @@
         <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 14px;">Our first app for Gold Signals<br>Get it for free</p>
         <a href="https://tinyurl.com/tradix-ai-2026" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 Download Tradix AI</a>
     </div>
-
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="goToSignals()"><span class="icon">📊</span><span>Signals</span></button>
@@ -280,7 +270,6 @@
     </div>
 </div>
 
-<!-- SIGNALS SCREEN -->
 <div id="signalsScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Signals</h1><span>LIVE SIGNALS</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
     <div id="activeSignalBox" class="hidden">
@@ -313,7 +302,6 @@
     </div>
 </div>
 
-<!-- ACADEMY SCREEN -->
 <div id="academyScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
@@ -335,7 +323,6 @@
     </div>
 </div>
 
-<!-- DEPOSIT SCREEN -->
 <div id="depositScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Deposit</h1><span>PAYMENT</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')">✕</div></div>
     <div class="card">
@@ -364,7 +351,6 @@
     </div>
 </div>
 
-<!-- MEETING SCREEN -->
 <div id="meetingScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Meetings</h1><span>ZOOM SESSIONS</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
@@ -385,7 +371,6 @@
     </div>
 </div>
 
-<!-- SUBSCRIPTION SCREEN -->
 <div id="subscriptionScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>My Plan</h1><span>SUBSCRIPTION</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
     <div id="subActive" class="hidden">
@@ -413,7 +398,6 @@
     </div>
 </div>
 
-<!-- PROFILE SCREEN -->
 <div id="profileScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Profile</h1><span>MY ACCOUNT</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
 
@@ -461,7 +445,6 @@
     </div>
 </div>
 
-<!-- COIN CHART SCREEN -->
 <div id="coinChartScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo" id="coinChartIcon">₿</div><div class="header-title"><h1 id="coinChartName">BTC/USDT</h1><span id="coinChartSub">BINANCE LIVE</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')">✕</div></div>
     <div class="card" style="text-align: center;">
@@ -488,7 +471,6 @@
     </div>
 </div>
 
-<!-- NOTIFICATIONS MODAL -->
 <div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
     <div style="background:#1E2329; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto;">
         <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; font-family:Tajawal,sans-serif;">🔔 Notifications</h3>
@@ -511,6 +493,7 @@ const firebaseConfig = {
 
 let auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged;
 let doc, setDoc, getDoc, serverTimestamp;
+let currentUserData = null;
 
 async function initFirebase() {
     try {
@@ -536,7 +519,17 @@ async function initFirebase() {
         window.firebaseFS = fsModule;
 
         onAuthStateChanged(auth, async (user) => {
-            if (user) await loadUserData(user.uid);
+            if (user) {
+                // ✅ مستخدم مسجل دخول فعلياً
+                await loadUserData(user.uid);
+                setTimeout(_startPolling, 2000);
+            } else {
+                // ✅ لا يوجد مستخدم - إيقاف Polling ومسح البيانات
+                _pollStarted = false;
+                _lastUID = null;
+                currentUserData = null;
+                _clearAllUserData();
+            }
         });
         console.log('✅ Firebase initialized');
     } catch(e) { console.error('Firebase error:', e); }
@@ -570,6 +563,10 @@ async function handleSignup() {
 
     try {
         showToast('⏳ Creating account...');
+        
+        // ✅ مسح أي بيانات قديمة قبل إنشاء الحساب
+        _clearAllUserData();
+        
         const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
         const user = userCredential.user;
         await setDoc(doc(db, 'tradelix_users', user.uid), {
@@ -608,7 +605,6 @@ async function handleLogin() {
     }
 }
 
-let currentUserData = null;
 async function loadUserData(uid) {
     try {
         const userDoc = await getDoc(doc(db, 'tradelix_users', uid));
@@ -616,16 +612,44 @@ async function loadUserData(uid) {
             currentUserData = { uid: uid, ...userDoc.data() };
             localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
             updateUI();
+        } else {
+            // المستخدم غير موجود في قاعدة البيانات - امسح البيانات
+            _clearAllUserData();
         }
-    } catch (error) { console.error('Error loading user:', error); }
+    } catch (error) { 
+        console.error('Error loading user:', error);
+    }
 }
 
 async function handleLogout() {
     try { await signOut(auth); } catch (e) { console.error(e); }
-    localStorage.removeItem('tradelix_user');
+    
+    // ✅ إيقاف Polling ومسح كل البيانات
+    _pollStarted = false;
+    _lastUID = null;
     currentUserData = null;
+    _clearAllUserData();
+    
     showToast('👋 Logged out');
     setTimeout(() => showScreen('loginScreen'), 800);
+}
+
+// ✅ دالة مسح كل بيانات المستخدم
+function _clearAllUserData() {
+    try {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('tradelix_')) {
+                keysToRemove.push(key);
+            }
+        }
+        keysToRemove.forEach(k => localStorage.removeItem(k));
+        console.log('🧹 Cleared all tradelix data (' + keysToRemove.length + ' keys)');
+    } catch(e) { console.error(e); }
+    
+    // إخفاء البادج من جميع الجرسات
+    document.querySelectorAll('.notifBadge').forEach(b => b.remove());
 }
 
 function updateUI() {
@@ -832,7 +856,11 @@ function loadTradingViewChart() {
 }
 
 // ===== NOTIFICATIONS =====
-function getNotifs() { return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
+function getNotifs() {
+    // ✅ فقط إذا كان هناك مستخدم مسجل
+    if (!auth || !auth.currentUser) return [];
+    return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
+}
 function setNotifs(arr) { localStorage.setItem('tradelix_notifs', JSON.stringify(arr)); }
 
 function openNotifModal() {
@@ -873,6 +901,9 @@ function updateBadge() {
 }
 
 function addNotif(message) {
+    // ✅ تحقق: لا نضيف إشعارات بدون تسجيل دخول
+    if (!auth || !auth.currentUser) return;
+    
     const notifs = getNotifs();
     const recent = notifs.find(n => n.message === message && (Date.now() - n.id) < 30000);
     if (recent) return;
@@ -935,7 +966,7 @@ hideNetlifyBadge();
 setInterval(hideNetlifyBadge, 1000);
 
 // ============================================================
-// ============ NOTIFICATIONS POLLING v4 ======================
+// ============ NOTIFICATIONS POLLING v5 ======================
 // ============================================================
 
 let _pollStarted = false;
@@ -962,10 +993,19 @@ function _isSignalForUser(sig, uid) {
     return targetUID === uid;
 }
 
+// ✅ التحقق من أن المستخدم مسجل دخول فعلياً
+function _isLoggedIn() {
+    return auth && auth.currentUser && !auth.currentUser.isAnonymous;
+}
+
 async function _checkSignals() {
     try {
+        if (!_isLoggedIn()) return;
+        
         const u = _getUser();
         if (!u.uid) return;
+        if (u.uid !== auth.currentUser.uid) return;
+        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
@@ -1010,8 +1050,12 @@ async function _checkSignals() {
 
 async function _checkMeetings() {
     try {
+        if (!_isLoggedIn()) return;
+        
         const u = _getUser();
         if (!u.uid) return;
+        if (u.uid !== auth.currentUser.uid) return;
+        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
@@ -1043,8 +1087,12 @@ async function _checkMeetings() {
 
 async function _refreshUserData() {
     try {
+        if (!_isLoggedIn()) return;
+        
         const u = _getUser();
         if (!u.uid) return;
+        if (u.uid !== auth.currentUser.uid) return;
+        
         const userDoc = await getDoc(doc(window.firebaseDB, 'tradelix_users', u.uid));
         if (!userDoc.exists()) return;
 
@@ -1079,8 +1127,16 @@ async function _refreshUserData() {
 
 async function _pollCycle() {
     if (!window.firebaseDB) return;
+    
+    // ✅ تحقق صارم من تسجيل الدخول
+    if (!_isLoggedIn()) {
+        _pollStarted = false;
+        return;
+    }
+    
     const u = _getUser();
     if (!u.uid) return;
+    if (u.uid !== auth.currentUser.uid) return;
 
     if (_lastUID !== u.uid) {
         _lastUID = u.uid;
@@ -1096,22 +1152,35 @@ async function _pollCycle() {
 function _startPolling() {
     if (_pollStarted) return;
     if (!window.firebaseDB) { setTimeout(_startPolling, 1500); return; }
+    
+    // ✅ لا تبدأ بدون تسجيل دخول
+    if (!_isLoggedIn()) return;
+    
     const u = _getUser();
     if (!u.uid) { setTimeout(_startPolling, 2000); return; }
+    if (u.uid !== auth.currentUser.uid) return;
 
     _pollStarted = true;
-    console.log('🚀 Polling v4 started');
+    console.log('🚀 Polling v5 started for user:', u.uid.slice(0, 8));
     setTimeout(_pollCycle, 2000);
-    setInterval(_pollCycle, 5000);
+    setInterval(() => {
+        if (_isLoggedIn()) {
+            _pollCycle();
+        } else {
+            _pollStarted = false;
+        }
+    }, 5000);
 }
 
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && _pollStarted) _pollCycle();
+    if (!document.hidden && _pollStarted && _isLoggedIn()) _pollCycle();
 });
 
 async function loadMeetingsForUser() {
     try {
         if (!window.firebaseDB) return;
+        if (!_isLoggedIn()) return;
+        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
@@ -1155,6 +1224,8 @@ async function loadMeetingsForUser() {
 
 // ===== FORCE SYNC BUTTON =====
 async function forceSyncNotifications() {
+    if (!_isLoggedIn()) { showToast('❌ سجّل دخول أولاً'); return; }
+    
     showToast('⏳ جاري المزامنة...');
     try {
         const u = _getUser();
@@ -1209,7 +1280,8 @@ window.addEventListener('load', async () => {
     await initFirebase();
     fetchPrices();
     setInterval(fetchPrices, 10000);
-    setTimeout(_startPolling, 3000);
+
+    // ✅ لا نبدأ Polling هنا — يبدأ تلقائياً من onAuthStateChanged بعد تسجيل الدخول
 
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         const box = document.getElementById('notifPermissionBox');
@@ -1220,7 +1292,7 @@ window.addEventListener('load', async () => {
 });
 
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) { updateBadge(); updateUI(); }
+    if (!document.hidden && _isLoggedIn()) { updateBadge(); updateUI(); }
 });
 </script>
 
