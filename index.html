@@ -1330,7 +1330,7 @@ const firebaseConfig = {
             getDoc = fsModule.getDoc;
             serverTimestamp = fsModule.serverTimestamp;
 
-            // Expose to window for listeners
+            // Expose globally for listeners
             window.firebaseDB = db;
             window.firebaseFS = fsModule;
 
@@ -1737,10 +1737,15 @@ if (coursesList) {
     }
 
     // ===== NOTIFICATIONS =====
-    let notifs = JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
-    updateBadge();
+    function getNotifs() {
+        return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
+    }
+    function setNotifs(arr) {
+        localStorage.setItem('tradelix_notifs', JSON.stringify(arr));
+    }
 
     function openNotifModal() {
+        const notifs = getNotifs();
         const list = document.getElementById('notifList');
         if (notifs.length === 0) {
             list.innerHTML = '<p style="color:#848E9C; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
@@ -1754,7 +1759,7 @@ if (coursesList) {
         }
         document.getElementById('notifModal').style.display = 'block';
         notifs.forEach(n => n.read = true);
-        localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
+        setNotifs(notifs);
         updateBadge();
     }
 
@@ -1764,8 +1769,7 @@ if (coursesList) {
 
     // ===== UPDATE BADGE (all bells) =====
     function updateBadge() {
-        // Reload from localStorage to avoid stale state
-        notifs = JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
+        const notifs = getNotifs();
         const unread = notifs.filter(n => !n.read).length;
         const bells = document.querySelectorAll('.bell-icon');
         bells.forEach(bell => {
@@ -1785,16 +1789,19 @@ if (coursesList) {
 
     // ===== ADD NOTIFICATION =====
     function addNotif(message) {
-        // Reload from localStorage to avoid stale state
-        notifs = JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
+        const notifs = getNotifs();
+        // تجنب التكرار — إذا نفس الرسالة موجودة آخر 30 ثانية
+        const recent = notifs.find(n => n.message === message && (Date.now() - n.id) < 30000);
+        if (recent) return;
+        
         notifs.unshift({
             id: Date.now(),
             message: message,
             time: new Date().toLocaleString('en-GB'),
             read: false
         });
-        if (notifs.length > 50) notifs = notifs.slice(0, 50);
-        localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
+        if (notifs.length > 50) notifs.length = 50;
+        setNotifs(notifs);
 
         updateBadge();
 
@@ -1865,176 +1872,200 @@ function hideNetlifyBadge() {
 hideNetlifyBadge();
 setInterval(hideNetlifyBadge, 1000);
 
-    // ===== COURSES ACTIVATION LISTENER =====
-let lastCoursesJSON = null;
-async function startCourseListener() {
-    if (!window.firebaseDB) { setTimeout(startCourseListener, 1000); return; }
-    const u = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (!u.uid) { setTimeout(startCourseListener, 2000); return; }
+// ============================================================
+// ============ NOTIFICATIONS POLLING SYSTEM v2 ===============
+// ============================================================
 
+// حالة النظام
+let _lastPollTime = parseInt(localStorage.getItem('tradelix_last_poll') || '0');
+let _pollStarted = false;
+let _initialized = false;
+
+// مساعدة: الحصول على بيانات المستخدم المحدثة
+function _getUser() {
     try {
-        const m = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-        const { doc, onSnapshot } = m;
-        onSnapshot(doc(window.firebaseDB, 'tradelix_users', u.uid), d => {
-            if (!d.exists()) return;
-            const data = d.data();
-            
-            // تحديث بيانات المستخدم في localStorage
-            const local = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-            local.status = data.status || local.status;
-            local.plan = data.plan || local.plan;
-            local.startDate = data.startDate || local.startDate;
-            local.expiryDate = data.expiryDate || local.expiryDate;
-            local.courses = data.courses || local.courses;
-            localStorage.setItem('tradelix_user', JSON.stringify(local));
-            if (currentUserData) {
-                currentUserData.status = data.status || currentUserData.status;
-                currentUserData.plan = data.plan || currentUserData.plan;
-                currentUserData.courses = data.courses || currentUserData.courses;
-            }
-            
-            const currentCourses = JSON.stringify(data.courses || []);
-            if (lastCoursesJSON !== null && lastCoursesJSON !== currentCourses) {
-                updateUI();
-                addNotif('🎓 New Course Activated!');
-            }
-            lastCoursesJSON = currentCourses;
-            
-            // تحديث الواجهة إذا تغيرت الحالة
-            updateUI();
-        });
-    } catch(e) { console.error('Course listener error:', e); }
+        return JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    } catch(e) { return {}; }
 }
 
-// ===== SIGNALS LISTENER =====
-let signalListenerStarted = false;
-async function startSignalListener() {
-    if (signalListenerStarted) return;
-    if (!window.firebaseDB) { setTimeout(startSignalListener, 1000); return; }
-    const u = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (!u.uid) { setTimeout(startSignalListener, 2000); return; }
-
-    try {
-        const m = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-        const { collection, onSnapshot } = m;
-        
-        const seenSignalIds = new Set();
-        let isFirstLoad = true;
-        
-        // حفظ الإشارات المعروفة مسبقاً
-        const storedSeen = JSON.parse(localStorage.getItem('tradelix_seen_signals') || '[]');
-        storedSeen.forEach(id => seenSignalIds.add(id));
-        
-        onSnapshot(collection(window.firebaseDB, 'tradelix_signals'), async (snap) => {
-            // الحصول على بيانات المستخدم المحدثة
-            let userData = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-            
-            snap.docChanges().forEach(change => {
-                if (change.type !== 'added') return;
-                const sigId = change.doc.id;
-                
-                // إذا كانت الإشارة معروفة مسبقاً — تجاهل
-                if (seenSignalIds.has(sigId)) return;
-                seenSignalIds.add(sigId);
-                
-                // حفظ في localStorage
-                try {
-                    const arr = [...seenSignalIds].slice(-100);
-                    localStorage.setItem('tradelix_seen_signals', JSON.stringify(arr));
-                } catch(e) {}
-                
-                // تجاهل عند التحميل الأول (المستخدم الحالي موجود)
-                if (isFirstLoad) return;
-                
-                const sig = change.doc.data();
-                
-                // المستخدم يجب أن يكون نشطاً
-                if (userData.status !== 'active') return;
-                
-                // تحقق من الاستهداف
-                const targetUID = sig.targetUID || '';
-                if (targetUID && targetUID !== userData.uid) return;
-                
-                // إرسال الإشعار
-                const msg = `📊 New Signal: ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ ${sig.entry || ''}`;
-                addNotif(msg);
-            });
-            
-            if (isFirstLoad) {
-                isFirstLoad = false;
-                // حفظ كل الإشارات الحالية
-                try {
-                    const arr = [...seenSignalIds].slice(-100);
-                    localStorage.setItem('tradelix_seen_signals', JSON.stringify(arr));
-                } catch(e) {}
-                console.log('✅ Signal listener active. Seen:', seenSignalIds.size);
-            }
-        });
-        
-        signalListenerStarted = true;
-    } catch(e) { console.error('Signal listener error:', e); }
+// مساعدة: هل الإشارة موجّهة لهذا المستخدم؟
+function _isSignalForUser(sig, uid) {
+    const targetUID = sig.targetUID || '';
+    if (!targetUID) return true; // للجميع
+    if (targetUID === uid) return true;
+    return false;
 }
 
-// ===== MEETINGS LISTENER =====
-let meetingListenerStarted = false;
-async function startMeetingListener() {
-    if (meetingListenerStarted) return;
-    if (!window.firebaseDB) { setTimeout(startMeetingListener, 1000); return; }
-    const u = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (!u.uid) { setTimeout(startMeetingListener, 2000); return; }
-
+// فحص الإشارات الجديدة
+async function _checkSignals() {
     try {
-        const m = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-        const { collection, onSnapshot } = m;
+        const u = _getUser();
+        if (!u.uid) return;
         
-        const seenMeetingIds = new Set();
-        let isFirstLoad = true;
+        const fs = window.firebaseFS || await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const { collection, getDocs, query, orderBy, limit } = fs;
         
-        const storedSeen = JSON.parse(localStorage.getItem('tradelix_seen_meetings') || '[]');
-        storedSeen.forEach(id => seenMeetingIds.add(id));
+        let snap;
+        try {
+            const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(30));
+            snap = await getDocs(q);
+        } catch(e) {
+            snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals'));
+        }
         
-        onSnapshot(collection(window.firebaseDB, 'tradelix_meetings'), (snap) => {
-            snap.docChanges().forEach(change => {
-                if (change.type !== 'added') return;
-                const meetId = change.doc.id;
-                
-                if (seenMeetingIds.has(meetId)) return;
-                seenMeetingIds.add(meetId);
-                
-                try {
-                    const arr = [...seenMeetingIds].slice(-100);
-                    localStorage.setItem('tradelix_seen_meetings', JSON.stringify(arr));
-                } catch(e) {}
-                
-                if (isFirstLoad) return;
-                
-                const meet = change.doc.data();
-                const msg = `📅 New Meeting: ${meet.title || 'Live Session'}${meet.date ? ' • ' + meet.date : ''}`;
-                addNotif(msg);
-                
-                // تحديث قائمة الاجتماعات
-                loadMeetingsForUser();
-            });
+        const now = Date.now();
+        
+        snap.forEach(d => {
+            const sig = d.data();
+            const createdMs = (sig.createdAt?.seconds || 0) * 1000;
             
-            if (isFirstLoad) {
-                isFirstLoad = false;
-                try {
-                    const arr = [...seenMeetingIds].slice(-100);
-                    localStorage.setItem('tradelix_seen_meetings', JSON.stringify(arr));
-                } catch(e) {}
-                console.log('✅ Meeting listener active. Seen:', seenMeetingIds.size);
-            }
+            // فقط الإشارات الأحدث من آخر فحص
+            if (createdMs <= _lastPollTime) return;
+            
+            // هل هي لهذا المستخدم؟
+            if (!_isSignalForUser(sig, u.uid)) return;
+            
+            // المستخدم يجب أن يكون نشطاً
+            if (u.status !== 'active') return;
+            
+            // إرسال الإشعار
+            const msg = `📊 Signal: ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ $${sig.entry || ''}`;
+            addNotif(msg);
         });
-        
-        meetingListenerStarted = true;
-    } catch(e) { console.error('Meeting listener error:', e); }
+    } catch(e) {
+        console.warn('Signal poll error:', e.message);
+    }
 }
 
-// ===== LOAD MEETINGS FOR USER =====
+// فحص الاجتماعات الجديدة
+async function _checkMeetings() {
+    try {
+        const u = _getUser();
+        if (!u.uid) return;
+        
+        const fs = window.firebaseFS || await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const { collection, getDocs, query, orderBy, limit } = fs;
+        
+        let snap;
+        try {
+            const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'), limit(20));
+            snap = await getDocs(q);
+        } catch(e) {
+            snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings'));
+        }
+        
+        snap.forEach(d => {
+            const meet = d.data();
+            const createdMs = (meet.createdAt?.seconds || 0) * 1000;
+            
+            if (createdMs <= _lastPollTime) return;
+            
+            const msg = `📅 New Meeting: ${meet.title || 'Live Session'}`;
+            addNotif(msg);
+        });
+    } catch(e) {
+        console.warn('Meeting poll error:', e.message);
+    }
+}
+
+// تحديث بيانات المستخدم (الحالة والكورسات)
+async function _refreshUserData() {
+    try {
+        const u = _getUser();
+        if (!u.uid) return;
+        
+        const userDoc = await getDoc(doc(window.firebaseDB, 'tradelix_users', u.uid));
+        if (!userDoc.exists()) return;
+        
+        const data = userDoc.data();
+        const old = _getUser();
+        
+        // تحقق من تغيير الحالة
+        if (old.status !== data.status && data.status === 'active') {
+            addNotif('✅ اشتراكك تم تفعيله!');
+        }
+        
+        // تحديث localStorage
+        const updated = { uid: u.uid, ...data };
+        localStorage.setItem('tradelix_user', JSON.stringify(updated));
+        if (currentUserData) {
+            Object.assign(currentUserData, data);
+        }
+        
+        // تحديث الواجهة
+        updateUI();
+    } catch(e) {
+        console.warn('User refresh error:', e.message);
+    }
+}
+
+// الدورة الرئيسية للفحص
+async function _pollCycle() {
+    if (!window.firebaseDB) return;
+    const u = _getUser();
+    if (!u.uid) return;
+    
+    // تخطي أول دورة (لعدم إشعار على بيانات قديمة)
+    if (!_initialized) {
+        _lastPollTime = Date.now();
+        localStorage.setItem('tradelix_last_poll', String(_lastPollTime));
+        _initialized = true;
+        console.log('✅ Polling initialized. Skipping old data.');
+        await _refreshUserData();
+        return;
+    }
+    
+    // فحص الإشارات والاجتماعات
+    await _checkSignals();
+    await _checkMeetings();
+    await _refreshUserData();
+    await loadMeetingsForUser();
+    
+    // تحديث وقت آخر فحص
+    _lastPollTime = Date.now();
+    localStorage.setItem('tradelix_last_poll', String(_lastPollTime));
+}
+
+// بدء Polling
+function _startPolling() {
+    if (_pollStarted) return;
+    if (!window.firebaseDB) {
+        setTimeout(_startPolling, 1500);
+        return;
+    }
+    
+    const u = _getUser();
+    if (!u.uid) {
+        setTimeout(_startPolling, 2000);
+        return;
+    }
+    
+    _pollStarted = true;
+    console.log('🚀 Notifications polling started');
+    
+    // أول فحص فوري (لكن تخطي الإشعارات القديمة)
+    _pollCycle();
+    
+    // كل 5 ثوانٍ
+    setInterval(_pollCycle, 5000);
+}
+
+// فحص فوري عند العودة للتطبيق
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && _pollStarted) {
+        _pollCycle();
+    }
+});
+
+// ============================================================
+// ============ LOAD MEETINGS FOR USER ========================
+// ============================================================
+
 async function loadMeetingsForUser() {
     try {
-        const m = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-        const { collection, getDocs, query, orderBy, limit } = m;
+        if (!window.firebaseDB) return;
+        const fs = window.firebaseFS || await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const { collection, getDocs, query, orderBy, limit } = fs;
         
         let snap;
         try {
@@ -2047,6 +2078,9 @@ async function loadMeetingsForUser() {
         const meetings = [];
         snap.forEach(d => meetings.push({ id: d.id, ...d.data() }));
         
+        // ترتيب حسب التاريخ
+        meetings.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+        
         const list = document.getElementById('meetingsList');
         if (!list) return;
         
@@ -2055,18 +2089,26 @@ async function loadMeetingsForUser() {
             return;
         }
         
-        list.innerHTML = meetings.map(mt => `
-            <div style="border-bottom: 1px solid var(--border); padding: 12px 0; ${meetings.indexOf(mt) === meetings.length-1 ? 'border-bottom: none;' : ''}">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 10px;">
-                    <div style="flex: 1;">
-                        <div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>
-                        ${mt.date ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 4px;">🕐 ${new Date(mt.date).toLocaleString('en-GB')}</div>` : ''}
-                        ${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 8px;">${mt.description}</div>` : ''}
-                    </div>
+        list.innerHTML = meetings.map(mt => {
+            let dateStr = '';
+            if (mt.date) {
+                try {
+                    dateStr = new Date(mt.date).toLocaleString('en-GB', { 
+                        day: '2-digit', month: 'short', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+                } catch(e) { dateStr = mt.date; }
+            }
+            
+            return `
+                <div style="border-bottom: 1px solid var(--border); padding: 14px 0;">
+                    <div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>
+                    ${dateStr ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px;">🕐 ${dateStr}</div>` : ''}
+                    ${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 10px;">${mt.description}</div>` : ''}
+                    <a href="${mt.link || '#'}" target="_blank" rel="noopener" style="display:block; margin-top: 8px; padding: 12px; background: linear-gradient(135deg, #F0B90B, #FCD535); color: #181A20; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px;">🎥 Join Meeting</a>
                 </div>
-                <a href="${mt.link || '#'}" target="_blank" style="display:block; margin-top: 10px; padding: 12px; background: linear-gradient(135deg, #F0B90B, #FCD535); color: #181A20; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px;">🎥 Join Meeting</a>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     } catch(e) {
         console.error('Load meetings error:', e);
     }
@@ -2077,10 +2119,9 @@ window.addEventListener('load', async () => {
     await initFirebase();
     fetchPrices();
     setInterval(fetchPrices, 10000);
-    setTimeout(startCourseListener, 3000);
-    setTimeout(startSignalListener, 4000);
-    setTimeout(startMeetingListener, 5000);
-    setTimeout(loadMeetingsForUser, 6000);
+    
+    // بدء نظام الإشعارات
+    setTimeout(_startPolling, 3000);
 
     // إخفاء زر الإشعارات إذا كان الإذن ممنوحاً
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
@@ -2092,7 +2133,7 @@ window.addEventListener('load', async () => {
     updateBadge();
 });
 
-// عندما يعود المستخدم للتطبيق، حدّث الواجهة
+// عندما يعود المستخدم للتطبيق
 document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
         updateBadge();
