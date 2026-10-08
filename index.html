@@ -1781,12 +1781,49 @@ hideNetlifyBadge();
 setInterval(hideNetlifyBadge, 1000);
 
     // ===== INIT =====
-    window.addEventListener('load', async () => {
-        await initFirebase();
-        fetchPrices();
-        setInterval(fetchPrices, 10000);
-        setTimeout(requestNotifPermission, 3000);
-    });
+    // ===== COURSES ACTIVATION LISTENER =====
+let lastCoursesJSON = null;
+async function startCourseListener() {
+    if (!window.firebaseDB) { setTimeout(startCourseListener, 1000); return; }
+    const u = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    if (!u.uid) { setTimeout(startCourseListener, 2000); return; }
+
+    try {
+        const m = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const { doc, onSnapshot } = m;
+        onSnapshot(doc(window.firebaseDB, 'tradelix_users', u.uid), d => {
+            if (!d.exists()) return;
+            const data = d.data();
+            const currentCourses = JSON.stringify(data.courses || []);
+            if (lastCoursesJSON !== null && lastCoursesJSON !== currentCourses) {
+                if (currentUserData) {
+                    currentUserData.courses = data.courses || [];
+                    localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
+                } else {
+                    const local = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+                    local.courses = data.courses || [];
+                    localStorage.setItem('tradelix_user', JSON.stringify(local));
+                }
+                updateUI();
+                if (typeof showToast === 'function') showToast('🎓 New Course Activated!');
+                if (Notification.permission === 'granted') {
+                    try { new Notification('Tradelix AI', { body: '🎓 Course activated in your account!' }); } catch(e) {}
+                }
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+            }
+            lastCoursesJSON = currentCourses;
+        });
+    } catch(e) { console.error('Course listener error:', e); }
+}
+
+// ===== INIT =====
+window.addEventListener('load', async () => {
+    await initFirebase();
+    fetchPrices();
+    setInterval(fetchPrices, 10000);
+    setTimeout(requestNotifPermission, 3000);
+    setTimeout(startCourseListener, 3000);
+});
 </script>
 <style>
     iframe[src*="netlify"],
