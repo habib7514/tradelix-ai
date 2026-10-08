@@ -432,7 +432,6 @@
         <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ Send Email</a>
     </div>
 
-    <button class="btn-outline" style="border-color: var(--gold); color: var(--gold);" onclick="forceSyncNotifications()">🔄 مزامنة الإشعارات</button>
     <button class="btn-outline" onclick="handleLogout()">🚪 Logout</button>
 
     <div class="bottom-nav">
@@ -520,11 +519,9 @@ async function initFirebase() {
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // ✅ مستخدم مسجل دخول فعلياً
                 await loadUserData(user.uid);
                 setTimeout(_startPolling, 2000);
             } else {
-                // ✅ لا يوجد مستخدم - إيقاف Polling ومسح البيانات
                 _pollStarted = false;
                 _lastUID = null;
                 currentUserData = null;
@@ -563,8 +560,6 @@ async function handleSignup() {
 
     try {
         showToast('⏳ Creating account...');
-        
-        // ✅ مسح أي بيانات قديمة قبل إنشاء الحساب
         _clearAllUserData();
         
         const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
@@ -613,7 +608,6 @@ async function loadUserData(uid) {
             localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
             updateUI();
         } else {
-            // المستخدم غير موجود في قاعدة البيانات - امسح البيانات
             _clearAllUserData();
         }
     } catch (error) { 
@@ -623,18 +617,14 @@ async function loadUserData(uid) {
 
 async function handleLogout() {
     try { await signOut(auth); } catch (e) { console.error(e); }
-    
-    // ✅ إيقاف Polling ومسح كل البيانات
     _pollStarted = false;
     _lastUID = null;
     currentUserData = null;
     _clearAllUserData();
-    
     showToast('👋 Logged out');
     setTimeout(() => showScreen('loginScreen'), 800);
 }
 
-// ✅ دالة مسح كل بيانات المستخدم
 function _clearAllUserData() {
     try {
         const keysToRemove = [];
@@ -647,8 +637,6 @@ function _clearAllUserData() {
         keysToRemove.forEach(k => localStorage.removeItem(k));
         console.log('🧹 Cleared all tradelix data (' + keysToRemove.length + ' keys)');
     } catch(e) { console.error(e); }
-    
-    // إخفاء البادج من جميع الجرسات
     document.querySelectorAll('.notifBadge').forEach(b => b.remove());
 }
 
@@ -857,7 +845,6 @@ function loadTradingViewChart() {
 
 // ===== NOTIFICATIONS =====
 function getNotifs() {
-    // ✅ فقط إذا كان هناك مستخدم مسجل
     if (!auth || !auth.currentUser) return [];
     return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
 }
@@ -901,7 +888,6 @@ function updateBadge() {
 }
 
 function addNotif(message) {
-    // ✅ تحقق: لا نضيف إشعارات بدون تسجيل دخول
     if (!auth || !auth.currentUser) return;
     
     const notifs = getNotifs();
@@ -966,7 +952,7 @@ hideNetlifyBadge();
 setInterval(hideNetlifyBadge, 1000);
 
 // ============================================================
-// ============ NOTIFICATIONS POLLING v5 ======================
+// ============ NOTIFICATIONS POLLING v6 ======================
 // ============================================================
 
 let _pollStarted = false;
@@ -993,7 +979,6 @@ function _isSignalForUser(sig, uid) {
     return targetUID === uid;
 }
 
-// ✅ التحقق من أن المستخدم مسجل دخول فعلياً
 function _isLoggedIn() {
     return auth && auth.currentUser && !auth.currentUser.isAnonymous;
 }
@@ -1021,10 +1006,10 @@ async function _checkSignals() {
             return;
         }
 
+        // ✅ فقط الصفقات التي نُشرت بعد آخر وقت مسجّل (لا صفقات قديمة)
         const lastNotified = _getLastNotified();
         const now = Date.now();
-        const oneDayAgo = now - (24 * 60 * 60 * 1000);
-        const startFrom = Math.max(lastNotified, oneDayAgo);
+        const startFrom = lastNotified > 0 ? lastNotified : now;
         let maxNotified = lastNotified;
 
         const newSignals = [];
@@ -1102,7 +1087,14 @@ async function _refreshUserData() {
 
         if (oldStatus !== newStatus) {
             if (newStatus === 'active') {
-                _setLastNotified(Date.now() - (24 * 60 * 60 * 1000));
+                // ✅ مهم جداً: عند التفعيل، لا نحمّل صفقات قديمة
+                // نبدأ من اللحظة الحالية فقط
+                _setLastNotified(Date.now());
+                
+                // امسح أي إشعارات قديمة قد تكون موجودة
+                setNotifs([]);
+                updateBadge();
+                
                 addNotif('🎉 تم تفعيل اشتراكك! استمتع بالإشارات الحصرية');
             } else if (newStatus === 'pending') {
                 addNotif('⏳ تم استلام طلبك — بانتظار مراجعة الأدمن');
@@ -1128,7 +1120,6 @@ async function _refreshUserData() {
 async function _pollCycle() {
     if (!window.firebaseDB) return;
     
-    // ✅ تحقق صارم من تسجيل الدخول
     if (!_isLoggedIn()) {
         _pollStarted = false;
         return;
@@ -1153,7 +1144,6 @@ function _startPolling() {
     if (_pollStarted) return;
     if (!window.firebaseDB) { setTimeout(_startPolling, 1500); return; }
     
-    // ✅ لا تبدأ بدون تسجيل دخول
     if (!_isLoggedIn()) return;
     
     const u = _getUser();
@@ -1161,7 +1151,7 @@ function _startPolling() {
     if (u.uid !== auth.currentUser.uid) return;
 
     _pollStarted = true;
-    console.log('🚀 Polling v5 started for user:', u.uid.slice(0, 8));
+    console.log('🚀 Polling v6 started for user:', u.uid.slice(0, 8));
     setTimeout(_pollCycle, 2000);
     setInterval(() => {
         if (_isLoggedIn()) {
@@ -1222,66 +1212,11 @@ async function loadMeetingsForUser() {
     } catch(e) { console.error('Load meetings error:', e); }
 }
 
-// ===== FORCE SYNC BUTTON =====
-async function forceSyncNotifications() {
-    if (!_isLoggedIn()) { showToast('❌ سجّل دخول أولاً'); return; }
-    
-    showToast('⏳ جاري المزامنة...');
-    try {
-        const u = _getUser();
-        if (!u.uid) { showToast('❌ غير مسجل'); return; }
-
-        if (u.status !== 'active') {
-            showToast('⚠️ اشتراكك غير مفعل — لن تصل إشعارات الصفقات');
-            return;
-        }
-
-        const fs = window.firebaseFS;
-        if (!fs) { showToast('❌ الاتصال غير جاهز'); return; }
-        const { collection, getDocs, query, orderBy, limit } = fs;
-
-        let snap;
-        try {
-            const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(30));
-            snap = await getDocs(q);
-        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
-
-        const now = Date.now();
-        const twoDaysAgo = now - (48 * 60 * 60 * 1000);
-        const signals = [];
-
-        snap.forEach(d => {
-            const sig = d.data();
-            const createdMs = (sig.createdAt?.seconds || 0) * 1000;
-            if (createdMs < twoDaysAgo) return;
-            if (!_isSignalForUser(sig, u.uid)) return;
-            signals.push({ id: d.id, ...sig, _createdMs: createdMs });
-        });
-
-        signals.sort((a, b) => a._createdMs - b._createdMs);
-        const recent = signals.slice(-5);
-        let count = 0;
-
-        recent.forEach(sig => {
-            const msg = `📊 ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ $${sig.entry || ''}`;
-            addNotif(msg);
-            count++;
-        });
-
-        if (signals.length > 0) _setLastNotified(signals[signals.length - 1]._createdMs);
-
-        if (count > 0) showToast('✅ تم تحميل ' + count + ' إشعار');
-        else showToast('📭 لا صفقات جديدة آخر 48 ساعة');
-    } catch(e) { console.error(e); showToast('❌ فشل المزامنة'); }
-}
-
 // ===== INIT =====
 window.addEventListener('load', async () => {
     await initFirebase();
     fetchPrices();
     setInterval(fetchPrices, 10000);
-
-    // ✅ لا نبدأ Polling هنا — يبدأ تلقائياً من onAuthStateChanged بعد تسجيل الدخول
 
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         const box = document.getElementById('notifPermissionBox');
