@@ -110,7 +110,62 @@
             text-transform: uppercase;
         }
 
-        /* ===== TOP MAIN COINS (BTC, ETH, BNB, SOL) ===== */
+        /* ===== TRADIX AI GOLD SUBSCRIPTION (GRAY) ===== */
+        .tradix-sub-wrap {
+            background: #1E1E1E;
+            border: 1px solid #2A2A2A;
+            border-radius: 16px;
+            padding: 20px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .tradix-sub-wrap h3 {
+            color: #C0C0C0;
+            font-size: 17px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .tradix-sub-wrap .sub-desc {
+            color: #AAAAAA;
+            font-size: 12.5px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        .tradix-sub-wrap .sub-desc strong { color: #E5E5E5; }
+        .tradix-price-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .tradix-price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #161616;
+            border: 1px solid #C0C0C0;
+            border-radius: 10px;
+            padding: 11px 14px;
+        }
+        .tradix-price-item.vip {
+            background: linear-gradient(135deg, #2A2A2A, #1A1A1A);
+            border: 2px solid #C0C0C0;
+            box-shadow: 0 0 12px rgba(192, 192, 192, 0.35);
+        }
+        .tradix-price-left { text-align: left; }
+        .tradix-price-left .plan-name { color: #FFFFFF; font-weight: 700; font-size: 13.5px; }
+        .tradix-price-left .plan-dur { color: #888888; font-size: 11px; margin-top: 2px; }
+        .tradix-price-item.vip .plan-name { color: #E5E5E5; }
+        .tradix-price-right { color: #C0C0C0; font-weight: 900; font-size: 14.5px; }
+        .tradix-price-item.vip .tradix-price-right { color: #E5E5E5; }
+        .tradix-sub-note {
+            color: #999999;
+            font-size: 11px;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+
         .main-coins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .main-coin-card {
             background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%);
@@ -229,7 +284,6 @@
         <div class="auth-switch">Don't have an account? <a onclick="showScreen('signupScreen')">Sign Up</a></div>
     </div>
 </div>
-
 <div id="homeScreen" class="screen">
     <div class="header">
         <div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div></div>
@@ -282,6 +336,48 @@
         <p style="color: var(--text-muted); font-size: 13px; line-height:1.8; margin-bottom: 14px;">Master crypto trading with 4 professional courses</p>
         <button class="btn-block" onclick="showScreen('academyScreen')">View Courses</button>
     </div>
+
+    <!-- ===== Tradix AI — Gold Signals Subscription (Gray Theme) ===== -->
+    <div class="tradix-sub-wrap">
+        <h3>💰 Tradix AI — Gold Signals Subscription</h3>
+        <p class="sub-desc">
+            Get real-time <strong>Gold (XAUUSD)</strong> trading signals delivered directly to your phone.<br>
+            Subscribe now and start trading with confidence.
+        </p>
+        <div class="tradix-price-list">
+            <div class="tradix-price-item">
+                <div class="tradix-price-left">
+                    <div class="plan-name">Weekly Plan</div>
+                    <div class="plan-dur">7 days access</div>
+                </div>
+                <div class="tradix-price-right">15 USDT</div>
+            </div>
+            <div class="tradix-price-item">
+                <div class="tradix-price-left">
+                    <div class="plan-name">Monthly Plan</div>
+                    <div class="plan-dur">30 days access</div>
+                </div>
+                <div class="tradix-price-right">45 USDT</div>
+            </div>
+            <div class="tradix-price-item">
+                <div class="tradix-price-left">
+                    <div class="plan-name">3 Months Plan</div>
+                    <div class="plan-dur">90 days access</div>
+                </div>
+                <div class="tradix-price-right">119 USDT</div>
+            </div>
+            <div class="tradix-price-item vip">
+                <div class="tradix-price-left">
+                    <div class="plan-name">👑 Lifetime VIP</div>
+                    <div class="plan-dur">Unlimited access forever</div>
+                </div>
+                <div class="tradix-price-right">300 USDT</div>
+            </div>
+        </div>
+        <p class="tradix-sub-note">✅ Instant activation • ✅ Real-time signals • ✅ Cancel anytime</p>
+    </div>
+    <!-- ===== End Tradix AI Subscription ===== -->
+
     <div class="section-title" style="margin-top: 24px;"><span>🚀 Tradix AI App</span></div>
     <div class="card" style="text-align:center; padding: 20px; border-color: var(--gold);">
         <img src="https://raw.githubusercontent.com/habib7514/TRADIX-ai/main/file_00000000e1988230bfa593ebe559c084.png" alt="Tradix AI" style="width: 80px; height: 80px; border-radius: 20px; margin-bottom: 10px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);">
@@ -318,7 +414,209 @@
     </div>
 </div>
 
-<div id="
+<div id="signalsScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Signals</h1><span>LIVE SIGNALS</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
+    <div id="activeSignalBox" class="hidden">
+        <div class="card" style="border-color: var(--green); background: linear-gradient(135deg, #1E2329 0%, #0ECB811A 100%);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
+                <div id="signalPair" style="font-size: 18px; font-weight: 900; color: var(--gold);">-</div>
+                <div id="signalDirectionBadge" style="padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 900; background: rgba(14, 203, 129, 0.15); color: var(--green); border: 1px solid var(--green);">-</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">ENTRY</div><div id="signalEntry" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div></div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">STOP LOSS</div><div id="signalSL" style="font-size: 15px; font-weight: 900; color: var(--red);">-</div></div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">TAKE PROFIT</div><div id="signalTP" style="font-size: 15px; font-weight: 900; color: var(--green);">-</div></div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">CONFIDENCE</div><div id="signalConf" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div></div>
+            </div>
+            <div id="signalNotes" style="margin-top: 12px; padding: 10px; background: #181A20; border-radius: 8px; font-size: 12px; color: var(--text-muted); line-height: 1.5; display: none;"></div>
+        </div>
+    </div>
+    <div id="lockedSignalBox" class="card" style="text-align: center; padding: 40px 20px;">
+        <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
+        <h3 style="color: var(--gold); margin-bottom: 8px;">Premium Required</h3>
+        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Subscribe to access live signals with Entry / SL / TP</p>
+        <button class="btn-block" onclick="showScreen('homeScreen')">View Plans</button>
+    </div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="academyScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
+    <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">📚 Learn Trading From Zero</h2>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6;">4 professional courses to master crypto trading</p>
+    </div>
+    <div class="section-title">🎓 Available Courses</div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ Trading Basics</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Learn core trading concepts and crypto fundamentals</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ Technical Analysis</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Candlestick patterns and technical indicators</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ Risk Management</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Protect your capital and manage risks effectively</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ Advanced Strategies</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Professional strategies for daily trading</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">Buy</button></div></div></div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item active" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="depositScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Deposit</h1><span>PAYMENT</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')">✕</div></div>
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">💳 Payment Details</h3>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Plan</span><span id="depositPlan" style="color: var(--gold); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Amount</span><span id="depositAmount" style="color: var(--gold); font-weight: 700;">$0</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Network</span><span style="color: var(--text-main); font-weight: 700;">BNB Smart Chain</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Currency</span><span style="color: var(--text-main); font-weight: 700;">USDT (BEP20)</span></div>
+    </div>
+    <div class="section-title">💰 Wallet Address</div>
+    <div style="background: #181A20; border: 1px dashed var(--gold); border-radius: 10px; padding: 14px; text-align: center; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--gold); margin-bottom: 10px;" id="walletAddr">0x4E11E978119cAAB300b5439B909D06341C24a2A7</div>
+    <button class="btn-block" onclick="copyWallet()">📋 Copy Address</button>
+    <div style="margin-top: 24px;">
+        <div class="section-title">🔗 Transaction Hash (TX)</div>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.6;">After sending the payment, paste your transaction hash here</p>
+        <div class="input-group"><input type="text" id="txHash" placeholder="Paste transaction hash"></div>
+        <button class="btn-block" onclick="submitDeposit()">📤 Submit for Review</button>
+    </div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="meetingScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Meetings</h1><span>ZOOM SESSIONS</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
+    <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
+        <div style="font-size: 60px; margin-bottom: 12px;">📅</div>
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">Zoom Meetings</h2>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 16px;">Join live trading sessions with the coach</p>
+        <a href="https://zoom.us/download" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 Download Zoom App</a>
+    </div>
+    <div class="section-title">🔗 Meeting Links</div>
+    <div id="meetingsList" class="card"><p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p></div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item active" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="subscriptionScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>My Plan</h1><span>SUBSCRIPTION</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
+    <div id="subActive" class="hidden">
+        <div class="card" style="text-align: center; border-color: var(--green);"><div style="font-size: 60px; margin-bottom: 12px;">✅</div><h2 style="color: var(--green); font-size: 18px; margin-bottom: 8px;">Active Subscription</h2><p style="color: var(--text-muted); font-size: 13px;">You have full access to all signals</p></div>
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Plan</span><span id="subPlan" style="color: var(--gold); font-weight: 700;">-</span></div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Start Date</span><span id="subStart" style="color: var(--text-main); font-weight: 700;">-</span></div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Expiry Date</span><span id="subEnd" style="color: var(--text-main); font-weight: 700;">-</span></div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Days Left</span><span id="subDays" style="color: var(--green); font-weight: 900;">-</span></div>
+        </div>
+    </div>
+    <div id="subInactive" class="card" style="text-align: center; padding: 40px 20px;">
+        <div style="font-size: 60px; margin-bottom: 12px;">💎</div>
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">No Active Subscription</h2>
+        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Choose a plan to access live signals</p>
+        <button class="btn-block" onclick="showScreen('homeScreen')">Choose Plan</button>
+    </div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item active" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="profileScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Profile</h1><span>MY ACCOUNT</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
+    <div class="card" style="text-align: center;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #FCD535); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #181A20;">T</div>
+        <h2 id="profileName" style="font-size: 18px; margin-bottom: 4px;">-</h2>
+        <p id="profileEmail" style="color: var(--text-muted); font-size: 12px;">-</p>
+    </div>
+    <div id="notifPermissionBox" class="card" style="border-color: var(--gold); text-align: center;">
+        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">🔔 Enable Notifications</h3>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px; line-height: 1.5;">Get instant alerts when new signals arrive or your course is activated.</p>
+        <button class="btn-block" onclick="requestNotifPermission()">🔔 Allow Notifications</button>
+    </div>
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">📋 My Information</h3>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Name</span><span id="profName" style="color: var(--text-main); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Email</span><span id="profEmail" style="color: var(--text-main); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Phone</span><span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Country</span><span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span></div>
+    </div>
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
+        <div id="myCoursesList"><p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p></div>
+    </div>
+    <div class="card" style="text-align: center;">
+        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">💬 Contact Admin</h3>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">For support and inquiries</p>
+        <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ Send Email</a>
+    </div>
+    <button class="btn-outline" onclick="handleLogout()">🚪 Logout</button>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item active" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="coinChartScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo" id="coinChartIcon">₿</div><div class="header-title"><h1 id="coinChartName">BTC/USDT</h1><span id="coinChartSub">BINANCE LIVE</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')">✕</div></div>
+    <div class="card" style="text-align: center;">
+        <div id="coinChartPrice" style="font-size: 28px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$0.00</div>
+        <div id="coinChartChange" style="font-size: 14px; font-weight: 700; color: var(--green);">+0.00%</div>
+    </div>
+    <div class="card" style="padding: 10px;"><div id="chartContainer" style="width: 100%; height: 300px; position: relative; background: #181A20; border-radius: 10px; overflow: hidden;"></div></div>
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 10px; font-size: 14px;">📊 24h Statistics</h3>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h High</div><div id="coinHigh" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Low</div><div id="coinLow" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Volume</div><div id="coinVol" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Change</div><div id="coinChg" style="font-size: 13px; font-weight: 900; color: var(--green);">-</div></div>
+        </div>
+    </div>
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
+    <div style="background:#1E2329; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto;">
+        <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; font-family:Tajawal,sans-serif;">🔔 Notifications</h3>
+        <div id="notifList" style="font-family:Tajawal,sans-serif;"></div>
+        <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer;">Close</button>
+    </div>
+</div>
+
+<div id="toast" class="toast">Message</div>
 <script>
 const firebaseConfig = {
     apiKey: "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM",
