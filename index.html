@@ -314,6 +314,29 @@
             cursor: pointer;
             position: relative;
         }
+        .notifBadge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--red);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 8px rgba(246, 70, 93, 0.8);
+            animation: pulse 1.5s infinite;
+            pointer-events: none;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
 
         .ticker-wrap {
             background: var(--bg-card);
@@ -1152,6 +1175,15 @@
         <p id="profileEmail" style="color: var(--text-muted); font-size: 12px;">-</p>
     </div>
 
+    <!-- Notification Permission Button -->
+    <div id="notifPermissionBox" class="card" style="border-color: var(--gold); text-align: center;">
+        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">🔔 Enable Notifications</h3>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px; line-height: 1.5;">
+            Get instant alerts when new signals arrive or your course is activated.
+        </p>
+        <button class="btn-block" onclick="requestNotifPermission()">🔔 Allow Notifications</button>
+    </div>
+
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">📋 My Information</h3>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
@@ -1701,6 +1733,7 @@ if (coursesList) {
 
     // ===== NOTIFICATIONS =====
     let notifs = JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
+    updateBadge();
 
     function openNotifModal() {
         const list = document.getElementById('notifList');
@@ -1717,12 +1750,33 @@ if (coursesList) {
         document.getElementById('notifModal').style.display = 'block';
         notifs.forEach(n => n.read = true);
         localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
+        updateBadge();
     }
 
     function closeNotifModal() {
         document.getElementById('notifModal').style.display = 'none';
     }
 
+    // ===== UPDATE BADGE (all bells) =====
+    function updateBadge() {
+        const unread = notifs.filter(n => !n.read).length;
+        const bells = document.querySelectorAll('.bell-icon');
+        bells.forEach(bell => {
+            let badge = bell.querySelector('.notifBadge');
+            if (unread > 0) {
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'notifBadge';
+                    bell.appendChild(badge);
+                }
+                badge.textContent = unread;
+            } else if (badge) {
+                badge.remove();
+            }
+        });
+    }
+
+    // ===== ADD NOTIFICATION =====
     function addNotif(message) {
         notifs.unshift({
             id: Date.now(),
@@ -1732,7 +1786,10 @@ if (coursesList) {
         });
         if (notifs.length > 50) notifs = notifs.slice(0, 50);
         localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
-        if (Notification.permission === 'granted') {
+
+        updateBadge();
+
+        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
             try { new Notification('Tradelix AI', { body: message }); } catch(e){}
         }
         try {
@@ -1761,11 +1818,26 @@ if (coursesList) {
 
     // ===== NOTIFICATION PERMISSION =====
     async function requestNotifPermission() {
-        if (!('Notification' in window)) return;
-        if (Notification.permission === 'default') {
-            try { await Notification.requestPermission(); } catch(e){}
+        if (!('Notification' in window)) {
+            if (typeof showToast === 'function') showToast('❌ Notifications not supported');
+            return;
         }
+        
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
+                const box = document.getElementById('notifPermissionBox');
+                if (box) box.style.display = 'none';
+                try {
+                    new Notification('Tradelix AI', { body: '✅ Notifications are working!' });
+                } catch(e) {}
+            } else if (permission === 'denied') {
+                if (typeof showToast === 'function') showToast('❌ Notifications blocked in browser settings');
+            }
+        } catch(e) { console.error(e); }
     }
+
 // ===== إخفاء Netlify Badge =====
 function hideNetlifyBadge() {
     const selectors = [
@@ -1780,7 +1852,6 @@ function hideNetlifyBadge() {
 hideNetlifyBadge();
 setInterval(hideNetlifyBadge, 1000);
 
-    // ===== INIT =====
     // ===== COURSES ACTIVATION LISTENER =====
 let lastCoursesJSON = null;
 async function startCourseListener() {
@@ -1806,10 +1877,7 @@ async function startCourseListener() {
                 }
                 updateUI();
                 if (typeof showToast === 'function') showToast('🎓 New Course Activated!');
-                if (Notification.permission === 'granted') {
-                    try { new Notification('Tradelix AI', { body: '🎓 Course activated in your account!' }); } catch(e) {}
-                }
-                if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+                addNotif('🎓 New Course Activated!');
             }
             lastCoursesJSON = currentCourses;
         });
@@ -1821,8 +1889,16 @@ window.addEventListener('load', async () => {
     await initFirebase();
     fetchPrices();
     setInterval(fetchPrices, 10000);
-    setTimeout(requestNotifPermission, 3000);
     setTimeout(startCourseListener, 3000);
+
+    // إخفاء زر الإشعارات إذا كان الإذن ممنوحاً
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+        const box = document.getElementById('notifPermissionBox');
+        if (box) box.style.display = 'none';
+    }
+
+    // تحديث البادج
+    updateBadge();
 });
 </script>
 <style>
