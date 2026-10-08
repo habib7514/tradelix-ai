@@ -116,71 +116,91 @@
         .plan-badge { position: absolute; top: -8px; right: 16px; background: var(--gold); color: #181A20; font-size: 9px; font-weight: 900; padding: 3px 10px; border-radius: 8px; letter-spacing: 1px; }
 
         /* ===== Premium Signals Info Card (Gray) ===== */
-        .signals-info-card {
-            background: #1E1E1E;
-            border: 1px solid #2A2A2A;
+        .signals-info-card { background: #1E1E1E; border: 1px solid #2A2A2A; border-radius: 14px; padding: 20px 16px; margin-bottom: 16px; text-align: center; position: relative; overflow: hidden; }
+        .signals-info-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(192,192,192,0.08), transparent 70%); border-radius: 50%; pointer-events: none; }
+        .signals-info-icon { font-size: 34px; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(192,192,192,0.4)); position: relative; z-index: 1; }
+        .signals-info-title { color: #C0C0C0; font-size: 16px; font-weight: 900; margin-bottom: 10px; letter-spacing: 0.5px; position: relative; z-index: 1; }
+        .signals-info-desc { color: #AAAAAA; font-size: 12.5px; line-height: 1.75; margin-bottom: 14px; position: relative; z-index: 1; }
+        .signals-info-desc strong { color: #E5E5E5; font-weight: 900; }
+        .signals-info-tags { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; font-size: 11px; font-weight: 700; position: relative; z-index: 1; }
+        .signals-info-tags span { color: #C0C0C0; background: rgba(192,192,192,0.08); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(192,192,192,0.25); }
+
+        /* ═══════════ MARKETS PRO BUTTON ═══════════ */
+        .markets-pro-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #1E2329 0%, #252A32 50%, #1E2329 100%);
+            border: 1.5px solid rgba(240, 185, 11, 0.5);
             border-radius: 14px;
-            padding: 20px 16px;
-            margin-bottom: 16px;
-            text-align: center;
+            cursor: pointer;
+            font-family: inherit;
             position: relative;
             overflow: hidden;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
-        .signals-info-card::before {
+        .markets-pro-btn::before {
             content: '';
             position: absolute;
-            top: -40px; right: -40px;
-            width: 100px; height: 100px;
-            background: radial-gradient(circle, rgba(192,192,192,0.08), transparent 70%);
-            border-radius: 50%;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(240, 185, 11, 0.18) 0%, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
             pointer-events: none;
         }
-        .signals-info-icon {
-            font-size: 34px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 10px rgba(192,192,192,0.4));
-            position: relative;
-            z-index: 1;
+        .markets-pro-btn:active {
+            transform: scale(0.985);
+            border-color: #F0B90B;
+            box-shadow: 0 6px 25px rgba(240, 185, 11, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
-        .signals-info-title {
-            color: #C0C0C0;
-            font-size: 16px;
-            font-weight: 900;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
-            position: relative;
-            z-index: 1;
-        }
-        .signals-info-desc {
-            color: #AAAAAA;
-            font-size: 12.5px;
-            line-height: 1.75;
-            margin-bottom: 14px;
-            position: relative;
-            z-index: 1;
-        }
-        .signals-info-desc strong {
-            color: #E5E5E5;
-            font-weight: 900;
-        }
-        .signals-info-tags {
+        .markets-pro-btn:active::before { opacity: 1; }
+        .markets-pro-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(240, 185, 11, 0.18), rgba(252, 213, 53, 0.08));
+            border: 1px solid rgba(240, 185, 11, 0.35);
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            font-size: 11px;
-            font-weight: 700;
+            color: #F0B90B;
+            flex-shrink: 0;
             position: relative;
             z-index: 1;
+            box-shadow: inset 0 0 12px rgba(240, 185, 11, 0.1);
         }
-        .signals-info-tags span {
-            color: #C0C0C0;
-            background: rgba(192,192,192,0.08);
-            padding: 5px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(192,192,192,0.25);
+        .markets-pro-icon svg { display: block; filter: drop-shadow(0 0 6px rgba(240, 185, 11, 0.5)); }
+        .markets-pro-text { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; position: relative; z-index: 1; text-align: left; }
+        .markets-pro-title { font-size: 16px; font-weight: 900; color: #F0B90B; letter-spacing: 0.8px; text-shadow: 0 0 10px rgba(240, 185, 11, 0.25); line-height: 1.2; }
+        .markets-pro-sub { font-size: 10.5px; font-weight: 700; color: #848E9C; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; }
+        .markets-pro-arrow {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: rgba(240, 185, 11, 0.1);
+            border: 1px solid rgba(240, 185, 11, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #F0B90B;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            transition: all 0.25s ease;
         }
-        /* ===== END Premium Signals Info Card ===== */
+        .markets-pro-btn:active .markets-pro-arrow {
+            background: #F0B90B;
+            color: #181A20;
+            transform: translateX(3px);
+            box-shadow: 0 0 15px rgba(240, 185, 11, 0.6);
+        }
+        .markets-pro-arrow svg { display: block; }
+        /* ═══════════ END MARKETS PRO BUTTON ═══════════ */
 
         /* ═══════════ BOTTOM NAV — FIXED FULL-TAP v3 ═══════════ */
         .bottom-nav {
@@ -246,9 +266,7 @@
             transform: scale(0.95);
             outline: none;
         }
-        .nav-item.active {
-            color: var(--gold);
-        }
+        .nav-item.active { color: var(--gold); }
         .nav-item .icon {
             font-size: 22px;
             line-height: 22px;
@@ -264,9 +282,7 @@
             position: relative;
             z-index: 1;
         }
-        .nav-item:active .icon {
-            transform: scale(1.1);
-        }
+        .nav-item:active .icon { transform: scale(1.1); }
         .nav-item > span:not(.icon) {
             font-size: 10px;
             line-height: 1.2;
@@ -277,13 +293,7 @@
             position: relative;
             z-index: 1;
         }
-        .nav-item * {
-            pointer-events: none !important;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-        }
-        /* ═══════════ END BOTTOM NAV ═══════════ */
+        .nav-item * { pointer-events: none !important; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 
         .hidden { display: none !important; }
         .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--gold); color: #181A20; padding: 12px 24px; border-radius: 10px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s; z-index: 99999; max-width: 90%; text-align: center; }
@@ -374,9 +384,27 @@
 
     <div class="main-coins-grid" id="mainCoinsGrid"></div>
 
-    <button class="btn-block outline" onclick="openAllMarkets()" style="margin-bottom: 20px;">
-        🌐 Markets (46 Coins)
+    <!-- ═══════════ MARKETS PRO BUTTON ═══════════ -->
+    <button onclick="openAllMarkets()" class="markets-pro-btn">
+        <span class="markets-pro-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+                <ellipse cx="12" cy="12" rx="4" ry="10" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M2 12h20" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M4 7h16M4 17h16" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+            </svg>
+        </span>
+        <span class="markets-pro-text">
+            <span class="markets-pro-title">Markets</span>
+            <span class="markets-pro-sub">46 Coins • Live</span>
+        </span>
+        <span class="markets-pro-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
     </button>
+    <!-- ═══════════ END MARKETS PRO BUTTON ═══════════ -->
 
     <!-- ✅ Premium Signals Info Card (Gray) -->
     <div class="signals-info-card">
@@ -398,7 +426,6 @@
     <div class="plan-card premium"><span class="plan-badge">BEST VALUE</span><div class="plan-info"><h4>3 Months</h4><div class="duration">90 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(125, 'Quarterly')">$125</button></div>
     <div class="plan-card vip-lifetime"><span class="plan-badge">👑 VIP</span><div class="plan-info"><h4>Lifetime VIP</h4><div class="duration">Unlimited Access</div></div><button class="plan-buy" onclick="goToDeposit(400, 'Lifetime')">$400</button></div>
 
-    <!-- ═══════════ Learn Trading Section (Enhanced) ═══════════ -->
     <div class="section-title" style="margin-top: 24px;">
         <span style="font-size: 20px; color: var(--gold); letter-spacing: 1px; font-weight: 900; text-shadow: 0 0 15px rgba(240,185,11,0.35);">
             🎓 LEARN TRADING FROM ZERO
@@ -406,31 +433,22 @@
     </div>
     <div class="card" style="text-align:center; padding: 20px; border-color: var(--gold); background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); position: relative; overflow: hidden;">
         <div style="position: absolute; top: -50px; right: -50px; width: 130px; height: 130px; background: radial-gradient(circle, rgba(240,185,11,0.18), transparent 70%); border-radius: 50%; pointer-events: none;"></div>
-
         <div style="position: relative; z-index: 1; margin-bottom: 16px;">
             <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=600&q=80"
                  alt="Learn Crypto Trading"
                  style="width: 100%; height: 180px; object-fit: cover; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 30px rgba(240,185,11,0.15); border: 2px solid rgba(240,185,11,0.3);">
         </div>
-
-        <h3 style="color: var(--gold); font-size: 17px; font-weight: 900; margin-bottom: 10px; letter-spacing: 0.5px; position: relative; z-index: 1;">
-            📚 From Zero to Pro
-        </h3>
+        <h3 style="color: var(--gold); font-size: 17px; font-weight: 900; margin-bottom: 10px; letter-spacing: 0.5px; position: relative; z-index: 1;">📚 From Zero to Pro</h3>
         <p style="color: var(--text-main); font-size: 13.5px; line-height: 1.75; margin-bottom: 16px; position: relative; z-index: 1;">
             Master crypto trading with <strong style="color: #FCD535;">4 professional courses</strong> — from basics to advanced strategies. Learn at your own pace, anytime & anywhere.
         </p>
-
         <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom: 16px; font-size: 11px; font-weight: 700; position: relative; z-index: 1;">
             <span style="color: var(--gold); background: rgba(240,185,11,0.12); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(240,185,11,0.3);">📹 20+ Lessons</span>
             <span style="color: var(--green); background: rgba(14,203,129,0.12); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(14,203,129,0.3);">✅ Beginner Friendly</span>
             <span style="color: var(--text-main); background: rgba(132,142,156,0.12); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(132,142,156,0.3);">💎 Lifetime Access</span>
         </div>
-
-        <button class="btn-block" onclick="showScreen('academyScreen')" style="position: relative; z-index: 1; box-shadow: 0 6px 20px rgba(240,185,11,0.4);">
-            🎓 View Courses
-        </button>
+        <button class="btn-block" onclick="showScreen('academyScreen')" style="position: relative; z-index: 1; box-shadow: 0 6px 20px rgba(240,185,11,0.4);">🎓 View Courses</button>
     </div>
-    <!-- ═══════════ End Learn Trading Section ═══════════ -->
 
     <div class="tradix-sub-wrap">
         <h3>💰 Tradix AI — Gold Signals Subscription</h3>
@@ -439,34 +457,10 @@
             Subscribe now and start trading with confidence.
         </p>
         <div class="tradix-price-list">
-            <div class="tradix-price-item">
-                <div class="tradix-price-left">
-                    <div class="plan-name">Weekly Plan</div>
-                    <div class="plan-dur">7 days access</div>
-                </div>
-                <div class="tradix-price-right">15 USDT</div>
-            </div>
-            <div class="tradix-price-item">
-                <div class="tradix-price-left">
-                    <div class="plan-name">Monthly Plan</div>
-                    <div class="plan-dur">30 days access</div>
-                </div>
-                <div class="tradix-price-right">45 USDT</div>
-            </div>
-            <div class="tradix-price-item">
-                <div class="tradix-price-left">
-                    <div class="plan-name">3 Months Plan</div>
-                    <div class="plan-dur">90 days access</div>
-                </div>
-                <div class="tradix-price-right">119 USDT</div>
-            </div>
-            <div class="tradix-price-item vip">
-                <div class="tradix-price-left">
-                    <div class="plan-name">👑 Lifetime VIP</div>
-                    <div class="plan-dur">Unlimited access forever</div>
-                </div>
-                <div class="tradix-price-right">300 USDT</div>
-            </div>
+            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">Weekly Plan</div><div class="plan-dur">7 days access</div></div><div class="tradix-price-right">15 USDT</div></div>
+            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">Monthly Plan</div><div class="plan-dur">30 days access</div></div><div class="tradix-price-right">45 USDT</div></div>
+            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">3 Months Plan</div><div class="plan-dur">90 days access</div></div><div class="tradix-price-right">119 USDT</div></div>
+            <div class="tradix-price-item vip"><div class="tradix-price-left"><div class="plan-name">👑 Lifetime VIP</div><div class="plan-dur">Unlimited access forever</div></div><div class="tradix-price-right">300 USDT</div></div>
         </div>
         <p class="tradix-sub-note">✅ Instant activation • ✅ Real-time signals • ✅ Cancel anytime</p>
     </div>
@@ -493,9 +487,7 @@
         <div class="header-left"><div class="header-logo">🌐</div><div class="header-title"><h1>All Markets</h1><span>BINANCE LIVE • 46 COINS</span></div></div>
         <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
     </div>
-    <div class="input-group">
-        <input type="text" id="marketSearch" placeholder="🔍 Search by name or symbol..." oninput="filterAllMarkets()">
-    </div>
+    <div class="input-group"><input type="text" id="marketSearch" placeholder="🔍 Search by name or symbol..." oninput="filterAllMarkets()"></div>
     <div class="markets-grid" id="allMarketsGrid"></div>
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
@@ -956,10 +948,7 @@ async function loadPublicStats() {
             const usersSnap = await getDocs(collection(window.firebaseDB, 'tradelix_users'));
             const count = usersSnap.size;
             const el = document.getElementById('proofMembers');
-            if (el) {
-                if (count >= 1000) { el.textContent = '+' + (count / 1000).toFixed(1) + 'K'; }
-                else { el.textContent = '+' + count; }
-            }
+            if (el) { if (count >= 1000) { el.textContent = '+' + (count / 1000).toFixed(1) + 'K'; } else { el.textContent = '+' + count; } }
         } catch(e) {
             console.warn('Members count error:', e.message);
             const el = document.getElementById('proofMembers');
@@ -970,10 +959,7 @@ async function loadPublicStats() {
             let total = 0, wins = 0;
             signalsSnap.forEach(d => {
                 const sig = d.data();
-                if (sig.status === 'closed' && sig.result) {
-                    total++;
-                    if (sig.result === 'win') wins++;
-                }
+                if (sig.status === 'closed' && sig.result) { total++; if (sig.result === 'win') wins++; }
             });
             const rate = total > 0 ? Math.round((wins / total) * 100) : 87;
             const el = document.getElementById('proofWinRate');
@@ -987,70 +973,35 @@ async function loadPublicStats() {
 }
 
 const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
-
-const COINS = [
-    'BTC', 'ETH', 'BNB', 'SOL',
-    'XRP', 'ADA', 'DOGE', 'DOT', 'AVAX', 'LINK', 'POL', 'LTC',
-    'TRX', 'ATOM', 'UNI', 'SHIB', 'APT', 'ARB', 'OP', 'NEAR',
-    'INJ', 'SUI', 'FIL', 'ETC', 'TON', 'ICP', 'RENDER', 'FET',
-    'SEI', 'TIA', 'STX', 'IMX', 'GRT', 'SAND', 'MANA', 'AAVE',
-    'MKR', 'CRV', 'ALGO', 'VET', 'HBAR', 'EOS', 'XLM', 'THETA',
-    'RUNE', 'KAS', 'TAO', 'WIF', 'PEPE', 'BONK'
-];
-
+const COINS = ['BTC','ETH','BNB','SOL','XRP','ADA','DOGE','DOT','AVAX','LINK','POL','LTC','TRX','ATOM','UNI','SHIB','APT','ARB','OP','NEAR','INJ','SUI','FIL','ETC','TON','ICP','RENDER','FET','SEI','TIA','STX','IMX','GRT','SAND','MANA','AAVE','MKR','CRV','ALGO','VET','HBAR','EOS','XLM','THETA','RUNE','KAS','TAO','WIF','PEPE','BONK'];
 const MARKET_COINS = COINS.filter(c => !HOME_COINS.includes(c));
 
 const COIN_INFO = {
-    BTC: { name: 'Bitcoin', color: '#F7931A', letter: '₿' },
-    ETH: { name: 'Ethereum', color: '#627EEA', letter: 'Ξ' },
-    BNB: { name: 'BNB', color: '#F3BA2F', letter: 'B' },
-    SOL: { name: 'Solana', color: '#14F195', letter: 'S' },
-    XRP: { name: 'XRP', color: '#23292F', letter: 'X' },
-    ADA: { name: 'Cardano', color: '#0033AD', letter: 'A' },
-    DOGE: { name: 'Dogecoin', color: '#C2A633', letter: 'Ð' },
-    DOT: { name: 'Polkadot', color: '#E6007A', letter: '●' },
-    AVAX: { name: 'Avalanche', color: '#E84142', letter: 'A' },
-    LINK: { name: 'Chainlink', color: '#2A5ADA', letter: 'L' },
-    POL: { name: 'Polygon', color: '#8247E5', letter: 'M' },
-    LTC: { name: 'Litecoin', color: '#BFBBBB', letter: 'Ł' },
-    TRX: { name: 'TRON', color: '#FF060A', letter: 'T' },
-    ATOM: { name: 'Cosmos', color: '#2E3148', letter: 'A' },
-    UNI: { name: 'Uniswap', color: '#FF007A', letter: 'U' },
-    SHIB: { name: 'Shiba Inu', color: '#FFA409', letter: 'S' },
-    APT: { name: 'Aptos', color: '#1B1B1B', letter: 'A' },
-    ARB: { name: 'Arbitrum', color: '#28A0F0', letter: 'A' },
-    OP: { name: 'Optimism', color: '#FF0420', letter: 'O' },
-    NEAR: { name: 'NEAR', color: '#000000', letter: 'N' },
-    INJ: { name: 'Injective', color: '#00D2FF', letter: 'I' },
-    SUI: { name: 'Sui', color: '#4DA2FF', letter: 'S' },
-    FIL: { name: 'Filecoin', color: '#0090FF', letter: 'F' },
-    ETC: { name: 'Ethereum Classic', color: '#328332', letter: 'E' },
-    TON: { name: 'Toncoin', color: '#0098EA', letter: 'T' },
-    ICP: { name: 'Internet Computer', color: '#29ABE2', letter: 'I' },
-    RENDER: { name: 'Render', color: '#000000', letter: 'R' },
-    FET: { name: 'Fetch.ai', color: '#1D4EFF', letter: 'F' },
-    SEI: { name: 'Sei', color: '#9E1F19', letter: 'S' },
-    TIA: { name: 'Celestia', color: '#7B2BF9', letter: 'T' },
-    STX: { name: 'Stacks', color: '#5546FF', letter: 'S' },
-    IMX: { name: 'Immutable', color: '#0F0F0F', letter: 'I' },
-    GRT: { name: 'The Graph', color: '#6747ED', letter: 'G' },
-    SAND: { name: 'The Sandbox', color: '#00ADEF', letter: 'S' },
-    MANA: { name: 'Decentraland', color: '#FF2D55', letter: 'M' },
-    AAVE: { name: 'Aave', color: '#B6509E', letter: 'A' },
-    MKR: { name: 'Maker', color: '#1AAB9B', letter: 'M' },
-    CRV: { name: 'Curve DAO', color: '#3465A4', letter: 'C' },
-    ALGO: { name: 'Algorand', color: '#000000', letter: 'A' },
-    VET: { name: 'VeChain', color: '#15BDFF', letter: 'V' },
-    HBAR: { name: 'Hedera', color: '#000000', letter: 'H' },
-    EOS: { name: 'EOS', color: '#000000', letter: 'E' },
-    XLM: { name: 'Stellar', color: '#7D00FF', letter: 'X' },
-    THETA: { name: 'Theta Network', color: '#2AB8E6', letter: 'T' },
-    RUNE: { name: 'THORChain', color: '#33FF99', letter: 'R' },
-    KAS: { name: 'Kaspa', color: '#70C7BA', letter: 'K' },
-    TAO: { name: 'Bittensor', color: '#000000', letter: 'T' },
-    WIF: { name: 'dogwifhat', color: '#C0A080', letter: 'W' },
-    PEPE: { name: 'Pepe', color: '#3D8B37', letter: 'P' },
-    BONK: { name: 'Bonk', color: '#FC8C1C', letter: 'B' }
+    BTC: { name: 'Bitcoin', color: '#F7931A', letter: '₿' }, ETH: { name: 'Ethereum', color: '#627EEA', letter: 'Ξ' },
+    BNB: { name: 'BNB', color: '#F3BA2F', letter: 'B' }, SOL: { name: 'Solana', color: '#14F195', letter: 'S' },
+    XRP: { name: 'XRP', color: '#23292F', letter: 'X' }, ADA: { name: 'Cardano', color: '#0033AD', letter: 'A' },
+    DOGE: { name: 'Dogecoin', color: '#C2A633', letter: 'Ð' }, DOT: { name: 'Polkadot', color: '#E6007A', letter: '●' },
+    AVAX: { name: 'Avalanche', color: '#E84142', letter: 'A' }, LINK: { name: 'Chainlink', color: '#2A5ADA', letter: 'L' },
+    POL: { name: 'Polygon', color: '#8247E5', letter: 'M' }, LTC: { name: 'Litecoin', color: '#BFBBBB', letter: 'Ł' },
+    TRX: { name: 'TRON', color: '#FF060A', letter: 'T' }, ATOM: { name: 'Cosmos', color: '#2E3148', letter: 'A' },
+    UNI: { name: 'Uniswap', color: '#FF007A', letter: 'U' }, SHIB: { name: 'Shiba Inu', color: '#FFA409', letter: 'S' },
+    APT: { name: 'Aptos', color: '#1B1B1B', letter: 'A' }, ARB: { name: 'Arbitrum', color: '#28A0F0', letter: 'A' },
+    OP: { name: 'Optimism', color: '#FF0420', letter: 'O' }, NEAR: { name: 'NEAR', color: '#000000', letter: 'N' },
+    INJ: { name: 'Injective', color: '#00D2FF', letter: 'I' }, SUI: { name: 'Sui', color: '#4DA2FF', letter: 'S' },
+    FIL: { name: 'Filecoin', color: '#0090FF', letter: 'F' }, ETC: { name: 'Ethereum Classic', color: '#328332', letter: 'E' },
+    TON: { name: 'Toncoin', color: '#0098EA', letter: 'T' }, ICP: { name: 'Internet Computer', color: '#29ABE2', letter: 'I' },
+    RENDER: { name: 'Render', color: '#000000', letter: 'R' }, FET: { name: 'Fetch.ai', color: '#1D4EFF', letter: 'F' },
+    SEI: { name: 'Sei', color: '#9E1F19', letter: 'S' }, TIA: { name: 'Celestia', color: '#7B2BF9', letter: 'T' },
+    STX: { name: 'Stacks', color: '#5546FF', letter: 'S' }, IMX: { name: 'Immutable', color: '#0F0F0F', letter: 'I' },
+    GRT: { name: 'The Graph', color: '#6747ED', letter: 'G' }, SAND: { name: 'The Sandbox', color: '#00ADEF', letter: 'S' },
+    MANA: { name: 'Decentraland', color: '#FF2D55', letter: 'M' }, AAVE: { name: 'Aave', color: '#B6509E', letter: 'A' },
+    MKR: { name: 'Maker', color: '#1AAB9B', letter: 'M' }, CRV: { name: 'Curve DAO', color: '#3465A4', letter: 'C' },
+    ALGO: { name: 'Algorand', color: '#000000', letter: 'A' }, VET: { name: 'VeChain', color: '#15BDFF', letter: 'V' },
+    HBAR: { name: 'Hedera', color: '#000000', letter: 'H' }, EOS: { name: 'EOS', color: '#000000', letter: 'E' },
+    XLM: { name: 'Stellar', color: '#7D00FF', letter: 'X' }, THETA: { name: 'Theta Network', color: '#2AB8E6', letter: 'T' },
+    RUNE: { name: 'THORChain', color: '#33FF99', letter: 'R' }, KAS: { name: 'Kaspa', color: '#70C7BA', letter: 'K' },
+    TAO: { name: 'Bittensor', color: '#000000', letter: 'T' }, WIF: { name: 'dogwifhat', color: '#C0A080', letter: 'W' },
+    PEPE: { name: 'Pepe', color: '#3D8B37', letter: 'P' }, BONK: { name: 'Bonk', color: '#FC8C1C', letter: 'B' }
 };
 
 let prices = {};
@@ -1058,9 +1009,7 @@ let prices = {};
 async function fetchPrices() {
     try {
         const batches = [];
-        for (let i = 0; i < COINS.length; i += 15) {
-            batches.push(COINS.slice(i, i + 15));
-        }
+        for (let i = 0; i < COINS.length; i += 15) batches.push(COINS.slice(i, i + 15));
         const allResults = [];
         for (const batch of batches) {
             try {
@@ -1074,13 +1023,7 @@ async function fetchPrices() {
         }
         allResults.forEach(item => {
             const coin = item.symbol.replace('USDT', '');
-            prices[coin] = {
-                price: parseFloat(item.lastPrice),
-                change: parseFloat(item.priceChangePercent),
-                high: parseFloat(item.highPrice),
-                low: parseFloat(item.lowPrice),
-                vol: parseFloat(item.volume)
-            };
+            prices[coin] = { price: parseFloat(item.lastPrice), change: parseFloat(item.priceChangePercent), high: parseFloat(item.highPrice), low: parseFloat(item.lowPrice), vol: parseFloat(item.volume) };
         });
         renderHomeMarkets();
         renderAllMarkets();
@@ -1118,19 +1061,7 @@ function renderHomeMarkets() {
         const p = prices[coin] || { price: 0, change: 0 };
         const cls = p.change >= 0 ? 'up' : 'down';
         const sign = p.change >= 0 ? '+' : '';
-        return `
-            <div class="main-coin-card" onclick="openCoinChart('${coin}')">
-                <div class="main-coin-head">
-                    <div class="main-coin-icon" style="background:${info.color}; color:#fff;">${info.letter}</div>
-                    <div class="main-coin-info">
-                        <div class="main-coin-symbol">${coin}</div>
-                        <div class="main-coin-name">${info.name}</div>
-                    </div>
-                </div>
-                <div class="main-coin-price">${fmtPrice(p.price)}</div>
-                <div class="main-coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div>
-            </div>
-        `;
+        return `<div class="main-coin-card" onclick="openCoinChart('${coin}')"><div class="main-coin-head"><div class="main-coin-icon" style="background:${info.color}; color:#fff;">${info.letter}</div><div class="main-coin-info"><div class="main-coin-symbol">${coin}</div><div class="main-coin-name">${info.name}</div></div></div><div class="main-coin-price">${fmtPrice(p.price)}</div><div class="main-coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div></div>`;
     }).join('');
 }
 
@@ -1142,14 +1073,10 @@ function renderAllMarkets() {
     const filtered = MARKET_COINS.filter(coin => {
         if (!query) return true;
         const info = COIN_INFO[coin];
-        return coin.toLowerCase().includes(query) ||
-               (info && info.name.toLowerCase().includes(query));
+        return coin.toLowerCase().includes(query) || (info && info.name.toLowerCase().includes(query));
     });
     if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 40px; color:#848E9C;">
-            <div style="font-size:48px; margin-bottom:12px;">🔍</div>
-            <h3 style="color:#F0B90B;">No results</h3>
-        </div>`;
+        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 40px; color:#848E9C;"><div style="font-size:48px; margin-bottom:12px;">🔍</div><h3 style="color:#F0B90B;">No results</h3></div>`;
         return;
     }
     grid.innerHTML = filtered.map(coin => {
@@ -1157,26 +1084,12 @@ function renderAllMarkets() {
         const p = prices[coin] || { price: 0, change: 0 };
         const cls = p.change >= 0 ? 'up' : 'down';
         const sign = p.change >= 0 ? '+' : '';
-        return `
-            <div class="coin-card" onclick="openCoinChart('${coin}')">
-                <div class="coin-head">
-                    <div class="coin-icon" style="background:${info.color}; color:#fff;">${info.letter}</div>
-                    <div class="coin-symbol">${coin}</div>
-                </div>
-                <div class="coin-price">${fmtPrice(p.price)}</div>
-                <div class="coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div>
-            </div>
-        `;
+        return `<div class="coin-card" onclick="openCoinChart('${coin}')"><div class="coin-head"><div class="coin-icon" style="background:${info.color}; color:#fff;">${info.letter}</div><div class="coin-symbol">${coin}</div></div><div class="coin-price">${fmtPrice(p.price)}</div><div class="coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div></div>`;
     }).join('');
 }
 
 function filterAllMarkets() { renderAllMarkets(); }
-
-function openAllMarkets() {
-    renderAllMarkets();
-    showScreen('allMarketsScreen');
-}
-
+function openAllMarkets() { renderAllMarkets(); showScreen('allMarketsScreen'); }
 function refreshMarkets() { showToast('🔄 Refreshing...'); fetchPrices(); }
 
 let currentChartSymbol = 'BTC';
@@ -1186,7 +1099,6 @@ function openCoinChart(coin) {
     document.getElementById('coinChartName').textContent = coin + '/USDT';
     document.getElementById('coinChartSub').textContent = info.name.toUpperCase();
     document.getElementById('coinChartIcon').textContent = info.letter;
-
     if (prices[coin]) {
         const p = prices[coin];
         document.getElementById('coinChartPrice').textContent = fmtPrice(p.price);
@@ -1227,7 +1139,6 @@ async function loadLatestSignal() {
             const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(10));
             snap = await getDocs(q);
         } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
-
         let latest = null;
         snap.forEach(d => {
             if (latest) return;
@@ -1237,7 +1148,6 @@ async function loadLatestSignal() {
             if (targetUID && targetUID !== u.uid) return;
             latest = sig;
         });
-
         const pairEl = document.getElementById('signalPair');
         if (pairEl) pairEl.textContent = latest ? (latest.coin || 'BTC') + '/USDT' : 'No active signal';
         const dirBadge = document.getElementById('signalDirectionBadge');
@@ -1259,18 +1169,13 @@ async function loadLatestSignal() {
         if (confEl) confEl.textContent = latest ? ((latest.confidence || '85') + '%') : '-';
         const notesEl = document.getElementById('signalNotes');
         if (notesEl) {
-            if (latest && latest.notes && latest.notes.trim()) {
-                notesEl.textContent = '📝 ' + latest.notes;
-                notesEl.style.display = 'block';
-            } else { notesEl.style.display = 'none'; }
+            if (latest && latest.notes && latest.notes.trim()) { notesEl.textContent = '📝 ' + latest.notes; notesEl.style.display = 'block'; }
+            else { notesEl.style.display = 'none'; }
         }
     } catch(e) { console.warn('Load signal error:', e.message); }
 }
 
-function getNotifs() {
-    if (!auth || !auth.currentUser) return [];
-    return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
-}
+function getNotifs() { if (!auth || !auth.currentUser) return []; return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
 function setNotifs(arr) { localStorage.setItem('tradelix_notifs', JSON.stringify(arr)); }
 
 function openNotifModal() {
@@ -1504,10 +1409,7 @@ async function loadMeetingsForUser() {
         if (!fs) return;
         if (_meetingsUnsub) return;
         const { collection, query, orderBy, onSnapshot } = fs;
-        const q = query(
-            collection(window.firebaseDB, 'tradelix_meetings'),
-            orderBy('createdAt', 'desc')
-        );
+        const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'));
         _meetingsUnsub = onSnapshot(q, (snap) => {
             const meetings = [];
             snap.forEach(d => meetings.push({ id: d.id, ...d.data() }));
@@ -1520,26 +1422,13 @@ async function loadMeetingsForUser() {
             list.innerHTML = meetings.map(mt => {
                 let dateStr = '';
                 if (mt.date) {
-                    try {
-                        dateStr = new Date(mt.date).toLocaleString('en-GB', {
-                            day: '2-digit', month: 'short', year: 'numeric',
-                            hour: '2-digit', minute: '2-digit'
-                        });
-                    } catch(e) { dateStr = mt.date; }
+                    try { dateStr = new Date(mt.date).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+                    catch(e) { dateStr = mt.date; }
                 }
                 const safeLink = (mt.link || '').replace(/'/g, "\\'");
-                return `
-                    <div style="border-bottom: 1px solid var(--border); padding: 14px 0;">
-                        <div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>
-                        ${dateStr ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px;">🕐 ${dateStr}</div>` : ''}
-                        ${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 10px;">${mt.description}</div>` : ''}
-                        <button onclick="handleJoinMeeting('${safeLink}')" style="display:block; width:100%; margin-top: 8px; padding: 12px; background: linear-gradient(135deg, #F0B90B, #FCD535); color: #181A20; border: none; cursor: pointer; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px; font-family: inherit;">🎥 Join Meeting</button>
-                    </div>
-                `;
+                return `<div style="border-bottom: 1px solid var(--border); padding: 14px 0;"><div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>${dateStr ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px;">🕐 ${dateStr}</div>` : ''}${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 10px;">${mt.description}</div>` : ''}<button onclick="handleJoinMeeting('${safeLink}')" style="display:block; width:100%; margin-top: 8px; padding: 12px; background: linear-gradient(135deg, #F0B90B, #FCD535); color: #181A20; border: none; cursor: pointer; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px; font-family: inherit;">🎥 Join Meeting</button></div>`;
             }).join('');
-        }, (err) => {
-            console.warn('Meetings snapshot error:', err.message);
-        });
+        }, (err) => { console.warn('Meetings snapshot error:', err.message); });
         console.log('📅 Meetings realtime listener started');
     } catch(e) { console.error('Load meetings error:', e); }
 }
