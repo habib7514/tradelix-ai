@@ -397,11 +397,40 @@
     <div class="plan-card"><div class="plan-info"><h4>Monthly</h4><div class="duration">30 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(45, 'Monthly')">$45</button></div>
     <div class="plan-card premium"><span class="plan-badge">BEST VALUE</span><div class="plan-info"><h4>3 Months</h4><div class="duration">90 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(125, 'Quarterly')">$125</button></div>
     <div class="plan-card vip-lifetime"><span class="plan-badge">👑 VIP</span><div class="plan-info"><h4>Lifetime VIP</h4><div class="duration">Unlimited Access</div></div><button class="plan-buy" onclick="goToDeposit(400, 'Lifetime')">$400</button></div>
-    <div class="section-title" style="margin-top: 24px;"><span>📚 Learn Trading From Zero</span></div>
-    <div class="card" style="text-align:center; padding: 20px;">
-        <p style="color: var(--text-muted); font-size: 13px; line-height:1.8; margin-bottom: 14px;">Master crypto trading with 4 professional courses</p>
-        <button class="btn-block" onclick="showScreen('academyScreen')">View Courses</button>
+
+    <!-- ═══════════ Learn Trading Section (Enhanced) ═══════════ -->
+    <div class="section-title" style="margin-top: 24px;">
+        <span style="font-size: 20px; color: var(--gold); letter-spacing: 1px; font-weight: 900; text-shadow: 0 0 15px rgba(240,185,11,0.35);">
+            🎓 LEARN TRADING FROM ZERO
+        </span>
     </div>
+    <div class="card" style="text-align:center; padding: 20px; border-color: var(--gold); background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -50px; right: -50px; width: 130px; height: 130px; background: radial-gradient(circle, rgba(240,185,11,0.18), transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+
+        <div style="position: relative; z-index: 1; margin-bottom: 16px;">
+            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=600&q=80"
+                 alt="Learn Crypto Trading"
+                 style="width: 100%; height: 180px; object-fit: cover; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 30px rgba(240,185,11,0.15); border: 2px solid rgba(240,185,11,0.3);">
+        </div>
+
+        <h3 style="color: var(--gold); font-size: 17px; font-weight: 900; margin-bottom: 10px; letter-spacing: 0.5px; position: relative; z-index: 1;">
+            📚 From Zero to Pro
+        </h3>
+        <p style="color: var(--text-main); font-size: 13.5px; line-height: 1.75; margin-bottom: 16px; position: relative; z-index: 1;">
+            Master crypto trading with <strong style="color: #FCD535;">4 professional courses</strong> — from basics to advanced strategies. Learn at your own pace, anytime & anywhere.
+        </p>
+
+        <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom: 16px; font-size: 11px; font-weight: 700; position: relative; z-index: 1;">
+            <span style="color: var(--gold); background: rgba(240,185,11,0.12); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(240,185,11,0.3);">📹 20+ Lessons</span>
+            <span style="color: var(--green); background: rgba(14,203,129,0.12); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(14,203,129,0.3);">✅ Beginner Friendly</span>
+            <span style="color: var(--text-main); background: rgba(132,142,156,0.12); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(132,142,156,0.3);">💎 Lifetime Access</span>
+        </div>
+
+        <button class="btn-block" onclick="showScreen('academyScreen')" style="position: relative; z-index: 1; box-shadow: 0 6px 20px rgba(240,185,11,0.4);">
+            🎓 View Courses
+        </button>
+    </div>
+    <!-- ═══════════ End Learn Trading Section ═══════════ -->
 
     <div class="tradix-sub-wrap">
         <h3>💰 Tradix AI — Gold Signals Subscription</h3>
@@ -865,24 +894,15 @@ function updateUI() {
 
 function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
 
-// ============================================================
-// ✅ التحقق من الاشتراك عند الضغط على رابط الاجتماع
-// ============================================================
 function handleJoinMeeting(link) {
     const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-
     if (user.status === 'active') {
-        if (!link || link === '#') {
-            showToast('⚠️ Meeting link not available');
-            return;
-        }
+        if (!link || link === '#') { showToast('⚠️ Meeting link not available'); return; }
         window.open(link, '_blank');
         return;
     }
-
     showToast('🔒 Subscribe to access meetings');
     showScreen('homeScreen');
-
     setTimeout(() => {
         const plansSection = document.querySelector('#homeScreen .section-title');
         if (plansSection) plansSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -926,16 +946,12 @@ async function submitDeposit() {
     } catch (error) { console.error(error); showToast('❌ Submission failed'); }
 }
 
-// ============================================================
-// ============ PUBLIC STATS (MEMBERS + WIN RATE) =============
-// ============================================================
 async function loadPublicStats() {
     try {
         if (!window.firebaseDB) return;
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs } = fs;
-
         try {
             const usersSnap = await getDocs(collection(window.firebaseDB, 'tradelix_users'));
             const count = usersSnap.size;
@@ -949,7 +965,6 @@ async function loadPublicStats() {
             const el = document.getElementById('proofMembers');
             if (el && el.textContent === '+0') el.textContent = '+2.5K';
         }
-
         try {
             const signalsSnap = await getDocs(collection(window.firebaseDB, 'tradelix_signals'));
             let total = 0, wins = 0;
@@ -970,10 +985,6 @@ async function loadPublicStats() {
         }
     } catch(e) { console.error('Stats error:', e); }
 }
-
-// ============================================================
-// ============ COINS =========================================
-// ============================================================
 
 const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
 
@@ -1483,9 +1494,6 @@ document.addEventListener('visibilitychange', () => {
     if (!document.hidden && _pollStarted && _isLoggedIn()) _pollCycle();
 });
 
-// ============================================================
-// ===== MEETINGS — REALTIME LISTENER + JOIN GUARD ============
-// ============================================================
 let _meetingsUnsub = null;
 
 async function loadMeetingsForUser() {
@@ -1494,27 +1502,21 @@ async function loadMeetingsForUser() {
         if (!_isLoggedIn()) return;
         const fs = window.firebaseFS;
         if (!fs) return;
-
         if (_meetingsUnsub) return;
-
         const { collection, query, orderBy, onSnapshot } = fs;
         const q = query(
             collection(window.firebaseDB, 'tradelix_meetings'),
             orderBy('createdAt', 'desc')
         );
-
         _meetingsUnsub = onSnapshot(q, (snap) => {
             const meetings = [];
             snap.forEach(d => meetings.push({ id: d.id, ...d.data() }));
-
             const list = document.getElementById('meetingsList');
             if (!list) return;
-
             if (meetings.length === 0) {
                 list.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p>';
                 return;
             }
-
             list.innerHTML = meetings.map(mt => {
                 let dateStr = '';
                 if (mt.date) {
@@ -1538,7 +1540,6 @@ async function loadMeetingsForUser() {
         }, (err) => {
             console.warn('Meetings snapshot error:', err.message);
         });
-
         console.log('📅 Meetings realtime listener started');
     } catch(e) { console.error('Load meetings error:', e); }
 }
