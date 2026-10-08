@@ -4,44 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tradelix AI - Smarter Crypto Trading</title>
-    
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23181A20' stroke='%23F0B90B' stroke-width='3'/%3E%3Ctext x='50' y='68' font-family='Arial' font-size='52' font-weight='900' fill='%23F0B90B' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
-    
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --bg-main: #181A20;
-            --bg-card: #1E2329;
-            --bg-hover: #2B3139;
-            --gold: #F0B90B;
-            --gold-dark: #D4A017;
-            --green: #0ECB81;
-            --red: #F6465D;
-            --text-main: #EAECEF;
-            --text-muted: #848E9C;
-            --border: #2B3139;
-            --btn-gold: linear-gradient(135deg, #F0B90B, #FCD535);
-        }
-
+        :root { --bg-main: #181A20; --bg-card: #1E2329; --bg-hover: #2B3139; --gold: #F0B90B; --gold-dark: #D4A017; --green: #0ECB81; --red: #F6465D; --text-main: #EAECEF; --text-muted: #848E9C; --border: #2B3139; --btn-gold: linear-gradient(135deg, #F0B90B, #FCD535); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
-
         body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
-
-        #splash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: radial-gradient(circle at center, #1E2329 0%, #181A20 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 99999; transition: opacity 0.8s ease, visibility 0.8s;
-        }
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: radial-gradient(circle at center, #1E2329 0%, #181A20 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.8s ease, visibility 0.8s; }
         #splash.hide { opacity: 0; visibility: hidden; }
-
         .splash-logo { width: 180px; height: 180px; position: relative; margin-bottom: 30px; display: flex; align-items: center; justify-content: center; }
         .splash-logo-circle { width: 100%; height: 100%; border-radius: 50%; position: absolute; border: 4px solid transparent; border-top-color: var(--gold); border-right-color: var(--gold); border-bottom-color: var(--red); border-left-color: var(--red); animation: splashSpin 2s linear infinite; }
         .splash-logo-inner { font-size: 90px; font-weight: 900; color: var(--gold); text-shadow: 0 0 40px rgba(240, 185, 11, 0.8); animation: splashPulse 1.5s ease-in-out infinite; z-index: 2; }
         @keyframes splashSpin { to { transform: rotate(360deg); } }
         @keyframes splashPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.85; } }
-
         .splash-title { font-size: 40px; font-weight: 900; color: var(--gold); letter-spacing: 4px; margin-bottom: 8px; animation: fadeInUp 1s ease 0.5s both; }
         .splash-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 50px; font-weight: 700; letter-spacing: 4px; animation: fadeInUp 1s ease 1s both; }
         .splash-tagline { font-size: 18px; color: var(--text-main); text-align: center; padding: 0 30px; margin-bottom: 40px; line-height: 1.6; animation: fadeInUp 1s ease 1.5s both; }
@@ -49,10 +24,8 @@
         .splash-loading-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #FCD535); border-radius: 4px; animation: loadBar 5s linear forwards; }
         @keyframes loadBar { from { width: 0%; } to { width: 100%; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
         .screen { display: none; width: 100%; max-width: 480px; margin: 0 auto; padding: 20px; min-height: 100vh; padding-bottom: 110px; }
         .screen.active { display: block; }
-
         .auth-container { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; padding: 20px; max-width: 420px; margin: 0 auto; }
         .auth-logo { text-align: center; margin-bottom: 30px; }
         .auth-logo-img { width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #181A20, #2B3139); border: 2px solid var(--gold); display: inline-flex; align-items: center; justify-content: center; font-size: 42px; font-weight: 900; color: var(--gold); margin-bottom: 16px; box-shadow: 0 0 30px rgba(240, 185, 11, 0.4); }
@@ -71,7 +44,6 @@
         .btn-block.outline:active { background: #3C4451 !important; transform: scale(0.98); }
         .auth-switch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); }
         .auth-switch a { color: var(--gold); text-decoration: none; font-weight: 700; cursor: pointer; }
-
         .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
         .header-left { display: flex; align-items: center; gap: 10px; }
         .header-logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--gold), #FCD535); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: #181A20; box-shadow: 0 0 15px rgba(240, 185, 11, 0.5); }
@@ -81,7 +53,6 @@
         .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; position: relative; }
         .notifBadge { position: absolute; top: -4px; right: -4px; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px rgba(246, 70, 93, 0.8); animation: pulse 1.5s infinite; pointer-events: none; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
-
         .ticker-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 0; overflow: hidden; margin-bottom: 16px; position: relative; }
         .ticker-track { display: flex; gap: 30px; animation: tickerMove 40s linear infinite; padding: 0 20px; white-space: nowrap; }
         .ticker-item { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
@@ -90,10 +61,52 @@
         .ticker-item .up { color: var(--green); }
         .ticker-item .down { color: var(--red); }
         @keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
         .section-title { font-size: 14px; font-weight: 900; color: var(--text-main); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; letter-spacing: 1px; }
         .section-title .more { font-size: 12px; color: var(--gold); cursor: pointer; font-weight: 700; }
+
+        /* ===== TOP MAIN COINS (BTC, ETH, BNB, SOL) ===== */
+        .main-coins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .main-coin-card {
+            background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%);
+            border: 1px solid #3C4451;
+            border-radius: 14px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .main-coin-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #F0B90B, #FCD535);
+        }
+        .main-coin-card:active { transform: scale(0.97); border-color: var(--gold); }
+        .main-coin-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .main-coin-icon {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 900;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+        .main-coin-info { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+        .main-coin-symbol { font-size: 15px; font-weight: 900; color: var(--text-main); letter-spacing: 0.5px; }
+        .main-coin-name { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .main-coin-price { font-size: 20px; font-weight: 900; color: var(--text-main); margin-bottom: 6px; letter-spacing: -0.5px; }
+        .main-coin-change {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 900;
+        }
+        .main-coin-change.up { background: rgba(14, 203, 129, 0.15); color: var(--green); }
+        .main-coin-change.down { background: rgba(246, 70, 93, 0.15); color: var(--red); }
 
         .markets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .coin-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.2s; }
@@ -113,15 +126,12 @@
         .plan-info .duration { font-size: 11px; color: var(--text-muted); }
         .plan-buy { background: var(--btn-gold); color: #181A20; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 900; font-size: 13px; cursor: pointer; font-family: inherit; }
         .plan-badge { position: absolute; top: -8px; right: 16px; background: var(--gold); color: #181A20; font-size: 9px; font-weight: 900; padding: 3px 10px; border-radius: 8px; letter-spacing: 1px; }
-
-        /* ===== BOTTOM NAV - FIXED ===== */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: stretch; padding: 0; z-index: 99999; min-height: 62px; touch-action: manipulation; }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--text-muted); font-size: 9px; text-decoration: none; width: 16.66%; min-height: 62px; cursor: pointer; background: none; border: none; font-family: inherit; padding: 8px 4px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; transition: color 0.15s, transform 0.1s; position: relative; z-index: 1; }
         .nav-item.active { color: var(--gold); }
         .nav-item:active { transform: scale(0.92); color: var(--gold); }
         .nav-item .icon { font-size: 22px; line-height: 1; display: block; pointer-events: none; }
         .nav-item span, .nav-item * { pointer-events: none; }
-
         .hidden { display: none !important; }
         .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--gold); color: #181A20; padding: 12px 24px; border-radius: 10px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s; z-index: 99999; max-width: 90%; text-align: center; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -129,10 +139,7 @@
 </head>
 <body>
 <div id="splash">
-    <div class="splash-logo">
-        <div class="splash-logo-circle"></div>
-        <div class="splash-logo-inner">T</div>
-    </div>
+    <div class="splash-logo"><div class="splash-logo-circle"></div><div class="splash-logo-inner">T</div></div>
     <h1 class="splash-title">TRADELIX AI</h1>
     <p class="splash-subtitle">SMARTER TRADING</p>
     <p class="splash-tagline">AI-Powered Crypto Trading Platform<br>Live Signals • Real-Time Markets</p>
@@ -141,11 +148,7 @@
 
 <div id="signupScreen" class="screen">
     <div class="auth-container">
-        <div class="auth-logo">
-            <div class="auth-logo-img">T</div>
-            <h1>TRADELIX AI</h1>
-            <p>SMARTER TRADING</p>
-        </div>
+        <div class="auth-logo"><div class="auth-logo-img">T</div><h1>TRADELIX AI</h1><p>SMARTER TRADING</p></div>
         <h2 class="auth-title">Create Account</h2>
         <div class="input-group"><label>Full Name</label><input type="text" id="signupName" placeholder="Enter your full name"></div>
         <div class="input-group"><label>Phone Number</label><input type="tel" id="signupPhone" placeholder="+974 1234 5678"></div>
@@ -153,30 +156,14 @@
             <label>Country</label>
             <select id="signupCountry">
                 <option value="">Select your country</option>
-                <option value="QA">🇶🇦 Qatar</option>
-                <option value="SA">🇸🇦 Saudi Arabia</option>
-                <option value="AE">🇦🇪 UAE</option>
-                <option value="KW">🇰🇼 Kuwait</option>
-                <option value="BH">🇧🇭 Bahrain</option>
-                <option value="OM">🇴🇲 Oman</option>
-                <option value="EG">🇪🇬 Egypt</option>
-                <option value="JO">🇯🇴 Jordan</option>
-                <option value="MA">🇲🇦 Morocco</option>
-                <option value="DZ">🇩🇿 Algeria</option>
-                <option value="TN">🇹🇳 Tunisia</option>
-                <option value="IQ">🇮🇶 Iraq</option>
-                <option value="SY">🇸🇾 Syria</option>
-                <option value="LB">🇱🇧 Lebanon</option>
-                <option value="YE">🇾🇪 Yemen</option>
-                <option value="SD">🇸🇩 Sudan</option>
-                <option value="LY">🇱🇾 Libya</option>
-                <option value="PS">🇵🇸 Palestine</option>
-                <option value="TR">🇹🇷 Turkey</option>
-                <option value="US">🇺🇸 United States</option>
-                <option value="UK">🇬🇧 United Kingdom</option>
-                <option value="FR">🇫🇷 France</option>
-                <option value="DE">🇩🇪 Germany</option>
-                <option value="OTHER">🌍 Other</option>
+                <option value="QA">🇶🇦 Qatar</option><option value="SA">🇸🇦 Saudi Arabia</option><option value="AE">🇦🇪 UAE</option>
+                <option value="KW">🇰🇼 Kuwait</option><option value="BH">🇧🇭 Bahrain</option><option value="OM">🇴🇲 Oman</option>
+                <option value="EG">🇪🇬 Egypt</option><option value="JO">🇯🇴 Jordan</option><option value="MA">🇲🇦 Morocco</option>
+                <option value="DZ">🇩🇿 Algeria</option><option value="TN">🇹🇳 Tunisia</option><option value="IQ">🇮🇶 Iraq</option>
+                <option value="SY">🇸🇾 Syria</option><option value="LB">🇱🇧 Lebanon</option><option value="YE">🇾🇪 Yemen</option>
+                <option value="SD">🇸🇩 Sudan</option><option value="LY">🇱🇾 Libya</option><option value="PS">🇵🇸 Palestine</option>
+                <option value="TR">🇹🇷 Turkey</option><option value="US">🇺🇸 United States</option><option value="UK">🇬🇧 United Kingdom</option>
+                <option value="FR">🇫🇷 France</option><option value="DE">🇩🇪 Germany</option><option value="OTHER">🌍 Other</option>
             </select>
         </div>
         <div class="input-group"><label>Email Address</label><input type="email" id="signupEmail" placeholder="your@email.com"></div>
@@ -189,11 +176,7 @@
 
 <div id="loginScreen" class="screen">
     <div class="auth-container">
-        <div class="auth-logo">
-            <div class="auth-logo-img">T</div>
-            <h1>TRADELIX AI</h1>
-            <p>SMARTER TRADING</p>
-        </div>
+        <div class="auth-logo"><div class="auth-logo-img">T</div><h1>TRADELIX AI</h1><p>SMARTER TRADING</p></div>
         <h2 class="auth-title">Welcome Back</h2>
         <div class="input-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
         <div class="input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
@@ -204,10 +187,7 @@
 
 <div id="homeScreen" class="screen">
     <div class="header">
-        <div class="header-left">
-            <div class="header-logo">T</div>
-            <div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div>
-        </div>
+        <div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div></div>
         <div class="bell-icon" onclick="openNotifModal()">🔔</div>
     </div>
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold);">
@@ -222,14 +202,17 @@
             </div>
         </div>
     </div>
-    <div class="ticker-wrap">
-        <div class="ticker-track" id="tickerTrack"></div>
-    </div>
-    <div class="section-title"><span>📊 Live Markets</span><span class="more" onclick="refreshMarkets()">Refresh ↻</span></div>
-    <div class="markets-grid" id="marketsGrid"></div>
 
+    <div class="ticker-wrap"><div class="ticker-track" id="tickerTrack"></div></div>
+
+    <div class="section-title"><span>📊 Live Markets</span><span class="more" onclick="refreshMarkets()">Refresh ↻</span></div>
+
+    <!-- 4 main coins -->
+    <div class="main-coins-grid" id="mainCoinsGrid"></div>
+
+    <!-- Markets button -->
     <button class="btn-block outline" onclick="openAllMarkets()" style="margin-bottom: 20px;">
-        🌐 Markets (50 Coins)
+        🌐 Markets (46 Coins)
     </button>
 
     <div class="section-title"><span>💎 Subscription Plans</span></div>
@@ -259,30 +242,16 @@
     </div>
 </div>
 
-<!-- ================= ALL MARKETS SCREEN ================= -->
+<!-- ALL MARKETS SCREEN -->
 <div id="allMarketsScreen" class="screen">
     <div class="header">
-        <div class="header-left">
-            <div class="header-logo">🌐</div>
-            <div class="header-title">
-                <h1>All Markets</h1>
-                <span>BINANCE LIVE • 50 COINS</span>
-            </div>
-        </div>
+        <div class="header-left"><div class="header-logo">🌐</div><div class="header-title"><h1>All Markets</h1><span>BINANCE LIVE • 46 COINS</span></div></div>
         <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
     </div>
-
     <div class="input-group">
         <input type="text" id="marketSearch" placeholder="🔍 Search by name or symbol..." oninput="filterAllMarkets()">
     </div>
-
-    <div class="markets-grid" id="allMarketsGrid">
-        <div class="empty-state" style="grid-column: 1 / -1;">
-            <div style="font-size: 48px; margin-bottom: 12px;">⏳</div>
-            <h3 style="color: var(--gold);">Loading markets...</h3>
-        </div>
-    </div>
-
+    <div class="markets-grid" id="allMarketsGrid"></div>
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="goToSignals()"><span class="icon">📊</span><span>Signals</span></button>
@@ -424,19 +393,16 @@
 
 <div id="profileScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Profile</h1><span>MY ACCOUNT</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
-
     <div class="card" style="text-align: center;">
         <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #FCD535); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #181A20;">T</div>
         <h2 id="profileName" style="font-size: 18px; margin-bottom: 4px;">-</h2>
         <p id="profileEmail" style="color: var(--text-muted); font-size: 12px;">-</p>
     </div>
-
     <div id="notifPermissionBox" class="card" style="border-color: var(--gold); text-align: center;">
         <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">🔔 Enable Notifications</h3>
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px; line-height: 1.5;">Get instant alerts when new signals arrive or your course is activated.</p>
         <button class="btn-block" onclick="requestNotifPermission()">🔔 Allow Notifications</button>
     </div>
-
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">📋 My Information</h3>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Name</span><span id="profName" style="color: var(--text-main); font-weight: 700;">-</span></div>
@@ -444,20 +410,16 @@
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Phone</span><span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span></div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Country</span><span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span></div>
     </div>
-
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
         <div id="myCoursesList"><p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p></div>
     </div>
-
     <div class="card" style="text-align: center;">
         <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">💬 Contact Admin</h3>
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">For support and inquiries</p>
         <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ Send Email</a>
     </div>
-
     <button class="btn-outline" onclick="handleLogout()">🚪 Logout</button>
-
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -523,34 +485,18 @@ async function initFirebase() {
         const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
         const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
         const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-
         const app = appModule.initializeApp(firebaseConfig);
         auth = authModule.getAuth(app);
         db = fsModule.getFirestore(app);
-
         signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
         createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
         signOut = authModule.signOut;
         onAuthStateChanged = authModule.onAuthStateChanged;
-
-        doc = fsModule.doc;
-        setDoc = fsModule.setDoc;
-        getDoc = fsModule.getDoc;
-        serverTimestamp = fsModule.serverTimestamp;
-
-        window.firebaseDB = db;
-        window.firebaseFS = fsModule;
-
+        doc = fsModule.doc; setDoc = fsModule.setDoc; getDoc = fsModule.getDoc; serverTimestamp = fsModule.serverTimestamp;
+        window.firebaseDB = db; window.firebaseFS = fsModule;
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                await loadUserData(user.uid);
-                setTimeout(_startPolling, 2000);
-            } else {
-                _pollStarted = false;
-                _lastUID = null;
-                currentUserData = null;
-                _clearAllUserData();
-            }
+            if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
+            else { _pollStarted = false; _lastUID = null; currentUserData = null; _clearAllUserData(); }
         });
         console.log('✅ Firebase initialized');
     } catch(e) { console.error('Firebase error:', e); }
@@ -578,16 +524,13 @@ async function handleSignup() {
     const email = document.getElementById('signupEmail').value.trim();
     const pass = document.getElementById('signupPassword').value;
     const confirm = document.getElementById('signupConfirm').value;
-
     if (!name || !phone || !country || !email || !pass) { showToast('❌ Please fill all fields'); return; }
     if (pass !== confirm) { showToast('❌ Passwords do not match'); return; }
     if (pass.length < 6) { showToast('❌ Password must be 6+ characters'); return; }
     if (!auth) { showToast('⏳ Please wait...'); return; }
-
     try {
         showToast('⏳ Creating account...');
         _clearAllUserData();
-        
         const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
         const user = userCredential.user;
         await setDoc(doc(db, 'tradelix_users', user.uid), {
@@ -611,7 +554,6 @@ async function handleLogin() {
     const pass = document.getElementById('loginPassword').value;
     if (!email || !pass) { showToast('❌ Enter email and password'); return; }
     if (!auth) { showToast('⏳ Please wait...'); return; }
-
     try {
         showToast('⏳ Logging in...');
         const userCredential = await signInWithEmailAndPassword(auth, email, pass);
@@ -633,19 +575,13 @@ async function loadUserData(uid) {
             currentUserData = { uid: uid, ...userDoc.data() };
             localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
             updateUI();
-        } else {
-            _clearAllUserData();
-        }
-    } catch (error) { 
-        console.error('Error loading user:', error);
-    }
+        } else { _clearAllUserData(); }
+    } catch (error) { console.error('Error loading user:', error); }
 }
 
 async function handleLogout() {
     try { await signOut(auth); } catch (e) { console.error(e); }
-    _pollStarted = false;
-    _lastUID = null;
-    currentUserData = null;
+    _pollStarted = false; _lastUID = null; currentUserData = null;
     _clearAllUserData();
     showToast('👋 Logged out');
     setTimeout(() => showScreen('loginScreen'), 800);
@@ -656,57 +592,36 @@ function _clearAllUserData() {
         const keysToRemove = [];
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
-            if (key && key.startsWith('tradelix_')) {
-                keysToRemove.push(key);
-            }
+            if (key && key.startsWith('tradelix_')) keysToRemove.push(key);
         }
         keysToRemove.forEach(k => localStorage.removeItem(k));
-        console.log('🧹 Cleared all tradelix data (' + keysToRemove.length + ' keys)');
     } catch(e) { console.error(e); }
     document.querySelectorAll('.notifBadge').forEach(b => b.remove());
 }
 
 function updateUI() {
     const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-
     if (document.getElementById('welcomeName')) {
         document.getElementById('welcomeName').textContent = user.name || 'User';
         document.getElementById('welcomeEmail').textContent = user.email || '-';
     }
-
     const badge = document.getElementById('statusBadge');
     if (badge) {
-        if (user.status === 'active') {
-            badge.style.background = 'rgba(14, 203, 129, 0.15)';
-            badge.style.color = '#0ECB81';
-            badge.style.borderColor = '#0ECB81';
-            badge.textContent = 'ACTIVE';
-        } else if (user.status === 'pending') {
-            badge.style.background = 'rgba(240, 185, 11, 0.15)';
-            badge.style.color = '#F0B90B';
-            badge.style.borderColor = '#F0B90B';
-            badge.textContent = 'PENDING';
-        } else {
-            badge.style.background = 'rgba(246, 70, 93, 0.15)';
-            badge.style.color = '#F6465D';
-            badge.style.borderColor = '#F6465D';
-            badge.textContent = 'INACTIVE';
-        }
+        if (user.status === 'active') { badge.style.background = 'rgba(14, 203, 129, 0.15)'; badge.style.color = '#0ECB81'; badge.style.borderColor = '#0ECB81'; badge.textContent = 'ACTIVE'; }
+        else if (user.status === 'pending') { badge.style.background = 'rgba(240, 185, 11, 0.15)'; badge.style.color = '#F0B90B'; badge.style.borderColor = '#F0B90B'; badge.textContent = 'PENDING'; }
+        else { badge.style.background = 'rgba(246, 70, 93, 0.15)'; badge.style.color = '#F6465D'; badge.style.borderColor = '#F6465D'; badge.textContent = 'INACTIVE'; }
     }
-
     const activeBox = document.getElementById('activeSignalBox');
     const lockedBox = document.getElementById('lockedSignalBox');
     if (activeBox && lockedBox) {
         if (user.status === 'active') { activeBox.classList.remove('hidden'); lockedBox.classList.add('hidden'); }
         else { activeBox.classList.add('hidden'); lockedBox.classList.remove('hidden'); }
     }
-
     const subActive = document.getElementById('subActive');
     const subInactive = document.getElementById('subInactive');
     if (subActive && subInactive) {
         if (user.status === 'active') {
-            subActive.classList.remove('hidden');
-            subInactive.classList.add('hidden');
+            subActive.classList.remove('hidden'); subInactive.classList.add('hidden');
             document.getElementById('subPlan').textContent = user.plan || '-';
             document.getElementById('subStart').textContent = user.startDate || '-';
             document.getElementById('subEnd').textContent = user.expiryDate || '-';
@@ -714,22 +629,14 @@ function updateUI() {
                 const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
                 document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
             }
-        } else {
-            subActive.classList.add('hidden');
-            subInactive.classList.remove('hidden');
-        }
+        } else { subActive.classList.add('hidden'); subInactive.classList.remove('hidden'); }
     }
-
     const coursesList = document.getElementById('myCoursesList');
     if (coursesList) {
         const courses = user.courses || [];
-        if (courses.length === 0) {
-            coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-        } else {
-            coursesList.innerHTML = courses.map(c => `<div style="background: #0d0d0d; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
-        }
+        if (courses.length === 0) coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+        else coursesList.innerHTML = courses.map(c => `<div style="background: #0d0d0d; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
     }
-
     if (document.getElementById('profileName')) {
         document.getElementById('profileName').textContent = user.name || '-';
         document.getElementById('profileEmail').textContent = user.email || '-';
@@ -740,10 +647,7 @@ function updateUI() {
     }
 }
 
-function goToSignals() {
-    showScreen('signalsScreen');
-    loadLatestSignal();
-}
+function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
 
 let currentPlan = { price: 0, name: '' };
 function goToDeposit(price, name) {
@@ -768,106 +672,121 @@ async function submitDeposit() {
     if (!hash) { showToast('❌ Enter transaction hash'); return; }
     const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
     if (!user.uid) { showToast('❌ Login first'); return; }
-
     try {
         await setDoc(doc(db, 'tradelix_users', user.uid), {
             status: 'pending', plan: currentPlan.name,
             depositAmount: currentPlan.price, txHash: hash
         }, { merge: true });
-
         currentUserData.status = 'pending';
         currentUserData.plan = currentPlan.name;
         currentUserData.txHash = hash;
         localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
-
         showToast('✅ Submitted! Awaiting review');
         setTimeout(() => { showScreen('homeScreen'); updateUI(); }, 1500);
     } catch (error) { console.error(error); showToast('❌ Submission failed'); }
 }
 
 // ============================================================
-// ============ 50 COINS FROM BINANCE =========================
+// ============ COINS =========================================
 // ============================================================
 
-const COINS = [
-    'BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA',
-    'DOGE', 'DOT', 'AVAX', 'LINK', 'POL', 'LTC',
-    'TRX', 'ATOM', 'UNI', 'SHIB', 'APT', 'ARB',
-    'OP', 'NEAR', 'INJ', 'SUI', 'FIL', 'ETC',
-    'TON', 'ICP', 'RENDER', 'FET', 'SEI', 'TIA',
-    'STX', 'IMX', 'GRT', 'SAND', 'MANA', 'AAVE',
-    'MKR', 'CRV', 'ALGO', 'VET', 'HBAR', 'EOS',
-    'XLM', 'THETA', 'RUNE', 'KAS', 'TAO', 'WIF',
-    'PEPE', 'BONK'
-];
-
-// عملات الصفحة الرئيسية — 4 فقط
+// العملات الرئيسية (تُعرض بشكل جميل أعلى زر Markets)
 const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
 
+// كل العملات (50) — لجلب الأسعار
+const COINS = [
+    'BTC', 'ETH', 'BNB', 'SOL',
+    // باقي 46
+    'XRP', 'ADA', 'DOGE', 'DOT', 'AVAX', 'LINK', 'POL', 'LTC',
+    'TRX', 'ATOM', 'UNI', 'SHIB', 'APT', 'ARB', 'OP', 'NEAR',
+    'INJ', 'SUI', 'FIL', 'ETC', 'TON', 'ICP', 'RENDER', 'FET',
+    'SEI', 'TIA', 'STX', 'IMX', 'GRT', 'SAND', 'MANA', 'AAVE',
+    'MKR', 'CRV', 'ALGO', 'VET', 'HBAR', 'EOS', 'XLM', 'THETA',
+    'RUNE', 'KAS', 'TAO', 'WIF', 'PEPE', 'BONK'
+];
+
+// العملات المعروضة في شاشة Markets (46 فقط — بدون الأربعة الرئيسية)
+const MARKET_COINS = COINS.filter(c => !HOME_COINS.includes(c));
+
 const COIN_INFO = {
-    BTC:    { name: 'Bitcoin',          color: '#F7931A', letter: '₿' },
-    ETH:    { name: 'Ethereum',         color: '#627EEA', letter: 'Ξ' },
-    BNB:    { name: 'BNB',              color: '#F3BA2F', letter: 'B' },
-    SOL:    { name: 'Solana',           color: '#14F195', letter: 'S' },
-    XRP:    { name: 'XRP',              color: '#23292F', letter: 'X' },
-    ADA:    { name: 'Cardano',          color: '#0033AD', letter: 'A' },
-    DOGE:   { name: 'Dogecoin',         color: '#C2A633', letter: 'Ð' },
-    DOT:    { name: 'Polkadot',         color: '#E6007A', letter: '●' },
-    AVAX:   { name: 'Avalanche',        color: '#E84142', letter: 'A' },
-    LINK:   { name: 'Chainlink',        color: '#2A5ADA', letter: 'L' },
-    POL:    { name: 'Polygon',          color: '#8247E5', letter: 'M' },
-    LTC:    { name: 'Litecoin',         color: '#BFBBBB', letter: 'Ł' },
-    TRX:    { name: 'TRON',             color: '#FF060A', letter: 'T' },
-    ATOM:   { name: 'Cosmos',           color: '#2E3148', letter: 'A' },
-    UNI:    { name: 'Uniswap',          color: '#FF007A', letter: 'U' },
-    SHIB:   { name: 'Shiba Inu',        color: '#FFA409', letter: 'S' },
-    APT:    { name: 'Aptos',            color: '#1B1B1B', letter: 'A' },
-    ARB:    { name: 'Arbitrum',         color: '#28A0F0', letter: 'A' },
-    OP:     { name: 'Optimism',         color: '#FF0420', letter: 'O' },
-    NEAR:   { name: 'NEAR',             color: '#000000', letter: 'N' },
-    INJ:    { name: 'Injective',        color: '#00D2FF', letter: 'I' },
-    SUI:    { name: 'Sui',              color: '#4DA2FF', letter: 'S' },
-    FIL:    { name: 'Filecoin',         color: '#0090FF', letter: 'F' },
-    ETC:    { name: 'Ethereum Classic', color: '#328332', letter: 'E' },
-    TON:    { name: 'Toncoin',          color: '#0098EA', letter: 'T' },
-    ICP:    { name: 'Internet Computer',color: '#29ABE2', letter: 'I' },
-    RENDER: { name: 'Render',           color: '#000000', letter: 'R' },
-    FET:    { name: 'Fetch.ai',         color: '#1D4EFF', letter: 'F' },
-    SEI:    { name: 'Sei',              color: '#9E1F19', letter: 'S' },
-    TIA:    { name: 'Celestia',         color: '#7B2BF9', letter: 'T' },
-    STX:    { name: 'Stacks',           color: '#5546FF', letter: 'S' },
-    IMX:    { name: 'Immutable',        color: '#0F0F0F', letter: 'I' },
-    GRT:    { name: 'The Graph',        color: '#6747ED', letter: 'G' },
-    SAND:   { name: 'The Sandbox',      color: '#00ADEF', letter: 'S' },
-    MANA:   { name: 'Decentraland',     color: '#FF2D55', letter: 'M' },
-    AAVE:   { name: 'Aave',             color: '#B6509E', letter: 'A' },
-    MKR:    { name: 'Maker',            color: '#1AAB9B', letter: 'M' },
-    CRV:    { name: 'Curve DAO',        color: '#3465A4', letter: 'C' },
-    ALGO:   { name: 'Algorand',         color: '#000000', letter: 'A' },
-    VET:    { name: 'VeChain',          color: '#15BDFF', letter: 'V' },
-    HBAR:   { name: 'Hedera',           color: '#000000', letter: 'H' },
-    EOS:    { name: 'EOS',              color: '#000000', letter: 'E' },
-    XLM:    { name: 'Stellar',          color: '#7D00FF', letter: 'X' },
-    THETA:  { name: 'Theta Network',    color: '#2AB8E6', letter: 'T' },
-    RUNE:   { name: 'THORChain',        color: '#33FF99', letter: 'R' },
-    KAS:    { name: 'Kaspa',            color: '#70C7BA', letter: 'K' },
-    TAO:    { name: 'Bittensor',        color: '#000000', letter: 'T' },
-    WIF:    { name: 'dogwifhat',        color: '#C0A080', letter: 'W' },
-    PEPE:   { name: 'Pepe',             color: '#3D8B37', letter: 'P' },
-    BONK:   { name: 'Bonk',             color: '#FC8C1C', letter: 'B' }
+    BTC: { name: 'Bitcoin', color: '#F7931A', letter: '₿' },
+    ETH: { name: 'Ethereum', color: '#627EEA', letter: 'Ξ' },
+    BNB: { name: 'BNB', color: '#F3BA2F', letter: 'B' },
+    SOL: { name: 'Solana', color: '#14F195', letter: 'S' },
+    XRP: { name: 'XRP', color: '#23292F', letter: 'X' },
+    ADA: { name: 'Cardano', color: '#0033AD', letter: 'A' },
+    DOGE: { name: 'Dogecoin', color: '#C2A633', letter: 'Ð' },
+    DOT: { name: 'Polkadot', color: '#E6007A', letter: '●' },
+    AVAX: { name: 'Avalanche', color: '#E84142', letter: 'A' },
+    LINK: { name: 'Chainlink', color: '#2A5ADA', letter: 'L' },
+    POL: { name: 'Polygon', color: '#8247E5', letter: 'M' },
+    LTC: { name: 'Litecoin', color: '#BFBBBB', letter: 'Ł' },
+    TRX: { name: 'TRON', color: '#FF060A', letter: 'T' },
+    ATOM: { name: 'Cosmos', color: '#2E3148', letter: 'A' },
+    UNI: { name: 'Uniswap', color: '#FF007A', letter: 'U' },
+    SHIB: { name: 'Shiba Inu', color: '#FFA409', letter: 'S' },
+    APT: { name: 'Aptos', color: '#1B1B1B', letter: 'A' },
+    ARB: { name: 'Arbitrum', color: '#28A0F0', letter: 'A' },
+    OP: { name: 'Optimism', color: '#FF0420', letter: 'O' },
+    NEAR: { name: 'NEAR', color: '#000000', letter: 'N' },
+    INJ: { name: 'Injective', color: '#00D2FF', letter: 'I' },
+    SUI: { name: 'Sui', color: '#4DA2FF', letter: 'S' },
+    FIL: { name: 'Filecoin', color: '#0090FF', letter: 'F' },
+    ETC: { name: 'Ethereum Classic', color: '#328332', letter: 'E' },
+    TON: { name: 'Toncoin', color: '#0098EA', letter: 'T' },
+    ICP: { name: 'Internet Computer', color: '#29ABE2', letter: 'I' },
+    RENDER: { name: 'Render', color: '#000000', letter: 'R' },
+    FET: { name: 'Fetch.ai', color: '#1D4EFF', letter: 'F' },
+    SEI: { name: 'Sei', color: '#9E1F19', letter: 'S' },
+    TIA: { name: 'Celestia', color: '#7B2BF9', letter: 'T' },
+    STX: { name: 'Stacks', color: '#5546FF', letter: 'S' },
+    IMX: { name: 'Immutable', color: '#0F0F0F', letter: 'I' },
+    GRT: { name: 'The Graph', color: '#6747ED', letter: 'G' },
+    SAND: { name: 'The Sandbox', color: '#00ADEF', letter: 'S' },
+    MANA: { name: 'Decentraland', color: '#FF2D55', letter: 'M' },
+    AAVE: { name: 'Aave', color: '#B6509E', letter: 'A' },
+    MKR: { name: 'Maker', color: '#1AAB9B', letter: 'M' },
+    CRV: { name: 'Curve DAO', color: '#3465A4', letter: 'C' },
+    ALGO: { name: 'Algorand', color: '#000000', letter: 'A' },
+    VET: { name: 'VeChain', color: '#15BDFF', letter: 'V' },
+    HBAR: { name: 'Hedera', color: '#000000', letter: 'H' },
+    EOS: { name: 'EOS', color: '#000000', letter: 'E' },
+    XLM: { name: 'Stellar', color: '#7D00FF', letter: 'X' },
+    THETA: { name: 'Theta Network', color: '#2AB8E6', letter: 'T' },
+    RUNE: { name: 'THORChain', color: '#33FF99', letter: 'R' },
+    KAS: { name: 'Kaspa', color: '#70C7BA', letter: 'K' },
+    TAO: { name: 'Bittensor', color: '#000000', letter: 'T' },
+    WIF: { name: 'dogwifhat', color: '#C0A080', letter: 'W' },
+    PEPE: { name: 'Pepe', color: '#3D8B37', letter: 'P' },
+    BONK: { name: 'Bonk', color: '#FC8C1C', letter: 'B' }
 };
 
 let prices = {};
 
+// ===== Fetch prices in batches (أكثر أماناً من طلب واحد كبير) =====
 async function fetchPrices() {
     try {
-        const symbols = COINS.map(c => `"${c}USDT"`).join(',');
-        const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('API Error');
-        const data = await res.json();
-
-        data.forEach(item => {
+        // تقسيم إلى دفعات من 15 عملة
+        const batches = [];
+        for (let i = 0; i < COINS.length; i += 15) {
+            batches.push(COINS.slice(i, i + 15));
+        }
+        
+        const allResults = [];
+        for (const batch of batches) {
+            try {
+                const symbols = batch.map(c => `"${c}USDT"`).join(',');
+                const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
+                const res = await fetch(url);
+                if (!res.ok) continue;
+                const data = await res.json();
+                allResults.push(...data);
+            } catch(e) {
+                console.warn('Batch failed:', e.message);
+            }
+        }
+        
+        allResults.forEach(item => {
             const coin = item.symbol.replace('USDT', '');
             prices[coin] = {
                 price: parseFloat(item.lastPrice),
@@ -877,6 +796,7 @@ async function fetchPrices() {
                 vol: parseFloat(item.volume)
             };
         });
+        
         renderHomeMarkets();
         renderAllMarkets();
         renderTicker();
@@ -906,9 +826,9 @@ function renderTicker() {
     track.innerHTML = itemsHtml + itemsHtml;
 }
 
-// ===== HOME MARKETS (4 main coins) =====
+// ===== HOME MARKETS — 4 main coins (beautiful cards) =====
 function renderHomeMarkets() {
-    const grid = document.getElementById('marketsGrid');
+    const grid = document.getElementById('mainCoinsGrid');
     if (!grid) return;
 
     grid.innerHTML = HOME_COINS.map(coin => {
@@ -917,19 +837,22 @@ function renderHomeMarkets() {
         const cls = p.change >= 0 ? 'up' : 'down';
         const sign = p.change >= 0 ? '+' : '';
         return `
-            <div class="coin-card" onclick="openCoinChart('${coin}')">
-                <div class="coin-head">
-                    <div class="coin-icon" style="background:${info.color}; color:#fff;">${info.letter}</div>
-                    <div class="coin-symbol">${coin}</div>
+            <div class="main-coin-card" onclick="openCoinChart('${coin}')">
+                <div class="main-coin-head">
+                    <div class="main-coin-icon" style="background:${info.color}; color:#fff;">${info.letter}</div>
+                    <div class="main-coin-info">
+                        <div class="main-coin-symbol">${coin}</div>
+                        <div class="main-coin-name">${info.name}</div>
+                    </div>
                 </div>
-                <div class="coin-price">${fmtPrice(p.price)}</div>
-                <div class="coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div>
+                <div class="main-coin-price">${fmtPrice(p.price)}</div>
+                <div class="main-coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div>
             </div>
         `;
     }).join('');
 }
 
-// ===== ALL MARKETS (50 coins) =====
+// ===== ALL MARKETS (46 coins — excluding main 4) =====
 function renderAllMarkets() {
     const grid = document.getElementById('allMarketsGrid');
     if (!grid) return;
@@ -937,7 +860,7 @@ function renderAllMarkets() {
     const searchInput = document.getElementById('marketSearch');
     const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-    const filtered = COINS.filter(coin => {
+    const filtered = MARKET_COINS.filter(coin => {
         if (!query) return true;
         const info = COIN_INFO[coin];
         return coin.toLowerCase().includes(query) ||
@@ -1009,10 +932,8 @@ function loadTradingViewChart() {
     container.innerHTML = '';
     const iframe = document.createElement('iframe');
     iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:${currentChartSymbol}USDT&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en`;
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.style.border = 'none';
-    iframe.style.borderRadius = '10px';
+    iframe.style.width = '100%'; iframe.style.height = '100%';
+    iframe.style.border = 'none'; iframe.style.borderRadius = '10px';
     container.appendChild(iframe);
 }
 
@@ -1025,18 +946,14 @@ async function loadLatestSignal() {
         const u = _getUser();
         if (!u.uid) return;
         if (u.status !== 'active') return;
-        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
-
         let snap;
         try {
             const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(10));
             snap = await getDocs(q);
-        } catch(e) {
-            snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals'));
-        }
+        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
 
         let latest = null;
         snap.forEach(d => {
@@ -1050,7 +967,6 @@ async function loadLatestSignal() {
 
         const pairEl = document.getElementById('signalPair');
         if (pairEl) pairEl.textContent = latest ? (latest.coin || 'BTC') + '/USDT' : 'No active signal';
-
         const dirBadge = document.getElementById('signalDirectionBadge');
         if (dirBadge) {
             const dir = latest ? (latest.direction || 'BUY') : '-';
@@ -1060,31 +976,22 @@ async function loadLatestSignal() {
             dirBadge.style.color = isBuy ? '#0ECB81' : '#F6465D';
             dirBadge.style.borderColor = isBuy ? '#0ECB81' : '#F6465D';
         }
-
         const entryEl = document.getElementById('signalEntry');
         if (entryEl) entryEl.textContent = latest ? ('$' + (latest.entry || '-')) : '-';
-
         const slEl = document.getElementById('signalSL');
         if (slEl) slEl.textContent = latest ? ('$' + (latest.stopLoss || '-')) : '-';
-
         const tpEl = document.getElementById('signalTP');
         if (tpEl) tpEl.textContent = latest ? ('$' + (latest.takeProfit || '-')) : '-';
-
         const confEl = document.getElementById('signalConf');
         if (confEl) confEl.textContent = latest ? ((latest.confidence || '85') + '%') : '-';
-
         const notesEl = document.getElementById('signalNotes');
         if (notesEl) {
             if (latest && latest.notes && latest.notes.trim()) {
                 notesEl.textContent = '📝 ' + latest.notes;
                 notesEl.style.display = 'block';
-            } else {
-                notesEl.style.display = 'none';
-            }
+            } else { notesEl.style.display = 'none'; }
         }
-    } catch(e) {
-        console.warn('Load signal error:', e.message);
-    }
+    } catch(e) { console.warn('Load signal error:', e.message); }
 }
 
 // ===== NOTIFICATIONS =====
@@ -1097,16 +1004,8 @@ function setNotifs(arr) { localStorage.setItem('tradelix_notifs', JSON.stringify
 function openNotifModal() {
     const notifs = getNotifs();
     const list = document.getElementById('notifList');
-    if (notifs.length === 0) {
-        list.innerHTML = '<p style="color:#848E9C; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
-    } else {
-        list.innerHTML = notifs.map(n => 
-            '<div style="background:#181A20; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#2B3139' : '#F0B90B') + ';">' +
-                '<div style="color:#F0B90B; font-weight:700; font-size:13px; margin-bottom:4px;">' + n.message + '</div>' +
-                '<div style="color:#848E9C; font-size:11px;">' + n.time + '</div>' +
-            '</div>'
-        ).join('');
-    }
+    if (notifs.length === 0) list.innerHTML = '<p style="color:#848E9C; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
+    else list.innerHTML = notifs.map(n => '<div style="background:#181A20; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#2B3139' : '#F0B90B') + ';"><div style="color:#F0B90B; font-weight:700; font-size:13px; margin-bottom:4px;">' + n.message + '</div><div style="color:#848E9C; font-size:11px;">' + n.time + '</div></div>').join('');
     document.getElementById('notifModal').style.display = 'block';
     notifs.forEach(n => n.read = true);
     setNotifs(notifs);
@@ -1121,11 +1020,7 @@ function updateBadge() {
     document.querySelectorAll('.bell-icon').forEach(bell => {
         let badge = bell.querySelector('.notifBadge');
         if (unread > 0) {
-            if (!badge) {
-                badge = document.createElement('span');
-                badge.className = 'notifBadge';
-                bell.appendChild(badge);
-            }
+            if (!badge) { badge = document.createElement('span'); badge.className = 'notifBadge'; bell.appendChild(badge); }
             badge.textContent = unread;
         } else if (badge) badge.remove();
     });
@@ -1133,35 +1028,28 @@ function updateBadge() {
 
 function addNotif(message) {
     if (!auth || !auth.currentUser) return;
-    
     const notifs = getNotifs();
     const recent = notifs.find(n => n.message === message && (Date.now() - n.id) < 30000);
     if (recent) return;
-    
     notifs.unshift({ id: Date.now(), message: message, time: new Date().toLocaleString('en-GB'), read: false });
     if (notifs.length > 50) notifs.length = 50;
     setNotifs(notifs);
-
     updateBadge();
-
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         try { new Notification('Tradelix AI', { body: message }); } catch(e){}
     }
     try {
         const c = new (window.AudioContext || window.webkitAudioContext)();
         [0, 0.3].forEach(d => {
-            const o = c.createOscillator();
-            const g = c.createGain();
+            const o = c.createOscillator(); const g = c.createGain();
             o.connect(g); g.connect(c.destination);
             o.frequency.value = 880;
             g.gain.setValueAtTime(0.3, c.currentTime + d);
             g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + d + 0.2);
-            o.start(c.currentTime + d);
-            o.stop(c.currentTime + d + 0.2);
+            o.start(c.currentTime + d); o.stop(c.currentTime + d + 0.2);
         });
     } catch(e){}
     if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-
     if (typeof showToast === 'function') { try { showToast(message); } catch(e) {} }
 }
 
@@ -1195,66 +1083,35 @@ function hideNetlifyBadge() {
 hideNetlifyBadge();
 setInterval(hideNetlifyBadge, 1000);
 
-// ============================================================
-// ============ NOTIFICATIONS POLLING v6 ======================
-// ============================================================
-
+// ===== POLLING =====
 let _pollStarted = false;
 let _lastUID = null;
 
-function _getUser() {
-    try { return JSON.parse(localStorage.getItem('tradelix_user') || '{}'); }
-    catch(e) { return {}; }
-}
-
-function _getLastNotified() {
-    const u = _getUser();
-    return parseInt(localStorage.getItem('tradelix_last_notified_' + (u.uid || 'anon')) || '0');
-}
-
-function _setLastNotified(ts) {
-    const u = _getUser();
-    localStorage.setItem('tradelix_last_notified_' + (u.uid || 'anon'), String(ts));
-}
-
-function _isSignalForUser(sig, uid) {
-    const targetUID = sig.targetUID || '';
-    if (!targetUID) return true;
-    return targetUID === uid;
-}
-
-function _isLoggedIn() {
-    return auth && auth.currentUser && !auth.currentUser.isAnonymous;
-}
+function _getUser() { try { return JSON.parse(localStorage.getItem('tradelix_user') || '{}'); } catch(e) { return {}; } }
+function _getLastNotified() { const u = _getUser(); return parseInt(localStorage.getItem('tradelix_last_notified_' + (u.uid || 'anon')) || '0'); }
+function _setLastNotified(ts) { const u = _getUser(); localStorage.setItem('tradelix_last_notified_' + (u.uid || 'anon'), String(ts)); }
+function _isSignalForUser(sig, uid) { const targetUID = sig.targetUID || ''; if (!targetUID) return true; return targetUID === uid; }
+function _isLoggedIn() { return auth && auth.currentUser && !auth.currentUser.isAnonymous; }
 
 async function _checkSignals() {
     try {
         if (!_isLoggedIn()) return;
-        
         const u = _getUser();
         if (!u.uid) return;
         if (u.uid !== auth.currentUser.uid) return;
-        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
-
         let snap;
         try {
             const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(30));
             snap = await getDocs(q);
         } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
-
-        if (u.status !== 'active') {
-            _setLastNotified(Date.now());
-            return;
-        }
-
+        if (u.status !== 'active') { _setLastNotified(Date.now()); return; }
         const lastNotified = _getLastNotified();
         const now = Date.now();
         const startFrom = lastNotified > 0 ? lastNotified : now;
         let maxNotified = lastNotified;
-
         const newSignals = [];
         snap.forEach(d => {
             const sig = d.data();
@@ -1263,45 +1120,35 @@ async function _checkSignals() {
             if (!_isSignalForUser(sig, u.uid)) return;
             newSignals.push({ id: d.id, ...sig, _createdMs: createdMs });
         });
-
         newSignals.sort((a, b) => a._createdMs - b._createdMs);
         newSignals.forEach(sig => {
             const msg = `📊 ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ $${sig.entry || ''}`;
             addNotif(msg);
             if (sig._createdMs > maxNotified) maxNotified = sig._createdMs;
         });
-
         _setLastNotified(newSignals.length > 0 ? maxNotified : now);
-        if (newSignals.length > 0) {
-            console.log('✅ Sent ' + newSignals.length + ' signal notification(s)');
-            loadLatestSignal();
-        }
+        if (newSignals.length > 0) { console.log('✅ Sent ' + newSignals.length + ' signal notification(s)'); loadLatestSignal(); }
     } catch(e) { console.warn('Signal poll error:', e.message); }
 }
 
 async function _checkMeetings() {
     try {
         if (!_isLoggedIn()) return;
-        
         const u = _getUser();
         if (!u.uid) return;
         if (u.uid !== auth.currentUser.uid) return;
-        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
-
         let snap;
         try {
             const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'), limit(20));
             snap = await getDocs(q);
         } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings')); }
-
         const seenKey = 'tradelix_seen_meetings_' + u.uid;
         const seen = new Set(JSON.parse(localStorage.getItem(seenKey) || '[]'));
         const isFirst = !localStorage.getItem(seenKey);
         let count = 0;
-
         snap.forEach(d => {
             if (seen.has(d.id)) return;
             seen.add(d.id);
@@ -1310,32 +1157,25 @@ async function _checkMeetings() {
             addNotif(`📅 New Meeting: ${meet.title || 'Live Session'}`);
             count++;
         });
-
         localStorage.setItem(seenKey, JSON.stringify([...seen].slice(-100)));
-        if (count > 0) console.log('✅ Sent ' + count + ' meeting notification(s)');
     } catch(e) { console.warn('Meeting poll error:', e.message); }
 }
 
 async function _refreshUserData() {
     try {
         if (!_isLoggedIn()) return;
-        
         const u = _getUser();
         if (!u.uid) return;
         if (u.uid !== auth.currentUser.uid) return;
-        
         const userDoc = await getDoc(doc(window.firebaseDB, 'tradelix_users', u.uid));
         if (!userDoc.exists()) return;
-
         const data = userDoc.data();
         const oldStatus = u.status || 'inactive';
         const newStatus = data.status || 'inactive';
-
         if (oldStatus !== newStatus) {
             if (newStatus === 'active') {
                 _setLastNotified(Date.now());
-                setNotifs([]);
-                updateBadge();
+                setNotifs([]); updateBadge();
                 addNotif('🎉 Your subscription is activated! Enjoy exclusive signals');
             } else if (newStatus === 'pending') {
                 addNotif('⏳ Your request has been received — awaiting admin review');
@@ -1343,38 +1183,22 @@ async function _refreshUserData() {
                 addNotif('❌ Your request was rejected. Contact support');
             }
         }
-
         const oldCourses = JSON.stringify(u.courses || []);
         const newCourses = JSON.stringify(data.courses || []);
-        if (oldCourses !== newCourses && newCourses !== '[]') {
-            addNotif('🎓 A new course has been activated in your account!');
-        }
-
+        if (oldCourses !== newCourses && newCourses !== '[]') addNotif('🎓 A new course has been activated in your account!');
         const updated = { uid: u.uid, ...data };
         localStorage.setItem('tradelix_user', JSON.stringify(updated));
         if (currentUserData) Object.assign(currentUserData, data);
-
         updateUI();
     } catch(e) { console.warn('User refresh error:', e.message); }
 }
 
 async function _pollCycle() {
     if (!window.firebaseDB) return;
-    
-    if (!_isLoggedIn()) {
-        _pollStarted = false;
-        return;
-    }
-    
+    if (!_isLoggedIn()) { _pollStarted = false; return; }
     const u = _getUser();
     if (!u.uid) return;
     if (u.uid !== auth.currentUser.uid) return;
-
-    if (_lastUID !== u.uid) {
-        _lastUID = u.uid;
-        console.log('🔄 User changed:', u.uid.slice(0, 8));
-    }
-
     await _refreshUserData();
     await _checkSignals();
     await _checkMeetings();
@@ -1385,23 +1209,14 @@ async function _pollCycle() {
 function _startPolling() {
     if (_pollStarted) return;
     if (!window.firebaseDB) { setTimeout(_startPolling, 1500); return; }
-    
     if (!_isLoggedIn()) return;
-    
     const u = _getUser();
     if (!u.uid) { setTimeout(_startPolling, 2000); return; }
     if (u.uid !== auth.currentUser.uid) return;
-
     _pollStarted = true;
-    console.log('🚀 Polling v6 started for user:', u.uid.slice(0, 8));
+    console.log('🚀 Polling started for user:', u.uid.slice(0, 8));
     setTimeout(_pollCycle, 2000);
-    setInterval(() => {
-        if (_isLoggedIn()) {
-            _pollCycle();
-        } else {
-            _pollStarted = false;
-        }
-    }, 5000);
+    setInterval(() => { if (_isLoggedIn()) _pollCycle(); else _pollStarted = false; }, 5000);
 }
 
 document.addEventListener('visibilitychange', () => {
@@ -1412,35 +1227,28 @@ async function loadMeetingsForUser() {
     try {
         if (!window.firebaseDB) return;
         if (!_isLoggedIn()) return;
-        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
-
         let snap;
         try {
             const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'), limit(20));
             snap = await getDocs(q);
         } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings')); }
-
         const meetings = [];
         snap.forEach(d => meetings.push({ id: d.id, ...d.data() }));
         meetings.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-
         const list = document.getElementById('meetingsList');
         if (!list) return;
-
         if (meetings.length === 0) {
             list.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p>';
             return;
         }
-
         list.innerHTML = meetings.map(mt => {
             let dateStr = '';
             if (mt.date) {
-                try {
-                    dateStr = new Date(mt.date).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-                } catch(e) { dateStr = mt.date; }
+                try { dateStr = new Date(mt.date).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+                catch(e) { dateStr = mt.date; }
             }
             return `
                 <div style="border-bottom: 1px solid var(--border); padding: 14px 0;">
@@ -1459,12 +1267,10 @@ window.addEventListener('load', async () => {
     await initFirebase();
     fetchPrices();
     setInterval(fetchPrices, 10000);
-
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         const box = document.getElementById('notifPermissionBox');
         if (box) box.style.display = 'none';
     }
-
     updateBadge();
 });
 
