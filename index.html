@@ -196,7 +196,7 @@
         <div class="auth-logo"><div class="auth-logo-img">T</div><h1>TRADELIX AI</h1><p>SMARTER TRADING</p></div>
         <h2 class="auth-title">Create Account</h2>
         <div class="input-group"><label>Full Name</label><input type="text" id="signupName" placeholder="Enter your full name"></div>
-        <div class="input-group"><label>Phone Number</label><input type="tel" id="signupPhone" placeholder="+974 1234 5678"></div>
+        <div class="input-group"><label>Phone Number</label><input type="tel" id="signupPhone" placeholder=""></div>
         <div class="input-group">
             <label>Country</label>
             <select id="signupCountry">
@@ -767,7 +767,6 @@ async function loadPublicStats() {
             }
         } catch(e) {
             console.warn('Members count error:', e.message);
-            // fallback
             const el = document.getElementById('proofMembers');
             if (el && el.textContent === '+0') el.textContent = '+2.5K';
         }
