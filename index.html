@@ -64,14 +64,12 @@
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
         .section-title { font-size: 14px; font-weight: 900; color: var(--text-main); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; letter-spacing: 1px; }
         .section-title .more { font-size: 12px; color: var(--gold); cursor: pointer; font-weight: 700; }
-
         .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .proof-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 12px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; position: relative; overflow: hidden; }
         .proof-card:active { transform: scale(0.98); border-color: var(--gold); }
         .proof-card .proof-icon { font-size: 34px; line-height: 1; margin-bottom: 4px; filter: drop-shadow(0 0 8px rgba(240, 185, 11, 0.3)); }
         .proof-card .proof-value { font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: -0.5px; line-height: 1; text-shadow: 0 0 12px rgba(240, 185, 11, 0.35); }
         .proof-card .proof-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; }
-
         .tradix-sub-wrap { background: #1E1E1E; border: 1px solid #2A2A2A; border-radius: 16px; padding: 20px 16px; margin-bottom: 16px; text-align: center; }
         .tradix-sub-wrap h3 { color: #C0C0C0; font-size: 17px; font-weight: 900; margin-bottom: 8px; letter-spacing: 0.5px; }
         .tradix-sub-wrap .sub-desc { color: #AAAAAA; font-size: 12.5px; line-height: 1.7; margin-bottom: 16px; }
@@ -86,7 +84,6 @@
         .tradix-price-right { color: #C0C0C0; font-weight: 900; font-size: 14.5px; }
         .tradix-price-item.vip .tradix-price-right { color: #E5E5E5; }
         .tradix-sub-note { color: #999999; font-size: 11px; margin-top: 6px; line-height: 1.6; }
-
         .main-coins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .main-coin-card { background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border: 1px solid #3C4451; border-radius: 14px; padding: 14px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
         .main-coin-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #F0B90B, #FCD535); }
@@ -100,7 +97,6 @@
         .main-coin-change { display: inline-block; padding: 3px 10px; border-radius: 8px; font-size: 12px; font-weight: 900; }
         .main-coin-change.up { background: rgba(14, 203, 129, 0.15); color: var(--green); }
         .main-coin-change.down { background: rgba(246, 70, 93, 0.15); color: var(--red); }
-
         .markets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .coin-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.2s; }
         .coin-card:active { transform: scale(0.98); border-color: var(--gold); }
@@ -111,7 +107,6 @@
         .coin-change { font-size: 12px; font-weight: 700; }
         .coin-change.up { color: var(--green); }
         .coin-change.down { color: var(--red); }
-
         .plan-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 12px; position: relative; display: flex; justify-content: space-between; align-items: center; }
         .plan-card.premium { border-color: var(--gold); background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); }
         .plan-card.vip-lifetime { border-color: #FCD535; background: linear-gradient(135deg, #2B3139 0%, #3C4451 100%); box-shadow: 0 0 20px rgba(240, 185, 11, 0.3); }
@@ -690,6 +685,33 @@ function updateUI() {
 }
 
 function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
+
+// ============================================================
+// ✅ دالة جديدة: التحقق من الاشتراك عند الضغط على رابط الاجتماع
+// ============================================================
+function handleJoinMeeting(link) {
+    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+
+    // ✅ مشترك → افتح الاجتماع مباشرة
+    if (user.status === 'active') {
+        if (!link || link === '#') {
+            showToast('⚠️ Meeting link not available');
+            return;
+        }
+        window.open(link, '_blank');
+        return;
+    }
+
+    // ❌ غير مشترك → حوّله إلى صفحة الباقات
+    showToast('🔒 Subscribe to access meetings');
+    showScreen('homeScreen');
+
+    // نزول تلقائي إلى قسم الباقات بعد تحميل الصفحة
+    setTimeout(() => {
+        const plansSection = document.querySelector('#homeScreen .section-title');
+        if (plansSection) plansSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 400);
+}
 
 let currentPlan = { price: 0, name: '' };
 function goToDeposit(price, name) {
@@ -1286,7 +1308,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ============================================================
-// ===== MEETINGS — REALTIME LISTENER (onSnapshot) ============
+// ===== MEETINGS — REALTIME LISTENER + JOIN GUARD ============
 // ============================================================
 let _meetingsUnsub = null;
 
@@ -1297,12 +1319,9 @@ async function loadMeetingsForUser() {
         const fs = window.firebaseFS;
         if (!fs) return;
 
-        // إذا كان المستمع يعمل بالفعل، لا نكرره
         if (_meetingsUnsub) return;
 
         const { collection, query, orderBy, onSnapshot } = fs;
-
-        // ✅ نستخدم onSnapshot لتحديث القائمة فورًا عند الحذف/الإضافة من الأدمن
         const q = query(
             collection(window.firebaseDB, 'tradelix_meetings'),
             orderBy('createdAt', 'desc')
@@ -1330,12 +1349,14 @@ async function loadMeetingsForUser() {
                         });
                     } catch(e) { dateStr = mt.date; }
                 }
+                // ✅ استخدمنا onclick بدل <a> مباشر للتحقق من الاشتراك
+                const safeLink = (mt.link || '').replace(/'/g, "\\'");
                 return `
                     <div style="border-bottom: 1px solid var(--border); padding: 14px 0;">
                         <div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>
                         ${dateStr ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px;">🕐 ${dateStr}</div>` : ''}
                         ${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 10px;">${mt.description}</div>` : ''}
-                        <a href="${mt.link || '#'}" target="_blank" rel="noopener" style="display:block; margin-top: 8px; padding: 12px; background: linear-gradient(135deg, #F0B90B, #FCD535); color: #181A20; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px;">🎥 Join Meeting</a>
+                        <button onclick="handleJoinMeeting('${safeLink}')" style="display:block; width:100%; margin-top: 8px; padding: 12px; background: linear-gradient(135deg, #F0B90B, #FCD535); color: #181A20; border: none; cursor: pointer; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px; font-family: inherit;">🎥 Join Meeting</button>
                     </div>
                 `;
             }).join('');
