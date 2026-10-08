@@ -67,6 +67,8 @@
         .btn-block { width: 100%; padding: 15px; border-radius: 10px; font-weight: 900; font-size: 15px; cursor: pointer; border: none; background: var(--btn-gold); color: #181A20; margin-top: 8px; transition: 0.2s; font-family: inherit; letter-spacing: 1px; }
         .btn-block:active { transform: scale(0.98); opacity: 0.9; }
         .btn-outline { width: 100%; padding: 15px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-top: 8px; font-family: inherit; }
+        .btn-block.outline { background: #2B3139 !important; border: 2px solid var(--gold) !important; color: var(--gold) !important; font-weight: 900 !important; font-size: 15px; }
+        .btn-block.outline:active { background: #3C4451 !important; transform: scale(0.98); }
         .auth-switch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); }
         .auth-switch a { color: var(--gold); text-decoration: none; font-weight: 700; cursor: pointer; }
 
@@ -226,8 +228,8 @@
     <div class="section-title"><span>📊 Live Markets</span><span class="more" onclick="refreshMarkets()">Refresh ↻</span></div>
     <div class="markets-grid" id="marketsGrid"></div>
 
-    <button class="btn-block outline" onclick="openAllMarkets()" style="margin-bottom: 20px; border-color: var(--gold); color: var(--gold); font-weight: 900;">
-        🌐 عرض جميع الأسواق (50 عملة)
+    <button class="btn-block outline" onclick="openAllMarkets()" style="margin-bottom: 20px;">
+        🌐 Markets (50 Coins)
     </button>
 
     <div class="section-title"><span>💎 Subscription Plans</span></div>
@@ -271,7 +273,7 @@
     </div>
 
     <div class="input-group">
-        <input type="text" id="marketSearch" placeholder="🔍 ابحث عن عملة بالاسم أو الرمز..." oninput="filterAllMarkets()">
+        <input type="text" id="marketSearch" placeholder="🔍 Search by name or symbol..." oninput="filterAllMarkets()">
     </div>
 
     <div class="markets-grid" id="allMarketsGrid">
@@ -788,18 +790,19 @@ async function submitDeposit() {
 // ============================================================
 
 const COINS = [
-    // === الأساسية ===
     'BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA',
     'DOGE', 'DOT', 'AVAX', 'LINK', 'POL', 'LTC',
     'TRX', 'ATOM', 'UNI', 'SHIB', 'APT', 'ARB',
     'OP', 'NEAR', 'INJ', 'SUI', 'FIL', 'ETC',
-    // === الجديدة ===
     'TON', 'ICP', 'RENDER', 'FET', 'SEI', 'TIA',
     'STX', 'IMX', 'GRT', 'SAND', 'MANA', 'AAVE',
     'MKR', 'CRV', 'ALGO', 'VET', 'HBAR', 'EOS',
     'XLM', 'THETA', 'RUNE', 'KAS', 'TAO', 'WIF',
     'PEPE', 'BONK'
 ];
+
+// عملات الصفحة الرئيسية — 4 فقط
+const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
 
 const COIN_INFO = {
     BTC:    { name: 'Bitcoin',          color: '#F7931A', letter: '₿' },
@@ -900,17 +903,15 @@ function renderTicker() {
         const sign = p.change >= 0 ? '+' : '';
         return `<span class="ticker-item"><span class="sym">${coin}</span><span class="price">${fmtPrice(p.price)}</span><span class="${cls}">${sign}${p.change.toFixed(2)}%</span></span>`;
     }).join('');
-    // نكرر للتكرار السلس
     track.innerHTML = itemsHtml + itemsHtml;
 }
 
-// ===== HOME MARKETS (6 coins) =====
+// ===== HOME MARKETS (4 main coins) =====
 function renderHomeMarkets() {
     const grid = document.getElementById('marketsGrid');
     if (!grid) return;
-    const home6 = COINS.slice(0, 6);
 
-    grid.innerHTML = home6.map(coin => {
+    grid.innerHTML = HOME_COINS.map(coin => {
         const info = COIN_INFO[coin];
         const p = prices[coin] || { price: 0, change: 0 };
         const cls = p.change >= 0 ? 'up' : 'down';
@@ -946,7 +947,7 @@ function renderAllMarkets() {
     if (filtered.length === 0) {
         grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 40px; color:#848E9C;">
             <div style="font-size:48px; margin-bottom:12px;">🔍</div>
-            <h3 style="color:#F0B90B;">لا توجد نتائج</h3>
+            <h3 style="color:#F0B90B;">No results</h3>
         </div>`;
         return;
     }
@@ -1048,7 +1049,7 @@ async function loadLatestSignal() {
         });
 
         const pairEl = document.getElementById('signalPair');
-        if (pairEl) pairEl.textContent = latest ? (latest.coin || 'BTC') + '/USDT' : 'لا توجد صفقة نشطة';
+        if (pairEl) pairEl.textContent = latest ? (latest.coin || 'BTC') + '/USDT' : 'No active signal';
 
         const dirBadge = document.getElementById('signalDirectionBadge');
         if (dirBadge) {
@@ -1273,7 +1274,6 @@ async function _checkSignals() {
         _setLastNotified(newSignals.length > 0 ? maxNotified : now);
         if (newSignals.length > 0) {
             console.log('✅ Sent ' + newSignals.length + ' signal notification(s)');
-            // تحديث عرض الصفقة تلقائياً
             loadLatestSignal();
         }
     } catch(e) { console.warn('Signal poll error:', e.message); }
@@ -1336,18 +1336,18 @@ async function _refreshUserData() {
                 _setLastNotified(Date.now());
                 setNotifs([]);
                 updateBadge();
-                addNotif('🎉 تم تفعيل اشتراكك! استمتع بالإشارات الحصرية');
+                addNotif('🎉 Your subscription is activated! Enjoy exclusive signals');
             } else if (newStatus === 'pending') {
-                addNotif('⏳ تم استلام طلبك — بانتظار مراجعة الأدمن');
+                addNotif('⏳ Your request has been received — awaiting admin review');
             } else if (newStatus === 'inactive' && oldStatus === 'pending') {
-                addNotif('❌ تم رفض طلبك. تواصل مع الدعم');
+                addNotif('❌ Your request was rejected. Contact support');
             }
         }
 
         const oldCourses = JSON.stringify(u.courses || []);
         const newCourses = JSON.stringify(data.courses || []);
         if (oldCourses !== newCourses && newCourses !== '[]') {
-            addNotif('🎓 تم تفعيل كورس جديد في حسابك!');
+            addNotif('🎓 A new course has been activated in your account!');
         }
 
         const updated = { uid: u.uid, ...data };
