@@ -1768,6 +1768,31 @@ setInterval(hideNetlifyBadge, 1000);
         setTimeout(requestNotifPermission, 3000);
     });
 </script>
-
+<style>
+    iframe[src*="netlify"],
+    iframe[title*="Netlify"],
+    iframe[title*="netlify"],
+    iframe[id*="netlify"],
+    [data-netlify-badge],
+    [id="netlify-badge"],
+    [class*="netlify-badge"],
+    a[href*="netlify.com"][target="_blank"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        max-width: 0 !important;
+        max-height: 0 !important;
+        position: fixed !important;
+        bottom: -99999px !important;
+        left: -99999px !important;
+        top: auto !important;
+        right: auto !important;
+        pointer-events: none !important;
+        z-index: -99999 !important;
+        transform: scale(0) !important;
+    }
+</style>
 </body>
 </html>
