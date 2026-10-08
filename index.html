@@ -1507,6 +1507,20 @@ const firebaseConfig = {
                 subInactive.classList.remove('hidden');
             }
         }
+// My Courses
+const coursesList = document.getElementById('myCoursesList');
+if (coursesList) {
+    const courses = user.courses || [];
+    if (courses.length === 0) {
+        coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+    } else {
+        coursesList.innerHTML = courses.map(c => `
+            <div style="background: #0d0d0d; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);">
+                <div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div>
+            </div>
+        `).join('');
+    }
+}
 
         if (document.getElementById('profileName')) {
             document.getElementById('profileName').textContent = user.name || '-';
