@@ -118,7 +118,7 @@
         /* ===== Premium Signals Info Card (Gray) ===== */
         .signals-info-card { background: #1E1E1E; border: 1px solid #2A2A2A; border-radius: 14px; padding: 20px 16px; margin-bottom: 16px; text-align: center; position: relative; overflow: hidden; }
         .signals-info-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(192,192,192,0.08), transparent 70%); border-radius: 50%; pointer-events: none; }
-        .signals-info-icon { font-size: 34px; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(192,192,192,0.4)); position: relative; z-index: 1; }
+        .signals-info-icon { margin-bottom: 12px; display: flex; justify-content: center; position: relative; z-index: 1; }
         .signals-info-title { color: #C0C0C0; font-size: 16px; font-weight: 900; margin-bottom: 10px; letter-spacing: 0.5px; position: relative; z-index: 1; }
         .signals-info-desc { color: #AAAAAA; font-size: 12.5px; line-height: 1.75; margin-bottom: 14px; position: relative; z-index: 1; }
         .signals-info-desc strong { color: #E5E5E5; font-weight: 900; }
@@ -408,7 +408,52 @@
 
     <!-- ✅ Premium Signals Info Card (Gray) -->
     <div class="signals-info-card">
-        <div class="signals-info-icon">📊</div>
+        <div class="signals-info-icon">
+            <svg width="110" height="85" viewBox="0 0 110 85" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 14px rgba(192,192,192,0.2));">
+                <!-- خلفية داكنة -->
+                <rect x="0" y="0" width="110" height="85" rx="12" fill="#141414" stroke="rgba(192,192,192,0.25)" stroke-width="1"/>
+
+                <!-- خطوط الشبكة الأفقية -->
+                <line x1="0" y1="17" x2="110" y2="17" stroke="rgba(132,142,156,0.12)" stroke-width="0.8"/>
+                <line x1="0" y1="34" x2="110" y2="34" stroke="rgba(132,142,156,0.12)" stroke-width="0.8"/>
+                <line x1="0" y1="51" x2="110" y2="51" stroke="rgba(132,142,156,0.12)" stroke-width="0.8"/>
+                <line x1="0" y1="68" x2="110" y2="68" stroke="rgba(132,142,156,0.12)" stroke-width="0.8"/>
+
+                <!-- ═ الشمعة 1: خضراء صاعدة ═ -->
+                <line x1="14" y1="26" x2="14" y2="64" stroke="#0ECB81" stroke-width="1.4"/>
+                <rect x="10" y="36" width="8" height="20" fill="#0ECB81" rx="1"/>
+
+                <!-- ═ الشمعة 2: حمراء ═ -->
+                <line x1="30" y1="22" x2="30" y2="58" stroke="#F6465D" stroke-width="1.4"/>
+                <rect x="26" y="28" width="8" height="22" fill="#F6465D" rx="1"/>
+
+                <!-- ═ الشمعة 3: خضراء قوية ═ -->
+                <line x1="46" y1="16" x2="46" y2="50" stroke="#0ECB81" stroke-width="1.4"/>
+                <rect x="42" y="22" width="8" height="24" fill="#0ECB81" rx="1"/>
+
+                <!-- ═ الشمعة 4: حمراء صغيرة ═ -->
+                <line x1="62" y1="24" x2="62" y2="52" stroke="#F6465D" stroke-width="1.4"/>
+                <rect x="58" y="30" width="8" height="15" fill="#F6465D" rx="1"/>
+
+                <!-- ═ الشمعة 5: خضراء اختراق ═ -->
+                <line x1="78" y1="8" x2="78" y2="46" stroke="#0ECB81" stroke-width="1.4"/>
+                <rect x="74" y="14" width="8" height="26" fill="#0ECB81" rx="1"/>
+
+                <!-- ═ الشمعة 6: خضراء قصيرة ═ -->
+                <line x1="94" y1="14" x2="94" y2="42" stroke="#0ECB81" stroke-width="1.4"/>
+                <rect x="90" y="20" width="8" height="16" fill="#0ECB81" rx="1"/>
+
+                <!-- خط اتجاه ذهبي منقط -->
+                <path d="M 14 48 L 30 44 L 46 36 L 62 42 L 78 24 L 94 28"
+                      fill="none"
+                      stroke="#F0B90B"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      opacity="0.7"
+                      stroke-dasharray="3,2"/>
+            </svg>
+        </div>
         <div class="signals-info-title">Premium Signals Access</div>
         <div class="signals-info-desc">
             Subscribe to receive <strong>real-time trading signals</strong> with Entry, Stop Loss &amp; Take Profit — delivered directly to your phone.
