@@ -24,540 +24,112 @@
             --btn-gold: linear-gradient(135deg, #F0B90B, #FCD535);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
 
         #splash {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100vh;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: radial-gradient(circle at center, #1E2329 0%, #181A20 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            transition: opacity 0.8s ease, visibility 0.8s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 99999; transition: opacity 0.8s ease, visibility 0.8s;
         }
         #splash.hide { opacity: 0; visibility: hidden; }
 
-        .splash-logo {
-            width: 180px; height: 180px;
-            position: relative;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .splash-logo-circle {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            position: absolute;
-            border: 4px solid transparent;
-            border-top-color: var(--gold);
-            border-right-color: var(--gold);
-            border-bottom-color: var(--red);
-            border-left-color: var(--red);
-            animation: splashSpin 2s linear infinite;
-        }
-        .splash-logo-inner {
-            font-size: 90px;
-            font-weight: 900;
-            color: var(--gold);
-            text-shadow: 0 0 40px rgba(240, 185, 11, 0.8);
-            animation: splashPulse 1.5s ease-in-out infinite;
-            z-index: 2;
-        }
+        .splash-logo { width: 180px; height: 180px; position: relative; margin-bottom: 30px; display: flex; align-items: center; justify-content: center; }
+        .splash-logo-circle { width: 100%; height: 100%; border-radius: 50%; position: absolute; border: 4px solid transparent; border-top-color: var(--gold); border-right-color: var(--gold); border-bottom-color: var(--red); border-left-color: var(--red); animation: splashSpin 2s linear infinite; }
+        .splash-logo-inner { font-size: 90px; font-weight: 900; color: var(--gold); text-shadow: 0 0 40px rgba(240, 185, 11, 0.8); animation: splashPulse 1.5s ease-in-out infinite; z-index: 2; }
         @keyframes splashSpin { to { transform: rotate(360deg); } }
-        @keyframes splashPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.85; }
-        }
+        @keyframes splashPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.85; } }
 
-        .splash-title {
-            font-size: 40px;
-            font-weight: 900;
-            color: var(--gold);
-            letter-spacing: 4px;
-            margin-bottom: 8px;
-            animation: fadeInUp 1s ease 0.5s both;
-        }
-        .splash-subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 50px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            animation: fadeInUp 1s ease 1s both;
-        }
-        .splash-tagline {
-            font-size: 18px;
-            color: var(--text-main);
-            text-align: center;
-            padding: 0 30px;
-            margin-bottom: 40px;
-            line-height: 1.6;
-            animation: fadeInUp 1s ease 1.5s both;
-        }
-        .splash-loading {
-            width: 220px; height: 4px;
-            background: #2B3139;
-            border-radius: 4px;
-            overflow: hidden;
-            animation: fadeInUp 1s ease 2s both;
-        }
-        .splash-loading-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--gold), #FCD535);
-            border-radius: 4px;
-            animation: loadBar 5s linear forwards;
-        }
+        .splash-title { font-size: 40px; font-weight: 900; color: var(--gold); letter-spacing: 4px; margin-bottom: 8px; animation: fadeInUp 1s ease 0.5s both; }
+        .splash-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 50px; font-weight: 700; letter-spacing: 4px; animation: fadeInUp 1s ease 1s both; }
+        .splash-tagline { font-size: 18px; color: var(--text-main); text-align: center; padding: 0 30px; margin-bottom: 40px; line-height: 1.6; animation: fadeInUp 1s ease 1.5s both; }
+        .splash-loading { width: 220px; height: 4px; background: #2B3139; border-radius: 4px; overflow: hidden; animation: fadeInUp 1s ease 2s both; }
+        .splash-loading-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #FCD535); border-radius: 4px; animation: loadBar 5s linear forwards; }
         @keyframes loadBar { from { width: 0%; } to { width: 100%; } }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .screen {
-            display: none;
-            width: 100%;
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
-            padding-bottom: 100px;
-        }
+        .screen { display: none; width: 100%; max-width: 480px; margin: 0 auto; padding: 20px; min-height: 100vh; padding-bottom: 100px; }
         .screen.active { display: block; }
 
-        .auth-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            max-width: 420px;
-            margin: 0 auto;
-        }
+        .auth-container { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; padding: 20px; max-width: 420px; margin: 0 auto; }
         .auth-logo { text-align: center; margin-bottom: 30px; }
-        .auth-logo-img {
-            width: 80px; height: 80px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #181A20, #2B3139);
-            border: 2px solid var(--gold);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 42px;
-            font-weight: 900;
-            color: var(--gold);
-            margin-bottom: 16px;
-            box-shadow: 0 0 30px rgba(240, 185, 11, 0.4);
-        }
-        .auth-logo h1 {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--gold);
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-        }
-        .auth-logo p {
-            color: var(--text-muted);
-            font-size: 12px;
-            letter-spacing: 3px;
-            font-weight: 700;
-        }
-        .auth-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+        .auth-logo-img { width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #181A20, #2B3139); border: 2px solid var(--gold); display: inline-flex; align-items: center; justify-content: center; font-size: 42px; font-weight: 900; color: var(--gold); margin-bottom: 16px; box-shadow: 0 0 30px rgba(240, 185, 11, 0.4); }
+        .auth-logo h1 { font-size: 28px; font-weight: 900; color: var(--gold); letter-spacing: 2px; margin-bottom: 4px; }
+        .auth-logo p { color: var(--text-muted); font-size: 12px; letter-spacing: 3px; font-weight: 700; }
+        .auth-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; text-align: center; }
         .input-group { margin-bottom: 14px; }
-        .input-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            font-weight: 700;
-        }
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 14px;
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 15px;
-            outline: none;
-            transition: 0.3s;
-            font-family: inherit;
-        }
-        .input-group input:focus,
-        .input-group select:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(240, 185, 11, 0.1);
-        }
-        .input-group select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23848E9C' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 36px;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        .btn-block {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 900;
-            font-size: 15px;
-            cursor: pointer;
-            border: none;
-            background: var(--btn-gold);
-            color: #181A20;
-            margin-top: 8px;
-            transition: 0.2s;
-            font-family: inherit;
-            letter-spacing: 1px;
-        }
+        .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
+        .input-group input, .input-group select { width: 100%; background: var(--bg-card); border: 1px solid var(--border); padding: 14px; border-radius: 10px; color: var(--text-main); font-size: 15px; outline: none; transition: 0.3s; font-family: inherit; }
+        .input-group input:focus, .input-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(240, 185, 11, 0.1); }
+        .input-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23848E9C' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; -webkit-appearance: none; appearance: none; }
+        .btn-block { width: 100%; padding: 15px; border-radius: 10px; font-weight: 900; font-size: 15px; cursor: pointer; border: none; background: var(--btn-gold); color: #181A20; margin-top: 8px; transition: 0.2s; font-family: inherit; letter-spacing: 1px; }
         .btn-block:active { transform: scale(0.98); opacity: 0.9; }
-        .btn-outline {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            margin-top: 8px;
-            font-family: inherit;
-        }
-        .auth-switch {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-        .auth-switch a {
-            color: var(--gold);
-            text-decoration: none;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        .btn-outline { width: 100%; padding: 15px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; background: transparent; border: 1px solid var(--border); color: var(--text-main); margin-top: 8px; font-family: inherit; }
+        .auth-switch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); }
+        .auth-switch a { color: var(--gold); text-decoration: none; font-weight: 700; cursor: pointer; }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            margin-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .header-logo {
-            width: 36px; height: 36px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--gold), #FCD535);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 900;
-            color: #181A20;
-            box-shadow: 0 0 15px rgba(240, 185, 11, 0.5);
-        }
-        .header-title {
-            display: flex;
-            flex-direction: column;
-        }
-        .header-title h1 {
-            font-size: 16px;
-            font-weight: 900;
-            color: var(--gold);
-            letter-spacing: 1px;
-        }
-        .header-title span {
-            font-size: 9px;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            font-weight: 700;
-        }
-        .bell-icon {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: var(--gold);
-            cursor: pointer;
-            position: relative;
-        }
-        .notifBadge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: var(--red);
-            color: #fff;
-            font-size: 10px;
-            font-weight: 700;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 8px rgba(246, 70, 93, 0.8);
-            animation: pulse 1.5s infinite;
-            pointer-events: none;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .header-logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--gold), #FCD535); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: #181A20; box-shadow: 0 0 15px rgba(240, 185, 11, 0.5); }
+        .header-title { display: flex; flex-direction: column; }
+        .header-title h1 { font-size: 16px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
+        .header-title span { font-size: 9px; color: var(--text-muted); letter-spacing: 2px; font-weight: 700; }
+        .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; position: relative; }
+        .notifBadge { position: absolute; top: -4px; right: -4px; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px rgba(246, 70, 93, 0.8); animation: pulse 1.5s infinite; pointer-events: none; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
 
-        .ticker-wrap {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px 0;
-            overflow: hidden;
-            margin-bottom: 16px;
-            position: relative;
-        }
-        .ticker-track {
-            display: flex;
-            gap: 30px;
-            animation: tickerMove 40s linear infinite;
-            padding: 0 20px;
-            white-space: nowrap;
-        }
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 700;
-        }
+        .ticker-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 0; overflow: hidden; margin-bottom: 16px; position: relative; }
+        .ticker-track { display: flex; gap: 30px; animation: tickerMove 40s linear infinite; padding: 0 20px; white-space: nowrap; }
+        .ticker-item { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
         .ticker-item .sym { color: var(--gold); }
         .ticker-item .price { color: var(--text-main); }
         .ticker-item .up { color: var(--green); }
         .ticker-item .down { color: var(--red); }
-        @keyframes tickerMove {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-        }
+        @keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 14px;
-        }
-        .section-title {
-            font-size: 14px;
-            font-weight: 900;
-            color: var(--text-main);
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            letter-spacing: 1px;
-        }
-        .section-title .more {
-            font-size: 12px;
-            color: var(--gold);
-            cursor: pointer;
-            font-weight: 700;
-        }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+        .section-title { font-size: 14px; font-weight: 900; color: var(--text-main); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; letter-spacing: 1px; }
+        .section-title .more { font-size: 12px; color: var(--gold); cursor: pointer; font-weight: 700; }
 
-        .markets-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .coin-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+        .markets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .coin-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.2s; }
         .coin-card:active { transform: scale(0.98); border-color: var(--gold); }
-        .coin-head {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .coin-icon {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 900;
-        }
+        .coin-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .coin-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; }
         .coin-icon.btc { background: #F7931A; color: #fff; }
         .coin-icon.eth { background: #627EEA; color: #fff; }
         .coin-icon.bnb { background: #F3BA2F; color: #000; }
         .coin-icon.sol { background: linear-gradient(135deg, #9945FF, #14F195); color: #fff; }
         .coin-icon.xrp { background: #23292F; color: #fff; }
         .coin-icon.ada { background: #0033AD; color: #fff; }
-        .coin-symbol {
-            font-size: 13px;
-            font-weight: 900;
-            color: var(--text-main);
-        }
-        .coin-price {
-            font-size: 15px;
-            font-weight: 900;
-            color: var(--text-main);
-            margin-bottom: 4px;
-        }
-        .coin-change {
-            font-size: 12px;
-            font-weight: 700;
-        }
+        .coin-symbol { font-size: 13px; font-weight: 900; color: var(--text-main); }
+        .coin-price { font-size: 15px; font-weight: 900; color: var(--text-main); margin-bottom: 4px; }
+        .coin-change { font-size: 12px; font-weight: 700; }
         .coin-change.up { color: var(--green); }
         .coin-change.down { color: var(--red); }
 
-        .plan-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 12px;
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .plan-card.premium {
-            border-color: var(--gold);
-            background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%);
-        }
-        .plan-card.vip-lifetime {
-            border-color: #FCD535;
-            background: linear-gradient(135deg, #2B3139 0%, #3C4451 100%);
-            box-shadow: 0 0 20px rgba(240, 185, 11, 0.3);
-        }
-        .plan-info h4 {
-            font-size: 14px;
-            color: var(--gold);
-            margin-bottom: 4px;
-            letter-spacing: 1px;
-        }
-        .plan-info .duration {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        .plan-buy {
-            background: var(--btn-gold);
-            color: #181A20;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 900;
-            font-size: 13px;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        .plan-badge {
-            position: absolute;
-            top: -8px;
-            right: 16px;
-            background: var(--gold);
-            color: #181A20;
-            font-size: 9px;
-            font-weight: 900;
-            padding: 3px 10px;
-            border-radius: 8px;
-            letter-spacing: 1px;
-        }
+        .plan-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 12px; position: relative; display: flex; justify-content: space-between; align-items: center; }
+        .plan-card.premium { border-color: var(--gold); background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); }
+        .plan-card.vip-lifetime { border-color: #FCD535; background: linear-gradient(135deg, #2B3139 0%, #3C4451 100%); box-shadow: 0 0 20px rgba(240, 185, 11, 0.3); }
+        .plan-info h4 { font-size: 14px; color: var(--gold); margin-bottom: 4px; letter-spacing: 1px; }
+        .plan-info .duration { font-size: 11px; color: var(--text-muted); }
+        .plan-buy { background: var(--btn-gold); color: #181A20; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 900; font-size: 13px; cursor: pointer; font-family: inherit; }
+        .plan-badge { position: absolute; top: -8px; right: 16px; background: var(--gold); color: #181A20; font-size: 9px; font-weight: 900; padding: 3px 10px; border-radius: 8px; letter-spacing: 1px; }
 
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0 14px 0;
-            z-index: 9999;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            color: var(--text-muted);
-            font-size: 9px;
-            text-decoration: none;
-            width: 16.66%;
-            cursor: pointer;
-            background: none;
-            border: none;
-            font-family: inherit;
-            padding: 8px 4px;
-            transition: 0.2s;
-        }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 14px 0; z-index: 9999; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-muted); font-size: 9px; text-decoration: none; width: 16.66%; cursor: pointer; background: none; border: none; font-family: inherit; padding: 8px 4px; transition: 0.2s; }
         .nav-item.active { color: var(--gold); }
         .nav-item .icon { font-size: 20px; }
         .nav-item:active { transform: scale(0.92); }
 
         .hidden { display: none !important; }
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--gold);
-            color: #181A20;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 900;
-            font-size: 14px;
-            opacity: 0;
-            transition: 0.3s;
-            z-index: 99999;
-            max-width: 90%;
-            text-align: center;
-        }
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--gold); color: #181A20; padding: 12px 24px; border-radius: 10px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s; z-index: 99999; max-width: 90%; text-align: center; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
-    <!-- ================= SPLASH SCREEN ================= -->
 <div id="splash">
     <div class="splash-logo">
         <div class="splash-logo-circle"></div>
@@ -566,12 +138,10 @@
     <h1 class="splash-title">TRADELIX AI</h1>
     <p class="splash-subtitle">SMARTER TRADING</p>
     <p class="splash-tagline">AI-Powered Crypto Trading Platform<br>Live Signals • Real-Time Markets</p>
-    <div class="splash-loading">
-        <div class="splash-loading-fill"></div>
-    </div>
+    <div class="splash-loading"><div class="splash-loading-fill"></div></div>
 </div>
 
-<!-- ================= SIGN UP SCREEN ================= -->
+<!-- SIGN UP SCREEN -->
 <div id="signupScreen" class="screen">
     <div class="auth-container">
         <div class="auth-logo">
@@ -580,15 +150,8 @@
             <p>SMARTER TRADING</p>
         </div>
         <h2 class="auth-title">Create Account</h2>
-
-        <div class="input-group">
-            <label>Full Name</label>
-            <input type="text" id="signupName" placeholder="Enter your full name">
-        </div>
-        <div class="input-group">
-            <label>Phone Number</label>
-            <input type="tel" id="signupPhone" placeholder="+974 1234 5678">
-        </div>
+        <div class="input-group"><label>Full Name</label><input type="text" id="signupName" placeholder="Enter your full name"></div>
+        <div class="input-group"><label>Phone Number</label><input type="tel" id="signupPhone" placeholder="+974 1234 5678"></div>
         <div class="input-group">
             <label>Country</label>
             <select id="signupCountry">
@@ -619,28 +182,15 @@
                 <option value="OTHER">🌍 Other</option>
             </select>
         </div>
-        <div class="input-group">
-            <label>Email Address</label>
-            <input type="email" id="signupEmail" placeholder="your@email.com">
-        </div>
-        <div class="input-group">
-            <label>Password</label>
-            <input type="password" id="signupPassword" placeholder="••••••••">
-        </div>
-        <div class="input-group">
-            <label>Confirm Password</label>
-            <input type="password" id="signupConfirm" placeholder="••••••••">
-        </div>
-
+        <div class="input-group"><label>Email Address</label><input type="email" id="signupEmail" placeholder="your@email.com"></div>
+        <div class="input-group"><label>Password</label><input type="password" id="signupPassword" placeholder="••••••••"></div>
+        <div class="input-group"><label>Confirm Password</label><input type="password" id="signupConfirm" placeholder="••••••••"></div>
         <button class="btn-block" onclick="handleSignup()">Create Account</button>
-
-        <div class="auth-switch">
-            Already have an account? <a onclick="showScreen('loginScreen')">Login</a>
-        </div>
+        <div class="auth-switch">Already have an account? <a onclick="showScreen('loginScreen')">Login</a></div>
     </div>
 </div>
 
-<!-- ================= LOGIN SCREEN ================= -->
+<!-- LOGIN SCREEN -->
 <div id="loginScreen" class="screen">
     <div class="auth-container">
         <div class="auth-logo">
@@ -649,38 +199,23 @@
             <p>SMARTER TRADING</p>
         </div>
         <h2 class="auth-title">Welcome Back</h2>
-
-        <div class="input-group">
-            <label>Email Address</label>
-            <input type="email" id="loginEmail" placeholder="your@email.com">
-        </div>
-        <div class="input-group">
-            <label>Password</label>
-            <input type="password" id="loginPassword" placeholder="••••••••">
-        </div>
-
+        <div class="input-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
+        <div class="input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
         <button class="btn-block" onclick="handleLogin()">Login</button>
-
-        <div class="auth-switch">
-            Don't have an account? <a onclick="showScreen('signupScreen')">Sign Up</a>
-        </div>
+        <div class="auth-switch">Don't have an account? <a onclick="showScreen('signupScreen')">Sign Up</a></div>
     </div>
 </div>
 
-<!-- ================= HOME SCREEN ================= -->
+<!-- HOME SCREEN -->
 <div id="homeScreen" class="screen">
     <div class="header">
         <div class="header-left">
             <div class="header-logo">T</div>
-            <div class="header-title">
-                <h1>TRADELIX AI</h1>
-                <span>SMARTER TRADING</span>
-            </div>
+            <div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div>
         </div>
         <div class="bell-icon" onclick="openNotifModal()">🔔</div>
     </div>
 
-    <!-- Welcome Card -->
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold);">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div>
@@ -694,7 +229,6 @@
         </div>
     </div>
 
-    <!-- Ticker -->
     <div class="ticker-wrap">
         <div class="ticker-track" id="tickerTrack">
             <span class="ticker-item"><span class="sym">BTC</span><span class="price" id="tBTC">$0</span><span class="up" id="cBTC">+0.00%</span></span>
@@ -706,166 +240,49 @@
         </div>
     </div>
 
-    <!-- Markets -->
-    <div class="section-title">
-        <span>📊 Live Markets</span>
-        <span class="more" onclick="refreshMarkets()">Refresh ↻</span>
-    </div>
+    <div class="section-title"><span>📊 Live Markets</span><span class="more" onclick="refreshMarkets()">Refresh ↻</span></div>
     <div class="markets-grid" id="marketsGrid">
-        <div class="coin-card" onclick="openCoinChart('BTC')">
-            <div class="coin-head">
-                <div class="coin-icon btc">₿</div>
-                <div class="coin-symbol">BTC</div>
-            </div>
-            <div class="coin-price" id="pBTC">$0</div>
-            <div class="coin-change up" id="chBTC">+0.00%</div>
-        </div>
-        <div class="coin-card" onclick="openCoinChart('ETH')">
-            <div class="coin-head">
-                <div class="coin-icon eth">Ξ</div>
-                <div class="coin-symbol">ETH</div>
-            </div>
-            <div class="coin-price" id="pETH">$0</div>
-            <div class="coin-change up" id="chETH">+0.00%</div>
-        </div>
-        <div class="coin-card" onclick="openCoinChart('BNB')">
-            <div class="coin-head">
-                <div class="coin-icon bnb">B</div>
-                <div class="coin-symbol">BNB</div>
-            </div>
-            <div class="coin-price" id="pBNB">$0</div>
-            <div class="coin-change up" id="chBNB">+0.00%</div>
-        </div>
-        <div class="coin-card" onclick="openCoinChart('SOL')">
-            <div class="coin-head">
-                <div class="coin-icon sol">S</div>
-                <div class="coin-symbol">SOL</div>
-            </div>
-            <div class="coin-price" id="pSOL">$0</div>
-            <div class="coin-change up" id="chSOL">+0.00%</div>
-        </div>
-        <div class="coin-card" onclick="openCoinChart('XRP')">
-            <div class="coin-head">
-                <div class="coin-icon xrp">X</div>
-                <div class="coin-symbol">XRP</div>
-            </div>
-            <div class="coin-price" id="pXRP">$0</div>
-            <div class="coin-change up" id="chXRP">+0.00%</div>
-        </div>
-        <div class="coin-card" onclick="openCoinChart('ADA')">
-            <div class="coin-head">
-                <div class="coin-icon ada">A</div>
-                <div class="coin-symbol">ADA</div>
-            </div>
-            <div class="coin-price" id="pADA">$0</div>
-            <div class="coin-change up" id="chADA">+0.00%</div>
-        </div>
+        <div class="coin-card" onclick="openCoinChart('BTC')"><div class="coin-head"><div class="coin-icon btc">₿</div><div class="coin-symbol">BTC</div></div><div class="coin-price" id="pBTC">$0</div><div class="coin-change up" id="chBTC">+0.00%</div></div>
+        <div class="coin-card" onclick="openCoinChart('ETH')"><div class="coin-head"><div class="coin-icon eth">Ξ</div><div class="coin-symbol">ETH</div></div><div class="coin-price" id="pETH">$0</div><div class="coin-change up" id="chETH">+0.00%</div></div>
+        <div class="coin-card" onclick="openCoinChart('BNB')"><div class="coin-head"><div class="coin-icon bnb">B</div><div class="coin-symbol">BNB</div></div><div class="coin-price" id="pBNB">$0</div><div class="coin-change up" id="chBNB">+0.00%</div></div>
+        <div class="coin-card" onclick="openCoinChart('SOL')"><div class="coin-head"><div class="coin-icon sol">S</div><div class="coin-symbol">SOL</div></div><div class="coin-price" id="pSOL">$0</div><div class="coin-change up" id="chSOL">+0.00%</div></div>
+        <div class="coin-card" onclick="openCoinChart('XRP')"><div class="coin-head"><div class="coin-icon xrp">X</div><div class="coin-symbol">XRP</div></div><div class="coin-price" id="pXRP">$0</div><div class="coin-change up" id="chXRP">+0.00%</div></div>
+        <div class="coin-card" onclick="openCoinChart('ADA')"><div class="coin-head"><div class="coin-icon ada">A</div><div class="coin-symbol">ADA</div></div><div class="coin-price" id="pADA">$0</div><div class="coin-change up" id="chADA">+0.00%</div></div>
     </div>
 
-    <!-- VIP Plans -->
-    <div class="section-title">
-        <span>💎 Subscription Plans</span>
-    </div>
+    <div class="section-title"><span>💎 Subscription Plans</span></div>
+    <div class="plan-card"><div class="plan-info"><h4>Weekly</h4><div class="duration">7 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(15, 'Weekly')">$15</button></div>
+    <div class="plan-card"><div class="plan-info"><h4>Monthly</h4><div class="duration">30 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(45, 'Monthly')">$45</button></div>
+    <div class="plan-card premium"><span class="plan-badge">BEST VALUE</span><div class="plan-info"><h4>3 Months</h4><div class="duration">90 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(125, 'Quarterly')">$125</button></div>
+    <div class="plan-card vip-lifetime"><span class="plan-badge">👑 VIP</span><div class="plan-info"><h4>Lifetime VIP</h4><div class="duration">Unlimited Access</div></div><button class="plan-buy" onclick="goToDeposit(400, 'Lifetime')">$400</button></div>
 
-    <div class="plan-card">
-        <div class="plan-info">
-            <h4>Weekly</h4>
-            <div class="duration">7 Days Access</div>
-        </div>
-        <button class="plan-buy" onclick="goToDeposit(15, 'Weekly')">$15</button>
-    </div>
-
-    <div class="plan-card">
-        <div class="plan-info">
-            <h4>Monthly</h4>
-            <div class="duration">30 Days Access</div>
-        </div>
-        <button class="plan-buy" onclick="goToDeposit(45, 'Monthly')">$45</button>
-    </div>
-
-    <div class="plan-card premium">
-        <span class="plan-badge">BEST VALUE</span>
-        <div class="plan-info">
-            <h4>3 Months</h4>
-            <div class="duration">90 Days Access</div>
-        </div>
-        <button class="plan-buy" onclick="goToDeposit(125, 'Quarterly')">$125</button>
-    </div>
-
-    <div class="plan-card vip-lifetime">
-        <span class="plan-badge">👑 VIP</span>
-        <div class="plan-info">
-            <h4>Lifetime VIP</h4>
-            <div class="duration">Unlimited Access</div>
-        </div>
-        <button class="plan-buy" onclick="goToDeposit(400, 'Lifetime')">$400</button>
-    </div>
-
-    <!-- Academy Preview -->
-    <div class="section-title" style="margin-top: 24px;">
-        <span>📚 Learn Trading From Zero</span>
-    </div>
+    <div class="section-title" style="margin-top: 24px;"><span>📚 Learn Trading From Zero</span></div>
     <div class="card" style="text-align:center; padding: 20px;">
-        <p style="color: var(--text-muted); font-size: 13px; line-height:1.8; margin-bottom: 14px;">
-            Master crypto trading with 4 professional courses
-        </p>
+        <p style="color: var(--text-muted); font-size: 13px; line-height:1.8; margin-bottom: 14px;">Master crypto trading with 4 professional courses</p>
         <button class="btn-block" onclick="showScreen('academyScreen')">View Courses</button>
     </div>
 
-    <!-- Tradix AI Section -->
-    <div class="section-title" style="margin-top: 24px;">
-        <span>🚀 Tradix AI App</span>
-    </div>
+    <div class="section-title" style="margin-top: 24px;"><span>🚀 Tradix AI App</span></div>
     <div class="card" style="text-align:center; padding: 20px; border-color: var(--gold);">
         <img src="https://raw.githubusercontent.com/habib7514/TRADIX-ai/main/file_00000000e1988230bfa593ebe559c084.png" alt="Tradix AI" style="width: 80px; height: 80px; border-radius: 20px; margin-bottom: 10px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);">
         <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 16px;">Tradix AI</h3>
-        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 14px;">
-            Our first app for Gold Signals<br>Get it for free
-        </p>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 14px;">Our first app for Gold Signals<br>Get it for free</p>
         <a href="https://tinyurl.com/tradix-ai-2026" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 Download Tradix AI</a>
     </div>
 
-    <!-- Bottom Nav -->
     <div class="bottom-nav">
-        <button class="nav-item active" onclick="showScreen('homeScreen')">
-            <span class="icon">🏠</span>
-            <span>Home</span>
-        </button>
-        <button class="nav-item" onclick="goToSignals()">
-            <span class="icon">📊</span>
-            <span>Signals</span>
-        </button>
-        <button class="nav-item" onclick="showScreen('academyScreen')">
-            <span class="icon">📚</span>
-            <span>Academy</span>
-        </button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')">
-            <span class="icon">📅</span>
-            <span>Meetings</span>
-        </button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')">
-            <span class="icon">💎</span>
-            <span>Plan</span>
-        </button>
-        <button class="nav-item" onclick="showScreen('profileScreen')">
-            <span class="icon">👤</span>
-            <span>Profile</span>
-        </button>
+        <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
-<!-- ================= SIGNALS SCREEN ================= -->
-<div id="signalsScreen" class="screen">
-    <div class="header">
-        <div class="header-left">
-            <div class="header-logo">T</div>
-            <div class="header-title">
-                <h1>Signals</h1>
-                <span>LIVE SIGNALS</span>
-            </div>
-        </div>
-        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
-    </div>
 
+<!-- SIGNALS SCREEN -->
+<div id="signalsScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Signals</h1><span>LIVE SIGNALS</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
     <div id="activeSignalBox" class="hidden">
         <div class="card" style="border-color: var(--green); background: linear-gradient(135deg, #1E2329 0%, #0ECB811A 100%);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
@@ -873,36 +290,19 @@
                 <div id="signalDirectionBadge" style="padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 900; background: rgba(14, 203, 129, 0.15); color: var(--green); border: 1px solid var(--green);">BUY</div>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;">
-                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">ENTRY</div>
-                    <div id="signalEntry" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div>
-                </div>
-                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;">
-                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">STOP LOSS</div>
-                    <div id="signalSL" style="font-size: 15px; font-weight: 900; color: var(--red);">-</div>
-                </div>
-                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;">
-                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">TAKE PROFIT</div>
-                    <div id="signalTP" style="font-size: 15px; font-weight: 900; color: var(--green);">-</div>
-                </div>
-                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;">
-                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">CONFIDENCE</div>
-                    <div id="signalConf" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div>
-                </div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">ENTRY</div><div id="signalEntry" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div></div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">STOP LOSS</div><div id="signalSL" style="font-size: 15px; font-weight: 900; color: var(--red);">-</div></div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">TAKE PROFIT</div><div id="signalTP" style="font-size: 15px; font-weight: 900; color: var(--green);">-</div></div>
+                <div style="background: #181A20; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">CONFIDENCE</div><div id="signalConf" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div></div>
             </div>
-            <div id="signalNotes" style="margin-top: 12px; padding: 10px; background: #181A20; border-radius: 8px; font-size: 12px; color: var(--text-muted); line-height: 1.5; display: none;"></div>
         </div>
     </div>
-
     <div id="lockedSignalBox" class="card" style="text-align: center; padding: 40px 20px;">
         <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
         <h3 style="color: var(--gold); margin-bottom: 8px;">Premium Required</h3>
-        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
-            Subscribe to access live signals with Entry / SL / TP
-        </p>
+        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Subscribe to access live signals with Entry / SL / TP</p>
         <button class="btn-block" onclick="showScreen('homeScreen')">View Plans</button>
     </div>
-
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -913,84 +313,18 @@
     </div>
 </div>
 
-<!-- ================= ACADEMY SCREEN ================= -->
+<!-- ACADEMY SCREEN -->
 <div id="academyScreen" class="screen">
-    <div class="header">
-        <div class="header-left">
-            <div class="header-logo">T</div>
-            <div class="header-title">
-                <h1>Academy</h1>
-                <span>LEARN TRADING</span>
-            </div>
-        </div>
-        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
-    </div>
-
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
         <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">📚 Learn Trading From Zero</h2>
-        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6;">
-            4 professional courses to master crypto trading
-        </p>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6;">4 professional courses to master crypto trading</p>
     </div>
-
     <div class="section-title">🎓 Available Courses</div>
-
-    <div class="card" style="border-color: var(--border);">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
-            <div style="flex: 1;">
-                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ Trading Basics</h4>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Learn core trading concepts and crypto fundamentals</p>
-                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
-                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics', true)">Buy</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
-            <div style="flex: 1;">
-                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ Technical Analysis</h4>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Candlestick patterns and technical indicators</p>
-                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
-                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical', true)">Buy</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
-            <div style="flex: 1;">
-                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ Risk Management</h4>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Protect your capital and manage risks effectively</p>
-                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
-                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk', true)">Buy</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;">
-            <div style="flex: 1;">
-                <h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ Advanced Strategies</h4>
-                <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Professional strategies for daily trading</p>
-                <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div>
-                <button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">Buy</button>
-            </div>
-        </div>
-    </div>
-
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ Trading Basics</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Learn core trading concepts and crypto fundamentals</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ Technical Analysis</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Candlestick patterns and technical indicators</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ Risk Management</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Protect your capital and manage risks effectively</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ Advanced Strategies</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Professional strategies for daily trading</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">Buy</button></div></div></div>
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -1001,56 +335,25 @@
     </div>
 </div>
 
-<!-- ================= DEPOSIT SCREEN ================= -->
+<!-- DEPOSIT SCREEN -->
 <div id="depositScreen" class="screen">
-    <div class="header">
-        <div class="header-left">
-            <div class="header-logo">T</div>
-            <div class="header-title">
-                <h1>Deposit</h1>
-                <span>PAYMENT</span>
-            </div>
-        </div>
-        <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
-    </div>
-
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Deposit</h1><span>PAYMENT</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')">✕</div></div>
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">💳 Payment Details</h3>
-        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">Plan</span>
-            <span id="depositPlan" style="color: var(--gold); font-weight: 700;">-</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">Amount</span>
-            <span id="depositAmount" style="color: var(--gold); font-weight: 700;">$0</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">Network</span>
-            <span style="color: var(--text-main); font-weight: 700;">BNB Smart Chain</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
-            <span style="color: var(--text-muted);">Currency</span>
-            <span style="color: var(--text-main); font-weight: 700;">USDT (BEP20)</span>
-        </div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Plan</span><span id="depositPlan" style="color: var(--gold); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Amount</span><span id="depositAmount" style="color: var(--gold); font-weight: 700;">$0</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Network</span><span style="color: var(--text-main); font-weight: 700;">BNB Smart Chain</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Currency</span><span style="color: var(--text-main); font-weight: 700;">USDT (BEP20)</span></div>
     </div>
-
     <div class="section-title">💰 Wallet Address</div>
-    <div style="background: #181A20; border: 1px dashed var(--gold); border-radius: 10px; padding: 14px; text-align: center; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--gold); margin-bottom: 10px;" id="walletAddr">
-        0x4E11E978119cAAB300b5439B909D06341C24a2A7
-    </div>
+    <div style="background: #181A20; border: 1px dashed var(--gold); border-radius: 10px; padding: 14px; text-align: center; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--gold); margin-bottom: 10px;" id="walletAddr">0x4E11E978119cAAB300b5439B909D06341C24a2A7</div>
     <button class="btn-block" onclick="copyWallet()">📋 Copy Address</button>
-
     <div style="margin-top: 24px;">
         <div class="section-title">🔗 Transaction Hash (TX)</div>
-        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.6;">
-            After sending the payment, paste your transaction hash here
-        </p>
-        <div class="input-group">
-            <input type="text" id="txHash" placeholder="Paste transaction hash">
-        </div>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.6;">After sending the payment, paste your transaction hash here</p>
+        <div class="input-group"><input type="text" id="txHash" placeholder="Paste transaction hash"></div>
         <button class="btn-block" onclick="submitDeposit()">📤 Submit for Review</button>
     </div>
-
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -1061,33 +364,17 @@
     </div>
 </div>
 
-<!-- ================= MEETING SCREEN ================= -->
+<!-- MEETING SCREEN -->
 <div id="meetingScreen" class="screen">
-    <div class="header">
-        <div class="header-left">
-            <div class="header-logo">T</div>
-            <div class="header-title">
-                <h1>Meetings</h1>
-                <span>ZOOM SESSIONS</span>
-            </div>
-        </div>
-        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
-    </div>
-
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Meetings</h1><span>ZOOM SESSIONS</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
     <div class="card" style="background: linear-gradient(135deg, #1E2329 0%, #2B3139 100%); border-color: var(--gold); text-align: center;">
         <div style="font-size: 60px; margin-bottom: 12px;">📅</div>
         <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">Zoom Meetings</h2>
-        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 16px;">
-            Join live trading sessions with the coach
-        </p>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 16px;">Join live trading sessions with the coach</p>
         <a href="https://zoom.us/download" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 Download Zoom App</a>
     </div>
-
     <div class="section-title">🔗 Meeting Links</div>
-    <div id="meetingsList" class="card">
-        <p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p>
-    </div>
-
+    <div id="meetingsList" class="card"><p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p></div>
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -1098,54 +385,24 @@
     </div>
 </div>
 
-<!-- ================= SUBSCRIPTION SCREEN ================= -->
+<!-- SUBSCRIPTION SCREEN -->
 <div id="subscriptionScreen" class="screen">
-    <div class="header">
-        <div class="header-left">
-            <div class="header-logo">T</div>
-            <div class="header-title">
-                <h1>My Plan</h1>
-                <span>SUBSCRIPTION</span>
-            </div>
-        </div>
-        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
-    </div>
-
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>My Plan</h1><span>SUBSCRIPTION</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
     <div id="subActive" class="hidden">
-        <div class="card" style="text-align: center; border-color: var(--green);">
-            <div style="font-size: 60px; margin-bottom: 12px;">✅</div>
-            <h2 style="color: var(--green); font-size: 18px; margin-bottom: 8px;">Active Subscription</h2>
-            <p style="color: var(--text-muted); font-size: 13px;">You have full access to all signals</p>
-        </div>
+        <div class="card" style="text-align: center; border-color: var(--green);"><div style="font-size: 60px; margin-bottom: 12px;">✅</div><h2 style="color: var(--green); font-size: 18px; margin-bottom: 8px;">Active Subscription</h2><p style="color: var(--text-muted); font-size: 13px;">You have full access to all signals</p></div>
         <div class="card">
-            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-                <span style="color: var(--text-muted);">Plan</span>
-                <span id="subPlan" style="color: var(--gold); font-weight: 700;">-</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-                <span style="color: var(--text-muted);">Start Date</span>
-                <span id="subStart" style="color: var(--text-main); font-weight: 700;">-</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-                <span style="color: var(--text-muted);">Expiry Date</span>
-                <span id="subEnd" style="color: var(--text-main); font-weight: 700;">-</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
-                <span style="color: var(--text-muted);">Days Left</span>
-                <span id="subDays" style="color: var(--green); font-weight: 900;">-</span>
-            </div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Plan</span><span id="subPlan" style="color: var(--gold); font-weight: 700;">-</span></div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Start Date</span><span id="subStart" style="color: var(--text-main); font-weight: 700;">-</span></div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Expiry Date</span><span id="subEnd" style="color: var(--text-main); font-weight: 700;">-</span></div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Days Left</span><span id="subDays" style="color: var(--green); font-weight: 900;">-</span></div>
         </div>
     </div>
-
     <div id="subInactive" class="card" style="text-align: center; padding: 40px 20px;">
         <div style="font-size: 60px; margin-bottom: 12px;">💎</div>
         <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">No Active Subscription</h2>
-        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
-            Choose a plan to access live signals
-        </p>
+        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Choose a plan to access live signals</p>
         <button class="btn-block" onclick="showScreen('homeScreen')">Choose Plan</button>
     </div>
-
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -1156,18 +413,9 @@
     </div>
 </div>
 
-<!-- ================= PROFILE SCREEN ================= -->
+<!-- PROFILE SCREEN -->
 <div id="profileScreen" class="screen">
-    <div class="header">
-        <div class="header-left">
-            <div class="header-logo">T</div>
-            <div class="header-title">
-                <h1>Profile</h1>
-                <span>MY ACCOUNT</span>
-            </div>
-        </div>
-        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
-    </div>
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Profile</h1><span>MY ACCOUNT</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
 
     <div class="card" style="text-align: center;">
         <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #FCD535); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: #181A20;">T</div>
@@ -1175,40 +423,24 @@
         <p id="profileEmail" style="color: var(--text-muted); font-size: 12px;">-</p>
     </div>
 
-    <!-- Notification Permission Button -->
     <div id="notifPermissionBox" class="card" style="border-color: var(--gold); text-align: center;">
         <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">🔔 Enable Notifications</h3>
-        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px; line-height: 1.5;">
-            Get instant alerts when new signals arrive or your course is activated.
-        </p>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px; line-height: 1.5;">Get instant alerts when new signals arrive or your course is activated.</p>
         <button class="btn-block" onclick="requestNotifPermission()">🔔 Allow Notifications</button>
     </div>
 
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">📋 My Information</h3>
-        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">Name</span>
-            <span id="profName" style="color: var(--text-main); font-weight: 700;">-</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">Email</span>
-            <span id="profEmail" style="color: var(--text-main); font-weight: 700;">-</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-            <span style="color: var(--text-muted);">Phone</span>
-            <span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;">
-            <span style="color: var(--text-muted);">Country</span>
-            <span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span>
-        </div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Name</span><span id="profName" style="color: var(--text-main); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Email</span><span id="profEmail" style="color: var(--text-main); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Phone</span><span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Country</span><span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span></div>
     </div>
-<div class="card">
-    <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
-    <div id="myCoursesList">
-        <p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>
+
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
+        <div id="myCoursesList"><p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p></div>
     </div>
-</div>
 
     <div class="card" style="text-align: center;">
         <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">💬 Contact Admin</h3>
@@ -1216,6 +448,7 @@
         <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ Send Email</a>
     </div>
 
+    <button class="btn-outline" style="border-color: var(--gold); color: var(--gold);" onclick="forceSyncNotifications()">🔄 مزامنة الإشعارات</button>
     <button class="btn-outline" onclick="handleLogout()">🚪 Logout</button>
 
     <div class="bottom-nav">
@@ -1228,51 +461,23 @@
     </div>
 </div>
 
-<!-- ================= COIN CHART SCREEN ================= -->
+<!-- COIN CHART SCREEN -->
 <div id="coinChartScreen" class="screen">
-    <div class="header">
-        <div class="header-left">
-            <div class="header-logo" id="coinChartIcon">₿</div>
-            <div class="header-title">
-                <h1 id="coinChartName">BTC/USDT</h1>
-                <span id="coinChartSub">BINANCE LIVE</span>
-            </div>
-        </div>
-        <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
-    </div>
-
+    <div class="header"><div class="header-left"><div class="header-logo" id="coinChartIcon">₿</div><div class="header-title"><h1 id="coinChartName">BTC/USDT</h1><span id="coinChartSub">BINANCE LIVE</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')">✕</div></div>
     <div class="card" style="text-align: center;">
         <div id="coinChartPrice" style="font-size: 28px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$0.00</div>
         <div id="coinChartChange" style="font-size: 14px; font-weight: 700; color: var(--green);">+0.00%</div>
     </div>
-
-    <div class="card" style="padding: 10px;">
-        <div id="chartContainer" style="width: 100%; height: 300px; position: relative; background: #181A20; border-radius: 10px; overflow: hidden;">
-        </div>
-    </div>
-
+    <div class="card" style="padding: 10px;"><div id="chartContainer" style="width: 100%; height: 300px; position: relative; background: #181A20; border-radius: 10px; overflow: hidden;"></div></div>
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 10px; font-size: 14px;">📊 24h Statistics</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div style="background:#181A20; padding: 10px; border-radius: 8px;">
-                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h High</div>
-                <div id="coinHigh" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
-            </div>
-            <div style="background:#181A20; padding: 10px; border-radius: 8px;">
-                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Low</div>
-                <div id="coinLow" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
-            </div>
-            <div style="background:#181A20; padding: 10px; border-radius: 8px;">
-                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Volume</div>
-                <div id="coinVol" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div>
-            </div>
-            <div style="background:#181A20; padding: 10px; border-radius: 8px;">
-                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Change</div>
-                <div id="coinChg" style="font-size: 13px; font-weight: 900; color: var(--green);">-</div>
-            </div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h High</div><div id="coinHigh" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Low</div><div id="coinLow" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Volume</div><div id="coinVol" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
+            <div style="background:#181A20; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Change</div><div id="coinChg" style="font-size: 13px; font-weight: 900; color: var(--green);">-</div></div>
         </div>
     </div>
-
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -1283,7 +488,7 @@
     </div>
 </div>
 
-<!-- ================= NOTIFICATIONS MODAL ================= -->
+<!-- NOTIFICATIONS MODAL -->
 <div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
     <div style="background:#1E2329; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto;">
         <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; font-family:Tajawal,sans-serif;">🔔 Notifications</h3>
@@ -1292,11 +497,9 @@
     </div>
 </div>
 
-<!-- ================= TOAST ================= -->
 <div id="toast" class="toast">Message</div>
-<!-- ================= JAVASCRIPT ================= -->
+
 <script>
-    // ===== Firebase Config (Tradelix AI) =====
 const firebaseConfig = {
     apiKey: "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM",
     authDomain: "tradelix-ai.firebaseapp.com",
@@ -1306,566 +509,425 @@ const firebaseConfig = {
     appId: "1:374195897663:web:e1ed0ce2c30a4b6aeabf8a"
 };
 
-    // ===== Firebase SDK =====
-    let auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged;
-    let doc, setDoc, getDoc, serverTimestamp;
+let auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged;
+let doc, setDoc, getDoc, serverTimestamp;
 
-    async function initFirebase() {
-        try {
-            const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
-            const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
-            const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+async function initFirebase() {
+    try {
+        const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
+        const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
+        const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
 
-            const app = appModule.initializeApp(firebaseConfig);
-            auth = authModule.getAuth(app);
-            db = fsModule.getFirestore(app);
+        const app = appModule.initializeApp(firebaseConfig);
+        auth = authModule.getAuth(app);
+        db = fsModule.getFirestore(app);
 
-            signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
-            createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
-            signOut = authModule.signOut;
-            onAuthStateChanged = authModule.onAuthStateChanged;
+        signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
+        createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
+        signOut = authModule.signOut;
+        onAuthStateChanged = authModule.onAuthStateChanged;
 
-            doc = fsModule.doc;
-            setDoc = fsModule.setDoc;
-            getDoc = fsModule.getDoc;
-            serverTimestamp = fsModule.serverTimestamp;
+        doc = fsModule.doc;
+        setDoc = fsModule.setDoc;
+        getDoc = fsModule.getDoc;
+        serverTimestamp = fsModule.serverTimestamp;
 
-            // Expose globally for listeners
-            window.firebaseDB = db;
-            window.firebaseFS = fsModule;
+        window.firebaseDB = db;
+        window.firebaseFS = fsModule;
 
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    await loadUserData(user.uid);
-                }
-            });
-            console.log('✅ Firebase initialized');
-        } catch(e) {
-            console.error('Firebase error:', e);
-        }
-    }
+        onAuthStateChanged(auth, async (user) => {
+            if (user) await loadUserData(user.uid);
+        });
+        console.log('✅ Firebase initialized');
+    } catch(e) { console.error('Firebase error:', e); }
+}
 
-    // ===== SPLASH SCREEN (5 seconds) =====
-    setTimeout(() => {
-        document.getElementById('splash').classList.add('hide');
-        setTimeout(() => {
-            showScreen('signupScreen');
-        }, 800);
-    }, 5000);
+setTimeout(() => {
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(() => showScreen('signupScreen'), 800);
+}, 5000);
 
-    // ===== SCREEN NAVIGATION =====
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        const screen = document.getElementById(id);
-        if (screen) screen.classList.add('active');
-        window.scrollTo(0, 0);
-        updateUI();
-    }
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const screen = document.getElementById(id);
+    if (screen) screen.classList.add('active');
+    window.scrollTo(0, 0);
+    updateUI();
+}
 
-    // ===== SIGN UP =====
-    async function handleSignup() {
-        const name = document.getElementById('signupName').value.trim();
-        const phone = document.getElementById('signupPhone').value.trim();
-        const country = document.getElementById('signupCountry').value;
-        const email = document.getElementById('signupEmail').value.trim();
-        const pass = document.getElementById('signupPassword').value;
-        const confirm = document.getElementById('signupConfirm').value;
+async function handleSignup() {
+    const name = document.getElementById('signupName').value.trim();
+    const phone = document.getElementById('signupPhone').value.trim();
+    const country = document.getElementById('signupCountry').value;
+    const email = document.getElementById('signupEmail').value.trim();
+    const pass = document.getElementById('signupPassword').value;
+    const confirm = document.getElementById('signupConfirm').value;
 
-        if (!name || !phone || !country || !email || !pass) {
-            showToast('❌ Please fill all fields');
-            return;
-        }
-        if (pass !== confirm) {
-            showToast('❌ Passwords do not match');
-            return;
-        }
-        if (pass.length < 6) {
-            showToast('❌ Password must be 6+ characters');
-            return;
-        }
-        if (!auth) {
-            showToast('⏳ Please wait...');
-            return;
-        }
+    if (!name || !phone || !country || !email || !pass) { showToast('❌ Please fill all fields'); return; }
+    if (pass !== confirm) { showToast('❌ Passwords do not match'); return; }
+    if (pass.length < 6) { showToast('❌ Password must be 6+ characters'); return; }
+    if (!auth) { showToast('⏳ Please wait...'); return; }
 
-        try {
-            showToast('⏳ Creating account...');
-            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-            const user = userCredential.user;
-
-            await setDoc(doc(db, 'tradelix_users', user.uid), {
-                name: name,
-                phone: phone,
-                country: country,
-                email: email,
-                status: 'inactive',
-                plan: null,
-                startDate: null,
-                expiryDate: null,
-                txHash: null,
-                createdAt: serverTimestamp()
-            });
-
-            showToast('✅ Account created!');
-            setTimeout(() => showScreen('loginScreen'), 1500);
-        } catch (error) {
-            console.error(error);
-            if (error.code === 'auth/email-already-in-use') {
-                showToast('❌ Email already in use');
-            } else if (error.code === 'auth/invalid-email') {
-                showToast('❌ Invalid email');
-            } else if (error.code === 'auth/weak-password') {
-                showToast('❌ Password too weak');
-            } else {
-                showToast('❌ Error: ' + error.message);
-            }
-        }
-    }
-
-    // ===== LOGIN =====
-    async function handleLogin() {
-        const email = document.getElementById('loginEmail').value.trim();
-        const pass = document.getElementById('loginPassword').value;
-
-        if (!email || !pass) {
-            showToast('❌ Enter email and password');
-            return;
-        }
-        if (!auth) {
-            showToast('⏳ Please wait...');
-            return;
-        }
-
-        try {
-            showToast('⏳ Logging in...');
-            const userCredential = await signInWithEmailAndPassword(auth, email, pass);
-            await loadUserData(userCredential.user.uid);
-            showToast('✅ Welcome back!');
-            setTimeout(() => {
-                showScreen('homeScreen');
-                updateUI();
-            }, 1000);
-        } catch (error) {
-            console.error(error);
-            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
-                showToast('❌ Wrong email or password');
-            } else if (error.code === 'auth/user-not-found') {
-                showToast('❌ Account not found');
-            } else {
-                showToast('❌ Login failed');
-            }
-        }
-    }
-
-    // ===== LOAD USER DATA =====
-    let currentUserData = null;
-
-    async function loadUserData(uid) {
-        try {
-            const userDoc = await getDoc(doc(db, 'tradelix_users', uid));
-            if (userDoc.exists()) {
-                currentUserData = { uid: uid, ...userDoc.data() };
-                localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
-                updateUI();
-            }
-        } catch (error) {
-            console.error('Error loading user:', error);
-        }
-    }
-
-    // ===== LOGOUT =====
-    async function handleLogout() {
-        try {
-            await signOut(auth);
-        } catch (e) { console.error(e); }
-        localStorage.removeItem('tradelix_user');
-        currentUserData = null;
-        showToast('👋 Logged out');
-        setTimeout(() => showScreen('loginScreen'), 800);
-    }
-
-    // ===== UPDATE UI =====
-    function updateUI() {
-        const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-
-        if (document.getElementById('welcomeName')) {
-            document.getElementById('welcomeName').textContent = user.name || 'User';
-            document.getElementById('welcomeEmail').textContent = user.email || '-';
-        }
-
-        const badge = document.getElementById('statusBadge');
-        if (badge) {
-            if (user.status === 'active') {
-                badge.style.background = 'rgba(14, 203, 129, 0.15)';
-                badge.style.color = '#0ECB81';
-                badge.style.borderColor = '#0ECB81';
-                badge.textContent = 'ACTIVE';
-            } else if (user.status === 'pending') {
-                badge.style.background = 'rgba(240, 185, 11, 0.15)';
-                badge.style.color = '#F0B90B';
-                badge.style.borderColor = '#F0B90B';
-                badge.textContent = 'PENDING';
-            } else {
-                badge.style.background = 'rgba(246, 70, 93, 0.15)';
-                badge.style.color = '#F6465D';
-                badge.style.borderColor = '#F6465D';
-                badge.textContent = 'INACTIVE';
-            }
-        }
-
-        const activeBox = document.getElementById('activeSignalBox');
-        const lockedBox = document.getElementById('lockedSignalBox');
-        if (activeBox && lockedBox) {
-            if (user.status === 'active') {
-                activeBox.classList.remove('hidden');
-                lockedBox.classList.add('hidden');
-            } else {
-                activeBox.classList.add('hidden');
-                lockedBox.classList.remove('hidden');
-            }
-        }
-
-        const subActive = document.getElementById('subActive');
-        const subInactive = document.getElementById('subInactive');
-        if (subActive && subInactive) {
-            if (user.status === 'active') {
-                subActive.classList.remove('hidden');
-                subInactive.classList.add('hidden');
-                document.getElementById('subPlan').textContent = user.plan || '-';
-                document.getElementById('subStart').textContent = user.startDate || '-';
-                document.getElementById('subEnd').textContent = user.expiryDate || '-';
-                if (user.expiryDate) {
-                    const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
-                    document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
-                }
-            } else {
-                subActive.classList.add('hidden');
-                subInactive.classList.remove('hidden');
-            }
-        }
-
-// My Courses
-const coursesList = document.getElementById('myCoursesList');
-if (coursesList) {
-    const courses = user.courses || [];
-    if (courses.length === 0) {
-        coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-    } else {
-        coursesList.innerHTML = courses.map(c => `
-            <div style="background: #0d0d0d; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);">
-                <div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div>
-            </div>
-        `).join('');
+    try {
+        showToast('⏳ Creating account...');
+        const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+        const user = userCredential.user;
+        await setDoc(doc(db, 'tradelix_users', user.uid), {
+            name: name, phone: phone, country: country, email: email,
+            status: 'inactive', plan: null, startDate: null, expiryDate: null, txHash: null,
+            createdAt: serverTimestamp()
+        });
+        showToast('✅ Account created!');
+        setTimeout(() => showScreen('loginScreen'), 1500);
+    } catch (error) {
+        console.error(error);
+        if (error.code === 'auth/email-already-in-use') showToast('❌ Email already in use');
+        else if (error.code === 'auth/invalid-email') showToast('❌ Invalid email');
+        else if (error.code === 'auth/weak-password') showToast('❌ Password too weak');
+        else showToast('❌ Error: ' + error.message);
     }
 }
 
-        if (document.getElementById('profileName')) {
-            document.getElementById('profileName').textContent = user.name || '-';
-            document.getElementById('profileEmail').textContent = user.email || '-';
-            document.getElementById('profName').textContent = user.name || '-';
-            document.getElementById('profEmail').textContent = user.email || '-';
-            document.getElementById('profPhone').textContent = user.phone || '-';
-            document.getElementById('profCountry').textContent = user.country || '-';
-        }
+async function handleLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPassword').value;
+    if (!email || !pass) { showToast('❌ Enter email and password'); return; }
+    if (!auth) { showToast('⏳ Please wait...'); return; }
+
+    try {
+        showToast('⏳ Logging in...');
+        const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+        await loadUserData(userCredential.user.uid);
+        showToast('✅ Welcome back!');
+        setTimeout(() => { showScreen('homeScreen'); updateUI(); }, 1000);
+    } catch (error) {
+        console.error(error);
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') showToast('❌ Wrong email or password');
+        else if (error.code === 'auth/user-not-found') showToast('❌ Account not found');
+        else showToast('❌ Login failed');
     }
+}
 
-    // ===== SIGNALS NAVIGATION =====
-    function goToSignals() {
-        showScreen('signalsScreen');
-    }
-
-    // ===== DEPOSIT =====
-    let currentPlan = { price: 0, name: '' };
-
-    function goToDeposit(price, name) {
-        currentPlan = { price, name };
-        document.getElementById('depositPlan').textContent = name;
-        document.getElementById('depositAmount').textContent = '$' + price;
-        showScreen('depositScreen');
-    }
-
-    function copyWallet() {
-        const wallet = document.getElementById('walletAddr').textContent.trim();
-        navigator.clipboard.writeText(wallet).then(() => {
-            showToast('✅ Address copied!');
-        }).catch(() => {
-            const ta = document.createElement('textarea');
-            ta.value = wallet;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('✅ Address copied!');
-        });
-    }
-
-    async function submitDeposit() {
-        const hash = document.getElementById('txHash').value.trim();
-        if (!hash) {
-            showToast('❌ Enter transaction hash');
-            return;
-        }
-
-        const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-        if (!user.uid) {
-            showToast('❌ Login first');
-            return;
-        }
-
-        try {
-            await setDoc(doc(db, 'tradelix_users', user.uid), {
-                status: 'pending',
-                plan: currentPlan.name,
-                depositAmount: currentPlan.price,
-                txHash: hash
-            }, { merge: true });
-
-            currentUserData.status = 'pending';
-            currentUserData.plan = currentPlan.name;
-            currentUserData.txHash = hash;
+let currentUserData = null;
+async function loadUserData(uid) {
+    try {
+        const userDoc = await getDoc(doc(db, 'tradelix_users', uid));
+        if (userDoc.exists()) {
+            currentUserData = { uid: uid, ...userDoc.data() };
             localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
-
-            showToast('✅ Submitted! Awaiting review');
-            setTimeout(() => {
-                showScreen('homeScreen');
-                updateUI();
-            }, 1500);
-        } catch (error) {
-            console.error(error);
-            showToast('❌ Submission failed');
+            updateUI();
         }
+    } catch (error) { console.error('Error loading user:', error); }
+}
+
+async function handleLogout() {
+    try { await signOut(auth); } catch (e) { console.error(e); }
+    localStorage.removeItem('tradelix_user');
+    currentUserData = null;
+    showToast('👋 Logged out');
+    setTimeout(() => showScreen('loginScreen'), 800);
+}
+
+function updateUI() {
+    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+
+    if (document.getElementById('welcomeName')) {
+        document.getElementById('welcomeName').textContent = user.name || 'User';
+        document.getElementById('welcomeEmail').textContent = user.email || '-';
     }
 
-    // ===== BINANCE API - Live Prices =====
-    const COINS = ['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA'];
-    let prices = {};
-
-    async function fetchPrices() {
-        try {
-            const symbols = COINS.map(c => `"${c}USDT"`).join(',');
-            const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
-            const res = await fetch(url);
-            if (!res.ok) throw new Error('API Error');
-            const data = await res.json();
-
-            data.forEach(item => {
-                const coin = item.symbol.replace('USDT', '');
-                prices[coin] = {
-                    price: parseFloat(item.lastPrice),
-                    change: parseFloat(item.priceChangePercent),
-                    high: parseFloat(item.highPrice),
-                    low: parseFloat(item.lowPrice),
-                    vol: parseFloat(item.volume)
-                };
-                updateCoinUI(coin, prices[coin]);
-            });
-        } catch (e) {
-            console.error('Binance fetch error:', e);
-        }
-    }
-
-    function updateCoinUI(coin, data) {
-        const fmt = (n) => {
-            if (n >= 1000) return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
-            if (n >= 1) return '$' + n.toFixed(2);
-            return '$' + n.toFixed(4);
-        };
-
-        const pEl = document.getElementById('p' + coin);
-        const cEl = document.getElementById('ch' + coin);
-        if (pEl) pEl.textContent = fmt(data.price);
-        if (cEl) {
-            cEl.textContent = (data.change >= 0 ? '+' : '') + data.change.toFixed(2) + '%';
-            cEl.classList.remove('up', 'down');
-            cEl.classList.add(data.change >= 0 ? 'up' : 'down');
-        }
-
-        const tEl = document.getElementById('t' + coin);
-        const tcEl = document.getElementById('c' + coin);
-        if (tEl) tEl.textContent = fmt(data.price);
-        if (tcEl) {
-            tcEl.textContent = (data.change >= 0 ? '+' : '') + data.change.toFixed(2) + '%';
-            tcEl.classList.remove('up', 'down');
-            tcEl.classList.add(data.change >= 0 ? 'up' : 'down');
-        }
-    }
-
-    function refreshMarkets() {
-        showToast('🔄 Refreshing...');
-        fetchPrices();
-    }
-
-    // ===== COIN CHART =====
-    let currentChartSymbol = 'BTC';
-
-    function openCoinChart(coin) {
-        currentChartSymbol = coin;
-        const coinNames = { BTC: 'Bitcoin', ETH: 'Ethereum', BNB: 'BNB', SOL: 'Solana', XRP: 'XRP', ADA: 'Cardano' };
-        const icons = { BTC: '₿', ETH: 'Ξ', BNB: 'B', SOL: 'S', XRP: 'X', ADA: 'A' };
-
-        document.getElementById('coinChartName').textContent = coin + '/USDT';
-        document.getElementById('coinChartSub').textContent = (coinNames[coin] || coin).toUpperCase();
-        document.getElementById('coinChartIcon').textContent = icons[coin] || coin[0];
-
-        if (prices[coin]) {
-            const fmt = (n) => '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
-            document.getElementById('coinChartPrice').textContent = fmt(prices[coin].price);
-            document.getElementById('coinChartChange').textContent = (prices[coin].change >= 0 ? '+' : '') + prices[coin].change.toFixed(2) + '%';
-            document.getElementById('coinChartChange').style.color = prices[coin].change >= 0 ? '#0ECB81' : '#F6465D';
-            document.getElementById('coinHigh').textContent = fmt(prices[coin].high);
-            document.getElementById('coinLow').textContent = fmt(prices[coin].low);
-            document.getElementById('coinVol').textContent = prices[coin].vol.toLocaleString('en-US', { maximumFractionDigits: 0 });
-            document.getElementById('coinChg').textContent = (prices[coin].change >= 0 ? '+' : '') + prices[coin].change.toFixed(2) + '%';
-            document.getElementById('coinChg').style.color = prices[coin].change >= 0 ? '#0ECB81' : '#F6465D';
-        }
-
-        showScreen('coinChartScreen');
-        setTimeout(loadTradingViewChart, 300);
-    }
-
-    function loadTradingViewChart() {
-        const container = document.getElementById('chartContainer');
-        if (!container) return;
-        container.innerHTML = '';
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:${currentChartSymbol}USDT&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en&utm_source=&utm_medium=widget&utm_campaign=chart`;
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = 'none';
-        iframe.style.borderRadius = '10px';
-        container.appendChild(iframe);
-    }
-
-    // ===== NOTIFICATIONS =====
-    function getNotifs() {
-        return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
-    }
-    function setNotifs(arr) {
-        localStorage.setItem('tradelix_notifs', JSON.stringify(arr));
-    }
-
-    function openNotifModal() {
-        const notifs = getNotifs();
-        const list = document.getElementById('notifList');
-        if (notifs.length === 0) {
-            list.innerHTML = '<p style="color:#848E9C; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
+    const badge = document.getElementById('statusBadge');
+    if (badge) {
+        if (user.status === 'active') {
+            badge.style.background = 'rgba(14, 203, 129, 0.15)';
+            badge.style.color = '#0ECB81';
+            badge.style.borderColor = '#0ECB81';
+            badge.textContent = 'ACTIVE';
+        } else if (user.status === 'pending') {
+            badge.style.background = 'rgba(240, 185, 11, 0.15)';
+            badge.style.color = '#F0B90B';
+            badge.style.borderColor = '#F0B90B';
+            badge.textContent = 'PENDING';
         } else {
-            list.innerHTML = notifs.map(n => 
-                '<div style="background:#181A20; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#2B3139' : '#F0B90B') + ';">' +
-                    '<div style="color:#F0B90B; font-weight:700; font-size:13px; margin-bottom:4px;">' + n.message + '</div>' +
-                    '<div style="color:#848E9C; font-size:11px;">' + n.time + '</div>' +
-                '</div>'
-            ).join('');
+            badge.style.background = 'rgba(246, 70, 93, 0.15)';
+            badge.style.color = '#F6465D';
+            badge.style.borderColor = '#F6465D';
+            badge.textContent = 'INACTIVE';
         }
-        document.getElementById('notifModal').style.display = 'block';
-        notifs.forEach(n => n.read = true);
-        setNotifs(notifs);
-        updateBadge();
     }
 
-    function closeNotifModal() {
-        document.getElementById('notifModal').style.display = 'none';
+    const activeBox = document.getElementById('activeSignalBox');
+    const lockedBox = document.getElementById('lockedSignalBox');
+    if (activeBox && lockedBox) {
+        if (user.status === 'active') { activeBox.classList.remove('hidden'); lockedBox.classList.add('hidden'); }
+        else { activeBox.classList.add('hidden'); lockedBox.classList.remove('hidden'); }
     }
 
-    // ===== UPDATE BADGE (all bells) =====
-    function updateBadge() {
-        const notifs = getNotifs();
-        const unread = notifs.filter(n => !n.read).length;
-        const bells = document.querySelectorAll('.bell-icon');
-        bells.forEach(bell => {
-            let badge = bell.querySelector('.notifBadge');
-            if (unread > 0) {
-                if (!badge) {
-                    badge = document.createElement('span');
-                    badge.className = 'notifBadge';
-                    bell.appendChild(badge);
-                }
-                badge.textContent = unread;
-            } else if (badge) {
-                badge.remove();
+    const subActive = document.getElementById('subActive');
+    const subInactive = document.getElementById('subInactive');
+    if (subActive && subInactive) {
+        if (user.status === 'active') {
+            subActive.classList.remove('hidden');
+            subInactive.classList.add('hidden');
+            document.getElementById('subPlan').textContent = user.plan || '-';
+            document.getElementById('subStart').textContent = user.startDate || '-';
+            document.getElementById('subEnd').textContent = user.expiryDate || '-';
+            if (user.expiryDate) {
+                const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
+                document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
             }
+        } else {
+            subActive.classList.add('hidden');
+            subInactive.classList.remove('hidden');
+        }
+    }
+
+    const coursesList = document.getElementById('myCoursesList');
+    if (coursesList) {
+        const courses = user.courses || [];
+        if (courses.length === 0) {
+            coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+        } else {
+            coursesList.innerHTML = courses.map(c => `<div style="background: #0d0d0d; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+        }
+    }
+
+    if (document.getElementById('profileName')) {
+        document.getElementById('profileName').textContent = user.name || '-';
+        document.getElementById('profileEmail').textContent = user.email || '-';
+        document.getElementById('profName').textContent = user.name || '-';
+        document.getElementById('profEmail').textContent = user.email || '-';
+        document.getElementById('profPhone').textContent = user.phone || '-';
+        document.getElementById('profCountry').textContent = user.country || '-';
+    }
+}
+
+function goToSignals() { showScreen('signalsScreen'); }
+
+let currentPlan = { price: 0, name: '' };
+function goToDeposit(price, name) {
+    currentPlan = { price, name };
+    document.getElementById('depositPlan').textContent = name;
+    document.getElementById('depositAmount').textContent = '$' + price;
+    showScreen('depositScreen');
+}
+
+function copyWallet() {
+    const wallet = document.getElementById('walletAddr').textContent.trim();
+    navigator.clipboard.writeText(wallet).then(() => showToast('✅ Address copied!')).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = wallet; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        showToast('✅ Address copied!');
+    });
+}
+
+async function submitDeposit() {
+    const hash = document.getElementById('txHash').value.trim();
+    if (!hash) { showToast('❌ Enter transaction hash'); return; }
+    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    if (!user.uid) { showToast('❌ Login first'); return; }
+
+    try {
+        await setDoc(doc(db, 'tradelix_users', user.uid), {
+            status: 'pending', plan: currentPlan.name,
+            depositAmount: currentPlan.price, txHash: hash
+        }, { merge: true });
+
+        currentUserData.status = 'pending';
+        currentUserData.plan = currentPlan.name;
+        currentUserData.txHash = hash;
+        localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
+
+        showToast('✅ Submitted! Awaiting review');
+        setTimeout(() => { showScreen('homeScreen'); updateUI(); }, 1500);
+    } catch (error) { console.error(error); showToast('❌ Submission failed'); }
+}
+
+const COINS = ['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA'];
+let prices = {};
+
+async function fetchPrices() {
+    try {
+        const symbols = COINS.map(c => `"${c}USDT"`).join(',');
+        const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('API Error');
+        const data = await res.json();
+
+        data.forEach(item => {
+            const coin = item.symbol.replace('USDT', '');
+            prices[coin] = {
+                price: parseFloat(item.lastPrice), change: parseFloat(item.priceChangePercent),
+                high: parseFloat(item.highPrice), low: parseFloat(item.lowPrice),
+                vol: parseFloat(item.volume)
+            };
+            updateCoinUI(coin, prices[coin]);
         });
+    } catch (e) { console.error('Binance fetch error:', e); }
+}
+
+function updateCoinUI(coin, data) {
+    const fmt = (n) => {
+        if (n >= 1000) return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+        if (n >= 1) return '$' + n.toFixed(2);
+        return '$' + n.toFixed(4);
+    };
+
+    const pEl = document.getElementById('p' + coin);
+    const cEl = document.getElementById('ch' + coin);
+    if (pEl) pEl.textContent = fmt(data.price);
+    if (cEl) {
+        cEl.textContent = (data.change >= 0 ? '+' : '') + data.change.toFixed(2) + '%';
+        cEl.classList.remove('up', 'down');
+        cEl.classList.add(data.change >= 0 ? 'up' : 'down');
     }
-
-    // ===== ADD NOTIFICATION =====
-    function addNotif(message) {
-        const notifs = getNotifs();
-        // تجنب التكرار — إذا نفس الرسالة موجودة آخر 30 ثانية
-        const recent = notifs.find(n => n.message === message && (Date.now() - n.id) < 30000);
-        if (recent) return;
-        
-        notifs.unshift({
-            id: Date.now(),
-            message: message,
-            time: new Date().toLocaleString('en-GB'),
-            read: false
-        });
-        if (notifs.length > 50) notifs.length = 50;
-        setNotifs(notifs);
-
-        updateBadge();
-
-        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-            try { new Notification('Tradelix AI', { body: message }); } catch(e){}
-        }
-        try {
-            const c = new (window.AudioContext || window.webkitAudioContext)();
-            [0, 0.3].forEach(d => {
-                const o = c.createOscillator();
-                const g = c.createGain();
-                o.connect(g); g.connect(c.destination);
-                o.frequency.value = 880;
-                g.gain.setValueAtTime(0.3, c.currentTime + d);
-                g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + d + 0.2);
-                o.start(c.currentTime + d);
-                o.stop(c.currentTime + d + 0.2);
-            });
-        } catch(e){}
-        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-
-        if (typeof showToast === 'function') {
-            try { showToast(message); } catch(e) {}
-        }
+    const tEl = document.getElementById('t' + coin);
+    const tcEl = document.getElementById('c' + coin);
+    if (tEl) tEl.textContent = fmt(data.price);
+    if (tcEl) {
+        tcEl.textContent = (data.change >= 0 ? '+' : '') + data.change.toFixed(2) + '%';
+        tcEl.classList.remove('up', 'down');
+        tcEl.classList.add(data.change >= 0 ? 'up' : 'down');
     }
+}
 
-    // ===== TOAST =====
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2500);
+function refreshMarkets() { showToast('🔄 Refreshing...'); fetchPrices(); }
+
+let currentChartSymbol = 'BTC';
+function openCoinChart(coin) {
+    currentChartSymbol = coin;
+    const coinNames = { BTC: 'Bitcoin', ETH: 'Ethereum', BNB: 'BNB', SOL: 'Solana', XRP: 'XRP', ADA: 'Cardano' };
+    const icons = { BTC: '₿', ETH: 'Ξ', BNB: 'B', SOL: 'S', XRP: 'X', ADA: 'A' };
+    document.getElementById('coinChartName').textContent = coin + '/USDT';
+    document.getElementById('coinChartSub').textContent = (coinNames[coin] || coin).toUpperCase();
+    document.getElementById('coinChartIcon').textContent = icons[coin] || coin[0];
+
+    if (prices[coin]) {
+        const fmt = (n) => '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+        document.getElementById('coinChartPrice').textContent = fmt(prices[coin].price);
+        document.getElementById('coinChartChange').textContent = (prices[coin].change >= 0 ? '+' : '') + prices[coin].change.toFixed(2) + '%';
+        document.getElementById('coinChartChange').style.color = prices[coin].change >= 0 ? '#0ECB81' : '#F6465D';
+        document.getElementById('coinHigh').textContent = fmt(prices[coin].high);
+        document.getElementById('coinLow').textContent = fmt(prices[coin].low);
+        document.getElementById('coinVol').textContent = prices[coin].vol.toLocaleString('en-US', { maximumFractionDigits: 0 });
+        document.getElementById('coinChg').textContent = (prices[coin].change >= 0 ? '+' : '') + prices[coin].change.toFixed(2) + '%';
+        document.getElementById('coinChg').style.color = prices[coin].change >= 0 ? '#0ECB81' : '#F6465D';
     }
+    showScreen('coinChartScreen');
+    setTimeout(loadTradingViewChart, 300);
+}
 
-    // ===== NOTIFICATION PERMISSION =====
-    async function requestNotifPermission() {
-        if (!('Notification' in window)) {
-            if (typeof showToast === 'function') showToast('❌ Notifications not supported');
-            return;
-        }
-        
-        try {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
-                const box = document.getElementById('notifPermissionBox');
-                if (box) box.style.display = 'none';
-                try {
-                    new Notification('Tradelix AI', { body: '✅ Notifications are working!' });
-                } catch(e) {}
-            } else if (permission === 'denied') {
-                if (typeof showToast === 'function') showToast('❌ Notifications blocked in browser settings');
+function loadTradingViewChart() {
+    const container = document.getElementById('chartContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:${currentChartSymbol}USDT&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en`;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    iframe.style.borderRadius = '10px';
+    container.appendChild(iframe);
+}
+
+// ===== NOTIFICATIONS =====
+function getNotifs() { return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
+function setNotifs(arr) { localStorage.setItem('tradelix_notifs', JSON.stringify(arr)); }
+
+function openNotifModal() {
+    const notifs = getNotifs();
+    const list = document.getElementById('notifList');
+    if (notifs.length === 0) {
+        list.innerHTML = '<p style="color:#848E9C; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
+    } else {
+        list.innerHTML = notifs.map(n => 
+            '<div style="background:#181A20; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#2B3139' : '#F0B90B') + ';">' +
+                '<div style="color:#F0B90B; font-weight:700; font-size:13px; margin-bottom:4px;">' + n.message + '</div>' +
+                '<div style="color:#848E9C; font-size:11px;">' + n.time + '</div>' +
+            '</div>'
+        ).join('');
+    }
+    document.getElementById('notifModal').style.display = 'block';
+    notifs.forEach(n => n.read = true);
+    setNotifs(notifs);
+    updateBadge();
+}
+
+function closeNotifModal() { document.getElementById('notifModal').style.display = 'none'; }
+
+function updateBadge() {
+    const notifs = getNotifs();
+    const unread = notifs.filter(n => !n.read).length;
+    document.querySelectorAll('.bell-icon').forEach(bell => {
+        let badge = bell.querySelector('.notifBadge');
+        if (unread > 0) {
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'notifBadge';
+                bell.appendChild(badge);
             }
-        } catch(e) { console.error(e); }
-    }
+            badge.textContent = unread;
+        } else if (badge) badge.remove();
+    });
+}
 
-// ===== إخفاء Netlify Badge =====
+function addNotif(message) {
+    const notifs = getNotifs();
+    const recent = notifs.find(n => n.message === message && (Date.now() - n.id) < 30000);
+    if (recent) return;
+    
+    notifs.unshift({ id: Date.now(), message: message, time: new Date().toLocaleString('en-GB'), read: false });
+    if (notifs.length > 50) notifs.length = 50;
+    setNotifs(notifs);
+
+    updateBadge();
+
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+        try { new Notification('Tradelix AI', { body: message }); } catch(e){}
+    }
+    try {
+        const c = new (window.AudioContext || window.webkitAudioContext)();
+        [0, 0.3].forEach(d => {
+            const o = c.createOscillator();
+            const g = c.createGain();
+            o.connect(g); g.connect(c.destination);
+            o.frequency.value = 880;
+            g.gain.setValueAtTime(0.3, c.currentTime + d);
+            g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + d + 0.2);
+            o.start(c.currentTime + d);
+            o.stop(c.currentTime + d + 0.2);
+        });
+    } catch(e){}
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+
+    if (typeof showToast === 'function') { try { showToast(message); } catch(e) {} }
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+async function requestNotifPermission() {
+    if (!('Notification' in window)) { if (typeof showToast === 'function') showToast('❌ Notifications not supported'); return; }
+    try {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
+            const box = document.getElementById('notifPermissionBox');
+            if (box) box.style.display = 'none';
+            try { new Notification('Tradelix AI', { body: '✅ Notifications are working!' }); } catch(e) {}
+        } else if (permission === 'denied') {
+            if (typeof showToast === 'function') showToast('❌ Notifications blocked');
+        }
+    } catch(e) { console.error(e); }
+}
+
 function hideNetlifyBadge() {
-    const selectors = [
-        '[data-netlify-badge]', '#netlify-badge', '.netlify-badge',
-        'iframe[title="Netlify"]', 'a[href*="netlify.com"]',
-        'div[class*="netlify"]', 'div[id*="netlify"]'
-    ];
-    selectors.forEach(sel => {
+    ['[data-netlify-badge]', '#netlify-badge', '.netlify-badge', 'iframe[title="Netlify"]', 'a[href*="netlify.com"]', 'div[class*="netlify"]', 'div[id*="netlify"]'].forEach(sel => {
         document.querySelectorAll(sel).forEach(el => el.remove());
     });
 }
@@ -1873,233 +935,212 @@ hideNetlifyBadge();
 setInterval(hideNetlifyBadge, 1000);
 
 // ============================================================
-// ============ NOTIFICATIONS POLLING SYSTEM v2 ===============
+// ============ NOTIFICATIONS POLLING v4 ======================
 // ============================================================
 
-// حالة النظام
-let _lastPollTime = parseInt(localStorage.getItem('tradelix_last_poll') || '0');
 let _pollStarted = false;
-let _initialized = false;
+let _lastUID = null;
 
-// مساعدة: الحصول على بيانات المستخدم المحدثة
 function _getUser() {
-    try {
-        return JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    } catch(e) { return {}; }
+    try { return JSON.parse(localStorage.getItem('tradelix_user') || '{}'); }
+    catch(e) { return {}; }
 }
 
-// مساعدة: هل الإشارة موجّهة لهذا المستخدم؟
+function _getLastNotified() {
+    const u = _getUser();
+    return parseInt(localStorage.getItem('tradelix_last_notified_' + (u.uid || 'anon')) || '0');
+}
+
+function _setLastNotified(ts) {
+    const u = _getUser();
+    localStorage.setItem('tradelix_last_notified_' + (u.uid || 'anon'), String(ts));
+}
+
 function _isSignalForUser(sig, uid) {
     const targetUID = sig.targetUID || '';
-    if (!targetUID) return true; // للجميع
-    if (targetUID === uid) return true;
-    return false;
+    if (!targetUID) return true;
+    return targetUID === uid;
 }
 
-// فحص الإشارات الجديدة
 async function _checkSignals() {
     try {
         const u = _getUser();
         if (!u.uid) return;
-        
-        const fs = window.firebaseFS || await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const fs = window.firebaseFS;
+        if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
-        
+
         let snap;
         try {
             const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(30));
             snap = await getDocs(q);
-        } catch(e) {
-            snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals'));
+        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
+
+        if (u.status !== 'active') {
+            _setLastNotified(Date.now());
+            return;
         }
-        
+
+        const lastNotified = _getLastNotified();
         const now = Date.now();
-        
+        const oneDayAgo = now - (24 * 60 * 60 * 1000);
+        const startFrom = Math.max(lastNotified, oneDayAgo);
+        let maxNotified = lastNotified;
+
+        const newSignals = [];
         snap.forEach(d => {
             const sig = d.data();
             const createdMs = (sig.createdAt?.seconds || 0) * 1000;
-            
-            // فقط الإشارات الأحدث من آخر فحص
-            if (createdMs <= _lastPollTime) return;
-            
-            // هل هي لهذا المستخدم؟
+            if (createdMs <= startFrom) return;
             if (!_isSignalForUser(sig, u.uid)) return;
-            
-            // المستخدم يجب أن يكون نشطاً
-            if (u.status !== 'active') return;
-            
-            // إرسال الإشعار
-            const msg = `📊 Signal: ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ $${sig.entry || ''}`;
-            addNotif(msg);
+            newSignals.push({ id: d.id, ...sig, _createdMs: createdMs });
         });
-    } catch(e) {
-        console.warn('Signal poll error:', e.message);
-    }
+
+        newSignals.sort((a, b) => a._createdMs - b._createdMs);
+        newSignals.forEach(sig => {
+            const msg = `📊 ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ $${sig.entry || ''}`;
+            addNotif(msg);
+            if (sig._createdMs > maxNotified) maxNotified = sig._createdMs;
+        });
+
+        _setLastNotified(newSignals.length > 0 ? maxNotified : now);
+        if (newSignals.length > 0) console.log('✅ Sent ' + newSignals.length + ' signal notification(s)');
+    } catch(e) { console.warn('Signal poll error:', e.message); }
 }
 
-// فحص الاجتماعات الجديدة
 async function _checkMeetings() {
     try {
         const u = _getUser();
         if (!u.uid) return;
-        
-        const fs = window.firebaseFS || await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const fs = window.firebaseFS;
+        if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
-        
+
         let snap;
         try {
             const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'), limit(20));
             snap = await getDocs(q);
-        } catch(e) {
-            snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings'));
-        }
-        
+        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings')); }
+
+        const seenKey = 'tradelix_seen_meetings_' + u.uid;
+        const seen = new Set(JSON.parse(localStorage.getItem(seenKey) || '[]'));
+        const isFirst = !localStorage.getItem(seenKey);
+        let count = 0;
+
         snap.forEach(d => {
+            if (seen.has(d.id)) return;
+            seen.add(d.id);
+            if (isFirst) return;
             const meet = d.data();
-            const createdMs = (meet.createdAt?.seconds || 0) * 1000;
-            
-            if (createdMs <= _lastPollTime) return;
-            
-            const msg = `📅 New Meeting: ${meet.title || 'Live Session'}`;
-            addNotif(msg);
+            addNotif(`📅 New Meeting: ${meet.title || 'Live Session'}`);
+            count++;
         });
-    } catch(e) {
-        console.warn('Meeting poll error:', e.message);
-    }
+
+        localStorage.setItem(seenKey, JSON.stringify([...seen].slice(-100)));
+        if (count > 0) console.log('✅ Sent ' + count + ' meeting notification(s)');
+    } catch(e) { console.warn('Meeting poll error:', e.message); }
 }
 
-// تحديث بيانات المستخدم (الحالة والكورسات)
 async function _refreshUserData() {
     try {
         const u = _getUser();
         if (!u.uid) return;
-        
         const userDoc = await getDoc(doc(window.firebaseDB, 'tradelix_users', u.uid));
         if (!userDoc.exists()) return;
-        
+
         const data = userDoc.data();
-        const old = _getUser();
-        
-        // تحقق من تغيير الحالة
-        if (old.status !== data.status && data.status === 'active') {
-            addNotif('✅ اشتراكك تم تفعيله!');
+        const oldStatus = u.status || 'inactive';
+        const newStatus = data.status || 'inactive';
+
+        if (oldStatus !== newStatus) {
+            if (newStatus === 'active') {
+                _setLastNotified(Date.now() - (24 * 60 * 60 * 1000));
+                addNotif('🎉 تم تفعيل اشتراكك! استمتع بالإشارات الحصرية');
+            } else if (newStatus === 'pending') {
+                addNotif('⏳ تم استلام طلبك — بانتظار مراجعة الأدمن');
+            } else if (newStatus === 'inactive' && oldStatus === 'pending') {
+                addNotif('❌ تم رفض طلبك. تواصل مع الدعم');
+            }
         }
-        
-        // تحديث localStorage
+
+        const oldCourses = JSON.stringify(u.courses || []);
+        const newCourses = JSON.stringify(data.courses || []);
+        if (oldCourses !== newCourses && newCourses !== '[]') {
+            addNotif('🎓 تم تفعيل كورس جديد في حسابك!');
+        }
+
         const updated = { uid: u.uid, ...data };
         localStorage.setItem('tradelix_user', JSON.stringify(updated));
-        if (currentUserData) {
-            Object.assign(currentUserData, data);
-        }
-        
-        // تحديث الواجهة
+        if (currentUserData) Object.assign(currentUserData, data);
+
         updateUI();
-    } catch(e) {
-        console.warn('User refresh error:', e.message);
-    }
+    } catch(e) { console.warn('User refresh error:', e.message); }
 }
 
-// الدورة الرئيسية للفحص
 async function _pollCycle() {
     if (!window.firebaseDB) return;
     const u = _getUser();
     if (!u.uid) return;
-    
-    // تخطي أول دورة (لعدم إشعار على بيانات قديمة)
-    if (!_initialized) {
-        _lastPollTime = Date.now();
-        localStorage.setItem('tradelix_last_poll', String(_lastPollTime));
-        _initialized = true;
-        console.log('✅ Polling initialized. Skipping old data.');
-        await _refreshUserData();
-        return;
+
+    if (_lastUID !== u.uid) {
+        _lastUID = u.uid;
+        console.log('🔄 User changed:', u.uid.slice(0, 8));
     }
-    
-    // فحص الإشارات والاجتماعات
+
+    await _refreshUserData();
     await _checkSignals();
     await _checkMeetings();
-    await _refreshUserData();
     await loadMeetingsForUser();
-    
-    // تحديث وقت آخر فحص
-    _lastPollTime = Date.now();
-    localStorage.setItem('tradelix_last_poll', String(_lastPollTime));
 }
 
-// بدء Polling
 function _startPolling() {
     if (_pollStarted) return;
-    if (!window.firebaseDB) {
-        setTimeout(_startPolling, 1500);
-        return;
-    }
-    
+    if (!window.firebaseDB) { setTimeout(_startPolling, 1500); return; }
     const u = _getUser();
-    if (!u.uid) {
-        setTimeout(_startPolling, 2000);
-        return;
-    }
-    
+    if (!u.uid) { setTimeout(_startPolling, 2000); return; }
+
     _pollStarted = true;
-    console.log('🚀 Notifications polling started');
-    
-    // أول فحص فوري (لكن تخطي الإشعارات القديمة)
-    _pollCycle();
-    
-    // كل 5 ثوانٍ
+    console.log('🚀 Polling v4 started');
+    setTimeout(_pollCycle, 2000);
     setInterval(_pollCycle, 5000);
 }
 
-// فحص فوري عند العودة للتطبيق
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && _pollStarted) {
-        _pollCycle();
-    }
+    if (!document.hidden && _pollStarted) _pollCycle();
 });
-
-// ============================================================
-// ============ LOAD MEETINGS FOR USER ========================
-// ============================================================
 
 async function loadMeetingsForUser() {
     try {
         if (!window.firebaseDB) return;
-        const fs = window.firebaseFS || await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const fs = window.firebaseFS;
+        if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
-        
+
         let snap;
         try {
             const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'), limit(20));
             snap = await getDocs(q);
-        } catch(e) {
-            snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings'));
-        }
-        
+        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings')); }
+
         const meetings = [];
         snap.forEach(d => meetings.push({ id: d.id, ...d.data() }));
-        
-        // ترتيب حسب التاريخ
         meetings.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-        
+
         const list = document.getElementById('meetingsList');
         if (!list) return;
-        
+
         if (meetings.length === 0) {
             list.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p>';
             return;
         }
-        
+
         list.innerHTML = meetings.map(mt => {
             let dateStr = '';
             if (mt.date) {
                 try {
-                    dateStr = new Date(mt.date).toLocaleString('en-GB', { 
-                        day: '2-digit', month: 'short', year: 'numeric',
-                        hour: '2-digit', minute: '2-digit'
-                    });
+                    dateStr = new Date(mt.date).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
                 } catch(e) { dateStr = mt.date; }
             }
-            
             return `
                 <div style="border-bottom: 1px solid var(--border); padding: 14px 0;">
                     <div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>
@@ -2109,9 +1150,58 @@ async function loadMeetingsForUser() {
                 </div>
             `;
         }).join('');
-    } catch(e) {
-        console.error('Load meetings error:', e);
-    }
+    } catch(e) { console.error('Load meetings error:', e); }
+}
+
+// ===== FORCE SYNC BUTTON =====
+async function forceSyncNotifications() {
+    showToast('⏳ جاري المزامنة...');
+    try {
+        const u = _getUser();
+        if (!u.uid) { showToast('❌ غير مسجل'); return; }
+
+        if (u.status !== 'active') {
+            showToast('⚠️ اشتراكك غير مفعل — لن تصل إشعارات الصفقات');
+            return;
+        }
+
+        const fs = window.firebaseFS;
+        if (!fs) { showToast('❌ الاتصال غير جاهز'); return; }
+        const { collection, getDocs, query, orderBy, limit } = fs;
+
+        let snap;
+        try {
+            const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(30));
+            snap = await getDocs(q);
+        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
+
+        const now = Date.now();
+        const twoDaysAgo = now - (48 * 60 * 60 * 1000);
+        const signals = [];
+
+        snap.forEach(d => {
+            const sig = d.data();
+            const createdMs = (sig.createdAt?.seconds || 0) * 1000;
+            if (createdMs < twoDaysAgo) return;
+            if (!_isSignalForUser(sig, u.uid)) return;
+            signals.push({ id: d.id, ...sig, _createdMs: createdMs });
+        });
+
+        signals.sort((a, b) => a._createdMs - b._createdMs);
+        const recent = signals.slice(-5);
+        let count = 0;
+
+        recent.forEach(sig => {
+            const msg = `📊 ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ $${sig.entry || ''}`;
+            addNotif(msg);
+            count++;
+        });
+
+        if (signals.length > 0) _setLastNotified(signals[signals.length - 1]._createdMs);
+
+        if (count > 0) showToast('✅ تم تحميل ' + count + ' إشعار');
+        else showToast('📭 لا صفقات جديدة آخر 48 ساعة');
+    } catch(e) { console.error(e); showToast('❌ فشل المزامنة'); }
 }
 
 // ===== INIT =====
@@ -2119,52 +1209,30 @@ window.addEventListener('load', async () => {
     await initFirebase();
     fetchPrices();
     setInterval(fetchPrices, 10000);
-    
-    // بدء نظام الإشعارات
     setTimeout(_startPolling, 3000);
 
-    // إخفاء زر الإشعارات إذا كان الإذن ممنوحاً
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         const box = document.getElementById('notifPermissionBox');
         if (box) box.style.display = 'none';
     }
 
-    // تحديث البادج
     updateBadge();
 });
 
-// عندما يعود المستخدم للتطبيق
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-        updateBadge();
-        updateUI();
-    }
+    if (!document.hidden) { updateBadge(); updateUI(); }
 });
 </script>
+
 <style>
-    iframe[src*="netlify"],
-    iframe[title*="Netlify"],
-    iframe[title*="netlify"],
-    iframe[id*="netlify"],
-    [data-netlify-badge],
-    [id="netlify-badge"],
-    [class*="netlify-badge"],
+    iframe[src*="netlify"], iframe[title*="Netlify"], iframe[title*="netlify"], iframe[id*="netlify"],
+    [data-netlify-badge], [id="netlify-badge"], [class*="netlify-badge"],
     a[href*="netlify.com"][target="_blank"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        width: 0 !important;
-        height: 0 !important;
-        max-width: 0 !important;
-        max-height: 0 !important;
-        position: fixed !important;
-        bottom: -99999px !important;
-        left: -99999px !important;
-        top: auto !important;
-        right: auto !important;
-        pointer-events: none !important;
-        z-index: -99999 !important;
-        transform: scale(0) !important;
+        display: none !important; visibility: hidden !important; opacity: 0 !important;
+        width: 0 !important; height: 0 !important; max-width: 0 !important; max-height: 0 !important;
+        position: fixed !important; bottom: -99999px !important; left: -99999px !important;
+        top: auto !important; right: auto !important;
+        pointer-events: none !important; z-index: -99999 !important; transform: scale(0) !important;
     }
 </style>
 </body>
