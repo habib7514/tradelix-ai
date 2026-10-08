@@ -115,6 +115,73 @@
         .plan-buy { background: var(--btn-gold); color: #181A20; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 900; font-size: 13px; cursor: pointer; font-family: inherit; }
         .plan-badge { position: absolute; top: -8px; right: 16px; background: var(--gold); color: #181A20; font-size: 9px; font-weight: 900; padding: 3px 10px; border-radius: 8px; letter-spacing: 1px; }
 
+        /* ===== Premium Signals Info Card (Gray) ===== */
+        .signals-info-card {
+            background: #1E1E1E;
+            border: 1px solid #2A2A2A;
+            border-radius: 14px;
+            padding: 20px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .signals-info-card::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 100px; height: 100px;
+            background: radial-gradient(circle, rgba(192,192,192,0.08), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .signals-info-icon {
+            font-size: 34px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(192,192,192,0.4));
+            position: relative;
+            z-index: 1;
+        }
+        .signals-info-title {
+            color: #C0C0C0;
+            font-size: 16px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        .signals-info-desc {
+            color: #AAAAAA;
+            font-size: 12.5px;
+            line-height: 1.75;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        .signals-info-desc strong {
+            color: #E5E5E5;
+            font-weight: 900;
+        }
+        .signals-info-tags {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 11px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        .signals-info-tags span {
+            color: #C0C0C0;
+            background: rgba(192,192,192,0.08);
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(192,192,192,0.25);
+        }
+        /* ===== END Premium Signals Info Card ===== */
+
         /* ═══════════ BOTTOM NAV — FIXED FULL-TAP v3 ═══════════ */
         .bottom-nav {
             position: fixed;
@@ -310,6 +377,20 @@
     <button class="btn-block outline" onclick="openAllMarkets()" style="margin-bottom: 20px;">
         🌐 Markets (46 Coins)
     </button>
+
+    <!-- ✅ Premium Signals Info Card (Gray) -->
+    <div class="signals-info-card">
+        <div class="signals-info-icon">📊</div>
+        <div class="signals-info-title">Premium Signals Access</div>
+        <div class="signals-info-desc">
+            Subscribe to receive <strong>real-time trading signals</strong> with Entry, Stop Loss &amp; Take Profit — delivered directly to your phone.
+        </div>
+        <div class="signals-info-tags">
+            <span>⚡ Instant Alerts</span>
+            <span>🎯 87% Win Rate</span>
+            <span>🔓 Cancel Anytime</span>
+        </div>
+    </div>
 
     <div class="section-title"><span>💎 Subscription Plans</span></div>
     <div class="plan-card"><div class="plan-info"><h4>Weekly</h4><div class="duration">7 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(15, 'Weekly')">$15</button></div>
@@ -790,7 +871,6 @@ function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
 function handleJoinMeeting(link) {
     const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
 
-    // ✅ مشترك → افتح الاجتماع مباشرة
     if (user.status === 'active') {
         if (!link || link === '#') {
             showToast('⚠️ Meeting link not available');
@@ -800,7 +880,6 @@ function handleJoinMeeting(link) {
         return;
     }
 
-    // ❌ غير مشترك → حوّله إلى صفحة الباقات
     showToast('🔒 Subscribe to access meetings');
     showScreen('homeScreen');
 
