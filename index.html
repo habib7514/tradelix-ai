@@ -1330,6 +1330,10 @@ const firebaseConfig = {
             getDoc = fsModule.getDoc;
             serverTimestamp = fsModule.serverTimestamp;
 
+            // Expose to window for listeners
+            window.firebaseDB = db;
+            window.firebaseFS = fsModule;
+
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     await loadUserData(user.uid);
@@ -1539,6 +1543,7 @@ const firebaseConfig = {
                 subInactive.classList.remove('hidden');
             }
         }
+
 // My Courses
 const coursesList = document.getElementById('myCoursesList');
 if (coursesList) {
@@ -1759,6 +1764,8 @@ if (coursesList) {
 
     // ===== UPDATE BADGE (all bells) =====
     function updateBadge() {
+        // Reload from localStorage to avoid stale state
+        notifs = JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
         const unread = notifs.filter(n => !n.read).length;
         const bells = document.querySelectorAll('.bell-icon');
         bells.forEach(bell => {
@@ -1778,6 +1785,8 @@ if (coursesList) {
 
     // ===== ADD NOTIFICATION =====
     function addNotif(message) {
+        // Reload from localStorage to avoid stale state
+        notifs = JSON.parse(localStorage.getItem('tradelix_notifs') || '[]');
         notifs.unshift({
             id: Date.now(),
             message: message,
@@ -1806,6 +1815,10 @@ if (coursesList) {
             });
         } catch(e){}
         if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+
+        if (typeof showToast === 'function') {
+            try { showToast(message); } catch(e) {}
+        }
     }
 
     // ===== TOAST =====
@@ -1865,23 +1878,198 @@ async function startCourseListener() {
         onSnapshot(doc(window.firebaseDB, 'tradelix_users', u.uid), d => {
             if (!d.exists()) return;
             const data = d.data();
+            
+            // تحديث بيانات المستخدم في localStorage
+            const local = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+            local.status = data.status || local.status;
+            local.plan = data.plan || local.plan;
+            local.startDate = data.startDate || local.startDate;
+            local.expiryDate = data.expiryDate || local.expiryDate;
+            local.courses = data.courses || local.courses;
+            localStorage.setItem('tradelix_user', JSON.stringify(local));
+            if (currentUserData) {
+                currentUserData.status = data.status || currentUserData.status;
+                currentUserData.plan = data.plan || currentUserData.plan;
+                currentUserData.courses = data.courses || currentUserData.courses;
+            }
+            
             const currentCourses = JSON.stringify(data.courses || []);
             if (lastCoursesJSON !== null && lastCoursesJSON !== currentCourses) {
-                if (currentUserData) {
-                    currentUserData.courses = data.courses || [];
-                    localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
-                } else {
-                    const local = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-                    local.courses = data.courses || [];
-                    localStorage.setItem('tradelix_user', JSON.stringify(local));
-                }
                 updateUI();
-                if (typeof showToast === 'function') showToast('🎓 New Course Activated!');
                 addNotif('🎓 New Course Activated!');
             }
             lastCoursesJSON = currentCourses;
+            
+            // تحديث الواجهة إذا تغيرت الحالة
+            updateUI();
         });
     } catch(e) { console.error('Course listener error:', e); }
+}
+
+// ===== SIGNALS LISTENER =====
+let signalListenerStarted = false;
+async function startSignalListener() {
+    if (signalListenerStarted) return;
+    if (!window.firebaseDB) { setTimeout(startSignalListener, 1000); return; }
+    const u = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    if (!u.uid) { setTimeout(startSignalListener, 2000); return; }
+
+    try {
+        const m = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const { collection, onSnapshot } = m;
+        
+        const seenSignalIds = new Set();
+        let isFirstLoad = true;
+        
+        // حفظ الإشارات المعروفة مسبقاً
+        const storedSeen = JSON.parse(localStorage.getItem('tradelix_seen_signals') || '[]');
+        storedSeen.forEach(id => seenSignalIds.add(id));
+        
+        onSnapshot(collection(window.firebaseDB, 'tradelix_signals'), async (snap) => {
+            // الحصول على بيانات المستخدم المحدثة
+            let userData = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+            
+            snap.docChanges().forEach(change => {
+                if (change.type !== 'added') return;
+                const sigId = change.doc.id;
+                
+                // إذا كانت الإشارة معروفة مسبقاً — تجاهل
+                if (seenSignalIds.has(sigId)) return;
+                seenSignalIds.add(sigId);
+                
+                // حفظ في localStorage
+                try {
+                    const arr = [...seenSignalIds].slice(-100);
+                    localStorage.setItem('tradelix_seen_signals', JSON.stringify(arr));
+                } catch(e) {}
+                
+                // تجاهل عند التحميل الأول (المستخدم الحالي موجود)
+                if (isFirstLoad) return;
+                
+                const sig = change.doc.data();
+                
+                // المستخدم يجب أن يكون نشطاً
+                if (userData.status !== 'active') return;
+                
+                // تحقق من الاستهداف
+                const targetUID = sig.targetUID || '';
+                if (targetUID && targetUID !== userData.uid) return;
+                
+                // إرسال الإشعار
+                const msg = `📊 New Signal: ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ ${sig.entry || ''}`;
+                addNotif(msg);
+            });
+            
+            if (isFirstLoad) {
+                isFirstLoad = false;
+                // حفظ كل الإشارات الحالية
+                try {
+                    const arr = [...seenSignalIds].slice(-100);
+                    localStorage.setItem('tradelix_seen_signals', JSON.stringify(arr));
+                } catch(e) {}
+                console.log('✅ Signal listener active. Seen:', seenSignalIds.size);
+            }
+        });
+        
+        signalListenerStarted = true;
+    } catch(e) { console.error('Signal listener error:', e); }
+}
+
+// ===== MEETINGS LISTENER =====
+let meetingListenerStarted = false;
+async function startMeetingListener() {
+    if (meetingListenerStarted) return;
+    if (!window.firebaseDB) { setTimeout(startMeetingListener, 1000); return; }
+    const u = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    if (!u.uid) { setTimeout(startMeetingListener, 2000); return; }
+
+    try {
+        const m = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const { collection, onSnapshot } = m;
+        
+        const seenMeetingIds = new Set();
+        let isFirstLoad = true;
+        
+        const storedSeen = JSON.parse(localStorage.getItem('tradelix_seen_meetings') || '[]');
+        storedSeen.forEach(id => seenMeetingIds.add(id));
+        
+        onSnapshot(collection(window.firebaseDB, 'tradelix_meetings'), (snap) => {
+            snap.docChanges().forEach(change => {
+                if (change.type !== 'added') return;
+                const meetId = change.doc.id;
+                
+                if (seenMeetingIds.has(meetId)) return;
+                seenMeetingIds.add(meetId);
+                
+                try {
+                    const arr = [...seenMeetingIds].slice(-100);
+                    localStorage.setItem('tradelix_seen_meetings', JSON.stringify(arr));
+                } catch(e) {}
+                
+                if (isFirstLoad) return;
+                
+                const meet = change.doc.data();
+                const msg = `📅 New Meeting: ${meet.title || 'Live Session'}${meet.date ? ' • ' + meet.date : ''}`;
+                addNotif(msg);
+                
+                // تحديث قائمة الاجتماعات
+                loadMeetingsForUser();
+            });
+            
+            if (isFirstLoad) {
+                isFirstLoad = false;
+                try {
+                    const arr = [...seenMeetingIds].slice(-100);
+                    localStorage.setItem('tradelix_seen_meetings', JSON.stringify(arr));
+                } catch(e) {}
+                console.log('✅ Meeting listener active. Seen:', seenMeetingIds.size);
+            }
+        });
+        
+        meetingListenerStarted = true;
+    } catch(e) { console.error('Meeting listener error:', e); }
+}
+
+// ===== LOAD MEETINGS FOR USER =====
+async function loadMeetingsForUser() {
+    try {
+        const m = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+        const { collection, getDocs, query, orderBy, limit } = m;
+        
+        let snap;
+        try {
+            const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'), limit(20));
+            snap = await getDocs(q);
+        } catch(e) {
+            snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings'));
+        }
+        
+        const meetings = [];
+        snap.forEach(d => meetings.push({ id: d.id, ...d.data() }));
+        
+        const list = document.getElementById('meetingsList');
+        if (!list) return;
+        
+        if (meetings.length === 0) {
+            list.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p>';
+            return;
+        }
+        
+        list.innerHTML = meetings.map(mt => `
+            <div style="border-bottom: 1px solid var(--border); padding: 12px 0; ${meetings.indexOf(mt) === meetings.length-1 ? 'border-bottom: none;' : ''}">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 10px;">
+                    <div style="flex: 1;">
+                        <div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>
+                        ${mt.date ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 4px;">🕐 ${new Date(mt.date).toLocaleString('en-GB')}</div>` : ''}
+                        ${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 8px;">${mt.description}</div>` : ''}
+                    </div>
+                </div>
+                <a href="${mt.link || '#'}" target="_blank" style="display:block; margin-top: 10px; padding: 12px; background: linear-gradient(135deg, #F0B90B, #FCD535); color: #181A20; text-decoration: none; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px;">🎥 Join Meeting</a>
+            </div>
+        `).join('');
+    } catch(e) {
+        console.error('Load meetings error:', e);
+    }
 }
 
 // ===== INIT =====
@@ -1890,6 +2078,9 @@ window.addEventListener('load', async () => {
     fetchPrices();
     setInterval(fetchPrices, 10000);
     setTimeout(startCourseListener, 3000);
+    setTimeout(startSignalListener, 4000);
+    setTimeout(startMeetingListener, 5000);
+    setTimeout(loadMeetingsForUser, 6000);
 
     // إخفاء زر الإشعارات إذا كان الإذن ممنوحاً
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
@@ -1899,6 +2090,14 @@ window.addEventListener('load', async () => {
 
     // تحديث البادج
     updateBadge();
+});
+
+// عندما يعود المستخدم للتطبيق، حدّث الواجهة
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        updateBadge();
+        updateUI();
+    }
 });
 </script>
 <style>
