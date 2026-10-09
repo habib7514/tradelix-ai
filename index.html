@@ -898,6 +898,11 @@ function updateUI() {
         document.getElementById('profPhone').textContent = user.phone || '-';
         document.getElementById('profCountry').textContent = user.country || '-';
     }
+    
+// ✅ إظهار بانر التثبيت بعد تسجيل الدخول
+if (user && user.uid && typeof showPWABanner === 'function') {
+    setTimeout(showPWABanner, 1500);
+}
 }
 
 function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
