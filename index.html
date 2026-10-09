@@ -1535,6 +1535,12 @@ document.addEventListener('visibilitychange', () => {
     });
 
     function showPWABanner() {
+        // ✅ فقط بعد تسجيل الدخول
+const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+if (!user.uid) {
+    console.log('⏭️ PWA: User not logged in');
+    return;
+}
         const dismissed = localStorage.getItem(PWA_BANNER_KEY);
         if (dismissed) {
             const daysSince = (Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24);
