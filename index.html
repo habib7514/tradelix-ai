@@ -178,6 +178,28 @@
         .refresh-btn-pro:active { transform: scale(0.95); background: linear-gradient(135deg, rgba(245, 197, 24, 0.28), rgba(245, 197, 24, 0.15)); border-color: #F5C518; box-shadow: 0 0 18px rgba(245, 197, 24, 0.55), inset 0 0 10px rgba(245, 197, 24, 0.15); }
         .refresh-btn-pro:active svg { transform: rotate(360deg); }
     </style>
+    <!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- PWA Theme Color -->
+<meta name="theme-color" content="#F5C518">
+
+<!-- PWA Apple Support (iOS) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tradelix AI">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png">
+
+<!-- PWA Service Worker Registration -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log('✅ PWA Service Worker registered'))
+                .catch(err => console.log('❌ PWA SW error:', err));
+        });
+    }
+</script>
 </head>
 <body>
 <div id="splash">
