@@ -679,13 +679,21 @@
     </div>
 </div>
 
+<!-- ═══════════ ⭐ NOTIFICATIONS MODAL — NEW (مع زر X في الأعلى) ═══════════ -->
 <div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
-    <div style="background:#141414; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto;">
-        <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; font-family:Tajawal,sans-serif;">🔔 Notifications</h3>
+    <div style="background:#141414; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto; position:relative;">
+        
+        <!-- ⭐ زر X في أعلى اليمين -->
+        <button onclick="closeNotifModal()" aria-label="Close" style="position:absolute; top:14px; right:14px; width:40px; height:40px; border-radius:50%; background:rgba(245, 197, 24, 0.15); border:1.5px solid rgba(245, 197, 24, 0.6); color:#F5C518; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10; touch-action:manipulation; -webkit-tap-highlight-color:rgba(245, 197, 24, 0.3); -webkit-appearance:none; appearance:none; transition:all 0.15s ease; box-shadow:0 2px 10px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(245, 197, 24, 0.08); font-family:Tajawal,sans-serif;">✕</button>
+        
+        <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; padding-right:40px; padding-left:40px; font-family:Tajawal,sans-serif;">🔔 Notifications</h3>
         <div id="notifList" style="font-family:Tajawal,sans-serif;"></div>
-        <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer;">Close</button>
+        
+        <!-- زر Close السفلي (يبقى كخيار ثاني) -->
+        <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer; touch-action:manipulation;">Close</button>
     </div>
 </div>
+<!-- ═══════════ END NOTIFICATIONS MODAL ═══════════ -->
 
 <div id="toast" class="toast">Message</div>
 <script>
