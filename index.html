@@ -387,3 +387,102 @@
         <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
+
+<div id="allMarketsScreen" class="screen">
+    <div class="header">
+        <div class="header-left"><div class="header-logo">🌐</div><div class="header-title"><h1>All Markets</h1><span>BINANCE LIVE • 46 COINS</span></div></div>
+        <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
+    </div>
+    <div class="input-group"><input type="text" id="marketSearch" placeholder="🔍 Search by name or symbol..." oninput="filterAllMarkets()"></div>
+    <div class="markets-grid" id="allMarketsGrid"></div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="signalsScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Signals</h1><span>LIVE SIGNALS</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
+    <div id="activeSignalBox" class="hidden">
+        <div class="card" style="border-color: var(--green); background: var(--bg-card);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
+                <div id="signalPair" style="font-size: 18px; font-weight: 900; color: var(--gold);">-</div>
+                <div id="signalDirectionBadge" style="padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 900; background: rgba(0, 208, 132, 0.15); color: var(--green); border: 1px solid var(--green);">-</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div style="background: #000000; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">ENTRY</div><div id="signalEntry" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div></div>
+                <div style="background: #000000; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">STOP LOSS</div><div id="signalSL" style="font-size: 15px; font-weight: 900; color: var(--red);">-</div></div>
+                <div style="background: #000000; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">TAKE PROFIT</div><div id="signalTP" style="font-size: 15px; font-weight: 900; color: var(--green);">-</div></div>
+                <div style="background: #000000; border-radius: 10px; padding: 12px; text-align: center;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">CONFIDENCE</div><div id="signalConf" style="font-size: 15px; font-weight: 900; color: var(--gold);">-</div></div>
+            </div>
+            <div id="signalNotes" style="margin-top: 12px; padding: 10px; background: #000000; border-radius: 8px; font-size: 12px; color: var(--text-muted); line-height: 1.5; display: none;"></div>
+        </div>
+    </div>
+    <div id="lockedSignalBox" class="card" style="text-align: center; padding: 40px 20px;">
+        <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
+        <h3 style="color: var(--gold); margin-bottom: 8px;">Premium Required</h3>
+        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Subscribe to access live signals with Entry / SL / TP</p>
+        <button class="btn-block" onclick="showScreen('homeScreen')">View Plans</button>
+    </div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="academyScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="openNotifModal()">🔔</div></div>
+    <div class="card" style="background: var(--bg-card); border-color: var(--gold); text-align: center;">
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">📚 Learn Trading From Zero</h2>
+        <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6;">4 professional courses to master crypto trading</p>
+    </div>
+    <div class="section-title">🎓 Available Courses</div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ Trading Basics</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Learn core trading concepts and crypto fundamentals</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ Technical Analysis</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Candlestick patterns and technical indicators</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ Risk Management</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Protect your capital and manage risks effectively</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ Advanced Strategies</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Professional strategies for daily trading</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">Buy</button></div></div></div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item active" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
+
+<div id="depositScreen" class="screen">
+    <div class="header"><div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>Deposit</h1><span>PAYMENT</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')">✕</div></div>
+    <div class="card">
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">💳 Payment Details</h3>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Plan</span><span id="depositPlan" style="color: var(--gold); font-weight: 700;">-</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Amount</span><span id="depositAmount" style="color: var(--gold); font-weight: 700;">$0</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Network</span><span style="color: var(--text-main); font-weight: 700;">BNB Smart Chain</span></div>
+        <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Currency</span><span style="color: var(--text-main); font-weight: 700;">USDT (BEP20)</span></div>
+    </div>
+    <div class="section-title">💰 Wallet Address</div>
+    <div style="background: #000000; border: 1px dashed var(--gold); border-radius: 10px; padding: 14px; text-align: center; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--gold); margin-bottom: 10px;" id="walletAddr">0x4E11E978119cAAB300b5439B909D06341C24a2A7</div>
+    <button class="btn-block" onclick="copyWallet()">📋 Copy Address</button>
+    <div style="margin-top: 24px;">
+        <div class="section-title">🔗 Transaction Hash (TX)</div>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.6;">After sending the payment, paste your transaction hash here</p>
+        <div class="input-group"><input type="text" id="txHash" placeholder="Paste transaction hash"></div>
+        <button class="btn-block" onclick="submitDeposit()">📤 Submit for Review</button>
+    </div>
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+    </div>
+</div>
