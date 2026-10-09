@@ -1494,5 +1494,88 @@ document.addEventListener('visibilitychange', () => {
         pointer-events: none !important; z-index: -99999 !important; transform: scale(0) !important;
     }
 </style>
+    <!-- ═══════════ PWA INSTALL BANNER ═══════════ -->
+<div id="pwaInstallBanner" style="display:none; position:fixed; top:0; left:0; right:0; z-index:999999; padding:12px 16px; background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); border-bottom:2px solid #F5C518; box-shadow:0 4px 20px rgba(245,197,24,0.3); animation:slideDown 0.5s ease;">
+    <div style="display:flex; align-items:center; gap:12px; max-width:480px; margin:0 auto;">
+        <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png" alt="Tradelix AI" style="width:50px; height:50px; border-radius:12px; border:1.5px solid #F5C518; flex-shrink:0; box-shadow:0 0 15px rgba(245,197,24,0.4);">
+        <div style="flex:1; min-width:0;">
+            <div style="color:#ffffff; font-weight:900; font-size:14px; margin-bottom:2px; font-family:Tajawal,sans-serif;">📲 Install Tradelix AI</div>
+            <div style="color:#888888; font-size:11px; font-family:Tajawal,sans-serif;">Faster + Instant notifications</div>
+        </div>
+        <button id="pwaInstallBtn" onclick="installPWA()" style="background:linear-gradient(135deg, #F5C518, #E5B000); color:#000000; border:none; padding:12px 20px; border-radius:12px; font-weight:900; font-size:14px; cursor:pointer; font-family:Tajawal,sans-serif; letter-spacing:0.5px; box-shadow:0 4px 15px rgba(245,197,24,0.5); animation:pwaPulse 2s ease-in-out infinite; touch-action:manipulation; white-space:nowrap;">Install</button>
+        <button onclick="closePWABanner()" aria-label="Close" style="background:transparent; border:none; color:#888888; font-size:20px; cursor:pointer; padding:4px 8px; flex-shrink:0; touch-action:manipulation;">✕</button>
+    </div>
+</div>
+
+<style>
+    @keyframes slideDown {
+        from { transform: translateY(-100%); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideUp {
+        from { transform: translateY(0); opacity: 1; }
+        to { transform: translateY(-100%); opacity: 0; }
+    }
+    @keyframes pwaPulse {
+        0%, 100% { box-shadow: 0 4px 15px rgba(245,197,24,0.5); transform: scale(1); }
+        50% { box-shadow: 0 6px 25px rgba(245,197,24,0.8); transform: scale(1.03); }
+    }
+    body.pwa-banner-active .screen { padding-top: 90px !important; }
+</style>
+
+<script>
+    let deferredPrompt = null;
+    const PWA_BANNER_KEY = 'tradelix_pwa_banner_dismissed';
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log('✅ PWA: Install prompt ready');
+        showPWABanner();
+    });
+
+    function showPWABanner() {
+        const dismissed = localStorage.getItem(PWA_BANNER_KEY);
+        if (dismissed) {
+            const daysSince = (Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24);
+            if (daysSince < 7) return;
+        }
+        if (window.matchMedia('(display-mode: standalone)').matches) return;
+        const banner = document.getElementById('pwaInstallBanner');
+        if (banner) {
+            banner.style.display = 'block';
+            document.body.classList.add('pwa-banner-active');
+        }
+    }
+
+    async function installPWA() {
+        if (!deferredPrompt) {
+            alert('📲 To install on iPhone:\n\n1. Tap "Share" in Safari\n2. Choose "Add to Home Screen"\n3. Tap "Add"');
+            return;
+        }
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            console.log('✅ PWA: User accepted install');
+            closePWABanner(true);
+        } else {
+            closePWABanner();
+        }
+        deferredPrompt = null;
+    }
+
+    function closePWABanner(installed = false) {
+        const banner = document.getElementById('pwaInstallBanner');
+        if (banner) {
+            banner.style.animation = 'slideUp 0.4s ease forwards';
+            setTimeout(() => {
+                banner.style.display = 'none';
+                document.body.classList.remove('pwa-banner-active');
+            }, 400);
+        }
+        if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
+    }
+</script>
+<!-- ═══════════ END PWA INSTALL BANNER ═══════════ -->
 </body>
 </html>
