@@ -1,0 +1,27 @@
+{
+    "name": "Tradelix AI - Smarter Crypto Trading",
+    "short_name": "Tradelix AI",
+    "description": "AI-Powered Crypto Trading Platform - Live Signals & Real-Time Markets",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#000000",
+    "theme_color": "#F5C518",
+    "lang": "en",
+    "dir": "ltr",
+    "categories": ["finance", "business", "productivity"],
+    "icons": [
+        {
+            "src": "https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
