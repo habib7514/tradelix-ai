@@ -266,7 +266,27 @@
             </div>
         </div>
     </div>
+<!-- 🎯 JOIN TELEGRAM BUTTON -->
+<style>
+.join-channel-btn{display:flex;align-items:center;justify-content:space-between;margin:20px 0;padding:16px 20px;background:linear-gradient(135deg,#F5B301 0%,#FFD700 50%,#F5B301 100%);color:#0D0D0D;text-decoration:none;border-radius:16px;font-family:'Cairo','Tajawal',-apple-system,sans-serif;font-weight:700;font-size:15px;letter-spacing:0.3px;box-shadow:0 4px 20px rgba(245,179,1,0.4),0 0 0 1px rgba(255,215,0,0.3) inset;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.join-channel-btn::before{content:'';position:absolute;top:0;left:-150%;width:100%;height:100%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0.6) 50%,rgba(255,255,255,0) 70%,transparent 100%);transform:skewX(-25deg);animation:shine-effect 3s infinite;pointer-events:none;}
+@keyframes shine-effect{0%{left:-150%;}50%,100%{left:150%;}}
+.join-channel-btn:active{transform:scale(0.98);box-shadow:0 2px 10px rgba(245,179,1,0.6),0 0 0 1px rgba(255,215,0,0.5) inset;}
+.join-channel-btn .tg-icon{width:32px;height:32px;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));}
+.join-channel-btn .tg-text{flex:1;text-align:center;margin:0 12px;font-weight:700;}
+.join-channel-btn .tg-arrow{font-size:20px;font-weight:700;animation:arrow-bounce 1.5s ease-in-out infinite;}
+@keyframes arrow-bounce{0%,100%{transform:translateX(0);}50%{transform:translateX(4px);}}
+</style>
 
+<a href="https://t.me/TradelixAI_Official" target="_blank" rel="noopener" class="join-channel-btn">
+    <svg class="tg-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="16" fill="#229ED9"/>
+        <path d="M23.5 9.5L8 15.5L13 17.5L14.5 22.5L17.5 19L21.5 22L23.5 9.5Z" fill="#FFFFFF"/>
+    </svg>
+    <span class="tg-text">Join Our Channel Now</span>
+    <span class="tg-arrow">›</span>
+</a>
+<!-- ═══════════ END JOIN TELEGRAM BUTTON ═══════════ -->
     <div class="proof-grid">
         <div class="proof-card">
             <div class="proof-icon">
