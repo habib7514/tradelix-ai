@@ -768,6 +768,15 @@ function showScreen(id) {
     if (id === 'allMarketsScreen') renderAllMarkets();
     if (id === 'signalsScreen') loadLatestSignal();
     if (id === 'homeScreen') loadPublicStats();
+    
+// ✅ إخفاء البانر في صفحات غير الرئيسية
+if (id !== 'homeScreen') {
+    const banner = document.getElementById('pwaInstallBanner');
+    if (banner) {
+        banner.style.display = 'none';
+        document.body.classList.remove('pwa-banner-active');
+    }
+}
 }
 
 async function handleSignup() {
