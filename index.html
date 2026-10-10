@@ -1542,11 +1542,12 @@ document.addEventListener('visibilitychange', () => {
     const PWA_BANNER_KEY = 'tradelix_pwa_banner_dismissed';
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        console.log('✅ PWA: Install prompt ready');
-        showPWABanner();
-    });
+    e.preventDefault();
+    deferredPrompt = e;
+    console.log('✅ PWA: Install prompt ready — waiting for home screen');
+    // ⚠️ لا نستدعي showPWABanner هنا
+    // سيتم استدعاؤها فقط من داخل showScreen عند فتح homeScreen
+});
 
     function showPWABanner() {
         // ✅ فقط بعد تسجيل الدخول
