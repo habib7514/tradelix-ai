@@ -2087,10 +2087,23 @@ let currentUser = null;
 let chatOpen = false;
 let lastMessageTime = 0;
 
-    // إخفاء زر الشات في البداية
-document.addEventListener('DOMContentLoaded', () => {
+    // إخفاء زر الشات عندما لا يكون المستخدم مسجلاً للدخول
+function hideChatButtonIfNotLoggedIn() {
     const chatBtn = document.getElementById('chatToggleBtn');
-    if (chatBtn) chatBtn.style.display = 'none';
+    if (chatBtn && !currentUser) {
+        chatBtn.style.display = 'none';
+    }
+}
+
+// مراقبة تغييرات الصفحة
+const observer = new MutationObserver(() => {
+    hideChatButtonIfNotLoggedIn();
+});
+
+// بدء المراقبة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+    observer.observe(document.body, { childList: true, subtree: true });
+    hideChatButtonIfNotLoggedIn();
 });
 // 🎯 فتح/إغلاق الشات
 window.toggleChat = function() {
