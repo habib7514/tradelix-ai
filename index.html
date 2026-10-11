@@ -2132,7 +2132,7 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
         // إظهار زر الشات فقط عند تسجيل الدخول
-        chatBtn.style.display = 'flex'; 
+        chatBtn.style.display = 'visible'; 
         await loadUserRole(user.uid);
         loadMessages();
     } else {
