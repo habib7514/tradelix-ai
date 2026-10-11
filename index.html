@@ -2095,12 +2095,20 @@ function hideChatButtonIfNotLoggedIn() {
     }
 }
 
-// مراقبة تغييرات الصفحة
+// مراقبة أي تغيير في التطبيق (لأن الصفحات تتغير دون إعادة تحميل)
 const observer = new MutationObserver(() => {
     hideChatButtonIfNotLoggedIn();
 });
 
 // بدء المراقبة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+    observer.observe(document.body, { childList: true, subtree: true });
+    hideChatButtonIfNotLoggedIn();
+});
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     observer.observe(document.body, { childList: true, subtree: true });
     hideChatButtonIfNotLoggedIn();
