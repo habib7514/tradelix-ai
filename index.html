@@ -2138,7 +2138,7 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         currentUser = null;
         // إخفاء زر الشات عند تسجيل الخروج
-        chatBtn.style.display = 'none'; 
+        chatBtn.style.display = 'hidden'; 
         document.getElementById('chatWindow').style.display = 'none';
     }
 });
