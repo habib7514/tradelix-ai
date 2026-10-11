@@ -2128,6 +2128,11 @@ window.toggleChat = function() {
 
 // 👤 مراقبة حالة المستخدم
 onAuthStateChanged(auth, async (user) => {
+    setTimeout(() => {
+    const chatBtn = document.getElementById('chatToggleBtn');
+    if (chatBtn && user) chatBtn.style.visibility = 'visible';
+    if (chatBtn && !user) chatBtn.style.visibility = 'hidden';
+}, 500);
     const chatBtn = document.getElementById('chatToggleBtn');
     if (user) {
         currentUser = user;
