@@ -1959,7 +1959,7 @@ if (!user.uid) {
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     cursor: pointer;
     z-index: 9998;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     animation: pulse 2s infinite; /* حركة النبض */
@@ -2095,11 +2095,10 @@ window.toggleChat = function() {
     if (chatOpen) {
         document.getElementById('chatUnreadBadge').style.display = 'none';
         setTimeout(() => {
-            const msgs = document.getElementById('chatMessages');
-            msgs.scrollTop = msgs.scrollHeight;
-        }, 100);
-    }
-};
+    const msgs = document.getElementById('chatMessages');
+    msgs.scrollTop = msgs.scrollHeight;
+    document.getElementById('chatInput').focus();
+}, 100);
 
 // 👤 مراقبة حالة المستخدم
 onAuthStateChanged(auth, async (user) => {
