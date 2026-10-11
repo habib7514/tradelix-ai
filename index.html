@@ -1908,14 +1908,167 @@ if (!user.uid) {
 </style>
 
 <!-- ═══════════════════════════════════════════ -->
-<!-- ⚙️ CHAT JAVASCRIPT + FIREBASE -->
+<!-- 💬 CHAT SYSTEM v2 - Tradelix AI -->
 <!-- ═══════════════════════════════════════════ -->
+
+<!-- زر الشات العائم (مخفي مبدئياً) -->
+<button id="chatToggleBtn" class="chat-toggle-btn" onclick="toggleChat()" style="display:none;">
+    💬
+    <span id="chatUnreadBadge" class="chat-badge" style="display:none;">0</span>
+</button>
+
+<!-- نافذة الشات -->
+<div id="chatWindow" class="chat-window" style="display:none;">
+    <div class="chat-header">
+        <div class="chat-header-left">
+            <div class="chat-avatar">💬</div>
+            <div>
+                <div class="chat-title">غرفة النقاش</div>
+                <div class="chat-subtitle" id="chatOnlineCount">● متصل الآن</div>
+            </div>
+        </div>
+        <button class="chat-close-btn" onclick="toggleChat()">✕</button>
+    </div>
+
+    <div id="chatMessages" class="chat-messages"></div>
+
+    <div id="chatRestrictedMsg" class="chat-restricted" style="display:none;">
+        🔒 كن مشتركاً نشطاً للكتابة
+        <a href="#plans" onclick="toggleChat()">ترقية الآن</a>
+    </div>
+
+    <div class="chat-input-area" id="chatInputArea">
+        <input type="text" id="chatInput" class="chat-input" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter') sendChatMessage()" />
+        <button class="chat-send-btn" onclick="sendChatMessage()">📤</button>
+    </div>
+</div>
+
+<style>
+/* ═══ زر الشات العائم ═══ */
+.chat-toggle-btn {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #1E293B; /* لون رمادي داكن بدل الأصفر */
+    color: #F5B301;
+    font-size: 26px;
+    border: 2px solid #F5B301;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    cursor: pointer;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite; /* حركة النبض */
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(245,179,1,0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(245,179,1,0); }
+    100% { box-shadow: 0 0 0 0 rgba(245,179,1,0); }
+}
+
+.chat-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #EF4444;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* ═══ نافذة الشات ═══ */
+.chat-window {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 80vh;
+    background: #0F172A;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 30px rgba(0,0,0,0.5);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+    animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(245,179,1,0.2);
+    background: #0D0D0D;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.chat-header-left { display: flex; align-items: center; gap: 12px; }
+.chat-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #1E293B, #334155);
+    border: 2px solid #F5B301;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+}
+.chat-title { color: #FFFFFF; font-weight: bold; font-size: 16px; }
+.chat-subtitle { color: #10B981; font-size: 12px; margin-top: 2px; }
+.chat-close-btn { background: transparent; border: none; color: #94A3B8; font-size: 22px; cursor: pointer; padding: 5px 10px; }
+
+.chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+.chat-msg { display: flex; gap: 10px; align-items: flex-start; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.chat-msg-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; color: #0D0D0D; flex-shrink: 0; }
+.chat-msg-avatar.admin { background: linear-gradient(135deg, #F5B301, #FFD700); }
+.chat-msg-avatar.vip { background: linear-gradient(135deg, #A855F7, #EC4899); color: white; }
+.chat-msg-avatar.free { background: linear-gradient(135deg, #64748B, #94A3B8); color: white; }
+
+.chat-msg-body { flex: 1; }
+.chat-msg-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.chat-msg-name { color: #F5B301; font-weight: bold; font-size: 13px; }
+.chat-msg-name.vip { color: #A855F7; }
+.chat-msg-name.free { color: #94A3B8; }
+.chat-msg-badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+.chat-msg-badge.admin { background: #F5B301; color: #0D0D0D; }
+.chat-msg-badge.vip { background: #A855F7; color: white; }
+.chat-msg-badge.free { background: #334155; color: #94A3B8; }
+.chat-msg-time { color: #64748B; font-size: 11px; margin-left: auto; }
+.chat-msg-text { color: #E2E8F0; font-size: 14px; line-height: 1.5; word-wrap: break-word; background: #1E293B; padding: 10px 14px; border-radius: 12px; border-top-left-radius: 4px; }
+.chat-msg.own .chat-msg-text { background: linear-gradient(135deg, #F5B301, #FFD700); color: #0D0D0D; }
+
+.chat-restricted { padding: 14px 20px; background: #1E293B; color: #94A3B8; text-align: center; font-size: 13px; border-top: 1px solid rgba(245,179,1,0.1); }
+.chat-restricted a { color: #F5B301; font-weight: bold; text-decoration: none; margin-right: 8px; }
+
+.chat-input-area { display: flex; gap: 10px; padding: 14px 20px; background: #0D0D0D; border-top: 1px solid rgba(245,179,1,0.2); }
+.chat-input { flex: 1; padding: 12px 16px; background: #1E293B; border: 1px solid #334155; border-radius: 24px; color: #FFFFFF; font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.3s; }
+.chat-input:focus { border-color: #F5B301; }
+.chat-send-btn { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #F5B301, #FFD700); border: none; font-size: 20px; cursor: pointer; flex-shrink: 0; transition: transform 0.2s; }
+.chat-send-btn:active { transform: scale(0.9); }
+
+.chat-messages::-webkit-scrollbar { width: 6px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+</style>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
-import { getDatabase, ref, push, onChildAdded, query, limitToLast, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+import { getDatabase, ref, push, onChildAdded, query, limitToLast, get } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
-// ⚙️ إعدادات Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAA9I27a5eyuxH6zpueuSN69DDm-fMDko0",
     authDomain: "tradelix-ai-a3cf2.firebaseapp.com",
@@ -1930,7 +2083,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// 📊 متغيرات
 let currentUser = null;
 let chatOpen = false;
 let lastMessageTime = 0;
@@ -1940,7 +2092,6 @@ window.toggleChat = function() {
     const chatWindow = document.getElementById('chatWindow');
     chatOpen = !chatOpen;
     chatWindow.style.display = chatOpen ? 'flex' : 'none';
-    
     if (chatOpen) {
         document.getElementById('chatUnreadBadge').style.display = 'none';
         setTimeout(() => {
@@ -1951,26 +2102,28 @@ window.toggleChat = function() {
 };
 
 // 👤 مراقبة حالة المستخدم
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
+    const chatBtn = document.getElementById('chatToggleBtn');
     if (user) {
         currentUser = user;
-        loadUserRole(user.uid);
+        // إظهار زر الشات فقط عند تسجيل الدخول
+        chatBtn.style.display = 'flex'; 
+        await loadUserRole(user.uid);
         loadMessages();
     } else {
         currentUser = null;
-        updateChatUI('guest');
+        // إخفاء زر الشات عند تسجيل الخروج
+        chatBtn.style.display = 'none'; 
+        document.getElementById('chatWindow').style.display = 'none';
     }
 });
 
 // 🎭 تحميل دور المستخدم
 async function loadUserRole(uid) {
-    const { get } = await import("https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js");
     const snapshot = await get(ref(db, 'users/' + uid));
     if (snapshot.exists()) {
-        const userData = snapshot.val();
-        updateChatUI(userData.role);
+        updateChatUI(snapshot.val().role);
     } else {
-        // مستخدم جديد - free
         updateChatUI('free');
     }
 }
@@ -1979,7 +2132,6 @@ async function loadUserRole(uid) {
 function updateChatUI(role) {
     const inputArea = document.getElementById('chatInputArea');
     const restrictedMsg = document.getElementById('chatRestrictedMsg');
-    
     if (role === 'admin' || role === 'vip') {
         inputArea.style.display = 'flex';
         restrictedMsg.style.display = 'none';
@@ -1994,12 +2146,9 @@ function loadMessages() {
     const messagesRef = query(ref(db, 'messages'), limitToLast(100));
     const chatMessages = document.getElementById('chatMessages');
     chatMessages.innerHTML = '';
-    
     onChildAdded(messagesRef, (snapshot) => {
         const msg = snapshot.val();
         displayMessage(msg);
-        
-        // إشعار للرسائل الجديدة
         if (msg.timestamp > lastMessageTime && !chatOpen) {
             const badge = document.getElementById('chatUnreadBadge');
             const count = parseInt(badge.textContent) || 0;
@@ -2014,16 +2163,12 @@ function loadMessages() {
 function displayMessage(msg) {
     const chatMessages = document.getElementById('chatMessages');
     const isOwn = currentUser && msg.userId === currentUser.uid;
-    
     const roleIcons = { admin: '👑', vip: '💎', free: '👤' };
     const roleLabels = { admin: 'أدمن', vip: 'VIP', free: 'عضو' };
-    
     const msgDiv = document.createElement('div');
     msgDiv.className = 'chat-msg' + (isOwn ? ' own' : '');
     msgDiv.innerHTML = `
-        <div class="chat-msg-avatar ${msg.role || 'free'}">
-            ${roleIcons[msg.role] || '👤'}
-        </div>
+        <div class="chat-msg-avatar ${msg.role || 'free'}">${roleIcons[msg.role] || '👤'}</div>
         <div class="chat-msg-body">
             <div class="chat-msg-header">
                 <span class="chat-msg-name ${msg.role || 'free'}">${msg.userName || 'مستخدم'}</span>
@@ -2033,21 +2178,16 @@ function displayMessage(msg) {
             <div class="chat-msg-text">${escapeHtml(msg.text)}</div>
         </div>
     `;
-    
     chatMessages.appendChild(msgDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// 🕐 تنسيق الوقت
 function formatTime(timestamp) {
     if (!timestamp) return '';
     const date = new Date(timestamp);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const mins = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${mins}`;
+    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 }
 
-// 🛡️ حماية من XSS
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
@@ -2056,22 +2196,12 @@ function escapeHtml(text) {
 
 // 📤 إرسال رسالة
 window.sendChatMessage = async function() {
-    if (!currentUser) {
-        alert('يجب تسجيل الدخول أولاً');
-        return;
-    }
-    
+    if (!currentUser) { alert('يجب تسجيل الدخول أولاً'); return; }
     const input = document.getElementById('chatInput');
     const text = input.value.trim();
-    
     if (!text) return;
-    
-    // جلب بيانات المستخدم
-    const { get } = await import("https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js");
     const userSnapshot = await get(ref(db, 'users/' + currentUser.uid));
     const userData = userSnapshot.exists() ? userSnapshot.val() : { name: 'مستخدم', role: 'free' };
-    
-    // إرسال الرسالة
     await push(ref(db, 'messages'), {
         userId: currentUser.uid,
         userName: userData.name || 'مستخدم',
@@ -2079,11 +2209,10 @@ window.sendChatMessage = async function() {
         text: text,
         timestamp: Date.now()
     });
-    
     input.value = '';
 };
 
-console.log('✅ Chat System Loaded');
+console.log('✅ Chat System v2 Loaded');
 </script>
 <!-- ═══════════════════════════════════════════ -->
 </body>
