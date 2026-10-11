@@ -2046,12 +2046,12 @@ onAuthStateChanged(auth, async (user) => {
     const chatBtn = document.getElementById('chatToggleBtn');
     if (user) {
         currentUser = user;
-        chatBtn.style.display = 'flex';
+        chatBtn.style.visibility = 'visible';
         await loadUserRole(user.uid);
         loadMessages();
     } else {
         currentUser = null;
-        chatBtn.style.display = 'none';
+        chatBtn.style.visibility = 'hidden';
         document.getElementById('chatWindow').style.display = 'none';
     }
 });
