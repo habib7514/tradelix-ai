@@ -1906,7 +1906,6 @@ if (!user.uid) {
     border-radius: 3px;
 }
 </style>
-
 <!-- ═══════════════════════════════════════════ -->
 <!-- 💬 CHAT SYSTEM - Tradelix AI -->
 <!-- ═══════════════════════════════════════════ -->
@@ -1951,7 +1950,7 @@ if (!user.uid) {
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     cursor: pointer;
     z-index: 9998;
-    visibility: hidden;
+    display: none;
     align-items: center;
     justify-content: center;
 }
@@ -2046,12 +2045,12 @@ onAuthStateChanged(auth, async (user) => {
     const chatBtn = document.getElementById('chatToggleBtn');
     if (user) {
         currentUser = user;
-        chatBtn.style.visibility = 'visible';
+        chatBtn.style.display = 'flex';
         await loadUserRole(user.uid);
         loadMessages();
     } else {
         currentUser = null;
-        chatBtn.style.visibility = 'hidden';
+        chatBtn.style.display = 'none';
         document.getElementById('chatWindow').style.display = 'none';
     }
 });
@@ -2123,6 +2122,8 @@ window.sendChatMessage = async function() {
     input.value = '';
 };
 </script>
+<!-- ═══════════════════════════════════════════ -->
+    
 <!-- ═══════════════════════════════════════════ -->
 <!-- ═══════════════════════════════════════════ -->
 </body>
