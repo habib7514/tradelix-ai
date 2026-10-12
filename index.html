@@ -266,6 +266,14 @@
             </div>
         </div>
     </div>
+    <!-- 🎯 CHAT BUTTON -->
+<div id="chatButtonContainer" style="display:none; margin: 16px 20px;">
+    <button onclick="toggleChat()" class="chat-glow-btn">
+        <span style="position:relative; z-index:2; display:flex; align-items:center; gap:10px;">
+            💬 غرفة النقاش
+        </span>
+    </button>
+</div>
 <!-- 🎯 JOIN TELEGRAM BUTTON -->
 <style>
 .join-channel-btn{display:flex;align-items:center;justify-content:space-between;margin:20px 0;padding:16px 20px;background:linear-gradient(135deg,#F5B301 0%,#FFD700 50%,#F5B301 100%);color:#0D0D0D;text-decoration:none;border-radius:16px;font-family:'Cairo','Tajawal',-apple-system,sans-serif;font-weight:700;font-size:15px;letter-spacing:0.3px;box-shadow:0 4px 20px rgba(245,179,1,0.4),0 0 0 1px rgba(255,215,0,0.3) inset;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;}
@@ -1618,14 +1626,7 @@ if (!user.uid) {
     }
 </script>
 <!-- ═══════════ END PWA INSTALL BANNER ═══════════ -->
-    <!-- CHAT SYSTEM - v3 -->
-<div id="chatButtonContainer" style="display:none; margin: 16px 20px;">
-    <button onclick="toggleChat()" class="chat-glow-btn">
-        <span style="position:relative; z-index:2; display:flex; align-items:center; gap:10px;">
-            💬 غرفة النقاش
-        </span>
-    </button>
-</div>
+    
 
 <div id="chatWindow" style="display:none; position:fixed; bottom:0; left:0; right:0; height:80vh; background:#0F172A; z-index:9999; flex-direction:column; border-top-left-radius:20px; border-top-right-radius:20px;">
     <div style="display:flex; justify-content:space-between; padding:16px; background:#0D0D0D; border-top-left-radius:20px; border-top-right-radius:20px;">
