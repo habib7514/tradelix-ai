@@ -1729,13 +1729,30 @@ if (!user.uid) {
     });
 
     async function loadUserRole(uid) {
-        const snapshot = await db.ref('users/' + uid).get();
-        if (snapshot.exists()) {
-            updateChatUI(snapshot.val().role);
+    try {
+        const fs = window.firebaseFS;
+        if (!fs) {
+            updateChatUI('free');
+            return;
+        }
+        const { doc, getDoc } = fs;
+        const userDoc = await getDoc(doc(window.firebaseDB, 'tradelix_users', uid));
+        
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            if (userData.status === 'active') {
+                updateChatUI('vip');
+            } else {
+                updateChatUI('free');
+            }
         } else {
             updateChatUI('free');
         }
+    } catch (e) {
+        console.warn('loadUserRole error:', e.message);
+        updateChatUI('free');
     }
+}
 
     function updateChatUI(role) {
         const inputArea = document.getElementById('chatInputArea');
