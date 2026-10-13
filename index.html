@@ -1625,6 +1625,151 @@ if (!user.uid) {
         if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
     }
 </script>
+<!-- NOTIFICATION PERMISSION MODAL -->
+<div id="notifPermissionModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:999999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#141414; border:2px solid #8B5CF6; border-radius:20px; padding:28px 24px; max-width:400px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(139,92,246,0.4);">
+        <div style="font-size:60px; margin-bottom:16px;">🔔</div>
+        <h2 style="color:#FFFFFF; font-size:20px; font-weight:900; margin-bottom:12px; font-family:'Tajawal',sans-serif;">Enable Notifications</h2>
+        <p style="color:#94A3B8; font-size:14px; line-height:1.7; margin-bottom:24px; font-family:'Tajawal',sans-serif;">
+            Get instant alerts for:<br>
+            ⚡ New Signals &nbsp;•&nbsp; 📅 Live Meetings<br>
+            🎓 Course Updates &nbsp;•&nbsp; 💎 Special Offers
+        </p>
+        <button onclick="window.allowNotifications()" style="width:100%; padding:16px; background:linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color:#FFFFFF; border:none; border-radius:14px; font-weight:900; font-size:16px; cursor:pointer; font-family:'Tajawal',sans-serif; margin-bottom:12px; box-shadow:0 6px 20px rgba(139,92,246,0.4);">Allow Notifications</button>
+        <button onclick="window.dismissNotifModal()" style="width:100%; padding:12px; background:transparent; color:#64748B; border:none; font-weight:700; font-size:14px; cursor:pointer; font-family:'Tajawal',sans-serif;">Maybe Later</button>
+    </div>
+</div>
 
+<!-- FIREBASE MESSAGING (WEB PUSH) -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+
+const notifFirebaseConfig = {
+    apiKey: "AIzaSyAA9I27a5eyuxH6zpueuSN69DDm-fMDko0",
+    authDomain: "tradelix-ai-a3cf2.firebaseapp.com",
+    databaseURL: "https://tradelix-ai-a3cf2-default-rtdb.firebaseio.com",
+    projectId: "tradelix-ai-a3cf2",
+    storageBucket: "tradelix-ai-a3cf2.firebasestorage.app",
+    messagingSenderId: "1084379574917",
+    appId: "1:1084379574917:web:ab752ffa841dc531fe6fec"
+};
+
+const notifApp = initializeApp(notifFirebaseConfig, "notifApp");
+const notifDb = getDatabase(notifApp);
+let messaging = null;
+
+try {
+    messaging = getMessaging(notifApp);
+} catch(e) {
+    console.warn('Messaging not supported:', e);
+}
+
+const VAPID_KEY = "BBqI1PZMFovxqW_XowWsumj2kOa4WAmn-HMWTYnwwRAEAihXn9lMlBBflVkgxSdV51aXOhlu9XT6X72wYmXK0T8";
+
+// ✅ إظهار نافذة الإذن بعد تسجيل الدخول
+window.showNotifModal = function() {
+    const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    if (!user.uid) return;
+
+    // إذا كان الإذن ممنوحاً بالفعل، لا تظهر النافذة
+    if (Notification.permission === 'granted') return;
+    if (Notification.permission === 'denied') return;
+
+    // إذا رفض المستخدم سابقاً (خلال 7 أيام)
+    const dismissed = localStorage.getItem('tradelix_notif_dismissed');
+    if (dismissed) {
+        const daysSince = (Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24);
+        if (daysSince < 7) return;
+    }
+
+    const modal = document.getElementById('notifPermissionModal');
+    if (modal) modal.style.display = 'flex';
+};
+
+window.dismissNotifModal = function() {
+    const modal = document.getElementById('notifPermissionModal');
+    if (modal) modal.style.display = 'none';
+    localStorage.setItem('tradelix_notif_dismissed', Date.now().toString());
+};
+
+window.allowNotifications = async function() {
+    const modal = document.getElementById('notifPermissionModal');
+    
+    try {
+        const permission = await Notification.requestPermission();
+        
+        if (permission === 'granted') {
+            if (modal) modal.style.display = 'none';
+            
+            // الحصول على FCM Token
+            if (messaging) {
+                const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                
+                if (token) {
+                    const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+                    if (user.uid) {
+                        // حفظ Token في قاعدة البيانات
+                        await set(ref(notifDb, 'tokens/' + user.uid), {
+                            token: token,
+                            userId: user.uid,
+                            userName: user.name || 'User',
+                            updatedAt: Date.now()
+                        });
+                        console.log('✅ FCM Token saved');
+                    }
+                }
+            }
+            
+            if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
+        } else {
+            if (modal) modal.style.display = 'none';
+            localStorage.setItem('tradelix_notif_dismissed', Date.now().toString());
+        }
+    } catch(e) {
+        console.error('Notification error:', e);
+        if (modal) modal.style.display = 'none';
+    }
+};
+
+// ✅ استقبال الإشعارات عندما يكون التطبيق مفتوحاً
+if (messaging) {
+    onMessage(messaging, (payload) => {
+        console.log('Foreground message:', payload);
+        const title = payload.notification?.title || 'Tradelix AI';
+        const body = payload.notification?.body || 'New update';
+        
+        if (typeof showToast === 'function') {
+            showToast('🔔 ' + title + ': ' + body);
+        }
+        
+        // عرض إشعار النظام أيضاً
+        if (Notification.permission === 'granted') {
+            new Notification(title, {
+                body: body,
+                icon: 'https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png'
+            });
+        }
+    });
+}
+
+// ✅ إظهار النافذة بعد تسجيل الدخول بـ 3 ثوان
+setInterval(() => {
+    const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    if (user && user.uid && Notification.permission === 'default') {
+        const dismissed = localStorage.getItem('tradelix_notif_dismissed');
+        if (!dismissed) {
+            const modal = document.getElementById('notifPermissionModal');
+            if (modal && modal.style.display !== 'flex') {
+                // انتظر حتى يمر 3 ثوان من تسجيل الدخول
+                window.showNotifModal();
+            }
+        }
+    }
+}, 5000);
+
+console.log('✅ Notification System loaded');
+</script>
 </body>
 </html>
