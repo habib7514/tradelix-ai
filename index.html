@@ -1695,44 +1695,56 @@ window.dismissNotifModal = function() {
 };
 
 window.allowNotifications = async function() {
+    alert('Step 1: Button clicked');
     const modal = document.getElementById('notifPermissionModal');
     
     try {
+        alert('Step 2: Requesting permission...');
         const permission = await Notification.requestPermission();
+        alert('Step 3: Permission = ' + permission);
         
         if (permission === 'granted') {
+            alert('Step 4: Permission granted!');
             if (modal) modal.style.display = 'none';
             
-            // الحصول على FCM Token
             if (messaging) {
-                const token = await getToken(messaging, { vapidKey: VAPID_KEY });
-                
-                if (token) {
-                    const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-                    if (user.uid) {
-                        // حفظ Token في قاعدة البيانات
-                        await set(ref(notifDb, 'tokens/' + user.uid), {
-                            token: token,
-                            userId: user.uid,
-                            userName: user.name || 'User',
-                            updatedAt: Date.now()
-                        });
-                        console.log('✅ FCM Token saved');
+                alert('Step 5: Getting FCM token...');
+                try {
+                    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+                    alert('Step 6: Token = ' + (token ? token.substring(0, 30) + '...' : 'NULL'));
+                    
+                    if (token) {
+                        const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+                        alert('Step 7: User UID = ' + (user.uid || 'NO UID'));
+                        
+                        if (user.uid) {
+                            await set(ref(notifDb, 'tokens/' + user.uid), {
+                                token: token,
+                                userId: user.uid,
+                                userName: user.name || 'User',
+                                updatedAt: Date.now()
+                            });
+                            alert('Step 8: Token saved! DONE ✅');
+                        }
                     }
+                } catch(err) {
+                    alert('Token Error: ' + err.message);
                 }
+            } else {
+                alert('ERROR: messaging is NULL');
             }
             
             if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
         } else {
+            alert('Permission NOT granted. Status: ' + permission);
             if (modal) modal.style.display = 'none';
             localStorage.setItem('tradelix_notif_dismissed', Date.now().toString());
         }
     } catch(e) {
-        console.error('Notification error:', e);
+        alert('Error: ' + e.message);
         if (modal) modal.style.display = 'none';
     }
 };
-
 // ✅ استقبال الإشعارات عندما يكون التطبيق مفتوحاً
 if (messaging) {
     onMessage(messaging, (payload) => {
