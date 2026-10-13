@@ -1677,12 +1677,6 @@ window.showNotifModal = function() {
     if (Notification.permission === 'granted') return;
     if (Notification.permission === 'denied') return;
 
-    // إذا رفض المستخدم سابقاً (خلال 7 أيام)
-    const dismissed = localStorage.getItem('tradelix_notif_dismissed');
-    if (dismissed) {
-        const daysSince = (Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24);
-        if (daysSince < 7) return;
-    }
 
     const modal = document.getElementById('notifPermissionModal');
     if (modal) modal.style.display = 'flex';
