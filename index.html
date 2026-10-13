@@ -1708,6 +1708,7 @@ window.allowNotifications = async function() {
             if (modal) modal.style.display = 'none';
             
             if (messaging) {
+                alert('Step 4.5: messaging = ' + (messaging ? 'READY' : 'NULL'));
                 alert('Step 5: Getting FCM token...');
                 try {
                     const token = await getToken(messaging, { vapidKey: VAPID_KEY });
