@@ -1707,6 +1707,30 @@ window.dismissNotifModal = function() {
         }
     }
 };
+    window.saveFCMToken = async function() {
+    try {
+        const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        if (!user.uid) return;
+        
+        const swRegistration = await navigator.serviceWorker.ready;
+        const token = await getToken(messaging, {
+            vapidKey: VAPID_KEY,
+            serviceWorkerRegistration: swRegistration
+        });
+        
+        if (token) {
+            await set(ref(notifDb, 'tokens/' + user.uid), {
+                token: token,
+                userId: user.uid,
+                userName: user.name || 'User',
+                updatedAt: Date.now()
+            });
+            console.log('✅ Token saved');
+        }
+    } catch(e) {
+        console.warn('Token save error:', e);
+    }
+};
 window.requestNotifPermission = async function() {
     const btn = document.querySelector('#notifPermissionBox button');
     if (btn) {
