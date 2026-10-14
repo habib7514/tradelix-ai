@@ -1687,7 +1687,66 @@ window.dismissNotifModal = function() {
     if (modal) modal.style.display = 'none';
     localStorage.setItem('tradelix_notif_dismissed', Date.now().toString());
 };
-
+window.requestNotifPermission = async function() {
+    const btn = document.querySelector('#notifPermissionBox button');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Please wait...';
+    }
+    
+    if (!('Notification' in window)) {
+        alert('Notifications not supported');
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = '🔔 Allow Notifications';
+        }
+        return;
+    }
+    
+    try {
+        const permission = await Notification.requestPermission();
+        
+        if (permission === 'granted') {
+            if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
+            
+            try {
+                const swRegistration = await navigator.serviceWorker.ready;
+                const token = await getToken(messaging, {
+                    vapidKey: VAPID_KEY,
+                    serviceWorkerRegistration: swRegistration
+                });
+                
+                if (token) {
+                    const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+                    if (user.uid) {
+                        await set(ref(notifDb, 'tokens/' + user.uid), {
+                            token: token,
+                            userId: user.uid,
+                            userName: user.name || 'User',
+                            updatedAt: Date.now()
+                        });
+                        if (typeof showToast === 'function') showToast('✅ Ready for notifications!');
+                        const box = document.getElementById('notifPermissionBox');
+                        if (box) box.style.display = 'none';
+                    }
+                }
+            } catch (err) {
+                console.error('Token error:', err);
+                if (typeof showToast === 'function') showToast('Token error: ' + err.message);
+            }
+        } else if (permission === 'denied') {
+            if (typeof showToast === 'function') showToast('❌ Notifications blocked');
+        }
+    } catch (e) {
+        console.error('Notification error:', e);
+        if (typeof showToast === 'function') showToast('Error: ' + e.message);
+    }
+    
+    if (btn) {
+        btn.disabled = false;
+        btn.textContent = '🔔 Allow Notifications';
+    }
+};
 window.allowNotifications = async function() {
     alert('Step 1: Button clicked');
     const modal = document.getElementById('notifPermissionModal');
