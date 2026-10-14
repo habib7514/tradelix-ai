@@ -252,7 +252,7 @@
 <div id="homeScreen" class="screen">
     <div class="header">
         <div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div></div>
-        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+        <div class="bell-icon" onclick="handleBellClick()">🔔</div>my 
     </div>
     <div class="card" style="background: var(--bg-card); border-color: var(--gold);">
         <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1686,6 +1686,26 @@ window.dismissNotifModal = function() {
     const modal = document.getElementById('notifPermissionModal');
     if (modal) modal.style.display = 'none';
     localStorage.setItem('tradelix_notif_dismissed', Date.now().toString());
+    window.handleBellClick = function() {
+    if (!('Notification' in window)) {
+        if (typeof openNotifModal === 'function') openNotifModal();
+        return;
+    }
+    
+    if (Notification.permission === 'granted') {
+        if (typeof openNotifModal === 'function') openNotifModal();
+    } else if (Notification.permission === 'denied') {
+        if (typeof showToast === 'function') {
+            showToast('🔕 Notifications blocked. Enable from browser settings.');
+        } else {
+            alert('Notifications blocked. Enable from browser settings.');
+        }
+    } else {
+        if (typeof window.requestNotifPermission === 'function') {
+            window.requestNotifPermission();
+        }
+    }
+};
 };
 window.requestNotifPermission = async function() {
     const btn = document.querySelector('#notifPermissionBox button');
