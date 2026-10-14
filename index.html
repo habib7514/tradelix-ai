@@ -1703,7 +1703,7 @@ window.dismissNotifModal = function() {
         }
     } else {
         if (typeof window.requestNotifPermission === 'function') {
-            window.requestNotifPermission();
+            window.saveFCMToken = async function() {
         }
     }
 };
