@@ -322,6 +322,75 @@
     0%, 100% { transform: translateX(0); }
     50%      { transform: translateX(4px); }
 }
+   /* HEADER RIGHT GROUP (YouTube + Bell) */
+.header-right-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* YOUTUBE ROUND BUTTON */
+.yt-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: yt-bounce 2s ease-in-out infinite;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+@keyframes yt-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+}
+.yt-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255,255,255,0.95) 50%, transparent 60%, transparent 100%);
+    transform: skewX(-25deg);
+    animation: yt-shine 2s infinite;
+    pointer-events: none;
+    z-index: 3;
+}
+@keyframes yt-shine {
+    0% { left: -150%; }
+    50%, 100% { left: 150%; }
+}
+.yt-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    animation: yt-pulse 2s ease-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+@keyframes yt-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.85); }
+    70%  { box-shadow: 0 0 0 18px rgba(255, 0, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
+.yt-btn:active {
+    transform: scale(0.9);
+}
+.yt-btn .yt-icon {
+    width: 34px;
+    height: 34px;
+    position: relative;
+    z-index: 2;
+}     
     </style>
     <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
@@ -397,7 +466,19 @@
 <div id="homeScreen" class="screen">
     <div class="header">
         <div class="header-left"><div class="header-logo">T</div><div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div></div>
-        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+        <div class="header-right-group">
+    <a href="https://youtube.com/@matrixmatrix1209?si=0M4g-XYzRBTzgZOj" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="yt-btn"
+       aria-label="Subscribe on YouTube">
+        <svg class="yt-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+            <path fill="#FFFFFF" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+    </a>
+    <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+</div>
     </div>
 
     <!-- WHATSAPP BUTTON START -->
