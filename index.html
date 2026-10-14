@@ -1694,9 +1694,10 @@ window.dismissNotifModal = function() {
     
     if (Notification.permission === 'granted') {
         if (typeof openNotifModal === 'function') openNotifModal();
+        if (typeof window.saveFCMToken === 'function') window.saveFCMToken();
     } else if (Notification.permission === 'denied') {
         if (typeof showToast === 'function') {
-            showToast('🔕 Notifications blocked. Enable from browser settings.');
+            showToast('Notifications blocked. Enable from browser settings.');
         } else {
             alert('Notifications blocked. Enable from browser settings.');
         }
@@ -1705,7 +1706,6 @@ window.dismissNotifModal = function() {
             window.requestNotifPermission();
         }
     }
-};
 };
 window.requestNotifPermission = async function() {
     const btn = document.querySelector('#notifPermissionBox button');
