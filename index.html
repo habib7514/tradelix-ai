@@ -944,39 +944,6 @@
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Phone</span><span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span></div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Country</span><span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span></div>
     </div>
-    <!-- REFERRAL SECTION START -->
-<div class="card" id="referralCard" style="border-color: var(--gold); background: linear-gradient(160deg, #141414 0%, #0A0A0A 100%);">
-    <h3 style="color: var(--gold); margin-bottom: 14px; font-size: 15px; display: flex; align-items: center; gap: 8px;">
-        🎁 Invite Friends
-    </h3>
-    
-    <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 14px;">
-        Share your link. When a friend buys a plan, you get <strong style="color: var(--gold);">1 week FREE</strong> of signals.
-    </p>
-    
-    <div style="background: #000000; border: 1px dashed var(--gold); border-radius: 12px; padding: 12px; margin-bottom: 12px;">
-        <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 1px; font-weight: 700;">YOUR REFERRAL LINK</div>
-        <div id="referralLink" style="font-size: 11px; color: var(--gold); word-break: break-all; font-family: monospace; line-height: 1.5;">Loading...</div>
-    </div>
-    
-    <button onclick="copyReferralLink()" class="btn-block" style="background: #25D366; color: #FFFFFF; margin-top: 0; padding: 14px; font-size: 14px;">
-        📋 Copy Link & Share
-    </button>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;">
-        <div style="background: #000000; border-radius: 10px; padding: 14px; text-align: center; border: 1px solid rgba(245, 197, 24, 0.3);">
-            <div style="font-size: 22px; font-weight: 900; color: var(--gold);" id="refTotal">0</div>
-            <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; font-weight: 700;">INVITED</div>
-        </div>
-        <div style="background: #000000; border-radius: 10px; padding: 14px; text-align: center; border: 1px solid rgba(0, 208, 132, 0.3);">
-            <div style="font-size: 22px; font-weight: 900; color: #00D084;" id="refPaid">0</div>
-            <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px; letter-spacing: 1px; font-weight: 700;">ACTIVE</div>
-        </div>
-    </div>
-    
-    <div id="referralsList" style="margin-top: 16px;"></div>
-</div>
-<!-- REFERRAL SECTION END -->
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
         <div id="myCoursesList"><p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p></div>
@@ -1059,25 +1026,15 @@ async function initFirebase() {
         const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
         const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
         const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-        function initReferralUI() {
-    // ✅ الحصول على UID الحقيقي من Firebase Auth
-    let uid = null;
-    
-    if (window.auth && window.auth.currentUser) {
-        uid = window.auth.currentUser.uid;
-    } else {
-        const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-        uid = user.uid;
-    }
-    
-    if (!uid) return;
-    
-    const baseUrl = window.location.origin + window.location.pathname;
-    const refLink = baseUrl + '?ref=' + uid;
-    const linkEl = document.getElementById('referralLink');
-    if (linkEl) linkEl.textContent = refLink;
-}
-        window.auth = auth;
+        const app = appModule.initializeApp(firebaseConfig);
+        auth = authModule.getAuth(app);
+        db = fsModule.getFirestore(app);
+        signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
+        createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
+        signOut = authModule.signOut;
+        onAuthStateChanged = authModule.onAuthStateChanged;
+        doc = fsModule.doc; setDoc = fsModule.setDoc; getDoc = fsModule.getDoc; serverTimestamp = fsModule.serverTimestamp;
+        window.firebaseDB = db; window.firebaseFS = fsModule;
         onAuthStateChanged(auth, async (user) => {
             if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
             else { _pollStarted = false; _lastUID = null; currentUserData = null; _clearAllUserData(); }
@@ -1125,37 +1082,13 @@ async function handleSignup() {
     try {
         showToast('⏳ Creating account...');
         _clearAllUserData();
-
-// ✅ حفظ referredBy قبل التسجيل
-const referredBy = localStorage.getItem('tradelix_referredBy') || null;
-
-const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-const user = userCredential.user;
-
-// ✅ بناء بيانات المستخدم
-const userData = {
-    name: name, 
-    phone: phone, 
-    country: country, 
-    email: email,
-    status: 'inactive', 
-    plan: null, 
-    startDate: null, 
-    expiryDate: null, 
-    txHash: null,
-    createdAt: serverTimestamp()
-};
-
-// ✅ إضافة referredBy إذا كان موجوداً
-if (referredBy) {
-    userData.referredBy = referredBy;
-    console.log('✅ Saving referral from:', referredBy);
-}
-
-await setDoc(doc(db, 'tradelix_users', user.uid), userData);
-
-// ✅ مسح referredBy بعد التسجيل
-localStorage.removeItem('tradelix_referredBy');
+        const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+        const user = userCredential.user;
+        await setDoc(doc(db, 'tradelix_users', user.uid), {
+            name: name, phone: phone, country: country, email: email,
+            status: 'inactive', plan: null, startDate: null, expiryDate: null, txHash: null,
+            createdAt: serverTimestamp()
+        });
         showToast('✅ Account created!');
         setTimeout(() => showScreen('loginScreen'), 1500);
     } catch (error) {
@@ -1952,150 +1885,6 @@ if (!user.uid) {
         }
         if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
     }
-</script>
-
-    <script>
-// ═══════════ REFERRAL SYSTEM ═══════════
-
-// 1️⃣ حفظ referredBy عند التسجيل
-function captureReferral() {
-    const params = new URLSearchParams(window.location.search);
-    const refUID = params.get('ref');
-    if (refUID) {
-        localStorage.setItem('tradelix_referredBy', refUID);
-        console.log('✅ Referral captured:', refUID);
-    }
-}
-captureReferral();
-
-// 2️⃣ توليد رابط الإحالة
-// 2️⃣ توليد رابط الإحالة (يعتمد على Firebase Auth مباشرة)
-function initReferralUI() {
-    // ✅ الحصول على UID الحقيقي من Firebase Auth
-    let uid = null;
-    
-    if (window.auth && window.auth.currentUser) {
-        uid = window.auth.currentUser.uid;
-        console.log('✅ UID from Firebase Auth:', uid);
-    } else {
-        // Fallback: localStorage
-        const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-        uid = user.uid;
-        console.log('⚠️ UID from localStorage:', uid);
-    }
-    
-    if (!uid) {
-        console.warn('❌ No UID available');
-        return;
-    }
-    
-    const baseUrl = window.location.origin + window.location.pathname;
-    const refLink = baseUrl + '?ref=' + uid;
-    const linkEl = document.getElementById('referralLink');
-    if (linkEl) linkEl.textContent = refLink;
-    
-    console.log('🔗 Referral link:', refLink);
-}
-
-// 3️⃣ نسخ الرابط
-function copyReferralLink() {
-    const linkEl = document.getElementById('referralLink');
-    if (!linkEl) return;
-    const link = linkEl.textContent;
-    if (!link || link === 'Loading...') {
-        if (typeof showToast === 'function') showToast('❌ Link not ready yet');
-        return;
-    }
-    navigator.clipboard.writeText(link).then(() => {
-        if (typeof showToast === 'function') showToast('✅ Link copied! Share it with friends');
-    }).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = link;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        if (typeof showToast === 'function') showToast('✅ Link copied!');
-    });
-}
-
-// 4️⃣ جلب الإحالات من Firebase
-async function loadReferrals() {
-    try {
-        const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-        if (!user.uid) return;
-        if (!window.firebaseDB || !window.firebaseFS) return;
-        
-        const { collection, getDocs, query, where } = window.firebaseFS;
-        const q = query(
-            collection(window.firebaseDB, 'tradelix_users'),
-            where('referredBy', '==', user.uid)
-        );
-        const snap = await getDocs(q);
-        
-        let total = 0;
-        let paid = 0;
-        const list = [];
-        
-        snap.forEach(doc => {
-            const data = doc.data();
-            total++;
-            const isPaid = data.status === 'active';
-            if (isPaid) paid++;
-            list.push({
-                name: data.name || 'Anonymous',
-                email: data.email || '',
-                status: data.status || 'inactive',
-                isPaid: isPaid
-            });
-        });
-        
-        const totalEl = document.getElementById('refTotal');
-        const paidEl = document.getElementById('refPaid');
-        if (totalEl) totalEl.textContent = total;
-        if (paidEl) paidEl.textContent = paid;
-        
-        const listEl = document.getElementById('referralsList');
-        if (listEl) {
-            if (list.length === 0) {
-                listEl.innerHTML = '<p style="color: var(--text-muted); font-size: 12px; text-align: center; padding: 10px;">No referrals yet. Share your link!</p>';
-            } else {
-                listEl.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 1px; font-weight: 700;">YOUR REFERRALS</div>' +
-                    list.map(r => {
-                        const badge = r.isPaid 
-                            ? '<span style="background: rgba(0, 208, 132, 0.15); color: #00D084; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; border: 1px solid #00D084;">✅ PAID</span>'
-                            : '<span style="background: rgba(153, 153, 153, 0.15); color: #999999; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; border: 1px solid #999999;">⏳ PENDING</span>';
-                        return '<div style="background: #000000; border-radius: 10px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; border-left: 3px solid ' + (r.isPaid ? '#00D084' : '#999999') + ';">' +
-                            '<div style="flex: 1; min-width: 0;">' +
-                                '<div style="color: var(--text-main); font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + r.name + '</div>' +
-                                '<div style="color: var(--text-muted); font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + r.email + '</div>' +
-                            '</div>' + badge + '</div>';
-                    }).join('');
-            }
-        }
-    } catch(e) {
-        console.warn('Referral load error:', e.message);
-    }
-}
-
-// 5️⃣ تحديث عند فتح Profile
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        initReferralUI();
-        loadReferrals();
-    }, 2500);
-});
-
-// 6️⃣ راقب تغيير الشاشة
-setInterval(() => {
-    const profileScreen = document.getElementById('profileScreen');
-    if (profileScreen && profileScreen.classList.contains('active')) {
-        initReferralUI();
-        loadReferrals();
-    }
-}, 5000);
-
-console.log('✅ Referral System loaded');
 </script>
 
 </body>
