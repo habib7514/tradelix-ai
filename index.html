@@ -190,181 +190,46 @@
         .refresh-btn-pro svg { transition: transform 0.6s ease; filter: drop-shadow(0 0 4px rgba(245, 197, 24, 0.6)); }
         .refresh-btn-pro:active { transform: scale(0.95); background: linear-gradient(135deg, rgba(245, 197, 24, 0.28), rgba(245, 197, 24, 0.15)); border-color: #F5C518; box-shadow: 0 0 18px rgba(245, 197, 24, 0.55), inset 0 0 10px rgba(245, 197, 24, 0.15); }
         .refresh-btn-pro:active svg { transform: rotate(360deg); }
-        /* WHATSAPP BUTTON CSS */
-.wa-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 16px 0;
-    padding: 16px 20px;
-    background: #25D366;
-    color: #FFFFFF;
-    text-decoration: none;
-    border-radius: 16px;
-    font-family: 'Tajawal', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    animation: wa-move 2s ease-in-out infinite;
-}
-@keyframes wa-move {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-6px); }
-}
-.wa-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255,255,255,0.75) 50%, transparent 60%, transparent 100%);
-    transform: skewX(-25deg);
-    animation: wa-shine 2.5s infinite;
-    pointer-events: none;
-    z-index: 1;
-}
-@keyframes wa-shine {
-    0% { left: -150%; }
-    50%, 100% { left: 150%; }
-}
-.wa-btn:active {
-    transform: scale(0.97);
-}
-.wa-btn .wa-icon {
-    width: 24px;
-    height: 24px;
-    padding: 9px;
-    fill: #25D366;
-    background: #FFFFFF;
-    border-radius: 50%;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 2;
-    box-sizing: content-box;
-}
-.wa-btn .wa-text {
-    flex: 1;
-    text-align: center;
-    z-index: 2;
-}
-.wa-btn .wa-arrow {
-    font-size: 22px;
-    font-weight: 700;
-    z-index: 2;
-    animation: wa-arrow 1.5s ease-in-out infinite;
-}
-@keyframes wa-arrow {
-    0%, 100% { transform: translateX(0); }
-    50%      { transform: translateX(4px); }
-}
-        /* TELEGRAM BUTTON CSS */
-.tg-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 16px 0;
-    padding: 16px 20px;
-    background: #229ED9;
-    color: #FFFFFF;
-    text-decoration: none;
-    border-radius: 16px;
-    font-family: 'Tajawal', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    box-shadow: 0 4px 20px rgba(34, 158, 217, 0.45);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    animation: tg-move 2s ease-in-out infinite;
-}
-@keyframes tg-move {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-6px); }
-}
-.tg-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255,255,255,0.75) 50%, transparent 60%, transparent 100%);
-    transform: skewX(-25deg);
-    animation: tg-shine 2.5s infinite;
-    pointer-events: none;
-    z-index: 1;
-}
-@keyframes tg-shine {
-    0% { left: -150%; }
-    50%, 100% { left: 150%; }
-}
-.tg-btn:active {
-    transform: scale(0.97);
-}
-.tg-btn .tg-icon-svg {
-    width: 24px;
-    height: 24px;
-    padding: 9px;
-    background: #FFFFFF;
-    border-radius: 50%;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 2;
-    box-sizing: content-box;
-}
-.tg-btn .tg-text {
-    flex: 1;
-    text-align: center;
-    z-index: 2;
-}
-.tg-btn .tg-arrow {
-    font-size: 22px;
-    font-weight: 700;
-    z-index: 2;
-    animation: tg-arrow 1.5s ease-in-out infinite;
-}
-@keyframes tg-arrow {
-    0%, 100% { transform: translateX(0); }
-    50%      { transform: translateX(4px); }
-}
-   /* HEADER RIGHT GROUP (YouTube + Bell) */
-.header-right-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* YOUTUBE ROUND BUTTON */
-.yt-btn {
+        
+/* SOCIAL BUTTONS ROW */
+.social-row {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
-    background: #FFFFFF;
+    gap: 16px;
+    margin: 14px 0 20px 0;
+    padding: 0;
+}
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     text-decoration: none;
     position: relative;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.3);
-    animation: yt-bounce 2s ease-in-out infinite;
     overflow: hidden;
     flex-shrink: 0;
+    background: #FFFFFF;
+    animation: social-bounce 2s ease-in-out infinite;
 }
-@keyframes yt-bounce {
+@keyframes social-bounce {
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateY(-5px); }
 }
-.yt-btn::before {
+.social-btn:active {
+    transform: scale(0.9);
+}
+.social-btn svg {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    z-index: 2;
+}
+.social-btn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -373,37 +238,43 @@
     height: 100%;
     background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255,255,255,0.95) 50%, transparent 60%, transparent 100%);
     transform: skewX(-25deg);
-    animation: yt-shine 2s infinite;
+    animation: social-shine 2.5s infinite;
     pointer-events: none;
     z-index: 3;
 }
-@keyframes yt-shine {
+@keyframes social-shine {
     0% { left: -150%; }
     50%, 100% { left: 150%; }
 }
-.yt-btn::after {
+.social-btn::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    animation: yt-pulse 2s ease-out infinite;
     pointer-events: none;
     z-index: 0;
+    animation: social-pulse 2s ease-out infinite;
 }
-@keyframes yt-pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.85); }
-    70%  { box-shadow: 0 0 0 18px rgba(255, 0, 0, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+@keyframes social-pulse {
+    0%   { box-shadow: 0 0 0 0 var(--pulse-color); }
+    70%  { box-shadow: 0 0 0 14px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
 }
-.yt-btn:active {
-    transform: scale(0.9);
+.wa-btn {
+    --pulse-color: rgba(37, 211, 102, 0.85);
+    box-shadow: 0 0 15px rgba(37, 211, 102, 0.7);
 }
-.yt-btn .yt-icon {
-    width: 34px;
-    height: 34px;
-    position: relative;
-    z-index: 2;
-}     
+.wa-btn svg {
+    fill: #25D366;
+}
+.tg-btn {
+    --pulse-color: rgba(34, 158, 217, 0.85);
+    box-shadow: 0 0 15px rgba(34, 158, 217, 0.7);
+}
+.yt-btn {
+    --pulse-color: rgba(255, 0, 0, 0.85);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+}
     </style>
     <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
@@ -495,33 +366,31 @@
     </div>
     <div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div>
 </div>
-        <div class="header-right-group">
-    <a href="https://youtube.com/@matrixmatrix1209?si=0M4g-XYzRBTzgZOj" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       class="yt-btn"
-       aria-label="Subscribe on YouTube">
-        <svg class="yt-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+</div>
+    
+<!-- SOCIAL BUTTONS ROW -->
+<div class="social-row">
+    <a href="https://chat.whatsapp.com/CRSNFVuTUuU7j0e9BPBBiQ" target="_blank" rel="noopener noreferrer" class="social-btn wa-btn" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+    </a>
+    <a href="https://t.me/TradelixAI_Official" target="_blank" rel="noopener noreferrer" class="social-btn tg-btn" aria-label="Telegram">
+        <svg viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="16" fill="#229ED9"/>
+            <path d="M23.5 9.5L8 15.5L13 17.5L14.5 22.5L17.5 19L21.5 22L23.5 9.5Z" fill="#FFFFFF"/>
+        </svg>
+    </a>
+    <a href="https://youtube.com/@matrixmatrix1209?si=0M4g-XYzRBTzgZOj" target="_blank" rel="noopener noreferrer" class="social-btn yt-btn" aria-label="YouTube">
+        <svg viewBox="0 0 24 24">
             <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
             <path fill="#FFFFFF" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
         </svg>
     </a>
-    <div class="bell-icon" onclick="openNotifModal()">🔔</div>
 </div>
-    </div>
-
-    <!-- WHATSAPP BUTTON START -->
-<a href="https://chat.whatsapp.com/CRSNFVuTUuU7j0e9BPBBiQ" 
-   target="_blank" 
-   rel="noopener noreferrer" 
-   class="wa-btn">
-    <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
-    <span class="wa-text">Join Group Now</span>
-    <span class="wa-arrow">›</span>
-</a>
-<!-- WHATSAPP BUTTON END -->
+<!-- END SOCIAL BUTTONS ROW -->
+    
     <div class="card" style="background: var(--bg-card); border-color: var(--gold);">
     <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
@@ -542,20 +411,7 @@
         </span>
     </button>
 </div>
-<!-- 🎯 JOIN TELEGRAM BUTTON -->
-<!-- TELEGRAM BUTTON START -->
-<a href="https://t.me/TradelixAI_Official" 
-   target="_blank" 
-   rel="noopener noreferrer" 
-   class="tg-btn">
-    <svg class="tg-icon-svg" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="16" fill="#229ED9"/>
-        <path d="M23.5 9.5L8 15.5L13 17.5L14.5 22.5L17.5 19L21.5 22L23.5 9.5Z" fill="#FFFFFF"/>
-    </svg>
-    <span class="tg-text">Join Our Channel Now</span>
-    <span class="tg-arrow">›</span>
-</a>
-<!-- TELEGRAM BUTTON END -->
+
     <div class="proof-grid">
         <div class="proof-card">
             <div class="proof-icon">
