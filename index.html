@@ -1059,15 +1059,25 @@ async function initFirebase() {
         const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
         const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
         const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-        const app = appModule.initializeApp(firebaseConfig);
-        auth = authModule.getAuth(app);
-        db = fsModule.getFirestore(app);
-        signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
-        createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
-        signOut = authModule.signOut;
-        onAuthStateChanged = authModule.onAuthStateChanged;
-        doc = fsModule.doc; setDoc = fsModule.setDoc; getDoc = fsModule.getDoc; serverTimestamp = fsModule.serverTimestamp;
-        window.firebaseDB = db; window.firebaseFS = fsModule;
+        function initReferralUI() {
+    // ✅ الحصول على UID الحقيقي من Firebase Auth
+    let uid = null;
+    
+    if (window.auth && window.auth.currentUser) {
+        uid = window.auth.currentUser.uid;
+    } else {
+        const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        uid = user.uid;
+    }
+    
+    if (!uid) return;
+    
+    const baseUrl = window.location.origin + window.location.pathname;
+    const refLink = baseUrl + '?ref=' + uid;
+    const linkEl = document.getElementById('referralLink');
+    if (linkEl) linkEl.textContent = refLink;
+}
+        window.auth = auth;
         onAuthStateChanged(auth, async (user) => {
             if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
             else { _pollStarted = false; _lastUID = null; currentUserData = null; _clearAllUserData(); }
@@ -1959,14 +1969,32 @@ function captureReferral() {
 captureReferral();
 
 // 2️⃣ توليد رابط الإحالة
+// 2️⃣ توليد رابط الإحالة (يعتمد على Firebase Auth مباشرة)
 function initReferralUI() {
-    const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (!user.uid) return;
+    // ✅ الحصول على UID الحقيقي من Firebase Auth
+    let uid = null;
+    
+    if (window.auth && window.auth.currentUser) {
+        uid = window.auth.currentUser.uid;
+        console.log('✅ UID from Firebase Auth:', uid);
+    } else {
+        // Fallback: localStorage
+        const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        uid = user.uid;
+        console.log('⚠️ UID from localStorage:', uid);
+    }
+    
+    if (!uid) {
+        console.warn('❌ No UID available');
+        return;
+    }
     
     const baseUrl = window.location.origin + window.location.pathname;
-    const refLink = baseUrl + '?ref=' + user.uid;
+    const refLink = baseUrl + '?ref=' + uid;
     const linkEl = document.getElementById('referralLink');
     if (linkEl) linkEl.textContent = refLink;
+    
+    console.log('🔗 Referral link:', refLink);
 }
 
 // 3️⃣ نسخ الرابط
