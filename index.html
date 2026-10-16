@@ -338,6 +338,91 @@
         transform: scale(1.03);
     }
 }
+/* ═══════════ INVITE FRIENDS BUTTON ═══════════ */
+.invite-friends-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 16px 0;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%);
+    border: 1.5px solid rgba(245, 197, 24, 0.7);
+    border-radius: 18px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25);
+    animation: invite-pulse 2.5s ease-in-out infinite;
+    -webkit-tap-highlight-color: transparent;
+}
+.invite-friends-btn:active {
+    transform: scale(0.97);
+}
+@keyframes invite-pulse {
+    0%, 100% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25); }
+    50%      { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 35px rgba(245, 197, 24, 0.55); }
+}
+.invite-friends-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(245, 197, 24, 0.5) 50%, transparent 60%, transparent 100%);
+    transform: skewX(-25deg);
+    animation: invite-shine 3s infinite;
+    pointer-events: none;
+}
+@keyframes invite-shine {
+    0% { left: -150%; }
+    50%, 100% { left: 150%; }
+}
+.invite-icon {
+    font-size: 34px;
+    filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.8));
+    flex-shrink: 0;
+}
+.invite-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+.invite-title {
+    color: #F5C518;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(245, 197, 24, 0.5);
+}
+.invite-sub {
+    color: #999999;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.invite-arrow {
+    color: #F5C518;
+    font-size: 24px;
+    font-weight: 900;
+    flex-shrink: 0;
+    animation: invite-arrow 1.5s ease-in-out infinite;
+}
+@keyframes invite-arrow {
+    0%, 100% { transform: translateX(0); }
+    50%      { transform: translateX(4px); }
+}
+/* ═══════════ END INVITE FRIENDS BUTTON ═══════════ */
+
+        
         /* ═══════════ GOLD APP BUTTON ═══════════ */
 .gold-app-btn {
     display: flex;
@@ -909,6 +994,16 @@
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Phone</span><span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span></div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Country</span><span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span></div>
     </div>
+    <!-- INVITE FRIENDS BUTTON -->
+<a href="javascript:void(0)" onclick="showToast('🎁 Referral system coming soon!')" class="invite-friends-btn">
+    <span class="invite-icon">🎁</span>
+    <span class="invite-text">
+        <span class="invite-title">Invite Friends</span>
+        <span class="invite-sub">Coming Soon</span>
+    </span>
+    <span class="invite-arrow">›</span>
+</a>
+<!-- END INVITE FRIENDS BUTTON -->
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
         <div id="myCoursesList"><p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p></div>
