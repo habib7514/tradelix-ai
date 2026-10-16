@@ -338,6 +338,89 @@
         transform: scale(1.03);
     }
 }
+        /* ═══════════ GOLD APP BUTTON ═══════════ */
+.gold-app-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 16px 0;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%);
+    border: 1.5px solid rgba(245, 197, 24, 0.7);
+    border-radius: 18px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25);
+    animation: gold-pulse 2.5s ease-in-out infinite;
+    -webkit-tap-highlight-color: transparent;
+}
+.gold-app-btn:active {
+    transform: scale(0.97);
+}
+@keyframes gold-pulse {
+    0%, 100% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25); }
+    50%      { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 35px rgba(245, 197, 24, 0.55); }
+}
+.gold-app-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(245, 197, 24, 0.5) 50%, transparent 60%, transparent 100%);
+    transform: skewX(-25deg);
+    animation: gold-shine 3s infinite;
+    pointer-events: none;
+}
+@keyframes gold-shine {
+    0% { left: -150%; }
+    50%, 100% { left: 150%; }
+}
+.gold-app-icon {
+    font-size: 34px;
+    filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.8));
+    flex-shrink: 0;
+}
+.gold-app-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+.gold-app-title {
+    color: #F5C518;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(245, 197, 24, 0.5);
+}
+.gold-app-sub {
+    color: #999999;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.gold-app-arrow {
+    color: #F5C518;
+    font-size: 24px;
+    font-weight: 900;
+    flex-shrink: 0;
+    animation: gold-arrow 1.5s ease-in-out infinite;
+}
+@keyframes gold-arrow {
+    0%, 100% { transform: translateX(0); }
+    50%      { transform: translateX(4px); }
+}
+/* ═══════════ END GOLD APP BUTTON ═══════════ */
     </style>
     <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
@@ -639,55 +722,17 @@
         <p class="tradix-sub-note">✅ Instant activation • ✅ Real-time signals • ✅ Cancel anytime</p>
     </div>
 
-    <div class="tradix-app-header">
-        <span class="tradix-app-rocket-icon">
-            <svg width="34" height="34" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="rocketBody" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#F5C518"/>
-                        <stop offset="50%" stop-color="#FFD93D"/>
-                        <stop offset="100%" stop-color="#E5B000"/>
-                    </linearGradient>
-                    <linearGradient id="rocketWindow" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#00D084"/>
-                        <stop offset="100%" stop-color="#00A86B"/>
-                    </linearGradient>
-                    <linearGradient id="rocketFlame" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#FFD93D"/>
-                        <stop offset="60%" stop-color="#FF8C00"/>
-                        <stop offset="100%" stop-color="#FF4757"/>
-                    </linearGradient>
-                </defs>
-                <path d="M 32 58 Q 28 52 30 48 L 34 48 Q 36 52 32 58 Z" fill="url(#rocketFlame)"/>
-                <path d="M 32 62 Q 29 56 31 52 L 33 52 Q 35 56 32 62 Z" fill="#FF4757" opacity="0.9"/>
-                <path d="M 32 4 C 40 12 42 26 40 42 L 24 42 C 22 26 24 12 32 4 Z" fill="url(#rocketBody)" stroke="#E5B000" stroke-width="0.8"/>
-                <path d="M 24 36 L 16 44 L 22 46 Z" fill="#E5B000" stroke="#B8900F" stroke-width="0.6"/>
-                <path d="M 40 36 L 48 44 L 42 46 Z" fill="#E5B000" stroke="#B8900F" stroke-width="0.6"/>
-                <circle cx="32" cy="22" r="5" fill="url(#rocketWindow)" stroke="#00A86B" stroke-width="0.8"/>
-                <circle cx="32" cy="22" r="2.5" fill="#FFFFFF" opacity="0.6"/>
-                <path d="M 28 10 Q 30 16 29 24" stroke="#FFFFFF" stroke-width="1.2" fill="none" opacity="0.7" stroke-linecap="round"/>
-            </svg>
-        </span>
-        <span class="tradix-app-title">Tradix AI App</span>
-    </div>
-    <div class="tradix-app-card">
-        <div class="tradix-app-logo-wrap">
-            <img src="https://raw.githubusercontent.com/habib7514/TRADIX-ai/main/file_00000000e1988230bfa593ebe559c084.png" alt="Tradix AI" class="tradix-app-logo">
-        </div>
-        <div class="tradix-app-name">Tradix AI</div>
-        <div class="tradix-app-desc">Our first app for Gold Signals</div>
-        <div class="tradix-app-desc-sub">Get it for free</div>
-        <a href="https://tradix-ai.netlify.app" class="btn-block tradix-app-btn">
-            <span class="dl-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 3v12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M4 19h16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </span>
-            Download Tradix AI
-        </a>
-    </div>
+    <a href="https://tradix-ai.netlify.app" 
+   target="_blank" 
+   rel="noopener noreferrer" 
+   class="gold-app-btn">
+    <span class="gold-app-icon">🥇</span>
+    <span class="gold-app-text">
+        <span class="gold-app-title">Tradix Gold Signals</span>
+        <span class="gold-app-sub">Live Gold • XAU/USD • Premium VIP</span>
+    </span>
+    <span class="gold-app-arrow">›</span>
+</a>
 
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
