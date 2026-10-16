@@ -993,6 +993,10 @@ async function initFirebase() {
         const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
         const app = appModule.initializeApp(firebaseConfig);
         auth = authModule.getAuth(app);
+        // ✅ حفظ الجلسة بشكل دائم
+try {
+    await authModule.setPersistence(auth, authModule.browserLocalPersistence);
+} catch(e) { console.warn('Persistence error:', e); }
         db = fsModule.getFirestore(app);
         signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
         createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
@@ -1010,7 +1014,16 @@ async function initFirebase() {
 
 setTimeout(() => {
     document.getElementById('splash').classList.add('hide');
-    setTimeout(() => showScreen('signupScreen'), 800);
+    setTimeout(() => {
+        const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        if (savedUser.uid) {
+            currentUserData = savedUser;
+            showScreen('homeScreen');
+            updateUI();
+        } else {
+            showScreen('signupScreen');
+        }
+    }, 800);
 }, 5000);
 
 function showScreen(id) {
