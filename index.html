@@ -835,6 +835,19 @@
         <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
     </div>
     <div class="input-group"><input type="text" id="marketSearch" placeholder="🔍 Search by name or symbol..." oninput="filterAllMarkets()"></div>
+   <!-- 🚀 بانر عملة Tradelix القادمة -->
+<div class="tradelix-coin-banner" style="grid-column: 1 / -1; margin-bottom: 20px; display: flex; align-items: center; gap: 16px;">
+    <img src="https://i.postimg.cc/bSqvs8hH/file-00000000560082088eccf9d31d354fd3.png" alt="Tradelix Coin" class="cs-coin-icon" style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #F5C518; box-shadow: 0 0 20px rgba(245, 197, 24, 0.6); object-fit: cover; background: #000; flex-shrink: 0;">
+    <div class="cs-coin-info" style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <div class="cs-coin-title" style="color: #FFFFFF; font-size: 18px; font-weight: 900; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            TRADELIX (TLX) 
+            <span class="cs-badge" style="background: rgba(245, 197, 24, 0.15); color: #F5C518; border: 1px solid #F5C518; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 900; letter-spacing: 1px;">COMING SOON</span>
+        </div>
+        <div class="cs-coin-desc" style="color: #AAAAAA; font-size: 11.5px; line-height: 1.5;">
+            The official project token. Launch and Presale date to be announced very soon.
+        </div>
+    </div>
+</div>
     <div class="markets-grid" id="allMarketsGrid"></div>
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
@@ -1488,24 +1501,7 @@ function renderHomeMarkets() {
 function renderAllMarkets() {
     const grid = document.getElementById('allMarketsGrid');
     if (!grid) return;
-    // 🚀 إضافة بانر Tradelix (بطريقة آمنة)
-if (!document.getElementById('tradelixBanner')) {
-    const bannerHTML = `
-        <div id="tradelixBanner" class="tradelix-coin-banner" style="grid-column: 1 / -1; margin-bottom: 20px;">
-            <img src="https://i.postimg.cc/bSqvs8hH/file-00000000560082088eccf9d31d354fd3.png" alt="Tradelix Coin" class="cs-coin-icon">
-            <div class="cs-coin-info">
-                <div class="cs-coin-title">
-                    TRADELIX (TLX) 
-                    <span class="cs-badge">COMING SOON</span>
-                </div>
-                <div class="cs-coin-desc">
-                    The official project token. Launch and Presale date to be announced very soon.
-                </div>
-            </div>
-        </div>
-    `;
-    grid.insertAdjacentHTML('beforebegin', bannerHTML);
-}
+    
     const searchInput = document.getElementById('marketSearch');
     const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
     const filtered = MARKET_COINS.filter(coin => {
