@@ -644,40 +644,6 @@
     </button>
 </div>
 
-    <div class="proof-grid">
-        <div class="proof-card">
-            <div class="proof-icon">
-                <svg width="42" height="42" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 10px rgba(66, 153, 255, 0.55));">
-                    <defs>
-                        <linearGradient id="personGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#5BB4FF"/>
-                            <stop offset="100%" stop-color="#1E88E5"/>
-                        </linearGradient>
-                    </defs>
-                    <circle cx="17" cy="14" r="6.5" fill="url(#personGrad)"/>
-                    <circle cx="33" cy="14" r="6.5" fill="url(#personGrad)"/>
-                    <path d="M 4.5 38 Q 4.5 25 17 25 Q 22 25 24 27 Q 26 25 31 25 Q 43.5 25 43.5 38 Q 43.5 40 41 40 L 7 40 Q 4.5 40 4.5 38 Z" fill="url(#personGrad)"/>
-                </svg>
-            </div>
-            <div class="proof-value" id="proofMembers">+2.5K</div>
-            <div class="proof-label">MEMBERS</div>
-        </div>
-        <div class="proof-card">
-            <div class="proof-icon">
-                <svg width="42" height="42" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 10px rgba(255, 71, 87, 0.55));">
-                    <circle cx="23" cy="25" r="18" fill="#FF4757"/>
-                    <circle cx="23" cy="25" r="13.5" fill="#FFFFFF"/>
-                    <circle cx="23" cy="25" r="9" fill="#FF4757"/>
-                    <circle cx="23" cy="25" r="4.5" fill="#FFFFFF"/>
-                    <circle cx="23" cy="25" r="1.8" fill="#FF4757"/>
-                    <path d="M 28 8 L 44 8 L 44 24 L 38.5 18.5 L 32 25 L 27 20 L 33.5 13.5 Z" fill="#2196F3" stroke="#1565C0" stroke-width="0.8"/>
-                    <path d="M 38.5 18.5 L 44 24 L 44 18.5 Z" fill="#1565C0" opacity="0.6"/>
-                </svg>
-            </div>
-            <div class="proof-value" id="proofWinRate">87%</div>
-            <div class="proof-label">WIN RATE</div>
-        </div>
-    </div>
 
     <div class="ticker-wrap"><div class="ticker-track" id="tickerTrack"></div></div>
 
@@ -1355,43 +1321,6 @@ async function submitDeposit() {
     } catch (error) { console.error(error); showToast('❌ Submission failed'); }
 }
 
-async function loadPublicStats() {
-    try {
-        if (!window.firebaseDB) return;
-        const fs = window.firebaseFS;
-        if (!fs) return;
-        const { collection, getDocs } = fs;
-        try {
-            const usersSnap = await getDocs(collection(window.firebaseDB, 'tradelix_users'));
-            const count = usersSnap.size;
-            const el = document.getElementById('proofMembers');
-            if (el) {
-                if (count < 2500) { el.textContent = '+2.5K'; }
-                else if (count >= 1000) { el.textContent = '+' + (count / 1000).toFixed(1) + 'K'; }
-                else { el.textContent = '+' + count; }
-            }
-        } catch(e) {
-            console.warn('Members count error:', e.message);
-            const el = document.getElementById('proofMembers');
-            if (el) el.textContent = '+2.5K';
-        }
-        try {
-            const signalsSnap = await getDocs(collection(window.firebaseDB, 'tradelix_signals'));
-            let total = 0, wins = 0;
-            signalsSnap.forEach(d => {
-                const sig = d.data();
-                if (sig.status === 'closed' && sig.result) { total++; if (sig.result === 'win') wins++; }
-            });
-            const rate = total > 0 ? Math.round((wins / total) * 100) : 87;
-            const el = document.getElementById('proofWinRate');
-            if (el) el.textContent = (rate < 87 ? 87 : rate) + '%';
-        } catch(e) {
-            console.warn('Win rate error:', e.message);
-            const el = document.getElementById('proofWinRate');
-            if (el) el.textContent = '87%';
-        }
-    } catch(e) { console.error('Stats error:', e); }
-}
 
 const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
 const COINS = ['BTC','ETH','BNB','SOL','XRP','ADA','DOGE','DOT','AVAX','LINK','POL','LTC','TRX','ATOM','UNI','SHIB','APT','ARB','OP','NEAR','INJ','SUI','FIL','ETC','TON','ICP','RENDER','FET','SEI','TIA','STX','IMX','GRT','SAND','MANA','AAVE','MKR','CRV','ALGO','VET','HBAR','EOS','XLM','THETA','RUNE','KAS','TAO','WIF','PEPE','BONK'];
