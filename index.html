@@ -1386,18 +1386,33 @@ async function submitDeposit() {
     if (!hash) { showToast('❌ Enter transaction hash'); return; }
     const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
     if (!user.uid) { showToast('❌ Login first'); return; }
+    
     try {
+        // ⭐ التحقق مما إذا كان المستخدم لديه اشتراك صفقات ساري
+        const hasSignalSub = user.plan && (user.plan.includes('VIP') || user.plan.includes('Weekly') || user.plan.includes('Monthly') || user.plan.includes('Quarterly') || user.plan.includes('15Days'));
+        
+        // إذا كان يطلب كورس ولديه اشتراك صفقات، لا نمسح اسم الباقة
+        const isCourseRequest = currentPlan.name && currentPlan.name.toLowerCase().includes('course');
+        const planToSave = (hasSignalSub && isCourseRequest) ? user.plan : currentPlan.name;
+        
         await setDoc(doc(db, 'tradelix_users', user.uid), {
-            status: 'pending', plan: currentPlan.name,
-            depositAmount: currentPlan.price, txHash: hash
+            status: 'pending', 
+            plan: planToSave, 
+            depositAmount: currentPlan.price, 
+            txHash: hash
         }, { merge: true });
+        
         currentUserData.status = 'pending';
-        currentUserData.plan = currentPlan.name;
+        currentUserData.plan = planToSave;
         currentUserData.txHash = hash;
         localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
+        
         showToast('✅ Submitted! Awaiting review');
         setTimeout(() => { showScreen('homeScreen'); updateUI(); }, 1500);
-    } catch (error) { console.error(error); showToast('❌ Submission failed'); }
+    } catch (error) { 
+        console.error(error); 
+        showToast('❌ Submission failed'); 
+    }
 }
 
 
