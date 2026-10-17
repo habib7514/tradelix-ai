@@ -1391,20 +1391,40 @@ async function submitDeposit() {
         // ⭐ التحقق مما إذا كان المستخدم لديه اشتراك صفقات ساري
         const hasSignalSub = user.plan && (user.plan.includes('VIP') || user.plan.includes('Weekly') || user.plan.includes('Monthly') || user.plan.includes('Quarterly') || user.plan.includes('15Days'));
         
-        // إذا كان يطلب كورس ولديه اشتراك صفقات، لا نمسح اسم الباقة
         const isCourseRequest = currentPlan.name && currentPlan.name.toLowerCase().includes('course');
-        const planToSave = (hasSignalSub && isCourseRequest) ? user.plan : currentPlan.name;
         
-        await setDoc(doc(db, 'tradelix_users', user.uid), {
+        // تجهيز البيانات المراد حفظها
+        const updateData = {
             status: 'pending', 
-            plan: planToSave, 
             depositAmount: currentPlan.price, 
             txHash: hash
-        }, { merge: true });
+        };
+
+        if (isCourseRequest) {
+            // ⭐ إذا كان طلب كورس، نحفظ اسم الكورس في حقل courseRequest
+            updateData.courseRequest = currentPlan.name;
+            
+            // إذا كان لديه اشتراك صفقات، نحافظ على اسم الباقة كما هو
+            if (hasSignalSub) {
+                updateData.plan = user.plan; 
+            } else {
+                // إذا لم يكن لديه اشتراك، نضع اسم الكورس في plan
+                updateData.plan = currentPlan.name;
+            }
+        } else {
+            // إذا كان طلب صفقات، نحدث الخطة ونمسح أي طلب كورس سابق
+            updateData.plan = currentPlan.name;
+            updateData.courseRequest = null;
+        }
         
+        await setDoc(doc(db, 'tradelix_users', user.uid), updateData, { merge: true });
+        
+        // تحديث البيانات المحلية
         currentUserData.status = 'pending';
-        currentUserData.plan = planToSave;
+        currentUserData.plan = updateData.plan;
         currentUserData.txHash = hash;
+        if (updateData.courseRequest) currentUserData.courseRequest = updateData.courseRequest;
+        
         localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
         
         showToast('✅ Submitted! Awaiting review');
