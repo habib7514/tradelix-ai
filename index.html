@@ -1279,24 +1279,32 @@ function updateUI() {
             subInactive.classList.add('hidden');
             
             const planName = user.plan || '-';
-            const isCourse = planName.toLowerCase().includes('course');
-            
-            document.getElementById('subPlan').textContent = planName;
-            document.getElementById('subStart').textContent = user.startDate || '-';
-            document.getElementById('subEnd').textContent = user.expiryDate || '-';
-            
-            // إخفاء الأيام إذا كان الاشتراك كورس
-            if (isCourse) {
-                document.getElementById('subDays').textContent = 'Lifetime Access';
-                document.getElementById('subDays').style.color = '#F5C518';
-            } else if (user.expiryDate) {
-                const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
-                document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
-                document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
-            } else {
-                document.getElementById('subDays').textContent = '-';
-                document.getElementById('subDays').style.color = 'var(--text-muted)';
-            }
+// التحقق مما إذا كان المستخدم لديه كورس (سواء مطلوب أو مفعل)
+const hasCourse = (user.courseRequest && user.courseRequest.toLowerCase().includes('course')) || 
+                  (user.courses && user.courses.some(c => c.toLowerCase().includes('course')));
+const isCoursePlan = planName.toLowerCase().includes('course');
+
+if (hasCourse || isCoursePlan) {
+    // إذا كان لديه كورس، نخفي تفاصيل الصفقات ونعرض "Lifetime Access"
+    document.getElementById('subPlan').textContent = 'No Signal Subscription';
+    document.getElementById('subStart').textContent = '-';
+    document.getElementById('subEnd').textContent = '-';
+    document.getElementById('subDays').textContent = 'Lifetime Access';
+    document.getElementById('subDays').style.color = '#F5C518';
+} else {
+    // إذا كان اشتراك صفقات فقط، نعرض التفاصيل
+    document.getElementById('subPlan').textContent = planName;
+    document.getElementById('subStart').textContent = user.startDate || '-';
+    document.getElementById('subEnd').textContent = user.expiryDate || '-';
+    
+    if (user.expiryDate) {
+        const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
+        document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
+        document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
+    } else {
+        document.getElementById('subDays').textContent = '-';
+    }
+}
         } else { 
             subActive.classList.add('hidden'); 
             subInactive.classList.remove('hidden'); 
