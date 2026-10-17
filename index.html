@@ -1229,57 +1229,103 @@ function _clearAllUserData() {
 
 function updateUI() {
     const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    
+    // 1. تحديث بيانات الترحيب في الصفحة الرئيسية
     if (document.getElementById('welcomeName')) {
         document.getElementById('welcomeName').textContent = user.name || 'User';
         document.getElementById('welcomeEmail').textContent = user.email || '-';
     }
+    
+    // 2. تحديث شارة الحالة (ACTIVE / INACTIVE / PENDING)
     const badge = document.getElementById('statusBadge');
     if (badge) {
-        if (user.status === 'active') { badge.style.background = 'rgba(0, 208, 132, 0.15)'; badge.style.color = '#00D084'; badge.style.borderColor = '#00D084'; badge.textContent = 'ACTIVE'; }
-        else if (user.status === 'pending') { badge.style.background = 'rgba(245, 197, 24, 0.15)'; badge.style.color = '#F5C518'; badge.style.borderColor = '#F5C518'; badge.textContent = 'PENDING'; }
-        else { badge.style.background = 'rgba(255, 71, 87, 0.15)'; badge.style.color = '#FF4757'; badge.style.borderColor = '#FF4757'; badge.textContent = 'INACTIVE'; }
+        if (user.status === 'active') { 
+            badge.style.background = 'rgba(0, 208, 132, 0.15)'; 
+            badge.style.color = '#00D084'; 
+            badge.style.borderColor = '#00D084'; 
+            badge.textContent = 'ACTIVE'; 
+        } else if (user.status === 'pending') { 
+            badge.style.background = 'rgba(245, 197, 24, 0.15)'; 
+            badge.style.color = '#F5C518'; 
+            badge.style.borderColor = '#F5C518'; 
+            badge.textContent = 'PENDING'; 
+        } else { 
+            badge.style.background = 'rgba(255, 71, 87, 0.15)'; 
+            badge.style.color = '#FF4757'; 
+            badge.style.borderColor = '#FF4757'; 
+            badge.textContent = 'INACTIVE'; 
+        }
     }
+    
+    // 3. إظهار/إخفاء الإشارات بناءً على حالة الاشتراك
     const activeBox = document.getElementById('activeSignalBox');
     const lockedBox = document.getElementById('lockedSignalBox');
     if (activeBox && lockedBox) {
-        if (user.status === 'active') { activeBox.classList.remove('hidden'); lockedBox.classList.add('hidden'); }
-        else { activeBox.classList.add('hidden'); lockedBox.classList.remove('hidden'); }
+        if (user.status === 'active') { 
+            activeBox.classList.remove('hidden'); 
+            lockedBox.classList.add('hidden'); 
+        } else { 
+            activeBox.classList.add('hidden'); 
+            lockedBox.classList.remove('hidden'); 
+        }
     }
+    
+    // 4. تحديث تفاصيل الاشتراك (Plan) - مع إصلاح مشكلة الأيام والكورسات
     const subActive = document.getElementById('subActive');
     const subInactive = document.getElementById('subInactive');
     if (subActive && subInactive) {
         if (user.status === 'active') {
-            subActive.classList.remove('hidden'); subInactive.classList.add('hidden');
-            document.getElementById('subPlan').textContent = user.plan || '-';
+            subActive.classList.remove('hidden'); 
+            subInactive.classList.add('hidden');
+            
+            const planName = user.plan || '-';
+            const isCourse = planName.toLowerCase().includes('course');
+            
+            document.getElementById('subPlan').textContent = planName;
             document.getElementById('subStart').textContent = user.startDate || '-';
             document.getElementById('subEnd').textContent = user.expiryDate || '-';
-            if (user.expiryDate) {
+            
+            // إخفاء الأيام إذا كان الاشتراك كورس
+            if (isCourse) {
+                document.getElementById('subDays').textContent = 'Lifetime Access';
+                document.getElementById('subDays').style.color = '#F5C518';
+            } else if (user.expiryDate) {
                 const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
                 document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
+                document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
+            } else {
+                document.getElementById('subDays').textContent = '-';
+                document.getElementById('subDays').style.color = 'var(--text-muted)';
             }
-        } else { subActive.classList.add('hidden'); subInactive.classList.remove('hidden'); }
+        } else { 
+            subActive.classList.add('hidden'); 
+            subInactive.classList.remove('hidden'); 
+        }
     }
-    // تحديث قائمة الكورسات في صفحة البروفايل
-const coursesList = document.getElementById('myCoursesList');
-if (coursesList) {
-    const courses = user.courses || [];
-    if (courses.length === 0) {
-        coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-    } else {
-        coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+    
+    // 5. تحديث قائمة الكورسات في صفحة البروفايل
+    const coursesList = document.getElementById('myCoursesList');
+    if (coursesList) {
+        const courses = user.courses || [];
+        if (courses.length === 0) {
+            coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+        } else {
+            coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+        }
     }
-}
 
-// تحديث قائمة الكورسات في صفحة الخطة (My Plan)
-const coursesListPlan = document.getElementById('myCoursesListPlan');
-if (coursesListPlan) {
-    const courses = user.courses || [];
-    if (courses.length === 0) {
-        coursesListPlan.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-    } else {
-        coursesListPlan.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+    // 6. تحديث قائمة الكورسات في صفحة الخطة (My Plan)
+    const coursesListPlan = document.getElementById('myCoursesListPlan');
+    if (coursesListPlan) {
+        const courses = user.courses || [];
+        if (courses.length === 0) {
+            coursesListPlan.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+        } else {
+            coursesListPlan.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+        }
     }
-}
+    
+    // 7. تحديث بيانات البروفايل
     if (document.getElementById('profileName')) {
         document.getElementById('profileName').textContent = user.name || '-';
         document.getElementById('profileEmail').textContent = user.email || '-';
@@ -1289,10 +1335,15 @@ if (coursesListPlan) {
         document.getElementById('profCountry').textContent = user.country || '-';
     }
     
-// ✅ إظهار بانر التثبيت بعد تسجيل الدخول
-if (user && user.uid && typeof showPWABanner === 'function') {
-    setTimeout(showPWABanner, 1500);
-}
+    // 8. إظهار بانر التثبيت بعد تسجيل الدخول
+    if (user && user.uid && typeof showPWABanner === 'function') {
+        setTimeout(showPWABanner, 1500);
+    }
+    
+    // 9. تحديث واجهة الإحالة (إن وجدت)
+    if (typeof updateReferralUI === 'function') {
+        updateReferralUI();
+    }
 }
 
 function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
