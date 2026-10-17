@@ -1488,6 +1488,24 @@ function renderHomeMarkets() {
 function renderAllMarkets() {
     const grid = document.getElementById('allMarketsGrid');
     if (!grid) return;
+    // 🚀 إضافة بانر Tradelix (بطريقة آمنة)
+if (!document.getElementById('tradelixBanner')) {
+    const bannerHTML = `
+        <div id="tradelixBanner" class="tradelix-coin-banner" style="grid-column: 1 / -1; margin-bottom: 20px;">
+            <img src="https://i.postimg.cc/bSqvs8hH/file-00000000560082088eccf9d31d354fd3.png" alt="Tradelix Coin" class="cs-coin-icon">
+            <div class="cs-coin-info">
+                <div class="cs-coin-title">
+                    TRADELIX (TLX) 
+                    <span class="cs-badge">COMING SOON</span>
+                </div>
+                <div class="cs-coin-desc">
+                    The official project token. Launch and Presale date to be announced very soon.
+                </div>
+            </div>
+        </div>
+    `;
+    grid.insertAdjacentHTML('beforebegin', bannerHTML);
+}
     const searchInput = document.getElementById('marketSearch');
     const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
     const filtered = MARKET_COINS.filter(coin => {
