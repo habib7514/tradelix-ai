@@ -942,6 +942,13 @@
         <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Choose a plan to access live signals</p>
         <button class="btn-block" onclick="showScreen('homeScreen')">Choose Plan</button>
     </div>
+    <!-- 2. قسم الكورسات (Courses) -->
+<div class="section-title" style="margin-top: 20px;">🎓 My Courses</div>
+<div class="card">
+    <div id="myCoursesListPlan" style="display: flex; flex-direction: column; gap: 8px;">
+        <p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>
+    </div>
+</div>
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -1252,12 +1259,27 @@ function updateUI() {
             }
         } else { subActive.classList.add('hidden'); subInactive.classList.remove('hidden'); }
     }
-    const coursesList = document.getElementById('myCoursesList');
-    if (coursesList) {
-        const courses = user.courses || [];
-        if (courses.length === 0) coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-        else coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+    // تحديث قائمة الكورسات في صفحة البروفايل
+const coursesList = document.getElementById('myCoursesList');
+if (coursesList) {
+    const courses = user.courses || [];
+    if (courses.length === 0) {
+        coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+    } else {
+        coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
     }
+}
+
+// تحديث قائمة الكورسات في صفحة الخطة (My Plan)
+const coursesListPlan = document.getElementById('myCoursesListPlan');
+if (coursesListPlan) {
+    const courses = user.courses || [];
+    if (courses.length === 0) {
+        coursesListPlan.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+    } else {
+        coursesListPlan.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+    }
+}
     if (document.getElementById('profileName')) {
         document.getElementById('profileName').textContent = user.name || '-';
         document.getElementById('profileEmail').textContent = user.email || '-';
