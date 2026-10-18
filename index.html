@@ -582,11 +582,35 @@
         <h2 class="auth-title">Welcome Back</h2>
         <div class="input-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
         <div class="input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
-        <button class="btn-block" onclick="handleLogin()">Login</button>
+        <div style="text-align: right; margin-bottom: 10px;">
+    <a onclick="showScreen('forgotPasswordScreen')" style="color: var(--gold); font-size: 13px; text-decoration: none; font-weight: 700; cursor: pointer;">Forgot Password?</a>
+</div>
+<button class="btn-block" onclick="handleLogin()">Login</button>
         <div class="auth-switch">Don't have an account? <a onclick="showScreen('signupScreen')">Sign Up</a></div>
     </div>
 </div>
+<div id="forgotPasswordScreen" class="screen">
+    <div class="auth-container">
+        <div class="auth-logo">
+            <div class="auth-logo-img">T</div>
+            <h1>TRADELIX AI</h1>
+            <p>SMARTER TRADING</p>
+        </div>
+        <h2 class="auth-title">Reset Password</h2>
+        
+        <p style="color: var(--text-muted); font-size: 13px; text-align: center; margin-bottom: 20px; line-height: 1.6;">
+            Enter your email and we'll send you a link to reset your password.
+        </p>
 
+        <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="resetEmail" placeholder="your@email.com">
+        </div>
+        
+        <button class="btn-block" onclick="handleForgotPassword()">Send Reset Link</button>
+        <div class="auth-switch">Remember your password? <a onclick="showScreen('loginScreen')">Login</a></div>
+    </div>
+</div>
 <div id="homeScreen" class="screen">
     <div class="header">
         <div class="header-left">
@@ -1215,7 +1239,36 @@ async function handleLogin() {
         else showToast('❌ Login failed');
     }
 }
-
+async function handleForgotPassword() {
+    const email = document.getElementById('resetEmail').value.trim();
+    if (!email) { showToast('❌ Enter your email address'); return; }
+    
+    try {
+        showToast('⏳ Sending reset link...');
+        
+        // استيراد دالة إعادة تعيين كلمة المرور من Firebase
+        const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
+        await authModule.sendPasswordResetEmail(auth, email);
+        
+        showToast('✅ Check your email for the reset link!');
+        
+        // العودة إلى صفحة تسجيل الدخول بعد 3 ثواني
+        setTimeout(() => { 
+            showScreen('loginScreen'); 
+            document.getElementById('resetEmail').value = '';
+        }, 3000);
+        
+    } catch (error) {
+        console.error(error);
+        if (error.code === 'auth/user-not-found') {
+            showToast('❌ No account found with this email');
+        } else if (error.code === 'auth/invalid-email') {
+            showToast('❌ Invalid email address');
+        } else {
+            showToast('❌ Error: ' + error.message);
+        }
+    }
+}
 async function loadUserData(uid) {
     try {
         const userDoc = await getDoc(doc(db, 'tradelix_users', uid));
