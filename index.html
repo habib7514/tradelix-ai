@@ -1240,33 +1240,105 @@ async function handleLogin() {
     }
 }
 async function handleForgotPassword() {
-    const email = document.getElementById('resetEmail').value.trim();
-    if (!email) { showToast('❌ Enter your email address'); return; }
+    const emailInput = document.getElementById('resetEmail');
+    const email = emailInput.value.trim();
+    const btn = document.querySelector('#forgotPasswordScreen button');
     
+    if (!email) { 
+        showToast('❌ Enter your email address'); 
+        return; 
+    }
+    
+    const originalText = btn.innerHTML;
+    btn.innerHTML = "Sending...";
+    btn.disabled = true;
+    
+    const FIREBASE_API_KEY = "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM";
+    
+    // مفتاح Brevo الخاص بك
+    const BREVO_API_KEY = "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"; 
+    
+    // نستخدم بريدك كمرسل
+    const BREVO_SENDER_EMAIL = "mmatrix081@gmail.com"; 
+
     try {
-        showToast('⏳ Sending reset link...');
+        showToast('⏳ Processing request...');
         
-        // استيراد دالة إعادة تعيين كلمة المرور من Firebase
-        const authModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js");
-        await authModule.sendPasswordResetEmail(auth, email);
+        // 1. الحصول على رابط إعادة التعيين من Firebase
+        const firebaseResponse = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                requestType: "PASSWORD_RESET",
+                email: email
+            })
+        });
         
-        showToast('✅ Check your email for the reset link!');
+        const firebaseData = await firebaseResponse.json();
         
-        // العودة إلى صفحة تسجيل الدخول بعد 3 ثواني
-        setTimeout(() => { 
-            showScreen('loginScreen'); 
-            document.getElementById('resetEmail').value = '';
-        }, 3000);
+        if (!firebaseResponse.ok) {
+            if (firebaseData.error && firebaseData.error.message === 'EMAIL_NOT_FOUND') {
+                showToast('❌ No account found with this email');
+            } else {
+                showToast('❌ Error: ' + (firebaseData.error?.message || 'Unknown error'));
+            }
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+        
+        // 2. بناء رابط إعادة التعيين
+        const oobCode = firebaseData.oobCode;
+        const resetLink = `https://tradelix-ai.firebaseapp.com/__/auth/action?mode=resetPassword&oobCode=${oobCode}&apiKey=${FIREBASE_API_KEY}`;
+        
+        // 3. إرسال الإيميل عبر Brevo
+        const emailHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; border-radius: 10px;">
+                <h2 style="color: #333;">Reset Your Password</h2>
+                <p style="color: #555; font-size: 16px;">Hello,</p>
+                <p style="color: #555; font-size: 16px;">You requested to reset your password for your Tradelix AI account. Click the button below to set a new password:</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="${resetLink}" style="background-color: #F5C518; color: #000; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">Reset Password</a>
+                </div>
+                <p style="color: #999; font-size: 12px;">If you didn't request this, please ignore this email.</p>
+                <p style="color: #999; font-size: 12px;">This link will expire in 1 hour.</p>
+            </div>
+        `;
+        
+        const brevoResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'api-key': BREVO_API_KEY
+            },
+            body: JSON.stringify({
+                sender: { name: "Tradelix AI", email: BREVO_SENDER_EMAIL },
+                to: [{ email: email }],
+                subject: "Reset Your Password - Tradelix AI",
+                htmlContent: emailHtml
+            })
+        });
+        
+        if (brevoResponse.ok) {
+            showToast('✅ Check your email for the reset link!');
+            setTimeout(() => { 
+                showScreen('loginScreen'); 
+                emailInput.value = ''; 
+            }, 3000);
+        } else {
+            const brevoError = await brevoResponse.json();
+            console.error("Brevo Error:", brevoError);
+            showToast('❌ Failed to send email. Try again later.');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
         
     } catch (error) {
-        console.error(error);
-        if (error.code === 'auth/user-not-found') {
-            showToast('❌ No account found with this email');
-        } else if (error.code === 'auth/invalid-email') {
-            showToast('❌ Invalid email address');
-        } else {
-            showToast('❌ Error: ' + error.message);
-        }
+        console.error("Error:", error);
+        showToast('❌ Network error. Please try again.');
+        btn.innerHTML = originalText;
+        btn.disabled = false;
     }
 }
 async function loadUserData(uid) {
