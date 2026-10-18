@@ -1254,12 +1254,6 @@ async function handleForgotPassword() {
     btn.disabled = true;
     
     const FIREBASE_API_KEY = "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM";
-    
-    // مفتاح Brevo الخاص بك
-    const BREVO_API_KEY = "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"; 
-    
-    // نستخدم بريدك كمرسل
-    const BREVO_SENDER_EMAIL = "mmatrix081@gmail.com"; 
 
     try {
         showToast('⏳ Processing request...');
@@ -1291,44 +1285,25 @@ async function handleForgotPassword() {
         const oobCode = firebaseData.oobCode;
         const resetLink = `https://tradelix-ai.firebaseapp.com/__/auth/action?mode=resetPassword&oobCode=${oobCode}&apiKey=${FIREBASE_API_KEY}`;
         
-        // 3. إرسال الإيميل عبر Brevo
-        const emailHtml = `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; border-radius: 10px;">
-                <h2 style="color: #333;">Reset Your Password</h2>
-                <p style="color: #555; font-size: 16px;">Hello,</p>
-                <p style="color: #555; font-size: 16px;">You requested to reset your password for your Tradelix AI account. Click the button below to set a new password:</p>
-                <div style="text-align: center; margin: 30px 0;">
-                    <a href="${resetLink}" style="background-color: #F5C518; color: #000; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">Reset Password</a>
-                </div>
-                <p style="color: #999; font-size: 12px;">If you didn't request this, please ignore this email.</p>
-                <p style="color: #999; font-size: 12px;">This link will expire in 1 hour.</p>
-            </div>
-        `;
-        
-        const brevoResponse = await fetch('https://api.brevo.com/v3/smtp/email', {
+        // 3. إرسال الإيميل عبر دالة Netlify الآمنة
+        const netlifyResponse = await fetch('/.netlify/functions/send-reset-email', {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'api-key': BREVO_API_KEY
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                sender: { name: "Tradelix AI", email: BREVO_SENDER_EMAIL },
-                to: [{ email: email }],
-                subject: "Reset Your Password - Tradelix AI",
-                htmlContent: emailHtml
+                email: email,
+                resetLink: resetLink
             })
         });
         
-        if (brevoResponse.ok) {
+        if (netlifyResponse.ok) {
             showToast('✅ Check your email for the reset link!');
             setTimeout(() => { 
                 showScreen('loginScreen'); 
                 emailInput.value = ''; 
             }, 3000);
         } else {
-            const brevoError = await brevoResponse.json();
-            console.error("Brevo Error:", brevoError);
+            const errorData = await netlifyResponse.json();
+            console.error("Netlify Function Error:", errorData);
             showToast('❌ Failed to send email. Try again later.');
             btn.innerHTML = originalText;
             btn.disabled = false;
