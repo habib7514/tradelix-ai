@@ -1128,16 +1128,20 @@ try {
         doc = fsModule.doc; setDoc = fsModule.setDoc; getDoc = fsModule.getDoc; serverTimestamp = fsModule.serverTimestamp;
         window.firebaseDB = db; window.firebaseFS = fsModule;
         onAuthStateChanged(auth, async (user) => {
-    if (user) { 
-        await loadUserData(user.uid); 
-        setTimeout(_startPolling, 2000); 
-    } else { 
-        // تم إلغاء المؤقت الذي كان يطردك لصفحة التسجيل
-        console.log('⚠️ No Firebase user — waiting for login');
-        _pollStarted = false; 
-        _lastUID = null; 
-    }
-});
+            if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
+            else { 
+    console.log('⚠️ No Firebase user — checking localStorage');
+    setTimeout(() => {
+        const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        if (!savedUser.uid) {
+            _pollStarted = false; 
+            _lastUID = null; 
+            currentUserData = null; 
+            _clearAllUserData();
+            showScreen('signupScreen');
+        }
+    }, 2000);
+}
         });
         console.log('✅ Firebase initialized');
     } catch(e) { console.error('Firebase error:', e); }
@@ -1152,7 +1156,7 @@ setTimeout(() => {
             showScreen('homeScreen');
             updateUI();
         } else {
-            showScreen('loginScreen');
+            showScreen('signupScreen');
         }
     }, 800);
 }, 5000);
