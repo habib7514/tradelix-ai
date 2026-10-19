@@ -1130,17 +1130,9 @@ try {
         onAuthStateChanged(auth, async (user) => {
             if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
             else { 
-    console.log('⚠️ No Firebase user — checking localStorage');
-    setTimeout(() => {
-        const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-        if (!savedUser.uid) {
-            _pollStarted = false; 
-            _lastUID = null; 
-            currentUserData = null; 
-            _clearAllUserData();
-            showScreen('signupScreen');
-        }
-    }, 2000);
+    console.log('⚠️ No Firebase user — waiting for login');
+_pollStarted = false; 
+_lastUID = null; 
 }
         });
         console.log('✅ Firebase initialized');
@@ -1156,7 +1148,7 @@ setTimeout(() => {
             showScreen('homeScreen');
             updateUI();
         } else {
-            showScreen('signupScreen');
+            showScreen('loginScreen');
         }
     }, 800);
 }, 5000);
