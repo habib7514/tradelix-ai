@@ -843,6 +843,23 @@
         <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Subscribe to access live signals with Entry / SL / TP</p>
         <button class="btn-block" onclick="showScreen('homeScreen')">View Plans</button>
     </div>
+    <h2 style="
+    font-family: 'Tajawal', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #F5C518 0%, #FFF8DC 50%, #F5C518 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 0.7px #F5C518; /* هذا السطر يزيد من غلظة الحروف */
+    animation: goldShine 3s linear infinite;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+">
+    Tradix-ai signal gold
+</h2>
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -852,33 +869,7 @@
         <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
-<!-- النص والصورة تحت بطاقة الكورسات -->
-<div style="text-align: center; padding: 20px 15px; margin-top: 10px; margin-bottom: 20px;">
-    <h2 style="
-        font-family: 'Tajawal', sans-serif;
-        font-size: 22px;
-        font-weight: 900;
-        background: linear-gradient(90deg, #F5C518 0%, #FFF8DC 50%, #F5C518 100%);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: goldShine 3s linear infinite;
-        margin-bottom: 15px;
-        line-height: 1.4;
-        letter-spacing: 0.5px;
-    ">
-        Tradix-ai signal gold
-    </h2>
-    
-    <img src="https://i.postimg.cc/FKqk4pF6/file-00000000358081f69ff796420b71893d.png" alt="Tradix Gold" style="width: 100%; max-width: 280px; border-radius: 16px; border: 1.5px solid #F5C518; box-shadow: 0 0 25px rgba(245, 197, 24, 0.4); object-fit: cover;">
-</div>
 
-<style>
-    @keyframes goldShine {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
-    }
-</style>
 <div id="academyScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://files.catbox.moe/kbjnoo.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen', 'viewCoursesCard')" style="font-size: 16px;">✕</div></div>
     <div class="card" style="background: var(--bg-card); border-color: var(--gold); text-align: center;">
