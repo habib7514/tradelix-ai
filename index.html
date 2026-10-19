@@ -64,40 +64,6 @@
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
         .section-title { font-size: 14px; font-weight: 900; color: var(--text-main); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; letter-spacing: 1px; }
         .section-title .more { font-size: 12px; color: var(--gold); cursor: pointer; font-weight: 700; }
-        .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .proof-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 12px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; position: relative; overflow: hidden; }
-        .proof-card:active { transform: scale(0.98); border-color: var(--gold); }
-        .proof-card .proof-icon { font-size: 34px; line-height: 1; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; height: 42px; }
-        .proof-card .proof-value { font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: -0.5px; line-height: 1; text-shadow: 0 0 12px rgba(245, 197, 24, 0.35); }
-        .proof-card .proof-label { font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; }
-        .tradix-sub-wrap { background: #141414; border: 1px solid #1F1F1F; border-radius: 16px; padding: 20px 16px; margin-bottom: 16px; text-align: center; }
-        .tradix-sub-wrap h3 { color: #C0C0C0; font-size: 17px; font-weight: 900; margin-bottom: 8px; letter-spacing: 0.5px; }
-        .tradix-sub-wrap .sub-desc { color: #AAAAAA; font-size: 12.5px; line-height: 1.7; margin-bottom: 16px; }
-        .tradix-sub-wrap .sub-desc strong { color: #E5E5E5; }
-        .tradix-price-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-        .tradix-price-item { display: flex; justify-content: space-between; align-items: center; background: #0F0F0F; border: 1px solid #C0C0C0; border-radius: 10px; padding: 11px 14px; }
-        .tradix-price-item.vip { background: linear-gradient(135deg, #2A2A2A, #1A1A1A); border: 2px solid #C0C0C0; box-shadow: 0 0 12px rgba(192, 192, 192, 0.35); }
-        .tradix-price-left { text-align: left; }
-        .tradix-price-left .plan-name { color: #FFFFFF; font-weight: 700; font-size: 13.5px; }
-        .tradix-price-left .plan-dur { color: #888888; font-size: 11px; margin-top: 2px; }
-        .tradix-price-item.vip .plan-name { color: #E5E5E5; }
-        .tradix-price-right { color: #C0C0C0; font-weight: 900; font-size: 14.5px; }
-        .tradix-price-item.vip .tradix-price-right { color: #E5E5E5; }
-        .tradix-sub-note { color: #999999; font-size: 11px; margin-top: 6px; line-height: 1.6; }
-@keyframes goldGlow {
-    0% {
-        text-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 15px rgba(255, 215, 0, 0.5);
-        color: #FFD700;
-    }
-    50% {
-        text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 35px rgba(255, 215, 0, 0.9), 0 0 50px rgba(255, 215, 0, 0.6);
-        color: #FFF8DC;
-    }
-    100% {
-        text-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 15px rgba(255, 215, 0, 0.5);
-        color: #FFD700;
-    }
-}
         .main-coins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .main-coin-card { background: linear-gradient(160deg, #141414 0%, #000000 100%); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 16px; padding: 16px; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03); -webkit-tap-highlight-color: transparent; }
         .main-coin-card::before { content: ''; position: absolute; top: -60px; right: -60px; width: 140px; height: 140px; background: radial-gradient(circle, var(--coin-color, #F5C518) 0%, transparent 65%); border-radius: 50%; pointer-events: none; opacity: 0.16; transition: opacity 0.3s ease; }
@@ -112,7 +78,6 @@
         .main-coin-change { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 900; letter-spacing: 0.3px; position: relative; z-index: 1; font-variant-numeric: tabular-nums; }
         .main-coin-change.up { background: rgba(0, 208, 132, 0.12); color: #00D084; border: 1px solid rgba(0, 208, 132, 0.22); }
         .main-coin-change.down { background: rgba(255, 71, 87, 0.12); color: #FF4757; border: 1px solid rgba(255, 71, 87, 0.22); }
-
         .markets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .coin-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.2s; }
         .coin-card:active { transform: scale(0.98); border-color: var(--gold); }
@@ -125,417 +90,70 @@
         .coin-change.down { color: var(--red); }
         .plan-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 22px 20px; margin-bottom: 14px; position: relative; display: flex; justify-content: space-between; align-items: center; }
         .plan-card.premium { border-color: var(--gold); background: var(--bg-card); }
-        .plan-card.vip-lifetime { border-color: var(--gold); background: var(--bg-card); box-shadow: 0 0 20px rgba(245, 197, 24, 0.25); }
         .plan-info h4 { font-size: 18px; color: var(--gold); margin-bottom: 6px; letter-spacing: 0.5px; font-weight: 900; }
         .plan-info .duration { font-size: 13px; color: var(--text-muted); font-weight: 500; }
         .plan-buy { background: #F5C518; color: #000000; border: none; padding: 16px 28px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; font-family: inherit; min-width: 110px; letter-spacing: 0.5px; transition: all 0.2s ease; }
         .plan-buy:active { transform: scale(0.96); background: #E5B000; }
         .plan-badge { position: absolute; top: -8px; right: 16px; background: var(--gold); color: #000000; font-size: 9px; font-weight: 900; padding: 3px 10px; border-radius: 8px; letter-spacing: 1px; }
-
-        .signals-info-card { background: #141414; border: 1px solid #1F1F1F; border-radius: 14px; padding: 20px 16px; margin-bottom: 16px; text-align: center; position: relative; overflow: hidden; }
-        .signals-info-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(192,192,192,0.08), transparent 70%); border-radius: 50%; pointer-events: none; }
-        .signals-info-icon { margin-bottom: 12px; display: flex; justify-content: center; position: relative; z-index: 1; }
-        .signals-info-title { color: #C0C0C0; font-size: 16px; font-weight: 900; margin-bottom: 10px; letter-spacing: 0.5px; position: relative; z-index: 1; }
-        .signals-info-desc { color: #AAAAAA; font-size: 12.5px; line-height: 1.75; margin-bottom: 14px; position: relative; z-index: 1; }
-        .signals-info-desc strong { color: #E5E5E5; font-weight: 900; }
-        .signals-info-tags { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; font-size: 11px; font-weight: 700; position: relative; z-index: 1; }
-        .signals-info-tags span { color: #C0C0C0; background: rgba(192,192,192,0.08); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(192,192,192,0.25); }
-
-        .markets-pro-btn { width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px 20px; margin-bottom: 22px; background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #0F0F0F 100%); border: 1.5px solid rgba(245, 197, 24, 0.6); border-radius: 18px; cursor: pointer; font-family: inherit; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 197, 24, 0.08) inset, 0 1px 0 rgba(255, 255, 255, 0.06) inset; -webkit-tap-highlight-color: transparent; touch-action: manipulation; isolation: isolate; }
-        .markets-pro-btn::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 20% 50%, rgba(245, 197, 24, 0.15) 0%, transparent 60%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; z-index: 0; }
-        .markets-pro-btn::after { content: ''; position: absolute; top: -50%; left: -100%; width: 60%; height: 200%; background: linear-gradient(90deg, transparent, rgba(245, 197, 24, 0.15), transparent); transform: rotate(25deg); transition: left 0.7s ease; pointer-events: none; z-index: 1; }
-        .markets-pro-btn:active { transform: scale(0.98); border-color: #F5C518; box-shadow: 0 8px 30px rgba(245, 197, 24, 0.35), 0 0 0 1px rgba(245, 197, 24, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.08) inset; }
-        .markets-pro-btn:active::before { opacity: 1; }
-        .markets-pro-btn:active::after { left: 130%; }
-        .markets-pro-icon { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #1F1F1F 0%, #0F0F0F 100%); border: 1.5px solid rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center; color: #F5C518; flex-shrink: 0; position: relative; z-index: 2; box-shadow: 0 0 20px rgba(245, 197, 24, 0.2), 0 0 0 4px rgba(245, 197, 24, 0.04) inset; }
-        .markets-pro-icon svg { display: block; filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.6)); }
-        .markets-pro-text { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; position: relative; z-index: 2; text-align: left; }
-        .markets-pro-title { font-size: 17px; font-weight: 900; color: #F5C518; letter-spacing: 0.5px; text-shadow: 0 0 12px rgba(245, 197, 24, 0.35); line-height: 1.2; }
-        .markets-pro-sub { font-size: 10.5px; font-weight: 800; color: #999999; letter-spacing: 2px; text-transform: uppercase; line-height: 1.2; }
-        .markets-pro-arrow { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, rgba(245, 197, 24, 0.2), rgba(245, 197, 24, 0.08)); border: 1.5px solid rgba(245, 197, 24, 0.4); display: flex; align-items: center; justify-content: center; color: #F5C518; flex-shrink: 0; position: relative; z-index: 2; transition: all 0.3s ease; box-shadow: 0 0 12px rgba(245, 197, 24, 0.15); }
-        .markets-pro-btn:active .markets-pro-arrow { background: #F5C518; color: #000000; transform: translateX(4px) scale(1.05); box-shadow: 0 0 20px rgba(245, 197, 24, 0.7); }
-        .markets-pro-arrow svg { display: block; }
-
-        .tradix-app-header { display: flex; align-items: center; gap: 10px; margin-top: 24px; margin-bottom: 14px; }
-        .tradix-app-rocket-icon { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.6)); flex-shrink: 0; }
-        .tradix-app-title { font-size: 22px; font-weight: 900; color: var(--gold); letter-spacing: 0.8px; text-shadow: 0 0 14px rgba(245, 197, 24, 0.4), 0 0 4px rgba(245, 197, 24, 0.25); line-height: 1; }
-
-        .tradix-app-card { background: linear-gradient(160deg, #141414 0%, #0A0A0A 100%); border: 1.5px solid rgba(245, 197, 24, 0.45); border-radius: 22px; padding: 26px 22px 24px 22px; margin-bottom: 14px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 197, 24, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04); }
-        .tradix-app-card::before { content: ''; position: absolute; top: -80px; right: -80px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(245, 197, 24, 0.15) 0%, transparent 65%); border-radius: 50%; pointer-events: none; }
-        .tradix-app-logo-wrap { position: relative; z-index: 1; margin-bottom: 18px; display: flex; justify-content: center; }
-        .tradix-app-logo { width: 92px; height: 92px; border-radius: 22px; box-shadow: 0 0 30px rgba(245, 197, 24, 0.5), 0 8px 20px rgba(0, 0, 0, 0.5); border: 2px solid rgba(245, 197, 24, 0.6); object-fit: cover; background: #000; }
-        .tradix-app-name { color: var(--gold); font-size: 22px; font-weight: 900; letter-spacing: 0.8px; margin-bottom: 12px; position: relative; z-index: 1; text-shadow: 0 0 12px rgba(245, 197, 24, 0.4); }
-        .tradix-app-desc { color: var(--text-main); font-size: 15px; line-height: 1.75; margin-bottom: 6px; position: relative; z-index: 1; font-weight: 500; }
-        .tradix-app-desc-sub { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px; position: relative; z-index: 1; font-weight: 500; }
-        .tradix-app-btn { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; position: relative; z-index: 1; box-shadow: 0 6px 22px rgba(245, 197, 24, 0.45); }
-        .tradix-app-btn .dl-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; flex-shrink: 0; }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: stretch; padding: 0; padding-bottom: env(safe-area-inset-bottom, 0); margin: 0; z-index: 999999; min-height: 70px; touch-action: manipulation; -webkit-transform: translateZ(0); transform: translateZ(0); will-change: transform; isolation: isolate; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
-        .nav-item { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--text-muted); font-size: 10px; font-weight: 700; text-decoration: none; width: 100%; min-width: 0; min-height: 70px; cursor: pointer; background: transparent; border: none; font-family: inherit; padding: 8px 2px; margin: 0; touch-action: manipulation; -webkit-tap-highlight-color: rgba(245, 197, 24, 0.18); -webkit-user-select: none; user-select: none; -webkit-appearance: none; appearance: none; -webkit-touch-callout: none; outline: none; transition: color 0.12s ease, transform 0.08s ease, background-color 0.12s ease; position: relative; z-index: 10; box-sizing: border-box; overflow: visible; line-height: 1; }
-        .nav-item:active, .nav-item:focus { background: rgba(245, 197, 24, 0.12); color: var(--gold); transform: scale(0.95); outline: none; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: stretch; padding: 0; padding-bottom: env(safe-area-inset-bottom, 0); margin: 0; z-index: 999999; min-height: 70px; }
+        .nav-item { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--text-muted); font-size: 10px; font-weight: 700; text-decoration: none; width: 100%; min-width: 0; min-height: 70px; cursor: pointer; background: transparent; border: none; font-family: inherit; padding: 8px 2px; margin: 0; }
         .nav-item.active { color: var(--gold); }
-        .nav-item .icon { font-size: 22px; line-height: 22px; height: 22px; width: 22px; display: flex; align-items: center; justify-content: center; pointer-events: none; user-select: none; -webkit-user-select: none; transition: transform 0.12s ease; position: relative; z-index: 1; }
-        .nav-item:active .icon { transform: scale(1.1); }
-        .nav-item > span:not(.icon) { font-size: 10px; line-height: 1.2; pointer-events: none; user-select: none; -webkit-user-select: none; white-space: nowrap; position: relative; z-index: 1; }
-        .nav-item * { pointer-events: none !important; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-
+        .nav-item .icon { font-size: 22px; line-height: 22px; height: 22px; width: 22px; display: flex; align-items: center; justify-content: center; }
         .hidden { display: none !important; }
         .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--gold); color: #000000; padding: 12px 24px; border-radius: 10px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s; z-index: 99999; max-width: 90%; text-align: center; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
         .markets-header-pro { display: flex; justify-content: space-between; align-items: center; padding: 8px 0 14px 0; margin-bottom: 8px; }
         .markets-title-pro { display: inline-flex; align-items: center; gap: 8px; font-size: 19px; font-weight: 900; letter-spacing: 0.5px; color: #F5C518; text-shadow: 0 0 14px rgba(245, 197, 24, 0.5), 0 0 4px rgba(245, 197, 24, 0.3); line-height: 1; }
-        .candle-icon-pro { display: block; filter: drop-shadow(0 0 6px rgba(0, 208, 132, 0.4)); flex-shrink: 0; }
         .refresh-btn-pro { display: inline-flex !important; align-items: center; gap: 6px; font-size: 19px !important; font-weight: 900 !important; color: #F5C518 !important; background: linear-gradient(135deg, rgba(245, 197, 24, 0.12), rgba(245, 197, 24, 0.04)); border: 1px solid rgba(245, 197, 24, 0.4); padding: 6px 14px; border-radius: 22px; cursor: pointer; transition: all 0.25s ease; letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(245, 197, 24, 0.4); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25), inset 0 0 8px rgba(245, 197, 24, 0.08); -webkit-tap-highlight-color: transparent; user-select: none; line-height: 1; }
-        .refresh-btn-pro svg { transition: transform 0.6s ease; filter: drop-shadow(0 0 4px rgba(245, 197, 24, 0.6)); }
-        .refresh-btn-pro:active { transform: scale(0.95); background: linear-gradient(135deg, rgba(245, 197, 24, 0.28), rgba(245, 197, 24, 0.15)); border-color: #F5C518; box-shadow: 0 0 18px rgba(245, 197, 24, 0.55), inset 0 0 10px rgba(245, 197, 24, 0.15); }
-        .refresh-btn-pro:active svg { transform: rotate(360deg); }
         
-/* SOCIAL BUTTONS ROW */
-.social-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin: 14px 0 20px 0;
-    padding: 0;
-}
-.social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    text-decoration: none;
-    position: relative;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: #FFFFFF;
-    animation: social-bounce 2s ease-in-out infinite;
-}
-@keyframes social-bounce {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-5px); }
-}
-.social-btn:active {
-    transform: scale(0.9);
-}
-.social-btn svg {
-    width: 28px;
-    height: 28px;
-    position: relative;
-    z-index: 2;
-}
-.social-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255,255,255,0.95) 50%, transparent 60%, transparent 100%);
-    transform: skewX(-25deg);
-    animation: social-shine 2.5s infinite;
-    pointer-events: none;
-    z-index: 3;
-}
-@keyframes social-shine {
-    0% { left: -150%; }
-    50%, 100% { left: 150%; }
-}
-.social-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    animation: social-pulse 2s ease-out infinite;
-}
-@keyframes social-pulse {
-    0%   { box-shadow: 0 0 0 0 var(--pulse-color); }
-    70%  { box-shadow: 0 0 0 14px transparent; }
-    100% { box-shadow: 0 0 0 0 transparent; }
-}
-.wa-btn {
-    --pulse-color: rgba(37, 211, 102, 0.85);
-    box-shadow: 0 0 15px rgba(37, 211, 102, 0.7);
-}
-.wa-btn svg {
-    fill: #25D366;
-}
-.tg-btn {
-    --pulse-color: rgba(34, 158, 217, 0.85);
-    box-shadow: 0 0 15px rgba(34, 158, 217, 0.7);
-}
-.yt-btn {
-    --pulse-color: rgba(255, 0, 0, 0.85);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-}
-        /* JOIN NOW BUTTON */
-.join-now-btn {
-    font-family: 'Tajawal', sans-serif;
-    font-size: 14px;
-    font-weight: 900;
-    color: #FFFFFF;
-    letter-spacing: 0.5px;
-    padding: 12px 26px;
-    background: linear-gradient(180deg, #0099FF 0%, #0066FF 50%, #0044CC 100%);
-    border-radius: 50px;
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 
-        0 0 12px rgba(0, 150, 255, 0.9),
-        0 0 25px rgba(0, 150, 255, 0.7),
-        0 0 40px rgba(0, 150, 255, 0.5),
-        inset 0 0 15px rgba(255, 255, 255, 0.15),
-        inset 0 2px 4px rgba(255, 255, 255, 0.4);
-    border: 1.5px solid rgba(255, 255, 255, 0.4);
-    text-shadow: 
-        0 0 6px rgba(255, 255, 255, 0.9),
-        0 0 12px rgba(0, 150, 255, 1);
-    animation: join-pulse 2s ease-in-out infinite;
-    overflow: hidden;
-    white-space: nowrap;
-}
-.join-now-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%, transparent 100%);
-    animation: join-shine 2.5s infinite;
-    pointer-events: none;
-}
-@keyframes join-shine {
-    0% { left: -100%; }
-    50%, 100% { left: 100%; }
-}
-@keyframes join-pulse {
-    0%, 100% {
-        box-shadow: 
-            0 0 12px rgba(0, 150, 255, 0.9),
-            0 0 25px rgba(0, 150, 255, 0.7),
-            0 0 40px rgba(0, 150, 255, 0.5),
-            inset 0 0 15px rgba(255, 255, 255, 0.15),
-            inset 0 2px 4px rgba(255, 255, 255, 0.4);
-        transform: scale(1);
-    }
-    50% {
-        box-shadow: 
-            0 0 18px rgba(0, 150, 255, 1),
-            0 0 35px rgba(0, 150, 255, 0.9),
-            0 0 55px rgba(0, 150, 255, 0.7),
-            inset 0 0 20px rgba(255, 255, 255, 0.25),
-            inset 0 2px 4px rgba(255, 255, 255, 0.5);
-        transform: scale(1.03);
-    }
-}
-/* ═══════════ INVITE FRIENDS BUTTON ═══════════ */
-.invite-friends-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    margin: 16px 0;
-    padding: 18px 20px;
-    background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%);
-    border: 1.5px solid rgba(245, 197, 24, 0.7);
-    border-radius: 18px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25);
-    animation: invite-pulse 2.5s ease-in-out infinite;
-    -webkit-tap-highlight-color: transparent;
-}
-.invite-friends-btn:active {
-    transform: scale(0.97);
-}
-@keyframes invite-pulse {
-    0%, 100% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25); }
-    50%      { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 35px rgba(245, 197, 24, 0.55); }
-}
-.invite-friends-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(245, 197, 24, 0.5) 50%, transparent 60%, transparent 100%);
-    transform: skewX(-25deg);
-    animation: invite-shine 3s infinite;
-    pointer-events: none;
-}
-@keyframes invite-shine {
-    0% { left: -150%; }
-    50%, 100% { left: 150%; }
-}
-.invite-icon {
-    font-size: 34px;
-    filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.8));
-    flex-shrink: 0;
-}
-.invite-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-}
-.invite-title {
-    color: #F5C518;
-    font-size: 17px;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-    text-shadow: 0 0 10px rgba(245, 197, 24, 0.5);
-}
-.invite-sub {
-    color: #999999;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.invite-arrow {
-    color: #F5C518;
-    font-size: 24px;
-    font-weight: 900;
-    flex-shrink: 0;
-    animation: invite-arrow 1.5s ease-in-out infinite;
-}
-@keyframes invite-arrow {
-    0%, 100% { transform: translateX(0); }
-    50%      { transform: translateX(4px); }
-}
-/* ═══════════ END INVITE FRIENDS BUTTON ═══════════ */
+        .social-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 14px 0 20px 0; padding: 0; }
+        .social-btn { display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; text-decoration: none; position: relative; cursor: pointer; -webkit-tap-highlight-color: transparent; overflow: hidden; flex-shrink: 0; background: #FFFFFF; animation: social-bounce 2s ease-in-out infinite; }
+        @keyframes social-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .social-btn:active { transform: scale(0.9); }
+        .social-btn svg { width: 28px; height: 28px; position: relative; z-index: 2; }
+        .social-btn::before { content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255,255,255,0.95) 50%, transparent 60%, transparent 100%); transform: skewX(-25deg); animation: social-shine 2.5s infinite; pointer-events: none; z-index: 3; }
+        @keyframes social-shine { 0% { left: -150%; } 50%, 100% { left: 150%; } }
+        .join-now-btn { font-family: 'Tajawal', sans-serif; font-size: 14px; font-weight: 900; color: #FFFFFF; letter-spacing: 0.5px; padding: 12px 26px; background: linear-gradient(180deg, #0099FF 0%, #0066FF 50%, #0044CC 100%); border-radius: 50px; position: relative; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 12px rgba(0, 150, 255, 0.9), 0 0 25px rgba(0, 150, 255, 0.7), 0 0 40px rgba(0, 150, 255, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.4); border: 1.5px solid rgba(255, 255, 255, 0.4); text-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 0 12px rgba(0, 150, 255, 1); animation: join-pulse 2s ease-in-out infinite; overflow: hidden; white-space: nowrap; }
+        
+        .gold-app-btn { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 16px 0; padding: 18px 20px; background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%); border: 1.5px solid rgba(245, 197, 24, 0.7); border-radius: 18px; text-decoration: none; position: relative; overflow: hidden; cursor: pointer; transition: transform 0.2s ease; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25); animation: gold-pulse 2.5s ease-in-out infinite; -webkit-tap-highlight-color: transparent; width: 100%; }
+        .gold-app-btn:active { transform: scale(0.97); }
+        @keyframes gold-pulse { 0%, 100% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25); } 50% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 35px rgba(245, 197, 24, 0.55); } }
+        .gold-app-btn::before { content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(245, 197, 24, 0.5) 50%, transparent 60%, transparent 100%); transform: skewX(-25deg); animation: gold-shine 3s infinite; pointer-events: none; }
+        @keyframes gold-shine { 0% { left: -150%; } 50%, 100% { left: 150%; } }
+        .gold-app-icon { font-size: 34px; filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.8)); flex-shrink: 0; }
+        .gold-app-text { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; text-align: left; }
+        .gold-app-title { color: #F5C518; font-size: 17px; font-weight: 900; letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(245, 197, 24, 0.5); }
+        .gold-app-sub { color: #999999; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .gold-app-arrow { color: #F5C518; font-size: 24px; font-weight: 900; flex-shrink: 0; animation: gold-arrow 1.5s ease-in-out infinite; }
+        @keyframes gold-arrow { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
 
-        
-        /* ═══════════ GOLD APP BUTTON ═══════════ */
-.gold-app-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    margin: 16px 0;
-    padding: 18px 20px;
-    background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%);
-    border: 1.5px solid rgba(245, 197, 24, 0.7);
-    border-radius: 18px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25);
-    animation: gold-pulse 2.5s ease-in-out infinite;
-    -webkit-tap-highlight-color: transparent;
-}
-.gold-app-btn:active {
-    transform: scale(0.97);
-}
-@keyframes gold-pulse {
-    0%, 100% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25); }
-    50%      { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 35px rgba(245, 197, 24, 0.55); }
-}
-.gold-app-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent 0%, transparent 40%, rgba(245, 197, 24, 0.5) 50%, transparent 60%, transparent 100%);
-    transform: skewX(-25deg);
-    animation: gold-shine 3s infinite;
-    pointer-events: none;
-}
-@keyframes gold-shine {
-    0% { left: -150%; }
-    50%, 100% { left: 150%; }
-}
-.gold-app-icon {
-    font-size: 34px;
-    filter: drop-shadow(0 0 10px rgba(245, 197, 24, 0.8));
-    flex-shrink: 0;
-}
-.gold-app-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-}
-.gold-app-title {
-    color: #F5C518;
-    font-size: 17px;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-    text-shadow: 0 0 10px rgba(245, 197, 24, 0.5);
-}
-.gold-app-sub {
-    color: #999999;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.gold-app-arrow {
-    color: #F5C518;
-    font-size: 24px;
-    font-weight: 900;
-    flex-shrink: 0;
-    animation: gold-arrow 1.5s ease-in-out infinite;
-}
-@keyframes gold-arrow {
-    0%, 100% { transform: translateX(0); }
-    50%      { transform: translateX(4px); }
-}
-/* ═══════════ END GOLD APP BUTTON ═══════════ */
+        @keyframes goldShineText { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        .gold-shine-text { background: linear-gradient(90deg, #F5C518 0%, #FFF8DC 50%, #F5C518 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldShineText 3s linear infinite; font-weight: 900; }
     </style>
-    <!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F5C518">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tradelix AI">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png">
 
-<!-- PWA Theme Color -->
-<meta name="theme-color" content="#F5C518">
-
-<!-- PWA Apple Support (iOS) -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Tradelix AI">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png">
-
-<!-- PWA Service Worker Registration -->
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('✅ PWA Service Worker registered'))
-                .catch(err => console.log('❌ PWA SW error:', err));
-        });
-    }
-</script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js').catch(err => console.log('❌ PWA SW error:', err));
+            });
+        }
+    </script>
 </head>
 <body>
 <div id="splash">
     <div class="splash-logo">
-    <div class="splash-logo-circle"></div>
-    <div class="splash-logo-inner" style="background: transparent; padding: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; border-radius: 50%;"><img src="https://i.postimg.cc/YS1L6Qxk/file-00000000560082088eccf9d31d354fd3.png" alt="Tradelix AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;"></div>
-</div>
+        <div class="splash-logo-circle"></div>
+        <div class="splash-logo-inner" style="background: transparent; padding: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+            <img src="https://i.postimg.cc/YS1L6Qxk/file-00000000560082088eccf9d31d354fd3.png" alt="Tradelix AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;">
+        </div>
+    </div>
     <h1 class="splash-title">TRADELIX AI</h1>
     <p class="splash-subtitle">SMARTER TRADING</p>
     <p class="splash-tagline">AI-Powered Crypto Trading Platform<br>Live Signals • Real-Time Markets</p>
@@ -544,7 +162,7 @@
 
 <div id="signupScreen" class="screen">
     <div class="auth-container">
-        <div class="auth-logo"><img src="https://files.catbox.moe/4z0ups.png" alt="Tradelix AI" style="width: 80px; height: 80px; border-radius: 20px; margin-bottom: 16px; display: inline-block; border: 2px solid var(--gold); box-shadow: 0 0 30px rgba(245, 197, 24, 0.4); object-fit: cover; background: #000;"><h1>TRADELIX AI</h1><p>SMARTER TRADING</p></div>
+        <div class="auth-logo"><img src="https://files.catbox.moe/4z0ups.png" style="width: 80px; height: 80px; border-radius: 20px; margin-bottom: 16px; border: 2px solid var(--gold); object-fit: cover; background: #000;"><h1>TRADELIX AI</h1><p>SMARTER TRADING</p></div>
         <h2 class="auth-title">Create Account</h2>
         <div class="input-group"><label>Full Name</label><input type="text" id="signupName" placeholder="Enter your full name"></div>
         <div class="input-group"><label>Phone Number</label><input type="tel" id="signupPhone" placeholder=""></div>
@@ -555,11 +173,7 @@
                 <option value="QA">🇶🇦 Qatar</option><option value="SA">🇸🇦 Saudi Arabia</option><option value="AE">🇦🇪 UAE</option>
                 <option value="KW">🇰🇼 Kuwait</option><option value="BH">🇧🇭 Bahrain</option><option value="OM">🇴🇲 Oman</option>
                 <option value="EG">🇪🇬 Egypt</option><option value="JO">🇯🇴 Jordan</option><option value="MA">🇲🇦 Morocco</option>
-                <option value="DZ">🇩🇿 Algeria</option><option value="TN">🇹🇳 Tunisia</option><option value="IQ">🇮🇶 Iraq</option>
-                <option value="SY">🇸🇾 Syria</option><option value="LB">🇱🇧 Lebanon</option><option value="YE">🇾🇪 Yemen</option>
-                <option value="SD">🇸🇩 Sudan</option><option value="LY">🇱🇾 Libya</option><option value="PS">🇵🇸 Palestine</option>
-                <option value="TR">🇹🇷 Turkey</option><option value="US">🇺🇸 United States</option><option value="UK">🇬🇧 United Kingdom</option>
-                <option value="FR">🇫🇷 France</option><option value="DE">🇩🇪 Germany</option><option value="OTHER">🌍 Other</option>
+                <option value="OTHER">🌍 Other</option>
             </select>
         </div>
         <div class="input-group"><label>Email Address</label><input type="email" id="signupEmail" placeholder="your@email.com"></div>
@@ -573,188 +187,109 @@
 <div id="loginScreen" class="screen">
     <div class="auth-container">
         <div class="auth-logo">
-    <div class="auth-logo-img" style="background: transparent; padding: 0; overflow: hidden; display: inline-flex; align-items: center; justify-content: center;">
-        <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png" alt="Tradelix AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block;">
-    </div>
-    <h1>TRADELIX AI</h1>
-    <p>SMARTER TRADING</p>
-</div>
+            <div class="auth-logo-img"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;"></div>
+            <h1>TRADELIX AI</h1><p>SMARTER TRADING</p>
+        </div>
         <h2 class="auth-title">Welcome Back</h2>
         <div class="input-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
         <div class="input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
         <div style="text-align: right; margin-bottom: 10px;">
-    <a onclick="showScreen('forgotPasswordScreen')" style="color: var(--gold); font-size: 13px; text-decoration: none; font-weight: 700; cursor: pointer;">Forgot Password?</a>
-</div>
-<button class="btn-block" onclick="handleLogin()">Login</button>
+            <a onclick="showScreen('forgotPasswordScreen')" style="color: var(--gold); font-size: 13px; text-decoration: none; font-weight: 700; cursor: pointer;">Forgot Password?</a>
+        </div>
+        <button class="btn-block" onclick="handleLogin()">Login</button>
         <div class="auth-switch">Don't have an account? <a onclick="showScreen('signupScreen')">Sign Up</a></div>
     </div>
 </div>
+
 <div id="forgotPasswordScreen" class="screen">
     <div class="auth-container">
-        <div class="auth-logo">
-            <div class="auth-logo-img">T</div>
-            <h1>TRADELIX AI</h1>
-            <p>SMARTER TRADING</p>
-        </div>
+        <div class="auth-logo"><div class="auth-logo-img">T</div><h1>TRADELIX AI</h1><p>SMARTER TRADING</p></div>
         <h2 class="auth-title">Reset Password</h2>
-        
-        <p style="color: var(--text-muted); font-size: 13px; text-align: center; margin-bottom: 20px; line-height: 1.6;">
-            Enter your email and we'll send you a link to reset your password.
-        </p>
-
-        <div class="input-group">
-            <label>Email Address</label>
-            <input type="email" id="resetEmail" placeholder="your@email.com">
-        </div>
-        
+        <p style="color: var(--text-muted); font-size: 13px; text-align: center; margin-bottom: 20px;">Enter your email and we'll send you a link to reset your password.</p>
+        <div class="input-group"><label>Email Address</label><input type="email" id="resetEmail" placeholder="your@email.com"></div>
         <button class="btn-block" onclick="handleForgotPassword()">Send Reset Link</button>
         <div class="auth-switch">Remember your password? <a onclick="showScreen('loginScreen')">Login</a></div>
     </div>
 </div>
+
 <div id="homeScreen" class="screen">
     <div class="header">
         <div class="header-left">
-    <div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 10px; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5);">
-        <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png" alt="Tradelix AI" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 10px;">
+                <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div>
+        </div>
+        <div class="bell-icon" onclick="openNotifModal()">🔔</div>
     </div>
-    <div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div>
-</div>
-    <div class="bell-icon" onclick="openNotifModal()">🔔</div>
-</div>
     
-<!-- SOCIAL BUTTONS ROW -->
-<div class="social-row">
-    <div class="join-now-btn">Join Now</div>
-    <a href="https://chat.whatsapp.com/CRSNFVuTUuU7j0e9BPBBiQ" target="_blank" rel="noopener noreferrer" class="social-btn wa-btn" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
-    </a>
-    <a href="https://t.me/TradelixAI_Official" target="_blank" rel="noopener noreferrer" class="social-btn tg-btn" aria-label="Telegram">
-        <svg viewBox="0 0 32 32">
-            <circle cx="16" cy="16" r="16" fill="#229ED9"/>
-            <path d="M23.5 9.5L8 15.5L13 17.5L14.5 22.5L17.5 19L21.5 22L23.5 9.5Z" fill="#FFFFFF"/>
-        </svg>
-    </a>
-    <a href="https://youtube.com/@matrixmatrix1209?si=0M4g-XYzRBTzgZOj" target="_blank" rel="noopener noreferrer" class="social-btn yt-btn" aria-label="YouTube">
-        <svg viewBox="0 0 24 24">
-            <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
-            <path fill="#FFFFFF" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-        </svg>
-    </a>
-</div>
-<!-- END SOCIAL BUTTONS ROW -->
+    <div class="social-row">
+        <div class="join-now-btn">Join Now</div>
+        <a href="https://chat.whatsapp.com/CRSNFVuTUuU7j0e9BPBBiQ" target="_blank" class="social-btn wa-btn" style="box-shadow: 0 0 15px rgba(37, 211, 102, 0.7);">
+            <svg viewBox="0 0 24 24" fill="#25D366" style="width: 28px; height: 28px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+        <a href="https://t.me/TradelixAI_Official" target="_blank" class="social-btn tg-btn" style="box-shadow: 0 0 15px rgba(34, 158, 217, 0.7);">
+            <svg viewBox="0 0 32 32" style="width: 28px; height: 28px;"><circle cx="16" cy="16" r="16" fill="#229ED9"/><path d="M23.5 9.5L8 15.5L13 17.5L14.5 22.5L17.5 19L21.5 22L23.5 9.5Z" fill="#FFFFFF"/></svg>
+        </a>
+        <a href="https://youtube.com/@matrixmatrix1209" target="_blank" class="social-btn yt-btn" style="box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);">
+            <svg viewBox="0 0 24 24" style="width: 28px; height: 28px;"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path fill="#FFFFFF" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+    </div>
     
     <div class="card" style="background: var(--bg-card); border-color: var(--gold);">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div>
-            <p style="color: #FFFFFF !important; font-size:11px; margin-bottom:4px;">Welcome back</p>
-            <h2 id="welcomeName" style="font-size: 22px !important; color: #FFD700 !important; margin-bottom:8px; font-weight: 900 !important; animation: goldGlow 2s ease-in-out infinite !important;">User</h2>
-            <p id="welcomeEmail" style="font-size:11px; color: #FFFFFF !important; opacity: 0.8;">-</p>
-        </div>
-        <div style="text-align:center;">
-            <div id="statusBadge" style="display:inline-block; padding:6px 14px; border-radius:20px; font-size:11px; font-weight:900; background:rgba(255,71,87,0.15); color:var(--red); border:1px solid var(--red);">INACTIVE</div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <p style="color: #FFFFFF !important; font-size:11px; margin-bottom:4px;">Welcome back</p>
+                <h2 id="welcomeName" style="font-size: 22px !important; color: #FFD700 !important; margin-bottom:8px; font-weight: 900 !important;">User</h2>
+                <p id="welcomeEmail" style="font-size:11px; color: #FFFFFF !important; opacity: 0.8;">-</p>
+            </div>
+            <div style="text-align:center;">
+                <div id="statusBadge" style="display:inline-block; padding:6px 14px; border-radius:20px; font-size:11px; font-weight:900; background:rgba(255,71,87,0.15); color:var(--red); border:1px solid var(--red);">INACTIVE</div>
+            </div>
         </div>
     </div>
-</div>
-    <!-- 🎯 CHAT BUTTON -->
-<div id="chatButtonContainer" style="display:none; margin: 16px 20px;">
-    <button onclick="toggleChat()" class="chat-glow-btn">
-        <span style="position:relative; z-index:2; display:flex; align-items:center; gap:10px;">
-            💬 غرفة النقاش
-        </span>
-    </button>
-</div>
-
 
     <div class="ticker-wrap"><div class="ticker-track" id="tickerTrack"></div></div>
 
-    <div class="markets-header-pro">
-        <span class="markets-title-pro">
-            <svg class="candle-icon-pro" width="26" height="26" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
-                <line x1="5" y1="3" x2="5" y2="23" stroke="#00D084" stroke-width="1.3" stroke-linecap="round"/>
-                <rect x="3" y="8" width="4" height="10" fill="#00D084" rx="0.5"/>
-                <line x1="14" y1="5" x2="14" y2="22" stroke="#FF4757" stroke-width="1.3" stroke-linecap="round"/>
-                <rect x="12" y="10" width="4" height="7" fill="#FF4757" rx="0.5"/>
-                <line x1="23" y1="2" x2="23" y2="24" stroke="#00D084" stroke-width="1.3" stroke-linecap="round"/>
-                <rect x="21" y="7" width="4" height="12" fill="#00D084" rx="0.5"/>
-                <line x1="32" y1="4" x2="32" y2="21" stroke="#00D084" stroke-width="1.3" stroke-linecap="round"/>
-                <rect x="30" y="8" width="4" height="9" fill="#00D084" rx="0.5"/>
-                <line x1="38" y1="6" x2="38" y2="20" stroke="#F5C518" stroke-width="1.3" stroke-linecap="round"/>
-                <rect x="36" y="10" width="4" height="6" fill="#F5C518" rx="0.5"/>
-            </svg>
+    <div class="markets-header-pro" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0 14px 0; margin-bottom: 8px;">
+        <span class="markets-title-pro" style="display: inline-flex; align-items: center; gap: 8px; font-size: 19px; font-weight: 900; color: #F5C518;">
             Live Markets
         </span>
-        <span class="more refresh-btn-pro" onclick="refreshMarkets()">
-            Refresh
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 12a9 9 0 1 1-2.64-6.36" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M21 3v6h-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </span>
+        <span class="more refresh-btn-pro" onclick="refreshMarkets()" style="font-size: 14px; color: #F5C518; font-weight: 700; cursor: pointer;">Refresh ↻</span>
     </div>
 
     <div class="main-coins-grid" id="mainCoinsGrid"></div>
 
-    <button onclick="openAllMarkets()" class="markets-pro-btn">
-        <span class="markets-pro-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
-                <ellipse cx="12" cy="12" rx="4" ry="10" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M2 12h20" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M4 7h16M4 17h16" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-            </svg>
+    <button onclick="openAllMarkets()" class="markets-pro-btn" style="width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px 20px; margin-bottom: 22px; background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #0F0F0F 100%); border: 1.5px solid rgba(245, 197, 24, 0.6); border-radius: 18px; cursor: pointer;">
+        <span class="markets-pro-icon" style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #1F1F1F 0%, #0F0F0F 100%); border: 1.5px solid rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center; color: #F5C518; flex-shrink: 0;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><ellipse cx="12" cy="12" rx="4" ry="10" stroke="currentColor" stroke-width="1.8"/><path d="M2 12h20" stroke="currentColor" stroke-width="1.8"/></svg>
         </span>
-        <span class="markets-pro-text">
-            <span class="markets-pro-title">Markets</span>
-            <span class="markets-pro-sub">46 Coins • Live</span>
+        <span class="markets-pro-text" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 3px;">
+            <span class="markets-pro-title" style="font-size: 17px; font-weight: 900; color: #F5C518;">Markets</span>
+            <span class="markets-pro-sub" style="font-size: 10.5px; font-weight: 800; color: #999999;">46 Coins • Live</span>
         </span>
-        <span class="markets-pro-arrow">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+        <span class="markets-pro-arrow" style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, rgba(245, 197, 24, 0.2), rgba(245, 197, 24, 0.08)); border: 1.5px solid rgba(245, 197, 24, 0.4); display: flex; align-items: center; justify-content: center; color: #F5C518; flex-shrink: 0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
     </button>
 
-    <div class="signals-info-card">
-        <div class="signals-info-icon">
-            <svg width="110" height="85" viewBox="0 0 110 85" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 14px rgba(192,192,192,0.2));">
-                <rect x="0" y="0" width="110" height="85" rx="12" fill="#0F0F0F" stroke="rgba(192,192,192,0.25)" stroke-width="1"/>
-                <line x1="0" y1="17" x2="110" y2="17" stroke="rgba(153,153,153,0.12)" stroke-width="0.8"/>
-                <line x1="0" y1="34" x2="110" y2="34" stroke="rgba(153,153,153,0.12)" stroke-width="0.8"/>
-                <line x1="0" y1="51" x2="110" y2="51" stroke="rgba(153,153,153,0.12)" stroke-width="0.8"/>
-                <line x1="0" y1="68" x2="110" y2="68" stroke="rgba(153,153,153,0.12)" stroke-width="0.8"/>
-                <line x1="14" y1="26" x2="14" y2="64" stroke="#00D084" stroke-width="1.4"/>
-                <rect x="10" y="36" width="8" height="20" fill="#00D084" rx="1"/>
-                <line x1="30" y1="22" x2="30" y2="58" stroke="#FF4757" stroke-width="1.4"/>
-                <rect x="26" y="28" width="8" height="22" fill="#FF4757" rx="1"/>
-                <line x1="46" y1="16" x2="46" y2="50" stroke="#00D084" stroke-width="1.4"/>
-                <rect x="42" y="22" width="8" height="24" fill="#00D084" rx="1"/>
-                <line x1="62" y1="24" x2="62" y2="52" stroke="#FF4757" stroke-width="1.4"/>
-                <rect x="58" y="30" width="8" height="15" fill="#FF4757" rx="1"/>
-                <line x1="78" y1="8" x2="78" y2="46" stroke="#00D084" stroke-width="1.4"/>
-                <rect x="74" y="14" width="8" height="26" fill="#00D084" rx="1"/>
-                <line x1="94" y1="14" x2="94" y2="42" stroke="#00D084" stroke-width="1.4"/>
-                <rect x="90" y="20" width="8" height="16" fill="#00D084" rx="1"/>
-                <path d="M 14 48 L 30 44 L 46 36 L 62 42 L 78 24 L 94 28" fill="none" stroke="#F5C518" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.7" stroke-dasharray="3,2"/>
-            </svg>
+    <div class="signals-info-card" style="background: #141414; border: 1px solid #1F1F1F; border-radius: 14px; padding: 20px 16px; margin-bottom: 16px; text-align: center;">
+        <div class="signals-info-title" style="color: #C0C0C0; font-size: 16px; font-weight: 900; margin-bottom: 10px;">Premium Signals Access</div>
+        <div class="signals-info-desc" style="color: #AAAAAA; font-size: 12.5px; line-height: 1.75; margin-bottom: 14px;">
+            Subscribe to receive <strong>real-time trading signals</strong> with Entry, Stop Loss &amp; Take Profit — for Crypto &amp; Gold.
         </div>
-        <div class="signals-info-title">Premium Signals Access</div>
-        <div class="signals-info-desc">
-            Subscribe to receive <strong>real-time trading signals</strong> with Entry, Stop Loss &amp; Take Profit — delivered directly to your phone.
-        </div>
-        <div class="signals-info-tags">
-            <span>⚡ Instant Alerts</span>
-            <span>🎯 87% Win Rate</span>
-            <span>🔓 Cancel Anytime</span>
+        <div class="signals-info-tags" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; font-size: 11px; font-weight: 700;">
+            <span style="color: #C0C0C0; background: rgba(192,192,192,0.08); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(192,192,192,0.25);">⚡ Instant Alerts</span>
+            <span style="color: #C0C0C0; background: rgba(192,192,192,0.08); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(192,192,192,0.25);">🎯 High Win Rate</span>
+            <span style="color: #C0C0C0; background: rgba(192,192,192,0.08); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(192,192,192,0.25);">🔓 Cancel Anytime</span>
         </div>
     </div>
 
     <div class="section-title"><span>💎 Subscription Plans</span></div>
     <div class="plan-card"><div class="plan-info"><h4>Weekly</h4><div class="duration">7 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(10, 'Weekly')">$10</button></div>
-<div class="plan-card"><div class="plan-info"><h4>15 Days</h4><div class="duration">15 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(20, '15 Days')">$20</button></div>
-<div class="plan-card"><div class="plan-info"><h4>Monthly</h4><div class="duration">30 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(30, 'Monthly')">$30</button></div>
-<div class="plan-card premium"><span class="plan-badge">BEST VALUE</span><div class="plan-info"><h4>3 Months</h4><div class="duration">90 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(70, 'Quarterly')">$70</button></div>
+    <div class="plan-card"><div class="plan-info"><h4>15 Days</h4><div class="duration">15 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(20, '15 Days')">$20</button></div>
+    <div class="plan-card"><div class="plan-info"><h4>Monthly</h4><div class="duration">30 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(30, 'Monthly')">$30</button></div>
+    <div class="plan-card premium"><span class="plan-badge">BEST VALUE</span><div class="plan-info"><h4>3 Months</h4><div class="duration">90 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(70, 'Quarterly')">$70</button></div>
 
     <div class="section-title" style="margin-top: 24px;">
         <span style="font-size: 20px; color: var(--gold); letter-spacing: 1px; font-weight: 900; text-shadow: 0 0 15px rgba(245,197,24,0.35);">
@@ -764,9 +299,7 @@
     <div class="card" id="viewCoursesCard" style="text-align:center; padding: 20px; border-color: var(--gold); background: var(--bg-card); position: relative; overflow: hidden;">
         <div style="position: absolute; top: -50px; right: -50px; width: 130px; height: 130px; background: radial-gradient(circle, rgba(245,197,24,0.18), transparent 70%); border-radius: 50%; pointer-events: none;"></div>
         <div style="position: relative; z-index: 1; margin-bottom: 16px;">
-            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=600&q=80"
-                 alt="Learn Crypto Trading"
-                 style="width: 100%; height: 180px; object-fit: cover; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 30px rgba(245,197,24,0.15); border: 2px solid rgba(245,197,24,0.3);">
+            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=600&q=80" alt="Learn Crypto Trading" style="width: 100%; height: 180px; object-fit: cover; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 30px rgba(245,197,24,0.15); border: 2px solid rgba(245,197,24,0.3);">
         </div>
         <h3 style="color: var(--gold); font-size: 17px; font-weight: 900; margin-bottom: 10px; letter-spacing: 0.5px; position: relative; z-index: 1;">📚 From Zero to Pro</h3>
         <p style="color: var(--text-main); font-size: 13.5px; line-height: 1.75; margin-bottom: 16px; position: relative; z-index: 1;">
@@ -780,32 +313,30 @@
         <button class="btn-block" onclick="showScreen('academyScreen')" style="position: relative; z-index: 1; box-shadow: 0 6px 20px rgba(245,197,24,0.4);">🎓 View Courses</button>
     </div>
 
-    <div class="tradix-sub-wrap">
-        <h3>💰 Tradix AI — Gold Signals Subscription</h3>
-        <p class="sub-desc">
+    <div class="tradix-sub-wrap" style="background: #141414; border: 1px solid #1F1F1F; border-radius: 16px; padding: 20px 16px; margin-bottom: 16px; text-align: center;">
+        <h3 style="color: #C0C0C0; font-size: 17px; font-weight: 900; margin-bottom: 8px;">💰 Tradix AI — Gold Signals Subscription</h3>
+        <p class="sub-desc" style="color: #AAAAAA; font-size: 12.5px; line-height: 1.7; margin-bottom: 16px;">
             Get real-time <strong>Gold (XAUUSD)</strong> trading signals delivered directly to your phone.<br>
             Subscribe now and start trading with confidence.
         </p>
-        <div class="tradix-price-list">
-            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">Weekly Plan</div><div class="plan-dur">7 days access</div></div><div class="tradix-price-right">15 USDT</div></div>
-            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">Monthly Plan</div><div class="plan-dur">30 days access</div></div><div class="tradix-price-right">45 USDT</div></div>
-            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">3 Months Plan</div><div class="plan-dur">90 days access</div></div><div class="tradix-price-right">119 USDT</div></div>
-            <div class="tradix-price-item vip"><div class="tradix-price-left"><div class="plan-name">👑 Lifetime VIP</div><div class="plan-dur">Unlimited access forever</div></div><div class="tradix-price-right">300 USDT</div></div>
+        <div class="tradix-price-list" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+            <div class="tradix-price-item" style="display: flex; justify-content: space-between; align-items: center; background: #0F0F0F; border: 1px solid #C0C0C0; border-radius: 10px; padding: 11px 14px;"><div class="tradix-price-left" style="text-align: left;"><div class="plan-name" style="color: #FFFFFF; font-weight: 700; font-size: 13.5px;">Weekly Plan</div><div class="plan-dur" style="color: #888888; font-size: 11px; margin-top: 2px;">7 days access</div></div><div class="tradix-price-right" style="color: #C0C0C0; font-weight: 900; font-size: 14.5px;">15 USDT</div></div>
+            <div class="tradix-price-item" style="display: flex; justify-content: space-between; align-items: center; background: #0F0F0F; border: 1px solid #C0C0C0; border-radius: 10px; padding: 11px 14px;"><div class="tradix-price-left" style="text-align: left;"><div class="plan-name" style="color: #FFFFFF; font-weight: 700; font-size: 13.5px;">Monthly Plan</div><div class="plan-dur" style="color: #888888; font-size: 11px; margin-top: 2px;">30 days access</div></div><div class="tradix-price-right" style="color: #C0C0C0; font-weight: 900; font-size: 14.5px;">45 USDT</div></div>
+            <div class="tradix-price-item" style="display: flex; justify-content: space-between; align-items: center; background: #0F0F0F; border: 1px solid #C0C0C0; border-radius: 10px; padding: 11px 14px;"><div class="tradix-price-left" style="text-align: left;"><div class="plan-name" style="color: #FFFFFF; font-weight: 700; font-size: 13.5px;">3 Months Plan</div><div class="plan-dur" style="color: #888888; font-size: 11px; margin-top: 2px;">90 days access</div></div><div class="tradix-price-right" style="color: #C0C0C0; font-weight: 900; font-size: 14.5px;">119 USDT</div></div>
+            <div class="tradix-price-item vip" style="display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #2A2A2A, #1A1A1A); border: 2px solid #C0C0C0; border-radius: 10px; padding: 11px 14px; box-shadow: 0 0 12px rgba(192, 192, 192, 0.35);"><div class="tradix-price-left" style="text-align: left;"><div class="plan-name" style="color: #E5E5E5; font-weight: 700; font-size: 13.5px;">👑 Lifetime VIP</div><div class="plan-dur" style="color: #888888; font-size: 11px; margin-top: 2px;">Unlimited access forever</div></div><div class="tradix-price-right" style="color: #E5E5E5; font-weight: 900; font-size: 14.5px;">300 USDT</div></div>
         </div>
-        <p class="tradix-sub-note">✅ Instant activation • ✅ Real-time signals • ✅ Cancel anytime</p>
+        <p class="tradix-sub-note" style="color: #999999; font-size: 11px; margin-top: 6px; line-height: 1.6;">✅ Instant activation • ✅ Real-time signals • ✅ Cancel anytime</p>
     </div>
 
-    <a href="https://tradix-ai.netlify.app" 
-   target="_blank" 
-   rel="noopener noreferrer" 
-   class="gold-app-btn">
-    <span class="gold-app-icon">🥇</span>
-    <span class="gold-app-text">
-        <span class="gold-app-title">Tradix Gold Signals</span>
-        <span class="gold-app-sub">Live Gold • XAU/USD • Premium VIP</span>
-    </span>
-    <span class="gold-app-arrow">›</span>
-</a>
+    <!-- زر الذهب الجديد -->
+    <button onclick="openGoldScreen()" class="gold-app-btn">
+        <span class="gold-app-icon">🥇</span>
+        <span class="gold-app-text">
+            <span class="gold-app-title">Tradix Gold - AI</span>
+            <span class="gold-app-sub">Live Gold • XAU/USD • Premium VIP</span>
+        </span>
+        <span class="gold-app-arrow">›</span>
+    </button>
 
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
@@ -817,25 +348,66 @@
     </div>
 </div>
 
+<!-- ═══════════ صفحة الذهب الجديدة ═══════════ -->
+<div id="goldScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div onclick="showScreen('homeScreen')" style="cursor:pointer; width: 42px; height: 42px; border-radius: 50%; background: rgba(245, 197, 24, 0.15); border: 1px solid rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold);">
+                ⬅️
+            </div>
+            <img src="https://i.postimg.cc/3JwYSdkJ/file-00000000358081f69ff796420b71893d.png" style="width: 42px; height: 42px; border-radius: 12px; margin-left: 10px; border: 1.5px solid var(--gold); box-shadow: 0 0 10px rgba(245, 197, 24, 0.4); object-fit: cover;">
+            <div class="header-title" style="margin-left: 10px;">
+                <h1 style="color: var(--gold);">Tradix Gold</h1>
+                <span>XAU/USD PREMIUM</span>
+            </div>
+        </div>
+        <div class="bell-icon" onclick="openNotifModal()" style="background: rgba(245, 197, 24, 0.1); border-color: rgba(245, 197, 24, 0.4);">🔔</div>
+    </div>
+    
+    <div class="card" style="text-align: center; background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid var(--gold); padding: 30px 20px; border-radius: 16px; margin-top: 10px; margin-bottom: 15px;">
+        <h2 class="gold-shine-text" style="font-size: 24px; margin-bottom: 5px;">Welcome to Tradix Gold</h2>
+        <p style="color: #AAAAAA; font-size: 13px;">Your premium gateway to live markets.</p>
+    </div>
+    
+    <div class="card" style="background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid rgba(245, 197, 24, 0.4); padding: 24px; text-align: center; border-radius: 16px; margin-bottom: 15px;">
+        <div style="font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px;">LIVE GOLD PRICE</div>
+        <div id="liveGoldPrice" style="font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 8px;">$0.00</div>
+        <div id="liveGoldChange" style="display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green);">+0.00%</div>
+    </div>
+    
+    <div class="card" style="padding: 10px; height: 350px; background: #000; border-radius: 16px; border: 1px solid var(--border);">
+        <div id="goldChartContainer" style="width: 100%; height: 100%; border-radius: 10px; overflow: hidden;"></div>
+    </div>
+    
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
+        <button class="nav-item active" onclick="openGoldScreen()"><span class="icon">🥇</span><span>Gold</span></button>
+    </div>
+</div>
+
 <div id="allMarketsScreen" class="screen">
     <div class="header">
-        <div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;"><img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="Binance" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(243, 186, 47, 0.6));"></div><div class="header-title"><h1>All Markets</h1><span>BINANCE LIVE • 46 COINS</span></div></div>
+        <div class="header-left">
+            <div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+                <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="Binance" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(243, 186, 47, 0.6));">
+            </div>
+            <div class="header-title"><h1>All Markets</h1><span>BINANCE LIVE • 46 COINS</span></div>
+        </div>
         <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
     </div>
     <div class="input-group"><input type="text" id="marketSearch" placeholder="🔍 Search by name or symbol..." oninput="filterAllMarkets()"></div>
-   <!-- 🚀 بانر عملة Tradelix القادمة -->
-<div class="tradelix-coin-banner" style="grid-column: 1 / -1; margin-bottom: 20px; display: flex; align-items: center; gap: 16px;">
-    <img src="https://i.postimg.cc/bSqvs8hH/file-00000000560082088eccf9d31d354fd3.png" alt="Tradelix Coin" class="cs-coin-icon" style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #F5C518; box-shadow: 0 0 20px rgba(245, 197, 24, 0.6); object-fit: cover; background: #000; flex-shrink: 0;">
-    <div class="cs-coin-info" style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-        <div class="cs-coin-title" style="color: #FFFFFF; font-size: 18px; font-weight: 900; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            TRADELIX (TLX) 
-            <span class="cs-badge" style="background: rgba(245, 197, 24, 0.15); color: #F5C518; border: 1px solid #F5C518; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 900; letter-spacing: 1px;">COMING SOON</span>
-        </div>
-        <div class="cs-coin-desc" style="color: #AAAAAA; font-size: 11.5px; line-height: 1.5;">
-            The official project token. Launch and Presale date to be announced very soon.
+    <div class="tradelix-coin-banner" style="grid-column: 1 / -1; margin-bottom: 20px; display: flex; align-items: center; gap: 16px;">
+        <img src="https://i.postimg.cc/bSqvs8hH/file-00000000560082088eccf9d31d354fd3.png" alt="Tradelix Coin" style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #F5C518; box-shadow: 0 0 20px rgba(245, 197, 24, 0.6); object-fit: cover; background: #000; flex-shrink: 0;">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+            <div style="color: #FFFFFF; font-size: 18px; font-weight: 900; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                TRADELIX (TLX) 
+                <span style="background: rgba(245, 197, 24, 0.15); color: #F5C518; border: 1px solid #F5C518; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 900; letter-spacing: 1px;">COMING SOON</span>
+            </div>
+            <div style="color: #AAAAAA; font-size: 11.5px; line-height: 1.5;">
+                The official project token. Launch and Presale date to be announced very soon.
+            </div>
         </div>
     </div>
-</div>
     <div class="markets-grid" id="allMarketsGrid"></div>
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
@@ -963,7 +535,6 @@
         <div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;">✕</div>
     </div>
     
-    <!-- 1. قسم الصفقات (منفصل) -->
     <div class="section-title" style="margin-top: 10px;">📊 Subscription (Signals)</div>
     <div id="subActive" class="hidden">
         <div class="card" style="text-align: center; border-color: var(--green);">
@@ -986,7 +557,6 @@
         <button class="btn-block" onclick="showScreen('homeScreen')">Choose Plan</button>
     </div>
 
-    <!-- 2. قسم الكورسات (منفصل) -->
     <div class="section-title" style="margin-top: 24px;">🎓 My Courses</div>
     <div class="card" id="myCoursesListContainer">
         <div id="myCoursesListPlan" style="display: flex; flex-direction: column; gap: 8px;">
@@ -1003,6 +573,7 @@
         <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
+
 <div id="profileScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://files.catbox.moe/kbjnoo.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Profile</h1><span>MY ACCOUNT</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;">✕</div></div>
     <div class="card" style="text-align: center;">
@@ -1022,16 +593,6 @@
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Phone</span><span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span></div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Country</span><span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span></div>
     </div>
-    <!-- INVITE FRIENDS BUTTON -->
-<a href="javascript:void(0)" onclick="showToast('🎁 Referral system coming soon!')" class="invite-friends-btn">
-    <span class="invite-icon">🎁</span>
-    <span class="invite-text">
-        <span class="invite-title">Invite Friends</span>
-        <span class="invite-sub">COMING SOON</span>
-    </span>
-    <span class="invite-arrow">›</span>
-</a>
-<!-- END INVITE FRIENDS BUTTON -->
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
         <div id="myCoursesList"><p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p></div>
@@ -1054,20 +615,8 @@
 
 <div id="coinChartScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo" id="coinChartIcon">₿</div><div class="header-title"><h1 id="coinChartName">BTC/USDT</h1><span id="coinChartSub">BINANCE LIVE</span></div></div><div class="bell-icon" onclick="showScreen('allMarketsScreen')">✕</div></div>
-    <div class="card" style="text-align: center;">
-        <div id="coinChartPrice" style="font-size: 28px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$0.00</div>
-        <div id="coinChartChange" style="font-size: 14px; font-weight: 700; color: var(--green);">+0.00%</div>
-    </div>
-    <div class="card" style="padding: 10px;"><div id="chartContainer" style="width: 100%; height: 300px; position: relative; background: #000000; border-radius: 10px; overflow: hidden;"></div></div>
-    <div class="card">
-        <h3 style="color: var(--gold); margin-bottom: 10px; font-size: 14px;">📊 24h Statistics</h3>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div style="background:#000000; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h High</div><div id="coinHigh" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
-            <div style="background:#000000; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Low</div><div id="coinLow" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
-            <div style="background:#000000; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Volume</div><div id="coinVol" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
-            <div style="background:#000000; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Change</div><div id="coinChg" style="font-size: 13px; font-weight: 900; color: var(--green);">-</div></div>
-        </div>
-    </div>
+    <div class="card" style="text-align: center;"><div id="coinChartPrice" style="font-size: 28px; font-weight: 900; color: var(--gold);">$0.00</div><div id="coinChartChange" style="font-size: 14px; font-weight: 700; color: var(--green);">+0.00%</div></div>
+    <div class="card" style="padding: 10px;"><div id="chartContainer" style="width: 100%; height: 300px; background: #000; border-radius: 10px; overflow: hidden;"></div></div>
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -1078,23 +627,17 @@
     </div>
 </div>
 
-<!-- ═══════════ ⭐ NOTIFICATIONS MODAL — NEW (مع زر X في الأعلى) ═══════════ -->
 <div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
     <div style="background:#141414; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto; position:relative;">
-        
-        <!-- ⭐ زر X في أعلى اليمين -->
-        <button onclick="closeNotifModal()" aria-label="Close" style="position:absolute; top:14px; right:14px; width:40px; height:40px; border-radius:50%; background:rgba(245, 197, 24, 0.15); border:1.5px solid rgba(245, 197, 24, 0.6); color:#F5C518; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10; touch-action:manipulation; -webkit-tap-highlight-color:rgba(245, 197, 24, 0.3); -webkit-appearance:none; appearance:none; transition:all 0.15s ease; box-shadow:0 2px 10px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(245, 197, 24, 0.08); font-family:Tajawal,sans-serif;">✕</button>
-        
-        <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; padding-right:40px; padding-left:40px; font-family:Tajawal,sans-serif;">🔔 Notifications</h3>
-        <div id="notifList" style="font-family:Tajawal,sans-serif;"></div>
-        
-        <!-- زر Close السفلي (يبقى كخيار ثاني) -->
-        <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer; touch-action:manipulation;">Close</button>
+        <button onclick="closeNotifModal()" style="position:absolute; top:14px; right:14px; width:40px; height:40px; border-radius:50%; background:rgba(245, 197, 24, 0.15); border:1.5px solid rgba(245, 197, 24, 0.6); color:#F5C518; font-size:18px; font-weight:900; cursor:pointer;">✕</button>
+        <h3 style="color:var(--gold); margin-bottom:16px; text-align:center;">🔔 Notifications</h3>
+        <div id="notifList"></div>
+        <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px;">Close</button>
     </div>
 </div>
-<!-- ═══════════ END NOTIFICATIONS MODAL ═══════════ -->
 
 <div id="toast" class="toast">Message</div>
+
 <script>
 const firebaseConfig = {
     apiKey: "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM",
@@ -1116,10 +659,7 @@ async function initFirebase() {
         const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
         const app = appModule.initializeApp(firebaseConfig);
         auth = authModule.getAuth(app);
-        // ✅ حفظ الجلسة بشكل دائم
-try {
-    await authModule.setPersistence(auth, authModule.browserLocalPersistence);
-} catch(e) { console.warn('Persistence error:', e); }
+        try { await authModule.setPersistence(auth, authModule.browserLocalPersistence); } catch(e) {}
         db = fsModule.getFirestore(app);
         signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
         createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
@@ -1130,20 +670,11 @@ try {
         onAuthStateChanged(auth, async (user) => {
             if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
             else { 
-    console.log('⚠️ No Firebase user — checking localStorage');
-    setTimeout(() => {
-        const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-        if (!savedUser.uid) {
-            _pollStarted = false; 
-            _lastUID = null; 
-            currentUserData = null; 
-            _clearAllUserData();
-            showScreen('loginScreen');
-        }
-    }, 2000);
-}
+                _pollStarted = false; 
+                _lastUID = null; 
+                currentUserData = null; 
+            }
         });
-        console.log('✅ Firebase initialized');
     } catch(e) { console.error('Firebase error:', e); }
 }
 
@@ -1151,13 +682,8 @@ setTimeout(() => {
     document.getElementById('splash').classList.add('hide');
     setTimeout(() => {
         const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-        if (savedUser.uid) {
-            currentUserData = savedUser;
-            showScreen('homeScreen');
-            updateUI();
-        } else {
-            showScreen('loginScreen');
-        }
+        if (savedUser.uid) { currentUserData = savedUser; showScreen('homeScreen'); updateUI(); } 
+        else { showScreen('loginScreen'); }
     }, 800);
 }, 5000);
 
@@ -1167,27 +693,12 @@ function showScreen(id, scrollToId = null) {
     if (screen) screen.classList.add('active');
     
     if (scrollToId) {
-        setTimeout(() => {
-            const target = document.getElementById(scrollToId);
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-    } else {
-        window.scrollTo(0, 0);
-    }
+        setTimeout(() => { const target = document.getElementById(scrollToId); if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+    } else { window.scrollTo(0, 0); }
     
     updateUI();
     if (id === 'allMarketsScreen') renderAllMarkets();
     if (id === 'signalsScreen') loadLatestSignal();
-    if (id === 'homeScreen') loadPublicStats();
-    
-    // ✅ إخفاء البانر في الصفحات غير الرئيسية
-    if (id !== 'homeScreen') {
-        const banner = document.getElementById('pwaInstallBanner');
-        if (banner) {
-            banner.style.display = 'none';
-            document.body.classList.remove('pwa-banner-active');
-        }
-    }
 }
 async function handleSignup() {
     const name = document.getElementById('signupName').value.trim();
@@ -1207,16 +718,12 @@ async function handleSignup() {
         const user = userCredential.user;
         await setDoc(doc(db, 'tradelix_users', user.uid), {
             name: name, phone: phone, country: country, email: email,
-            status: 'inactive', plan: null, startDate: null, expiryDate: null, txHash: null,
-            createdAt: serverTimestamp()
+            status: 'inactive', plan: null, startDate: null, expiryDate: null, txHash: null, createdAt: serverTimestamp()
         });
         showToast('✅ Account created!');
         setTimeout(() => showScreen('loginScreen'), 1500);
     } catch (error) {
-        console.error(error);
         if (error.code === 'auth/email-already-in-use') showToast('❌ Email already in use');
-        else if (error.code === 'auth/invalid-email') showToast('❌ Invalid email');
-        else if (error.code === 'auth/weak-password') showToast('❌ Password too weak');
         else showToast('❌ Error: ' + error.message);
     }
 }
@@ -1233,89 +740,12 @@ async function handleLogin() {
         showToast('✅ Welcome back!');
         setTimeout(() => { showScreen('homeScreen'); updateUI(); }, 1000);
     } catch (error) {
-        console.error(error);
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') showToast('❌ Wrong email or password');
         else if (error.code === 'auth/user-not-found') showToast('❌ Account not found');
         else showToast('❌ Login failed');
     }
 }
-async function handleForgotPassword() {
-    const emailInput = document.getElementById('resetEmail');
-    const email = emailInput.value.trim();
-    const btn = document.querySelector('#forgotPasswordScreen button');
-    
-    if (!email) { 
-        showToast('❌ Enter your email address'); 
-        return; 
-    }
-    
-    const originalText = btn.innerHTML;
-    btn.innerHTML = "Sending...";
-    btn.disabled = true;
-    
-    const FIREBASE_API_KEY = "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM";
 
-    try {
-        showToast('⏳ Processing request...');
-        
-        // 1. الحصول على رابط إعادة التعيين من Firebase
-        const firebaseResponse = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                requestType: "PASSWORD_RESET",
-                email: email
-            })
-        });
-        
-        const firebaseData = await firebaseResponse.json();
-        
-        if (!firebaseResponse.ok) {
-            if (firebaseData.error && firebaseData.error.message === 'EMAIL_NOT_FOUND') {
-                showToast('❌ No account found with this email');
-            } else {
-                showToast('❌ Error: ' + (firebaseData.error?.message || 'Unknown error'));
-            }
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-            return;
-        }
-        
-        // 2. بناء رابط إعادة التعيين
-        const oobCode = firebaseData.oobCode;
-        const resetLink = `https://tradelix-ai.firebaseapp.com/__/auth/action?mode=resetPassword&oobCode=${oobCode}&apiKey=${FIREBASE_API_KEY}`;
-        
-        // 3. إرسال الإيميل عبر دالة Netlify الآمنة
-        const netlifyResponse = await fetch('/.netlify/functions/send-reset-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                resetLink: resetLink
-            })
-        });
-        
-        if (netlifyResponse.ok) {
-            showToast('✅ Check your email for the reset link!');
-            setTimeout(() => { 
-                showScreen('loginScreen'); 
-                emailInput.value = ''; 
-            }, 3000);
-        } else {
-            const errorData = await netlifyResponse.json();
-            console.error("Netlify Function Error:", errorData);
-            showToast('❌ Failed to send email. Try again later.');
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }
-        
-    } catch (error) {
-        console.error("Error:", error);
-        showToast('❌ Network error. Please try again.');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }
-}
 async function loadUserData(uid) {
     try {
         const userDoc = await getDoc(doc(db, 'tradelix_users', uid));
@@ -1328,9 +758,8 @@ async function loadUserData(uid) {
 }
 
 async function handleLogout() {
-    try { await signOut(auth); } catch (e) { console.error(e); }
-    _pollStarted = false; _lastUID = null; currentUserData = null;
-    _clearAllUserData();
+    try { await signOut(auth); } catch (e) {}
+    _pollStarted = false; _lastUID = null; currentUserData = null; _clearAllUserData();
     showToast('👋 Logged out');
     setTimeout(() => showScreen('loginScreen'), 800);
 }
@@ -1343,156 +772,40 @@ function _clearAllUserData() {
             if (key && key.startsWith('tradelix_')) keysToRemove.push(key);
         }
         keysToRemove.forEach(k => localStorage.removeItem(k));
-    } catch(e) { console.error(e); }
+    } catch(e) {}
     document.querySelectorAll('.notifBadge').forEach(b => b.remove());
 }
 
 function updateUI() {
     const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    
-    // 1. تحديث بيانات الترحيب في الصفحة الرئيسية
     if (document.getElementById('welcomeName')) {
         document.getElementById('welcomeName').textContent = user.name || 'User';
         document.getElementById('welcomeEmail').textContent = user.email || '-';
     }
-    
-    // 2. تحديث شارة الحالة (ACTIVE / INACTIVE / PENDING)
     const badge = document.getElementById('statusBadge');
     if (badge) {
-        if (user.status === 'active') { 
-            badge.style.background = 'rgba(0, 208, 132, 0.15)'; 
-            badge.style.color = '#00D084'; 
-            badge.style.borderColor = '#00D084'; 
-            badge.textContent = 'ACTIVE'; 
-        } else if (user.status === 'pending') { 
-            badge.style.background = 'rgba(245, 197, 24, 0.15)'; 
-            badge.style.color = '#F5C518'; 
-            badge.style.borderColor = '#F5C518'; 
-            badge.textContent = 'PENDING'; 
-        } else { 
-            badge.style.background = 'rgba(255, 71, 87, 0.15)'; 
-            badge.style.color = '#FF4757'; 
-            badge.style.borderColor = '#FF4757'; 
-            badge.textContent = 'INACTIVE'; 
-        }
+        if (user.status === 'active') { badge.style.background = 'rgba(0, 208, 132, 0.15)'; badge.style.color = '#00D084'; badge.style.borderColor = '#00D084'; badge.textContent = 'ACTIVE'; } 
+        else if (user.status === 'pending') { badge.style.background = 'rgba(245, 197, 24, 0.15)'; badge.style.color = '#F5C518'; badge.style.borderColor = '#F5C518'; badge.textContent = 'PENDING'; } 
+        else { badge.style.background = 'rgba(255, 71, 87, 0.15)'; badge.style.color = '#FF4757'; badge.style.borderColor = '#FF4757'; badge.textContent = 'INACTIVE'; }
     }
     
-    // 3. إظهار/إخفاء الإشارات بناءً على حالة الاشتراك
     const activeBox = document.getElementById('activeSignalBox');
     const lockedBox = document.getElementById('lockedSignalBox');
     if (activeBox && lockedBox) {
-        if (user.status === 'active') { 
-            activeBox.classList.remove('hidden'); 
-            lockedBox.classList.add('hidden'); 
-        } else { 
-            activeBox.classList.add('hidden'); 
-            lockedBox.classList.remove('hidden'); 
-        }
+        if (user.status === 'active') { activeBox.classList.remove('hidden'); lockedBox.classList.add('hidden'); } 
+        else { activeBox.classList.add('hidden'); lockedBox.classList.remove('hidden'); }
     }
     
-    // 4. تحديث تفاصيل الاشتراك (الصفقات فقط)
-const subActive = document.getElementById('subActive');
-const subInactive = document.getElementById('subInactive');
-if (subActive && subInactive) {
-    const planName = user.plan || '-';
-    // التحقق مما إذا كان المستخدم لديه اشتراك صفقات حقيقي
-    const hasSignalSub = user.plan && (user.plan.includes('VIP') || user.plan.includes('Weekly') || user.plan.includes('Monthly') || user.plan.includes('Quarterly') || user.plan.includes('15Days'));
-
-    if (hasSignalSub) {
-        // إذا كان لديه اشتراك صفقات، نعرضه في قسم الصفقات
-        subActive.classList.remove('hidden'); 
-        subInactive.classList.add('hidden');
-        
-        document.getElementById('subPlan').textContent = planName;
-        document.getElementById('subStart').textContent = user.startDate || '-';
-        document.getElementById('subEnd').textContent = user.expiryDate || '-';
-        
-        if (user.expiryDate) {
-            const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
-            document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
-            document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
-        } else {
-            document.getElementById('subDays').textContent = '-';
-        }
-    } else {
-        // إذا لم يكن لديه اشتراك صفقات، نخفي القسم
-        subActive.classList.add('hidden'); 
-        subInactive.classList.remove('hidden'); 
-    }
-}
-
-// 5. تحديث قائمة الكورسات في صفحة البروفايل
-const coursesList = document.getElementById('myCoursesList');
-if (coursesList) {
-    const courses = user.courses || [];
-    if (courses.length === 0) {
-        coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-    } else {
-        coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
-    }
-}
-
-// 6. تحديث قائمة الكورسات في صفحة الخطة (My Plan)
-const coursesListPlan = document.getElementById('myCoursesListPlan');
-if (coursesListPlan) {
-    const courses = user.courses || [];
-    const pendingCourse = user.courseRequest || null;
-    
-    let coursesHtml = '';
-    
-    if (courses.length > 0) {
-        coursesHtml += courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
-    }
-    
-    if (pendingCourse && user.status === 'pending') {
-        coursesHtml += `<div style="background: #1a1a1a; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--orange);"><div style="color: var(--orange); font-weight: 700; font-size: 13px;">⏳ معلق: ${pendingCourse}</div></div>`;
-    }
-    
-    if (coursesHtml === '') {
-        coursesListPlan.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-    } else {
-        coursesListPlan.innerHTML = coursesHtml;
-    }
-}
-    
-    // 7. تحديث بيانات البروفايل
     if (document.getElementById('profileName')) {
         document.getElementById('profileName').textContent = user.name || '-';
         document.getElementById('profileEmail').textContent = user.email || '-';
         document.getElementById('profName').textContent = user.name || '-';
         document.getElementById('profEmail').textContent = user.email || '-';
         document.getElementById('profPhone').textContent = user.phone || '-';
-        document.getElementById('profCountry').textContent = user.country || '-';
-    }
-    
-    // 8. إظهار بانر التثبيت بعد تسجيل الدخول
-    if (user && user.uid && typeof showPWABanner === 'function') {
-        setTimeout(showPWABanner, 1500);
-    }
-    
-    // 9. تحديث واجهة الإحالة (إن وجدت)
-    if (typeof updateReferralUI === 'function') {
-        updateReferralUI();
     }
 }
 
 function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
-
-function handleJoinMeeting(link) {
-    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (user.status === 'active') {
-        if (!link || link === '#') { showToast('⚠️ Meeting link not available'); return; }
-        window.open(link, '_blank');
-        return;
-    }
-    showToast('🔒 Subscribe to access meetings');
-    showScreen('homeScreen');
-    setTimeout(() => {
-        const plansSection = document.querySelector('#homeScreen .section-title');
-        if (plansSection) plansSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 400);
-}
-
 let currentPlan = { price: 0, name: '' };
 function goToDeposit(price, name) {
     currentPlan = { price, name };
@@ -1503,12 +816,7 @@ function goToDeposit(price, name) {
 
 function copyWallet() {
     const wallet = document.getElementById('walletAddr').textContent.trim();
-    navigator.clipboard.writeText(wallet).then(() => showToast('✅ Address copied!')).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = wallet; document.body.appendChild(ta); ta.select();
-        document.execCommand('copy'); document.body.removeChild(ta);
-        showToast('✅ Address copied!');
-    });
+    navigator.clipboard.writeText(wallet).then(() => showToast('✅ Address copied!')).catch(() => {});
 }
 
 async function submitDeposit() {
@@ -1518,245 +826,91 @@ async function submitDeposit() {
     if (!user.uid) { showToast('❌ Login first'); return; }
     
     try {
-        // ⭐ التحقق مما إذا كان المستخدم لديه اشتراك صفقات ساري
-        const hasSignalSub = user.plan && (user.plan.includes('VIP') || user.plan.includes('Weekly') || user.plan.includes('Monthly') || user.plan.includes('Quarterly') || user.plan.includes('15Days'));
-        
-        const isCourseRequest = currentPlan.name && currentPlan.name.toLowerCase().includes('course');
-        
-        // تجهيز البيانات المراد حفظها
-        const updateData = {
-            status: 'pending', 
-            depositAmount: currentPlan.price, 
-            txHash: hash
-        };
-
-        if (isCourseRequest) {
-            // ⭐ إذا كان طلب كورس، نحفظ اسم الكورس في حقل courseRequest
-            updateData.courseRequest = currentPlan.name;
-            
-            // إذا كان لديه اشتراك صفقات، نحافظ على اسم الباقة كما هو
-            if (hasSignalSub) {
-                updateData.plan = user.plan; 
-            } else {
-                // إذا لم يكن لديه اشتراك، نضع اسم الكورس في plan
-                updateData.plan = currentPlan.name;
-            }
-        } else {
-            // إذا كان طلب صفقات، نحدث الخطة ونمسح أي طلب كورس سابق
-            updateData.plan = currentPlan.name;
-            updateData.courseRequest = null;
-        }
-        
+        const updateData = { status: 'pending', depositAmount: currentPlan.price, txHash: hash, plan: currentPlan.name };
         await setDoc(doc(db, 'tradelix_users', user.uid), updateData, { merge: true });
-        
-        // تحديث البيانات المحلية
-        currentUserData.status = 'pending';
-        currentUserData.plan = updateData.plan;
-        currentUserData.txHash = hash;
-        if (updateData.courseRequest) currentUserData.courseRequest = updateData.courseRequest;
-        
+        currentUserData.status = 'pending'; currentUserData.plan = updateData.plan; currentUserData.txHash = hash;
         localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
-        
         showToast('✅ Submitted! Awaiting review');
         setTimeout(() => { showScreen('homeScreen'); updateUI(); }, 1500);
-    } catch (error) { 
-        console.error(error); 
-        showToast('❌ Submission failed'); 
-    }
+    } catch (error) { showToast('❌ Submission failed'); }
 }
-
 
 const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
 const COINS = ['BTC','ETH','BNB','SOL','XRP','ADA','DOGE','DOT','AVAX','LINK','POL','LTC','TRX','ATOM','UNI','SHIB','APT','ARB','OP','NEAR','INJ','SUI','FIL','ETC','TON','ICP','RENDER','FET','SEI','TIA','STX','IMX','GRT','SAND','MANA','AAVE','MKR','CRV','ALGO','VET','HBAR','EOS','XLM','THETA','RUNE','KAS','TAO','WIF','PEPE','BONK'];
 const MARKET_COINS = COINS.filter(c => !HOME_COINS.includes(c));
-
-const COIN_INFO = {
-    BTC: { name: 'Bitcoin', color: '#F7931A', letter: '₿' }, ETH: { name: 'Ethereum', color: '#627EEA', letter: 'Ξ' },
-    BNB: { name: 'BNB', color: '#F3BA2F', letter: 'B' }, SOL: { name: 'Solana', color: '#14F195', letter: 'S' },
-    XRP: { name: 'XRP', color: '#23292F', letter: 'X' }, ADA: { name: 'Cardano', color: '#0033AD', letter: 'A' },
-    DOGE: { name: 'Dogecoin', color: '#C2A633', letter: 'Ð' }, DOT: { name: 'Polkadot', color: '#E6007A', letter: '●' },
-    AVAX: { name: 'Avalanche', color: '#E84142', letter: 'A' }, LINK: { name: 'Chainlink', color: '#2A5ADA', letter: 'L' },
-    POL: { name: 'Polygon', color: '#8247E5', letter: 'M' }, LTC: { name: 'Litecoin', color: '#BFBBBB', letter: 'Ł' },
-    TRX: { name: 'TRON', color: '#FF060A', letter: 'T' }, ATOM: { name: 'Cosmos', color: '#2E3148', letter: 'A' },
-    UNI: { name: 'Uniswap', color: '#FF007A', letter: 'U' }, SHIB: { name: 'Shiba Inu', color: '#FFA409', letter: 'S' },
-    APT: { name: 'Aptos', color: '#1B1B1B', letter: 'A' }, ARB: { name: 'Arbitrum', color: '#28A0F0', letter: 'A' },
-    OP: { name: 'Optimism', color: '#FF0420', letter: 'O' }, NEAR: { name: 'NEAR', color: '#000000', letter: 'N' },
-    INJ: { name: 'Injective', color: '#00D2FF', letter: 'I' }, SUI: { name: 'Sui', color: '#4DA2FF', letter: 'S' },
-    FIL: { name: 'Filecoin', color: '#0090FF', letter: 'F' }, ETC: { name: 'Ethereum Classic', color: '#328332', letter: 'E' },
-    TON: { name: 'Toncoin', color: '#0098EA', letter: 'T' }, ICP: { name: 'Internet Computer', color: '#29ABE2', letter: 'I' },
-    RENDER: { name: 'Render', color: '#000000', letter: 'R' }, FET: { name: 'Fetch.ai', color: '#1D4EFF', letter: 'F' },
-    SEI: { name: 'Sei', color: '#9E1F19', letter: 'S' }, TIA: { name: 'Celestia', color: '#7B2BF9', letter: 'T' },
-    STX: { name: 'Stacks', color: '#5546FF', letter: 'S' }, IMX: { name: 'Immutable', color: '#0F0F0F', letter: 'I' },
-    GRT: { name: 'The Graph', color: '#6747ED', letter: 'G' }, SAND: { name: 'The Sandbox', color: '#00ADEF', letter: 'S' },
-    MANA: { name: 'Decentraland', color: '#FF2D55', letter: 'M' }, AAVE: { name: 'Aave', color: '#B6509E', letter: 'A' },
-    MKR: { name: 'Maker', color: '#1AAB9B', letter: 'M' }, CRV: { name: 'Curve DAO', color: '#3465A4', letter: 'C' },
-    ALGO: { name: 'Algorand', color: '#000000', letter: 'A' }, VET: { name: 'VeChain', color: '#15BDFF', letter: 'V' },
-    HBAR: { name: 'Hedera', color: '#000000', letter: 'H' }, EOS: { name: 'EOS', color: '#000000', letter: 'E' },
-    XLM: { name: 'Stellar', color: '#7D00FF', letter: 'X' }, THETA: { name: 'Theta Network', color: '#2AB8E6', letter: 'T' },
-    RUNE: { name: 'THORChain', color: '#33FF99', letter: 'R' }, KAS: { name: 'Kaspa', color: '#70C7BA', letter: 'K' },
-    TAO: { name: 'Bittensor', color: '#000000', letter: 'T' }, WIF: { name: 'dogwifhat', color: '#C0A080', letter: 'W' },
-    PEPE: { name: 'Pepe', color: '#3D8B37', letter: 'P' }, BONK: { name: 'Bonk', color: '#FC8C1C', letter: 'B' }
-};
+const COIN_INFO = { BTC: { name: 'Bitcoin', color: '#F7931A', letter: '₿' }, ETH: { name: 'Ethereum', color: '#627EEA', letter: 'Ξ' }, BNB: { name: 'BNB', color: '#F3BA2F', letter: 'B' }, SOL: { name: 'Solana', color: '#14F195', letter: 'S' } };
 
 let prices = {};
-
 async function fetchPrices() {
     try {
-        const batches = [];
-        for (let i = 0; i < COINS.length; i += 15) batches.push(COINS.slice(i, i + 15));
-        const allResults = [];
-        for (const batch of batches) {
-            try {
-                const symbols = batch.map(c => `"${c}USDT"`).join(',');
-                const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
-                const res = await fetch(url);
-                if (!res.ok) continue;
-                const data = await res.json();
-                allResults.push(...data);
-            } catch(e) { console.warn('Batch failed:', e.message); }
-        }
-        allResults.forEach(item => {
+        const symbols = HOME_COINS.map(c => `"${c}USDT"`).join(',');
+        const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`);
+        const data = await res.json();
+        data.forEach(item => {
             const coin = item.symbol.replace('USDT', '');
-            prices[coin] = { price: parseFloat(item.lastPrice), change: parseFloat(item.priceChangePercent), high: parseFloat(item.highPrice), low: parseFloat(item.lowPrice), vol: parseFloat(item.volume) };
+            prices[coin] = { price: parseFloat(item.lastPrice), change: parseFloat(item.priceChangePercent) };
         });
         renderHomeMarkets();
-        renderAllMarkets();
-        renderTicker();
-    } catch (e) { console.error('Binance fetch error:', e); }
+    } catch(e) {}
 }
 
-function fmtPrice(n) {
-    if (!n || n === 0) return '$0';
-    if (n >= 1000) return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 });
-    if (n >= 1) return '$' + n.toFixed(2);
-    if (n >= 0.01) return '$' + n.toFixed(4);
-    if (n >= 0.0001) return '$' + n.toFixed(6);
-    return '$' + n.toFixed(8);
-}
-
-function renderTicker() {
-    const track = document.getElementById('tickerTrack');
-    if (!track) return;
-    const tickerCoins = ['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA', 'DOGE', 'DOT'];
-    const itemsHtml = tickerCoins.map(coin => {
-        const p = prices[coin] || { price: 0, change: 0 };
-        const cls = p.change >= 0 ? 'up' : 'down';
-        const sign = p.change >= 0 ? '+' : '';
-        return `<span class="ticker-item"><span class="sym">${coin}</span><span class="price">${fmtPrice(p.price)}</span><span class="${cls}">${sign}${p.change.toFixed(2)}%</span></span>`;
-    }).join('');
-    track.innerHTML = itemsHtml + itemsHtml;
-}
+function fmtPrice(n) { if (!n) return '$0'; if (n >= 1000) return '$' + n.toLocaleString('en-US', { maximumFractionDigits: 2 }); return '$' + n.toFixed(2); }
 
 function renderHomeMarkets() {
     const grid = document.getElementById('mainCoinsGrid');
     if (!grid) return;
     grid.innerHTML = HOME_COINS.map(coin => {
-        const info = COIN_INFO[coin];
+        const info = COIN_INFO[coin] || { color: '#F5C518', letter: coin[0] };
         const p = prices[coin] || { price: 0, change: 0 };
         const cls = p.change >= 0 ? 'up' : 'down';
         const sign = p.change >= 0 ? '+' : '';
-        return `
-            <div class="main-coin-card" onclick="openCoinChart('${coin}')" style="--coin-color:${info.color};">
-                <div class="main-coin-head">
-                    <div class="main-coin-icon" style="background:linear-gradient(135deg, ${info.color}, ${info.color}dd); box-shadow: 0 4px 14px ${info.color}55;">${info.letter}</div>
-                    <div class="main-coin-info">
-                        <div class="main-coin-symbol">${coin}</div>
-                        <div class="main-coin-name">${info.name}</div>
-                    </div>
-                </div>
-                <div class="main-coin-price">${fmtPrice(p.price)}</div>
-                <div class="main-coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div>
-            </div>
-        `;
+        return `<div class="main-coin-card" onclick="openCoinChart('${coin}')">
+            <div class="main-coin-head"><div class="main-coin-icon" style="background:${info.color}">${info.letter}</div><div class="main-coin-info"><div class="main-coin-symbol">${coin}</div><div class="main-coin-name">${info.name}</div></div></div>
+            <div class="main-coin-price">${fmtPrice(p.price)}</div>
+            <div class="main-coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div>
+        </div>`;
     }).join('');
 }
 
-function renderAllMarkets() {
-    const grid = document.getElementById('allMarketsGrid');
-    if (!grid) return;
-    
-    const searchInput = document.getElementById('marketSearch');
-    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
-    const filtered = MARKET_COINS.filter(coin => {
-        if (!query) return true;
-        const info = COIN_INFO[coin];
-        return coin.toLowerCase().includes(query) || (info && info.name.toLowerCase().includes(query));
-    });
-    if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 40px; color:#999999;"><div style="font-size:48px; margin-bottom:12px;">🔍</div><h3 style="color:#F5C518;">No results</h3></div>`;
-        return;
-    }
-    grid.innerHTML = filtered.map(coin => {
-        const info = COIN_INFO[coin];
-        const p = prices[coin] || { price: 0, change: 0 };
-        const cls = p.change >= 0 ? 'up' : 'down';
-        const sign = p.change >= 0 ? '+' : '';
-        return `<div class="coin-card" onclick="openCoinChart('${coin}')"><div class="coin-head"><div class="coin-icon" style="background:${info.color}; color:#fff;">${info.letter}</div><div class="coin-symbol">${coin}</div></div><div class="coin-price">${fmtPrice(p.price)}</div><div class="coin-change ${cls}">${sign}${p.change.toFixed(2)}%</div></div>`;
-    }).join('');
-}
-
-function filterAllMarkets() { renderAllMarkets(); }
-function openAllMarkets() { renderAllMarkets(); showScreen('allMarketsScreen'); }
 function refreshMarkets() { showToast('🔄 Refreshing...'); fetchPrices(); }
-
 let currentChartSymbol = 'BTC';
 function openCoinChart(coin) {
     currentChartSymbol = coin;
-    const info = COIN_INFO[coin] || { name: coin, letter: coin[0] };
     document.getElementById('coinChartName').textContent = coin + '/USDT';
-    document.getElementById('coinChartSub').textContent = info.name.toUpperCase();
-    document.getElementById('coinChartIcon').textContent = info.letter;
-    if (prices[coin]) {
-        const p = prices[coin];
-        document.getElementById('coinChartPrice').textContent = fmtPrice(p.price);
-        document.getElementById('coinChartChange').textContent = (p.change >= 0 ? '+' : '') + p.change.toFixed(2) + '%';
-        document.getElementById('coinChartChange').style.color = p.change >= 0 ? '#00D084' : '#FF4757';
-        document.getElementById('coinHigh').textContent = fmtPrice(p.high);
-        document.getElementById('coinLow').textContent = fmtPrice(p.low);
-        document.getElementById('coinVol').textContent = p.vol.toLocaleString('en-US', { maximumFractionDigits: 0 });
-        document.getElementById('coinChg').textContent = (p.change >= 0 ? '+' : '') + p.change.toFixed(2) + '%';
-        document.getElementById('coinChg').style.color = p.change >= 0 ? '#00D084' : '#FF4757';
-    }
     showScreen('coinChartScreen');
-    setTimeout(loadTradingViewChart, 300);
-}
-
-function loadTradingViewChart() {
-    const container = document.getElementById('chartContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:${currentChartSymbol}USDT&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en`;
-    iframe.style.width = '100%'; iframe.style.height = '100%';
-    iframe.style.border = 'none'; iframe.style.borderRadius = '10px';
-    container.appendChild(iframe);
+    setTimeout(() => {
+        const container = document.getElementById('chartContainer');
+        container.innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:${coin}USDT&interval=15&theme=dark" style="width:100%;height:100%;border:none;"></iframe>`;
+    }, 300);
 }
 
 async function loadLatestSignal() {
     try {
         if (!window.firebaseDB) return;
-        const u = _getUser();
-        if (!u.uid) return;
-        if (u.status !== 'active') return;
+        const u = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        if (!u.uid || u.status !== 'active') return;
+        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
+        
         let snap;
         try {
-            const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(10));
+            const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(20));
             snap = await getDocs(q);
         } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
+        
         let latest = null;
         snap.forEach(d => {
             if (latest) return;
             const sig = d.data();
             if (sig.status !== 'active') return;
-            const targetUID = sig.targetUID || '';
-            if (targetUID && targetUID !== u.uid) return;
             latest = sig;
         });
+        
         const pairEl = document.getElementById('signalPair');
-        if (pairEl) pairEl.textContent = latest ? (latest.coin || 'BTC') + '/USDT' : 'No active signal';
+        if (pairEl) pairEl.textContent = latest ? (latest.pair || (latest.coin ? latest.coin + '/USDT' : 'XAU/USD')) : 'No Crypto Signal';
+        
         const dirBadge = document.getElementById('signalDirectionBadge');
         if (dirBadge) {
             const dir = latest ? (latest.direction || 'BUY') : '-';
@@ -1766,400 +920,190 @@ async function loadLatestSignal() {
             dirBadge.style.color = isBuy ? '#00D084' : '#FF4757';
             dirBadge.style.borderColor = isBuy ? '#00D084' : '#FF4757';
         }
+        
+        const entryVal = latest ? (latest.entry || latest.entryPrice || latest.price || '-') : '-';
+        const slVal = latest ? (latest.stopLoss || latest.sl || '-') : '-';
+        const tpVal = latest ? (latest.takeProfit || latest.tp || '-') : '-';
+        
         const entryEl = document.getElementById('signalEntry');
-        if (entryEl) entryEl.textContent = latest ? ('$' + (latest.entry || '-')) : '-';
+        if (entryEl) entryEl.textContent = latest ? ('$' + entryVal) : '-';
         const slEl = document.getElementById('signalSL');
-        if (slEl) slEl.textContent = latest ? ('$' + (latest.stopLoss || '-')) : '-';
+        if (slEl) slEl.textContent = latest ? ('$' + slVal) : '-';
         const tpEl = document.getElementById('signalTP');
-        if (tpEl) tpEl.textContent = latest ? ('$' + (latest.takeProfit || '-')) : '-';
+        if (tpEl) tpEl.textContent = latest ? ('$' + tpVal) : '-';
         const confEl = document.getElementById('signalConf');
         if (confEl) confEl.textContent = latest ? ((latest.confidence || '85') + '%') : '-';
-        const notesEl = document.getElementById('signalNotes');
-        if (notesEl) {
-            if (latest && latest.notes && latest.notes.trim()) { notesEl.textContent = '📝 ' + latest.notes; notesEl.style.display = 'block'; }
-            else { notesEl.style.display = 'none'; }
-        }
     } catch(e) { console.warn('Load signal error:', e.message); }
 }
 
 function getNotifs() { if (!auth || !auth.currentUser) return []; return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
 function setNotifs(arr) { localStorage.setItem('tradelix_notifs', JSON.stringify(arr)); }
-
 function openNotifModal() {
     const notifs = getNotifs();
     const list = document.getElementById('notifList');
-    if (notifs.length === 0) list.innerHTML = '<p style="color:#999999; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
-    else list.innerHTML = notifs.map(n => '<div style="background:#000000; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#1F1F1F' : '#F5C518') + ';"><div style="color:#F5C518; font-weight:700; font-size:13px; margin-bottom:4px;">' + n.message + '</div><div style="color:#999999; font-size:11px;">' + n.time + '</div></div>').join('');
+    if (notifs.length === 0) list.innerHTML = '<p style="color:#999999; text-align:center; padding:20px;">No notifications yet</p>';
+    else list.innerHTML = notifs.map(n => `<div style="background:#000000; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ${n.read ? '#1F1F1F' : '#F5C518'};"><div style="color:#F5C518; font-weight:700; font-size:13px; margin-bottom:4px;">${n.message}</div><div style="color:#999999; font-size:11px;">${n.time}</div></div>`).join('');
     document.getElementById('notifModal').style.display = 'block';
     notifs.forEach(n => n.read = true);
     setNotifs(notifs);
     updateBadge();
 }
-
 function closeNotifModal() { document.getElementById('notifModal').style.display = 'none'; }
-
 function updateBadge() {
     const notifs = getNotifs();
     const unread = notifs.filter(n => !n.read).length;
     document.querySelectorAll('.bell-icon').forEach(bell => {
         let badge = bell.querySelector('.notifBadge');
-        if (unread > 0) {
-            if (!badge) { badge = document.createElement('span'); badge.className = 'notifBadge'; bell.appendChild(badge); }
-            badge.textContent = unread;
-        } else if (badge) badge.remove();
+        if (unread > 0) { if (!badge) { badge = document.createElement('span'); badge.className = 'notifBadge'; bell.appendChild(badge); } badge.textContent = unread; } 
+        else if (badge) badge.remove();
     });
 }
-
 function addNotif(message) {
     if (!auth || !auth.currentUser) return;
     const notifs = getNotifs();
-    const recent = notifs.find(n => n.message === message && (Date.now() - n.id) < 30000);
-    if (recent) return;
+    if (notifs.find(n => n.message === message && (Date.now() - n.id) < 30000)) return;
     notifs.unshift({ id: Date.now(), message: message, time: new Date().toLocaleString('en-GB'), read: false });
     if (notifs.length > 50) notifs.length = 50;
-    setNotifs(notifs);
-    updateBadge();
-    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-        try { new Notification('Tradelix AI', { body: message }); } catch(e){}
-    }
-    try {
-        const c = new (window.AudioContext || window.webkitAudioContext)();
-        [0, 0.3].forEach(d => {
-            const o = c.createOscillator(); const g = c.createGain();
-            o.connect(g); g.connect(c.destination);
-            o.frequency.value = 880;
-            g.gain.setValueAtTime(0.3, c.currentTime + d);
-            g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + d + 0.2);
-            o.start(c.currentTime + d); o.stop(c.currentTime + d + 0.2);
-        });
-    } catch(e){}
-    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-    if (typeof showToast === 'function') { try { showToast(message); } catch(e) {} }
+    setNotifs(notifs); updateBadge();
+}
+function showToast(msg) {
+    const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-}
-</script>
-<script>
 async function requestNotifPermission() {
-    if (!('Notification' in window)) { if (typeof showToast === 'function') showToast('❌ Notifications not supported'); return; }
+    if (!('Notification' in window)) { showToast('❌ Not supported'); return; }
     try {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
-            if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
-            const box = document.getElementById('notifPermissionBox');
-            if (box) box.style.display = 'none';
-            try { new Notification('Tradelix AI', { body: '✅ Notifications are working!' }); } catch(e) {}
-        } else if (permission === 'denied') {
-            if (typeof showToast === 'function') showToast('❌ Notifications blocked');
+            showToast('✅ Notifications enabled!');
         }
-    } catch(e) { console.error(e); }
+    } catch(e) {}
 }
-
-function hideNetlifyBadge() {
-    ['[data-netlify-badge]', '#netlify-badge', '.netlify-badge', 'iframe[title="Netlify"]', 'a[href*="netlify.com"]', 'div[class*="netlify"]', 'div[id*="netlify"]'].forEach(sel => {
-        document.querySelectorAll(sel).forEach(el => el.remove());
-    });
-}
-hideNetlifyBadge();
-setInterval(hideNetlifyBadge, 1000);
 
 let _pollStarted = false;
-let _lastUID = null;
-
-function _getUser() { try { return JSON.parse(localStorage.getItem('tradelix_user') || '{}'); } catch(e) { return {}; } }
+function _getUser() { return JSON.parse(localStorage.getItem('tradelix_user') || '{}'); }
 function _getLastNotified() { const u = _getUser(); return parseInt(localStorage.getItem('tradelix_last_notified_' + (u.uid || 'anon')) || '0'); }
 function _setLastNotified(ts) { const u = _getUser(); localStorage.setItem('tradelix_last_notified_' + (u.uid || 'anon'), String(ts)); }
-function _isSignalForUser(sig, uid) { const targetUID = sig.targetUID || ''; if (!targetUID) return true; return targetUID === uid; }
 function _isLoggedIn() { return auth && auth.currentUser && !auth.currentUser.isAnonymous; }
 
 async function _checkSignals() {
     try {
         if (!_isLoggedIn()) return;
         const u = _getUser();
-        if (!u.uid) return;
-        if (u.uid !== auth.currentUser.uid) return;
-        const fs = window.firebaseFS;
-        if (!fs) return;
+        if (!u.uid || u.status !== 'active') { _setLastNotified(Date.now()); return; }
+        const fs = window.firebaseFS; if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
         let snap;
-        try {
-            const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(30));
-            snap = await getDocs(q);
-        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
-        if (u.status !== 'active') { _setLastNotified(Date.now()); return; }
+        try { const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(30)); snap = await getDocs(q); } 
+        catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
+        
         const lastNotified = _getLastNotified();
         const now = Date.now();
         const startFrom = lastNotified > 0 ? lastNotified : now;
         let maxNotified = lastNotified;
         const newSignals = [];
+        
         snap.forEach(d => {
             const sig = d.data();
             const createdMs = (sig.createdAt?.seconds || 0) * 1000;
             if (createdMs <= startFrom) return;
-            if (!_isSignalForUser(sig, u.uid)) return;
+            const targetUID = sig.targetUID || '';
+            if (targetUID && targetUID !== u.uid) return;
             newSignals.push({ id: d.id, ...sig, _createdMs: createdMs });
         });
+        
         newSignals.sort((a, b) => a._createdMs - b._createdMs);
         newSignals.forEach(sig => {
-            const msg = `📊 ${sig.coin || 'BTC'}/USDT ${sig.direction || ''} @ $${sig.entry || ''}`;
-            addNotif(msg);
+            const isGold = sig.type === 'gold' || sig.pair === 'XAU/USD';
+            const typeStr = isGold ? '🥇 Gold' : '📊 Crypto';
+            const asset = sig.pair || (sig.coin ? sig.coin + '/USDT' : 'XAU/USD');
+            const entryVal = sig.entry || sig.entryPrice || sig.price || '';
+            addNotif(`${typeStr} Signal: ${asset} ${sig.direction || ''} @ $${entryVal}`);
             if (sig._createdMs > maxNotified) maxNotified = sig._createdMs;
         });
+        
         _setLastNotified(newSignals.length > 0 ? maxNotified : now);
-        if (newSignals.length > 0) { console.log('✅ Sent ' + newSignals.length + ' signal notification(s)'); loadLatestSignal(); }
-    } catch(e) { console.warn('Signal poll error:', e.message); }
-}
-
-async function _checkMeetings() {
-    try {
-        if (!_isLoggedIn()) return;
-        const u = _getUser();
-        if (!u.uid) return;
-        if (u.uid !== auth.currentUser.uid) return;
-        const fs = window.firebaseFS;
-        if (!fs) return;
-        const { collection, getDocs, query, orderBy, limit } = fs;
-        let snap;
-        try {
-            const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'), limit(20));
-            snap = await getDocs(q);
-        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_meetings')); }
-        const seenKey = 'tradelix_seen_meetings_' + u.uid;
-        const seen = new Set(JSON.parse(localStorage.getItem(seenKey) || '[]'));
-        const isFirst = !localStorage.getItem(seenKey);
-        let count = 0;
-        snap.forEach(d => {
-            if (seen.has(d.id)) return;
-            seen.add(d.id);
-            if (isFirst) return;
-            const meet = d.data();
-            addNotif(`📅 New Meeting: ${meet.title || 'Live Session'}`);
-            count++;
-        });
-        localStorage.setItem(seenKey, JSON.stringify([...seen].slice(-100)));
-    } catch(e) { console.warn('Meeting poll error:', e.message); }
-}
-
-async function _refreshUserData() {
-    try {
-        if (!_isLoggedIn()) return;
-        const u = _getUser();
-        if (!u.uid) return;
-        if (u.uid !== auth.currentUser.uid) return;
-        const userDoc = await getDoc(doc(window.firebaseDB, 'tradelix_users', u.uid));
-        if (!userDoc.exists()) return;
-        const data = userDoc.data();
-        const oldStatus = u.status || 'inactive';
-        const newStatus = data.status || 'inactive';
-        if (oldStatus !== newStatus) {
-            if (newStatus === 'active') {
-                _setLastNotified(Date.now());
-                setNotifs([]); updateBadge();
-                addNotif('🎉 Your subscription is activated! Enjoy exclusive signals');
-            } else if (newStatus === 'pending') {
-                addNotif('⏳ Your request has been received — awaiting admin review');
-            } else if (newStatus === 'inactive' && oldStatus === 'pending') {
-                addNotif('❌ Your request was rejected. Contact support');
-            }
-        }
-        const oldCourses = JSON.stringify(u.courses || []);
-        const newCourses = JSON.stringify(data.courses || []);
-        if (oldCourses !== newCourses && newCourses !== '[]') addNotif('🎓 A new course has been activated in your account!');
-        const updated = { uid: u.uid, ...data };
-        localStorage.setItem('tradelix_user', JSON.stringify(updated));
-        if (currentUserData) Object.assign(currentUserData, data);
-        updateUI();
-    } catch(e) { console.warn('User refresh error:', e.message); }
+        if (newSignals.length > 0) loadLatestSignal();
+    } catch(e) {}
 }
 
 async function _pollCycle() {
-    if (!window.firebaseDB) return;
-    if (!_isLoggedIn()) { _pollStarted = false; return; }
-    const u = _getUser();
-    if (!u.uid) return;
-    if (u.uid !== auth.currentUser.uid) return;
-    await _refreshUserData();
+    if (!window.firebaseDB || !_isLoggedIn()) return;
     await _checkSignals();
-    await _checkMeetings();
-    await loadMeetingsForUser();
     await loadLatestSignal();
 }
-
 function _startPolling() {
     if (_pollStarted) return;
     if (!window.firebaseDB) { setTimeout(_startPolling, 1500); return; }
     if (!_isLoggedIn()) return;
-    const u = _getUser();
-    if (!u.uid) { setTimeout(_startPolling, 2000); return; }
-    if (u.uid !== auth.currentUser.uid) return;
     _pollStarted = true;
-    console.log('🚀 Polling started for user:', u.uid.slice(0, 8));
     setTimeout(_pollCycle, 2000);
     setInterval(() => { if (_isLoggedIn()) _pollCycle(); else _pollStarted = false; }, 5000);
 }
+document.addEventListener('visibilitychange', () => { if (!document.hidden && _pollStarted && _isLoggedIn()) _pollCycle(); });
 
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && _pollStarted && _isLoggedIn()) _pollCycle();
-});
+window.lastGoldPriceValue = 0;
+window.goldInterval = null;
 
-let _meetingsUnsub = null;
+window.openGoldScreen = function() {
+    if (typeof showScreen === 'function') showScreen('goldScreen');
+    if (typeof window.loadGoldChart === 'function') window.loadGoldChart();
+    if (typeof window.startGoldMarket === 'function') window.startGoldMarket();
+};
 
-async function loadMeetingsForUser() {
+window.fetchLiveGold = async function() {
     try {
-        if (!window.firebaseDB) return;
-        if (!_isLoggedIn()) return;
-        const fs = window.firebaseFS;
-        if (!fs) return;
-        if (_meetingsUnsub) return;
-        const { collection, query, orderBy, onSnapshot } = fs;
-        const q = query(collection(window.firebaseDB, 'tradelix_meetings'), orderBy('createdAt', 'desc'));
-        _meetingsUnsub = onSnapshot(q, (snap) => {
-            const meetings = [];
-            snap.forEach(d => meetings.push({ id: d.id, ...d.data() }));
-            const list = document.getElementById('meetingsList');
-            if (!list) return;
-            if (meetings.length === 0) {
-                list.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p>';
-                return;
-            }
-            list.innerHTML = meetings.map(mt => {
-                let dateStr = '';
-                if (mt.date) {
-                    try { dateStr = new Date(mt.date).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
-                    catch(e) { dateStr = mt.date; }
+        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
+        const data = await res.json();
+        if (data && data.lastPrice) {
+            const price = parseFloat(data.lastPrice);
+            const change = parseFloat(data.priceChangePercent);
+            const priceEl = document.getElementById('liveGoldPrice');
+            const changeEl = document.getElementById('liveGoldChange');
+
+            if (priceEl && changeEl) {
+                priceEl.textContent = '$' + price.toFixed(2);
+                changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                
+                if (change >= 0) {
+                    changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
+                    changeEl.style.color = '#00D084';
+                } else {
+                    changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
+                    changeEl.style.color = '#FF4757';
                 }
-                const safeLink = (mt.link || '').replace(/'/g, "\\'");
-                return `<div style="border-bottom: 1px solid var(--border); padding: 14px 0;"><div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>${dateStr ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px;">🕐 ${dateStr}</div>` : ''}${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 10px;">${mt.description}</div>` : ''}<button onclick="handleJoinMeeting('${safeLink}')" style="display:block; width:100%; margin-top: 8px; padding: 12px; background: #F5C518; color: #000000; border: none; cursor: pointer; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px; font-family: inherit;">🎥 Join Meeting</button></div>`;
-            }).join('');
-        }, (err) => { console.warn('Meetings snapshot error:', err.message); });
-        console.log('📅 Meetings realtime listener started');
-    } catch(e) { console.error('Load meetings error:', e); }
-}
+                window.lastGoldPriceValue = price;
+            }
+        }
+    } catch (e) {
+        console.log('Error fetching gold price:', e);
+    }
+};
+
+window.loadGoldChart = function() {
+    const container = document.getElementById('goldChartContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=5&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en';
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    container.appendChild(iframe);
+};
+
+window.startGoldMarket = function() {
+    window.fetchLiveGold();
+    if (window.goldInterval) clearInterval(window.goldInterval);
+    window.goldInterval = setInterval(window.fetchLiveGold, 5000);
+};
 
 window.addEventListener('load', async () => {
     await initFirebase();
     fetchPrices();
     setInterval(fetchPrices, 10000);
-    setTimeout(loadPublicStats, 1500);
-    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-        const box = document.getElementById('notifPermissionBox');
-        if (box) box.style.display = 'none';
-    }
     updateBadge();
 });
-
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && _isLoggedIn()) { updateBadge(); updateUI(); }
-});
 </script>
-
-<style>
-    iframe[src*="netlify"], iframe[title*="Netlify"], iframe[title*="netlify"], iframe[id*="netlify"],
-    [data-netlify-badge], [id="netlify-badge"], [class*="netlify-badge"],
-    a[href*="netlify.com"][target="_blank"] {
-        display: none !important; visibility: hidden !important; opacity: 0 !important;
-        width: 0 !important; height: 0 !important; max-width: 0 !important; max-height: 0 !important;
-        position: fixed !important; bottom: -99999px !important; left: -99999px !important;
-        top: auto !important; right: auto !important;
-        pointer-events: none !important; z-index: -99999 !important; transform: scale(0) !important;
-    }
-</style>
-    <!-- ═══════════ PWA INSTALL BANNER ═══════════ -->
-<div id="pwaInstallBanner" style="display:none; position:fixed; top:0; left:0; right:0; z-index:999999; padding:12px 16px; background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); border-bottom:2px solid #F5C518; box-shadow:0 4px 20px rgba(245,197,24,0.3); animation:slideDown 0.5s ease;">
-    <div style="display:flex; align-items:center; gap:12px; max-width:480px; margin:0 auto;">
-        <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png" alt="Tradelix AI" style="width:50px; height:50px; border-radius:12px; border:1.5px solid #F5C518; flex-shrink:0; box-shadow:0 0 15px rgba(245,197,24,0.4);">
-        <div style="flex:1; min-width:0;">
-            <div style="color:#ffffff; font-weight:900; font-size:14px; margin-bottom:2px; font-family:Tajawal,sans-serif;">📲 Install Tradelix AI</div>
-            <div style="color:#888888; font-size:11px; font-family:Tajawal,sans-serif;">Faster + Instant notifications</div>
-        </div>
-        <button id="pwaInstallBtn" onclick="installPWA()" style="background:linear-gradient(135deg, #F5C518, #E5B000); color:#000000; border:none; padding:12px 20px; border-radius:12px; font-weight:900; font-size:14px; cursor:pointer; font-family:Tajawal,sans-serif; letter-spacing:0.5px; box-shadow:0 4px 15px rgba(245,197,24,0.5); animation:pwaPulse 2s ease-in-out infinite; touch-action:manipulation; white-space:nowrap;">Install</button>
-        <button onclick="closePWABanner()" aria-label="Close" style="background:transparent; border:none; color:#888888; font-size:20px; cursor:pointer; padding:4px 8px; flex-shrink:0; touch-action:manipulation;">✕</button>
-    </div>
-</div>
-
-<style>
-    @keyframes slideDown {
-        from { transform: translateY(-100%); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-    @keyframes slideUp {
-        from { transform: translateY(0); opacity: 1; }
-        to { transform: translateY(-100%); opacity: 0; }
-    }
-    @keyframes pwaPulse {
-        0%, 100% { box-shadow: 0 4px 15px rgba(245,197,24,0.5); transform: scale(1); }
-        50% { box-shadow: 0 6px 25px rgba(245,197,24,0.8); transform: scale(1.03); }
-    }
-    body.pwa-banner-active .screen { padding-top: 90px !important; }
-</style>
-
-<script>
-    let deferredPrompt = null;
-    const PWA_BANNER_KEY = 'tradelix_pwa_banner_dismissed';
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    console.log('✅ PWA: Install prompt ready — waiting for home screen');
-    // ⚠️ لا نستدعي showPWABanner هنا
-    // سيتم استدعاؤها فقط من داخل showScreen عند فتح homeScreen
-});
-
-    function showPWABanner() {
-        // ✅ فقط بعد تسجيل الدخول
-const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-if (!user.uid) {
-    console.log('⏭️ PWA: User not logged in');
-    return;
-}
-        const dismissed = localStorage.getItem(PWA_BANNER_KEY);
-        if (dismissed) {
-            const daysSince = (Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24);
-            if (daysSince < 7) return;
-        }
-        if (window.matchMedia('(display-mode: standalone)').matches) return;
-        const banner = document.getElementById('pwaInstallBanner');
-        if (banner) {
-            banner.style.display = 'block';
-            document.body.classList.add('pwa-banner-active');
-        }
-    }
-
-    async function installPWA() {
-        if (!deferredPrompt) {
-            alert('📲 To install on iPhone:\n\n1. Tap "Share" in Safari\n2. Choose "Add to Home Screen"\n3. Tap "Add"');
-            return;
-        }
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            console.log('✅ PWA: User accepted install');
-            closePWABanner(true);
-        } else {
-            closePWABanner();
-        }
-        deferredPrompt = null;
-    }
-
-    function closePWABanner(installed = false) {
-        const banner = document.getElementById('pwaInstallBanner');
-        if (banner) {
-            banner.style.animation = 'slideUp 0.4s ease forwards';
-            setTimeout(() => {
-                banner.style.display = 'none';
-                document.body.classList.remove('pwa-banner-active');
-            }, 400);
-        }
-        if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
-    }
-</script>
-
 </body>
 </html>
-
-
