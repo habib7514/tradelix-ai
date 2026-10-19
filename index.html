@@ -795,17 +795,15 @@
         <p class="tradix-sub-note">✅ Instant activation • ✅ Real-time signals • ✅ Cancel anytime</p>
     </div>
 
-    <a href="https://tradix-ai.netlify.app" 
-   target="_blank" 
-   rel="noopener noreferrer" 
-   class="gold-app-btn">
+    <!-- زر الذهب الجديد -->
+<button onclick="showToast('⏳ Gold Page Coming Soon...')" class="gold-app-btn" style="width: 100%; outline: none; border: 1.5px solid rgba(245, 197, 24, 0.7); background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%);">
     <span class="gold-app-icon">🥇</span>
     <span class="gold-app-text">
-        <span class="gold-app-title">Tradix Gold Signals</span>
+        <span class="gold-app-title">Tradix Gold - AI</span>
         <span class="gold-app-sub">Live Gold • XAU/USD • Premium VIP</span>
     </span>
     <span class="gold-app-arrow">›</span>
-</a>
+</button>
 
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
@@ -2137,7 +2135,7 @@ if (!user.uid) {
         }
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
+        if (outcome === 'accepted')y {
             console.log('✅ PWA: User accepted install');
             closePWABanner(true);
         } else {
