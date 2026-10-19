@@ -796,7 +796,7 @@
     </div>
 
     <!-- زر الذهب الجديد -->
-<button onclick="showToast('⏳ Gold Page Coming Soon...')" class="gold-app-btn" style="width: 100%; outline: none; border: 1.5px solid rgba(245, 197, 24, 0.7); background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%);">
+<button onclick="openGoldScreen()" class="gold-app-btn" style="width: 100%; outline: none; border: 1.5px solid rgba(245, 197, 24, 0.7); background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%);">
     <span class="gold-app-icon">🥇</span>
     <span class="gold-app-text">
         <span class="gold-app-title">Tradix Gold - AI</span>
@@ -2155,6 +2155,55 @@ if (!user.uid) {
         }
         if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
     }
+    // ═══════════ محرك سوق الذهب ═══════════
+window.lastGoldPriceValue = 0;
+window.goldInterval = null;
+
+window.openGoldScreen = function() {
+    if (typeof showScreen === 'function') showScreen('goldScreen');
+    if (typeof window.loadGoldChart === 'function') window.loadGoldChart();
+    if (typeof window.startGoldMarket === 'function') window.startGoldMarket();
+};
+
+window.fetchLiveGold = async function() {
+    try {
+        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
+        const data = await res.json();
+        if (data && data.lastPrice) {
+            const price = parseFloat(data.lastPrice);
+            const change = parseFloat(data.priceChangePercent);
+            const priceEl = document.getElementById('liveGoldPrice');
+            const changeEl = document.getElementById('liveGoldChange');
+
+            if (priceEl && changeEl) {
+                priceEl.textContent = '$' + price.toFixed(2);
+                changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                if (change >= 0) {
+                    changeEl.style.background = 'rgba(0, 208, 132, 0.1)'; changeEl.style.color = '#00D084';
+                } else {
+                    changeEl.style.background = 'rgba(255, 71, 87, 0.1)'; changeEl.style.color = '#FF4757';
+                }
+                window.lastGoldPriceValue = price;
+            }
+        }
+    } catch (e) { console.log('Error fetching gold price:', e); }
+};
+
+window.loadGoldChart = function() {
+    const container = document.getElementById('goldChartContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=5&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en';
+    iframe.style.width = '100%'; iframe.style.height = '100%'; iframe.style.border = 'none';
+    container.appendChild(iframe);
+};
+
+window.startGoldMarket = function() {
+    window.fetchLiveGold();
+    if (window.goldInterval) clearInterval(window.goldInterval);
+    window.goldInterval = setInterval(window.fetchLiveGold, 5000);
+};
 </script>
 
 </body>
