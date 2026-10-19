@@ -801,12 +801,56 @@
     
     <img src="https://i.postimg.cc/FKqk4pF6/file-00000000358081f69ff796420b71893d.png" alt="Tradix Gold" style="width: 100%; max-width: 280px; border-radius: 16px; border: 1.5px solid #F5C518; box-shadow: 0 0 25px rgba(245, 197, 24, 0.4); object-fit: cover;">
 </div>
+    <button onclick="showScreen('newGoldScreen')" class="join-tradix-btn">Join Tradix Now</button>
 
 <style>
     @keyframes goldShine {
         0% { background-position: -200% center; }
         100% { background-position: 200% center; }
     }
+    @keyframes pulseZoom {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+@keyframes buttonShine {
+    0% { left: -100%; }
+    20%, 100% { left: 100%; }
+}
+.join-tradix-btn {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+    color: #000;
+    font-weight: 900;
+    font-size: 18px;
+    padding: 16px 30px;
+    border: 2px solid #FFD700;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(245, 197, 24, 0.5);
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    max-width: 280px;
+    animation: pulseZoom 2s infinite ease-in-out;
+    text-decoration: none;
+    display: inline-block;
+    font-family: 'Tajawal', sans-serif;
+}
+.join-tradix-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    animation: buttonShine 2.5s infinite;
+}
+.join-tradix-btn:active {
+    transform: scale(0.95);
+    animation: none;
+}
 </style>
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
