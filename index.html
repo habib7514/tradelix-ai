@@ -1019,14 +1019,14 @@
                 loadChart(interval);
             };
 
-            fetchGoldPrice();
-            if (window.goldPriceInterval) clearInterval(window.goldPriceInterval);
-            window.goldPriceInterval = setInterval(fetchGoldPrice, 5000);
-            
-            if (!document.querySelector('#goldChartContainer iframe')) {
-                loadChart('1');
-            }
-        })();
+            window.startGoldMarket = function() {
+    fetchGoldPrice();
+    if (window.goldPriceInterval) clearInterval(window.goldPriceInterval);
+    window.goldPriceInterval = setInterval(fetchGoldPrice, 5000);
+    if (!document.querySelector('#goldChartContainer iframe')) {
+        loadChart('1');
+    }
+};
             </script>
     </div> <!-- هذا القوس يغلق بطاقة الشارت السوداء -->
 </div> <!-- هذا القوس يغلق شاشة الذهب بالكامل -->
