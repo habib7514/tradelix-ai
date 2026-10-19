@@ -2173,68 +2173,65 @@ if (!user.uid) {
         }
         if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
     }
-    // ═══════════ محرك سوق الذهب ═══════════
-let lastGoldPriceValue = 0;
-let goldInterval = null;
+    // ═══════════ محرك سوق الذهب (آمن ضد التكرار) ═══════════
+window.lastGoldPriceValue = 0;
+window.goldInterval = null;
 
-function openGoldScreen() {
-    showScreen('goldScreen');
-    loadGoldChart();
-    startGoldMarket();
-}
-
-async function fetchLiveGold() {
+window.openGoldScreen = function() {
     try {
-        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
-        const data = await res.json();
-        if (data && data.lastPrice) {
-            const price = parseFloat(data.lastPrice);
-            const change = parseFloat(data.priceChangePercent);
-            const priceEl = document.getElementById('liveGoldPrice');
-            const changeEl = document.getElementById('liveGoldChange');
+        showScreen('goldScreen');
+        if (typeof loadGoldChart === 'function') loadGoldChart();
+        if (typeof startGoldMarket === 'function') startGoldMarket();
+    } catch(e) {
+        console.error('Error opening gold screen:', e);
+    }
+};
 
-            if (priceEl && changeEl) {
-                priceEl.textContent = '$' + price.toFixed(2);
-                changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-                
-                if (change >= 0) {
-                    changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
-                    changeEl.style.color = 'var(--green)';
-                    if (lastGoldPriceValue > 0 && price > lastGoldPriceValue) {
-                        priceEl.style.color = 'var(--green)';
-                        setTimeout(() => priceEl.style.color = '#fff', 500);
+window.fetchLiveGold = function() {
+    fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data && data.lastPrice) {
+                var price = parseFloat(data.lastPrice);
+                var change = parseFloat(data.priceChangePercent);
+                var priceEl = document.getElementById('liveGoldPrice');
+                var changeEl = document.getElementById('liveGoldChange');
+
+                if (priceEl && changeEl) {
+                    priceEl.textContent = '$' + price.toFixed(2);
+                    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                    
+                    if (change >= 0) {
+                        changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
+                        changeEl.style.color = '#00D084';
+                    } else {
+                        changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
+                        changeEl.style.color = '#FF4757';
                     }
-                } else {
-                    changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
-                    changeEl.style.color = 'var(--red)';
-                    if (lastGoldPriceValue > 0 && price < lastGoldPriceValue) {
-                        priceEl.style.color = 'var(--red)';
-                        setTimeout(() => priceEl.style.color = '#fff', 500);
-                    }
+                    window.lastGoldPriceValue = price;
                 }
-                lastGoldPriceValue = price;
             }
-        }
-    } catch (e) { console.log('Error fetching gold price:', e); }
-}
+        })
+        .catch(function(e) { console.log('Error fetching gold price:', e); });
+};
 
-function loadGoldChart() {
-    const container = document.getElementById('goldChartContainer');
+window.loadGoldChart = function() {
+    var container = document.getElementById('goldChartContainer');
     if (!container) return;
     container.innerHTML = '';
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=5&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en`;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=5&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en';
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';
     container.appendChild(iframe);
-}
+};
 
-function startGoldMarket() {
-    fetchLiveGold();
-    if (goldInterval) clearInterval(goldInterval);
-    goldInterval = setInterval(fetchLiveGold, 5000);
-}
+window.startGoldMarket = function() {
+    window.fetchLiveGold();
+    if (window.goldInterval) clearInterval(window.goldInterval);
+    window.goldInterval = setInterval(window.fetchLiveGold, 5000);
+};
 </script>
 
 </body>
