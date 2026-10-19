@@ -779,79 +779,34 @@
         </div>
         <button class="btn-block" onclick="showScreen('academyScreen')" style="position: relative; z-index: 1; box-shadow: 0 6px 20px rgba(245,197,24,0.4);">🎓 View Courses</button>
     </div>
-<!-- النص والصورة تحت بطاقة الكورسات -->
-<div style="text-align: center; padding: 0px 15px 20px 15px; margin-top: 10px;">
-    <h2 style="
-        font-family: 'Tajawal', sans-serif;
-        font-size: 26px;
-        font-weight: 900;
-        background: linear-gradient(90deg, #F5C518 0%, #FFF8DC 50%, #F5C518 100%);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        -webkit-text-stroke: 0.7px #F5C518;
-        animation: goldShine 3s linear infinite;
-        margin-bottom: 15px;
-        line-height: 1.4;
-        letter-spacing: 0.5px;
-        text-transform: capitalize;
-    ">
-        Tradix-ai signal gold
-    </h2>
-    
-    <img src="https://i.postimg.cc/FKqk4pF6/file-00000000358081f69ff796420b71893d.png" alt="Tradix Gold" style="width: 100%; max-width: 280px; border-radius: 16px; border: 1.5px solid #F5C518; box-shadow: 0 0 25px rgba(245, 197, 24, 0.4); object-fit: cover;">
-</div>
-    <button onclick="showScreen('newGoldScreen'); startGoldMarket();" class="join-tradix-btn">Join Tradix Now</button>
 
-<style>
-    @keyframes goldShine {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
-    }
-    @keyframes pulseZoom {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-@keyframes buttonShine {
-    0% { left: -100%; }
-    20%, 100% { left: 100%; }
-}
-.join-tradix-btn {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
-    color: #000;
-    font-weight: 900;
-    font-size: 18px;
-    padding: 16px 30px;
-    border: 2px solid #FFD700;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(245, 197, 24, 0.5);
-    cursor: pointer;
-    margin: 15px auto 0 auto;
-    width: 100%;
-    max-width: 280px;
-    animation: pulseZoom 2s infinite ease-in-out;
-    text-decoration: none;
-    display: block;
-    font-family: 'Tajawal', sans-serif;
-}
-.join-tradix-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
-    transform: skewX(-25deg);
-    animation: buttonShine 2.5s infinite;
-}
-.join-tradix-btn:active {
-    transform: scale(0.95);
-    animation: none;
-}
-</style>
+    <div class="tradix-sub-wrap">
+        <h3>💰 Tradix AI — Gold Signals Subscription</h3>
+        <p class="sub-desc">
+            Get real-time <strong>Gold (XAUUSD)</strong> trading signals delivered directly to your phone.<br>
+            Subscribe now and start trading with confidence.
+        </p>
+        <div class="tradix-price-list">
+            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">Weekly Plan</div><div class="plan-dur">7 days access</div></div><div class="tradix-price-right">15 USDT</div></div>
+            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">Monthly Plan</div><div class="plan-dur">30 days access</div></div><div class="tradix-price-right">45 USDT</div></div>
+            <div class="tradix-price-item"><div class="tradix-price-left"><div class="plan-name">3 Months Plan</div><div class="plan-dur">90 days access</div></div><div class="tradix-price-right">119 USDT</div></div>
+            <div class="tradix-price-item vip"><div class="tradix-price-left"><div class="plan-name">👑 Lifetime VIP</div><div class="plan-dur">Unlimited access forever</div></div><div class="tradix-price-right">300 USDT</div></div>
+        </div>
+        <p class="tradix-sub-note">✅ Instant activation • ✅ Real-time signals • ✅ Cancel anytime</p>
+    </div>
+
+    <a href="https://tradix-ai.netlify.app" 
+   target="_blank" 
+   rel="noopener noreferrer" 
+   class="gold-app-btn">
+    <span class="gold-app-icon">🥇</span>
+    <span class="gold-app-text">
+        <span class="gold-app-title">Tradix Gold Signals</span>
+        <span class="gold-app-sub">Live Gold • XAU/USD • Premium VIP</span>
+    </span>
+    <span class="gold-app-arrow">›</span>
+</a>
+
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="goToSignals()"><span class="icon">📊</span><span>Signals</span></button>
@@ -915,7 +870,6 @@
         <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Subscribe to access live signals with Entry / SL / TP</p>
         <button class="btn-block" onclick="showScreen('homeScreen')">View Plans</button>
     </div>
-    
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
@@ -925,110 +879,7 @@
         <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
-<!-- ═══════════ واجهة الذهب الجديدة (newGoldScreen) ═══════════ -->
-<div id="newGoldScreen" class="screen">
-    <!-- الهيدر (الرجوع، الأيقونة، الاسم، الجرس) -->
-    <div class="header">
-        <div class="header-left">
-            <!-- زر الرجوع للصفحة الرئيسية -->
-         <!-- زر الرجوع للصفحة الرئيسية (احترافي) -->
-<div onclick="showScreen('homeScreen')" style="cursor:pointer; width: 42px; height: 42px; border-radius: 50%; background: rgba(245, 197, 24, 0.15); border: 1px solid rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center; color: var(--gold); box-shadow: 0 0 10px rgba(245, 197, 24, 0.2); transition: 0.2s;">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-    </svg>
-</div>
-            <!-- أيقونة التطبيق -->
-            <img src="https://i.postimg.cc/FKqk4pF6/file-00000000358081f69ff796420b71893d.png" style="width: 42px; height: 42px; border-radius: 12px; margin-left: 10px; border: 1.5px solid var(--gold); object-fit: cover;">
-            <!-- اسم التطبيق -->
-            <div class="header-title" style="margin-left: 10px;">
-                <h1 style="color: var(--gold);">Tradix Gold</h1>
-                <span>XAU/USD PREMIUM</span>
-            </div>
-        </div>
-        <!-- جرس الإشعارات -->
-        <div class="bell-icon" onclick="openNotifModal()" style="background: rgba(245, 197, 24, 0.1); border-color: rgba(245, 197, 24, 0.4);">🔔</div>
-    </div>
 
-      </div>  
-
-    <!-- رسالة الترحيب -->
-    <div class="card" style="text-align: center; background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid var(--gold); padding: 20px; border-radius: 16px; margin-top: 10px; margin-bottom: 15px;">
-        <h2 style="color: var(--gold); font-size: 20px; margin-bottom: 5px;">Welcome to Tradix Gold</h2>
-        <p style="color: #AAAAAA; font-size: 13px;">Your premium gateway to live markets.</p>
-    </div>
-
-    <!-- بطاقة السعر الحي -->
-    <div class="card" style="background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid rgba(245, 197, 24, 0.4); padding: 20px; text-align: center; border-radius: 16px; margin-bottom: 15px;">
-        <div style="font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px;">LIVE GOLD PRICE (XAU/USD)</div>
-        <div id="liveGoldPrice" style="font-size: 38px; font-weight: 900; color: #fff; margin-bottom: 8px;">$0.00</div>
-        <div id="liveGoldChange" style="display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green);">+0.00%</div>
-    </div>
-
-    <!-- الشارت وأزرار الفريمات -->
-    <div class="card" style="padding: 10px; background: #000; border-radius: 16px; border: 1px solid var(--border);">
-        <!-- أزرار الفريمات (داخل الشارت) -->
-        <div style="display: flex; gap: 5px; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 10px; overflow-x: auto;">
-            <button class="binance-time-btn active" onclick="changeGoldTimeframe('1', this)">1m</button>
-            <button class="binance-time-btn" onclick="changeGoldTimeframe('5', this)">5m</button>
-            <button class="binance-time-btn" onclick="changeGoldTimeframe('15', this)">15m</button>
-            <button class="binance-time-btn" onclick="changeGoldTimeframe('60', this)">1H</button>
-            <button class="binance-time-btn" onclick="changeGoldTimeframe('240', this)">4H</button>
-            <button class="binance-time-btn" onclick="changeGoldTimeframe('W', this)">1W</button>
-        </div>
-        
-        <!-- حاوية الشارت (مخفية افتراضياً لكي لا تظهر قبل الدخول) -->
-        <div id="goldChartContainer" style="display: none; width: 100%; height: 350px; border-radius: 10px; overflow: hidden; margin-top: 10px;"></div>
-    </div> <!-- إغلاق بطاقة الشارت -->
-
-    <!-- محرك السوق -->
-    <script>
-        function fetchGoldPrice() {
-            fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT')
-                .then(r => r.json())
-                .then(data => {
-                    if (data && data.lastPrice) {
-                        const price = parseFloat(data.lastPrice);
-                        const change = parseFloat(data.priceChangePercent);
-                        const pEl = document.getElementById('liveGoldPrice');
-                        const cEl = document.getElementById('liveGoldChange');
-                        if (pEl && cEl) {
-                            pEl.textContent = '$' + price.toFixed(2);
-                            cEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-                            if (change >= 0) {
-                                cEl.style.background = 'rgba(0, 208, 132, 0.1)';
-                                cEl.style.color = '#00D084';
-                            } else {
-                                cEl.style.background = 'rgba(255, 71, 87, 0.1)';
-                                cEl.style.color = '#FF4757';
-                            }
-                        }
-                    }
-                }).catch(e => console.log(e));
-        }
-
-        function loadChart(interval) {
-            const container = document.getElementById('goldChartContainer');
-            if (!container) return;
-            container.innerHTML = '<iframe src="https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=' + interval + '&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en" style="width:100%;height:100%;border:none;"></iframe>';
-        }
-
-        function changeGoldTimeframe(interval, btn) {
-            document.querySelectorAll('.binance-time-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            loadChart(interval);
-        }
-
-        window.startGoldMarket = function() {
-            document.getElementById('goldChartContainer').style.display = 'block';
-            fetchGoldPrice();
-            if (window.goldPriceInterval) clearInterval(window.goldPriceInterval);
-            window.goldPriceInterval = setInterval(fetchGoldPrice, 5000);
-            if (!document.querySelector('#goldChartContainer iframe')) {
-                loadChart('1');
-            }
-        };
-    </script>
-</div> <!-- إغلاق شاشة الذهب (newGoldScreen) بالكامل -->        
 <div id="academyScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://files.catbox.moe/kbjnoo.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen', 'viewCoursesCard')" style="font-size: 16px;">✕</div></div>
     <div class="card" style="background: var(--bg-card); border-color: var(--gold); text-align: center;">
@@ -2310,7 +2161,6 @@ if (!user.uid) {
 
 </body>
 </html>
-
 
 
 
