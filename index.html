@@ -949,33 +949,86 @@
         <div class="bell-icon" onclick="openNotifModal()" style="background: rgba(245, 197, 24, 0.1); border-color: rgba(245, 197, 24, 0.4);">🔔</div>
     </div>
 
-    <!-- محتوى مؤقت للواجهة -->
-    <div class="card" style="text-align: center; background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid var(--gold); padding: 40px 20px; border-radius: 16px; margin-top: 20px;">
-        <h2 style="color: var(--gold); font-size: 24px; margin-bottom: 10px;">Welcome to Tradix Gold</h2>
-        <p style="color: #AAAAAA; font-size: 14px;">Your premium gateway to live markets.</p>
+        </div> <!-- إغلاق الهيدر (مهم جداً) -->
+
+    <!-- رسالة الترحيب -->
+    <div class="card" style="text-align: center; background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid var(--gold); padding: 20px; border-radius: 16px; margin-top: 10px; margin-bottom: 15px;">
+        <h2 style="color: var(--gold); font-size: 20px; margin-bottom: 5px;">Welcome to Tradix Gold</h2>
+        <p style="color: #AAAAAA; font-size: 13px;">Your premium gateway to live markets.</p>
     </div>
-    <!-- إضافة السعر الحي -->
-<div class="card" style="background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid rgba(245, 197, 24, 0.4); padding: 20px; text-align: center; border-radius: 16px; margin-bottom: 15px;">
-    <div style="font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px;">LIVE GOLD PRICE (XAU/USD)</div>
-    <div id="liveGoldPrice" style="font-size: 38px; font-weight: 900; color: #fff; margin-bottom: 8px;">$0.00</div>
-    <div id="liveGoldChange" style="display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green);">+0.00%</div>
-</div>
 
-<!-- إضافة أزرار الفريمات الزمنية -->
-<div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px;">
-    <button class="time-btn active" onclick="changeGoldTimeframe('1', this)">1 دقيقة</button>
-    <button class="time-btn" onclick="changeGoldTimeframe('5', this)">5 دقائق</button>
-    <button class="time-btn" onclick="changeGoldTimeframe('15', this)">15 دقيقة</button>
-    <button class="time-btn" onclick="changeGoldTimeframe('60', this)">ساعة</button>
-    <button class="time-btn" onclick="changeGoldTimeframe('240', this)">4 ساعات</button>
-    <button class="time-btn" onclick="changeGoldTimeframe('W', this)">أسبوع</button>
-</div>
+    <!-- بطاقة السعر الحي -->
+    <div class="card" style="background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid rgba(245, 197, 24, 0.4); padding: 20px; text-align: center; border-radius: 16px; margin-bottom: 15px;">
+        <div style="font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px;">LIVE GOLD PRICE (XAU/USD)</div>
+        <div id="liveGoldPrice" style="font-size: 38px; font-weight: 900; color: #fff; margin-bottom: 8px;">$0.00</div>
+        <div id="liveGoldChange" style="display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green);">+0.00%</div>
+    </div>
 
-<!-- إضافة حاوية الشارت -->
-<div class="card" style="padding: 10px; height: 400px; background: #000; border-radius: 16px; border: 1px solid var(--border);">
-    <div id="goldChartContainer" style="width: 100%; height: 100%; border-radius: 10px; overflow: hidden;"></div>
-</div>
-</div>
+    <!-- الشارت وأزرار الفريمات -->
+    <div class="card" style="padding: 10px; background: #000; border-radius: 16px; border: 1px solid var(--border);">
+        <!-- أزرار الفريمات (داخل الشارت) -->
+        <div style="display: flex; gap: 5px; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 10px; overflow-x: auto;">
+            <button class="binance-time-btn active" onclick="changeGoldTimeframe('1', this)">1m</button>
+            <button class="binance-time-btn" onclick="changeGoldTimeframe('5', this)">5m</button>
+            <button class="binance-time-btn" onclick="changeGoldTimeframe('15', this)">15m</button>
+            <button class="binance-time-btn" onclick="changeGoldTimeframe('60', this)">1H</button>
+            <button class="binance-time-btn" onclick="changeGoldTimeframe('240', this)">4H</button>
+            <button class="binance-time-btn" onclick="changeGoldTimeframe('W', this)">1W</button>
+        </div>
+        
+        <!-- حاوية الشارت -->
+        <div id="goldChartContainer" style="width: 100%; height: 350px; border-radius: 10px; overflow: hidden;"></div>
+    </div>
+
+    <!-- محرك السوق (جلب السعر والشارت) -->
+    <script>
+        (function() {
+            function fetchGoldPrice() {
+                fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT')
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data && data.lastPrice) {
+                            const price = parseFloat(data.lastPrice);
+                            const change = parseFloat(data.priceChangePercent);
+                            const pEl = document.getElementById('liveGoldPrice');
+                            const cEl = document.getElementById('liveGoldChange');
+                            if (pEl && cEl) {
+                                pEl.textContent = '$' + price.toFixed(2);
+                                cEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                                if (change >= 0) {
+                                    cEl.style.background = 'rgba(0, 208, 132, 0.1)';
+                                    cEl.style.color = '#00D084';
+                                } else {
+                                    cEl.style.background = 'rgba(255, 71, 87, 0.1)';
+                                    cEl.style.color = '#FF4757';
+                                }
+                            }
+                        }
+                    }).catch(e => console.log(e));
+            }
+
+            function loadChart(interval) {
+                const container = document.getElementById('goldChartContainer');
+                if (!container) return;
+                container.innerHTML = '<iframe src="https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=' + interval + '&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en" style="width:100%;height:100%;border:none;"></iframe>';
+            }
+
+            window.changeGoldTimeframe = function(interval, btn) {
+                document.querySelectorAll('.binance-time-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                loadChart(interval);
+            };
+
+            fetchGoldPrice();
+            if (window.goldPriceInterval) clearInterval(window.goldPriceInterval);
+            window.goldPriceInterval = setInterval(fetchGoldPrice, 5000);
+            
+            if (!document.querySelector('#goldChartContainer iframe')) {
+                loadChart('1');
+            }
+        })();
+    </script>
+</div> <!-- إغلاق شاشة الذهب newGoldScreen -->
 <div id="academyScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://files.catbox.moe/kbjnoo.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen', 'viewCoursesCard')" style="font-size: 16px;">✕</div></div>
     <div class="card" style="background: var(--bg-card); border-color: var(--gold); text-align: center;">
