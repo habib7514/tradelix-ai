@@ -795,42 +795,18 @@
         <p class="tradix-sub-note">✅ Instant activation • ✅ Real-time signals • ✅ Cancel anytime</p>
     </div>
 
-    <button onclick="openGoldScreen()" class="gold-app-btn" style="width: 100%; border: 1.5px solid rgba(245, 197, 24, 0.7); outline: none; background: linear-gradient(135deg, #1A1500 0%, #2A2000 50%, #1A1500 100%); cursor: pointer; display: flex; align-items: center; padding: 18px 20px; border-radius: 18px; margin: 16px 0; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.25);">
-    <span class="gold-app-icon" style="font-size: 34px; margin-left: 14px;">🥇</span>
-    <span class="gold-app-text" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 3px;">
-        <span class="gold-app-title" style="color: #F5C518; font-size: 17px; font-weight: 900;">Tradix Gold - AI</span>
-        <span class="gold-app-sub" style="color: #999999; font-size: 11px; font-weight: 700;">Live Gold • XAU/USD • Premium VIP</span>
+    <a href="https://tradix-ai.netlify.app" 
+   target="_blank" 
+   rel="noopener noreferrer" 
+   class="gold-app-btn">
+    <span class="gold-app-icon">🥇</span>
+    <span class="gold-app-text">
+        <span class="gold-app-title">Tradix Gold Signals</span>
+        <span class="gold-app-sub">Live Gold • XAU/USD • Premium VIP</span>
     </span>
-    <span class="gold-app-arrow" style="color: #F5C518; font-size: 24px; font-weight: 900; margin-right: auto;">›</span>
-</button>
-<!-- ═══════════ صفحة الذهب الجديدة ═══════════ -->
-<div id="goldScreen" class="screen">
-    <div class="header">
-        <div class="header-left">
-            <div onclick="showScreen('homeScreen')" style="cursor:pointer; width: 42px; height: 42px; border-radius: 50%; background: rgba(245, 197, 24, 0.15); border: 1px solid rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold);">
-                ⬅️
-            </div>
-            <img src="https://i.postimg.cc/3JwYSdkJ/file-00000000358081f69ff796420b71893d.png" style="width: 42px; height: 42px; border-radius: 12px; margin-left: 10px; border: 1.5px solid var(--gold); box-shadow: 0 0 10px rgba(245, 197, 24, 0.4); object-fit: cover;">
-            <div class="header-title" style="margin-left: 10px;">
-                <h1 style="color: var(--gold);">Tradix Gold</h1>
-                <span>XAU/USD PREMIUM</span>
-            </div>
-        </div>
-        <div class="bell-icon" onclick="openNotifModal()" style="background: rgba(245, 197, 24, 0.1); border-color: rgba(245, 197, 24, 0.4);">🔔</div>
-    </div>
+    <span class="gold-app-arrow">›</span>
+</a>
 
-    <!-- بطاقة السعر -->
-    <div class="card" style="background: linear-gradient(145deg, #1A1500, #0a0a0a); border: 1px solid rgba(245, 197, 24, 0.4); padding: 24px; text-align: center; border-radius: 16px; margin-top: 10px;">
-        <div style="font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px;">LIVE GOLD PRICE</div>
-        <div id="liveGoldPrice" style="font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 8px;">$0.00</div>
-        <div id="liveGoldChange" style="display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green);">+0.00%</div>
-    </div>
-
-    <!-- الشارت -->
-    <div class="card" style="padding: 10px; height: 350px; background: #000; border-radius: 16px; border: 1px solid var(--border);">
-        <div id="goldChartContainer" style="width: 100%; height: 100%; border-radius: 10px; overflow: hidden;"></div>
-    </div>
-</div>
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
         <button class="nav-item" onclick="goToSignals()"><span class="icon">📊</span><span>Signals</span></button>
@@ -1154,9 +1130,17 @@ try {
         onAuthStateChanged(auth, async (user) => {
             if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
             else { 
-    console.log('⚠️ No Firebase user — waiting for login');
-_pollStarted = false; 
-_lastUID = null; 
+    console.log('⚠️ No Firebase user — checking localStorage');
+    setTimeout(() => {
+        const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        if (!savedUser.uid) {
+            _pollStarted = false; 
+            _lastUID = null; 
+            currentUserData = null; 
+            _clearAllUserData();
+            showScreen('signupScreen');
+        }
+    }, 2000);
 }
         });
         console.log('✅ Firebase initialized');
@@ -1172,7 +1156,7 @@ setTimeout(() => {
             showScreen('homeScreen');
             updateUI();
         } else {
-            showScreen('loginScreen');
+            showScreen('signupScreen');
         }
     }, 800);
 }, 5000);
@@ -2173,65 +2157,6 @@ if (!user.uid) {
         }
         if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
     }
-    // ═══════════ محرك سوق الذهب (آمن ضد التكرار) ═══════════
-window.lastGoldPriceValue = 0;
-window.goldInterval = null;
-
-window.openGoldScreen = function() {
-    try {
-        showScreen('goldScreen');
-        if (typeof loadGoldChart === 'function') loadGoldChart();
-        if (typeof startGoldMarket === 'function') startGoldMarket();
-    } catch(e) {
-        console.error('Error opening gold screen:', e);
-    }
-};
-
-window.fetchLiveGold = function() {
-    fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT')
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            if (data && data.lastPrice) {
-                var price = parseFloat(data.lastPrice);
-                var change = parseFloat(data.priceChangePercent);
-                var priceEl = document.getElementById('liveGoldPrice');
-                var changeEl = document.getElementById('liveGoldChange');
-
-                if (priceEl && changeEl) {
-                    priceEl.textContent = '$' + price.toFixed(2);
-                    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-                    
-                    if (change >= 0) {
-                        changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
-                        changeEl.style.color = '#00D084';
-                    } else {
-                        changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
-                        changeEl.style.color = '#FF4757';
-                    }
-                    window.lastGoldPriceValue = price;
-                }
-            }
-        })
-        .catch(function(e) { console.log('Error fetching gold price:', e); });
-};
-
-window.loadGoldChart = function() {
-    var container = document.getElementById('goldChartContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    var iframe = document.createElement('iframe');
-    iframe.src = 'https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=5&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en';
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.style.border = 'none';
-    container.appendChild(iframe);
-};
-
-window.startGoldMarket = function() {
-    window.fetchLiveGold();
-    if (window.goldInterval) clearInterval(window.goldInterval);
-    window.goldInterval = setInterval(window.fetchLiveGold, 5000);
-};
 </script>
 
 </body>
