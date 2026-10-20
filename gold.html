@@ -9,7 +9,8 @@
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        // ✅ تم إضافة setDoc و serverTimestamp لحفظ الطلبات
+        import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM",
@@ -23,6 +24,10 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // متغيرات عامة لحفظ بيانات المستخدم الحالي والباقة المختارة
+        window.latestUserData = {};
+        window.currentGoldPlan = { name: '', price: 0 };
+
         // 1. جلب حالة الاشتراك ومعلومات الحساب
         window.checkSubscriptionStatus = function() {
             const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
@@ -31,26 +36,34 @@
                 onSnapshot(userRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        updateStatusUI(data.status || 'inactive');
-                        updateAccountUI(data); // تحديث واجهة الحساب
+                        window.latestUserData = data; // حفظ أحدث بيانات
+                        updateStatusUI(data);
+                        updateAccountUI(data);
                     } else {
-                        updateStatusUI('inactive');
+                        updateStatusUI({});
                         updateAccountUI({});
                     }
                 });
             } else {
-                updateStatusUI('inactive');
+                updateStatusUI({});
                 updateAccountUI({});
             }
         };
 
-        function updateStatusUI(status) {
+        // ✅ تم تعديل هذه الدالة لتفصل بين اشتراك الذهب والعملات
+        function updateStatusUI(data) {
             const card = document.getElementById('subStatusCard');
             const badge = document.getElementById('subStatusBadge');
             const title = document.getElementById('subStatusTitle');
             const desc = document.getElementById('subStatusDesc');
 
-            if(status === 'active') {
+            const status = data.status || 'inactive';
+            const planType = data.planType;
+
+            // الشرط: يجب أن يكون الحساب نشطاً ونوع الباقة ذهب أو كلاهما
+            const hasGoldAccess = status === 'active' && (planType === 'gold' || planType === 'both');
+
+            if(hasGoldAccess) {
                 card.className = 'status-card active';
                 badge.textContent = 'ACTIVE';
                 badge.className = 'status-badge active';
@@ -63,11 +76,12 @@
                 title.textContent = 'Awaiting Confirmation';
                 desc.textContent = 'Your deposit is being reviewed by the admin.';
             } else {
+                // إذا كان مشتركاً في العملات فقط، ستظهر له هذه الشاشة الحمراء
                 card.className = 'status-card inactive';
                 badge.textContent = 'INACTIVE';
                 badge.className = 'status-badge inactive';
-                title.textContent = 'No Active Subscription';
-                desc.textContent = 'Subscribe below to unlock premium signals.';
+                title.textContent = 'No Gold Subscription';
+                desc.textContent = 'Subscribe to a gold plan below to unlock premium signals.';
             }
         }
 
@@ -79,9 +93,12 @@
             document.getElementById('accEmail').textContent = data.email || savedUser.email || '-';
             
             const statusEl = document.getElementById('accStatus');
-            statusEl.textContent = (data.status || 'inactive').toUpperCase();
-            if(data.status === 'active') statusEl.style.color = '#00D084';
-            else if(data.status === 'pending') statusEl.style.color = '#F5C518';
+            const status = data.status || 'inactive';
+            const planType = data.planType;
+            
+            statusEl.textContent = status.toUpperCase();
+            if(status === 'active' && (planType === 'gold' || planType === 'both')) statusEl.style.color = '#00D084';
+            else if(status === 'pending') statusEl.style.color = '#F5C518';
             else statusEl.style.color = '#FF4757';
 
             document.getElementById('accPlan').textContent = data.plan || '-';
@@ -95,13 +112,9 @@
                 const diffTime = expiry - now;
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 
-                if (diffDays > 0) {
-                    daysLeftText = diffDays + ' Days';
-                } else if (diffDays === 0) {
-                    daysLeftText = 'Expires Today';
-                } else {
-                    daysLeftText = 'Expired';
-                }
+                if (diffDays > 0) daysLeftText = diffDays + ' Days';
+                else if (diffDays === 0) daysLeftText = 'Expires Today';
+                else daysLeftText = 'Expired';
             }
             document.getElementById('accDays').textContent = daysLeftText;
         }
@@ -354,7 +367,7 @@
                 <h4>Weekly</h4>
                 <p>7 Days Access</p>
             </div>
-            <button class="plan-buy-gold" onclick="openDeposit('Weekly', 10)">$10</button>
+            <button class="plan-buy-gold" onclick="openDeposit('VIP Weekly', 10)">$10</button>
         </div>
 
         <div class="plan-card-gold">
@@ -362,7 +375,7 @@
                 <h4>15 Days</h4>
                 <p>15 Days Access</p>
             </div>
-            <button class="plan-buy-gold" onclick="openDeposit('15 Days', 20)">$20</button>
+            <button class="plan-buy-gold" onclick="openDeposit('VIP 15Days', 20)">$20</button>
         </div>
 
         <div class="plan-card-gold">
@@ -370,7 +383,7 @@
                 <h4>Monthly</h4>
                 <p>30 Days Access</p>
             </div>
-            <button class="plan-buy-gold" onclick="openDeposit('Monthly', 30)">$30</button>
+            <button class="plan-buy-gold" onclick="openDeposit('VIP Monthly', 30)">$30</button>
         </div>
 
         <div class="plan-card-gold premium">
@@ -379,7 +392,7 @@
                 <h4>3 Months</h4>
                 <p>90 Days Access</p>
             </div>
-            <button class="plan-buy-gold" onclick="openDeposit('3 Months', 70)">$70</button>
+            <button class="plan-buy-gold" onclick="openDeposit('VIP Quarterly', 70)">$70</button>
         </div>
     </div>
 
@@ -623,7 +636,13 @@
             document.getElementById('plansSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
+        // ✅ حماية صفحة الإشارات من الدخول بدون اشتراك ذهب
         function openSignalScreen() {
+            if (!window.latestUserData || window.latestUserData.status !== 'active' || (window.latestUserData.planType !== 'gold' && window.latestUserData.planType !== 'both')) {
+                alert('🔒 You must have an active Gold subscription to view signals.');
+                scrollToPlans();
+                return;
+            }
             document.getElementById('signalOverlay').classList.add('active');
         }
 
@@ -648,6 +667,7 @@
 
         // 6. دوال واجهة الإيداع
         function openDeposit(planName, price) {
+            window.currentGoldPlan = { name: planName, price: price };
             document.getElementById('depositPlanText').textContent = planName;
             document.getElementById('depositAmountText').textContent = '$' + price;
             document.getElementById('depositOverlay').classList.add('active');
@@ -667,14 +687,34 @@
             });
         }
 
-        function submitPayment() {
+        // ✅ تم إصلاح هذه الدالة لحفظ الطلب فعلياً في قاعدة البيانات
+        async function submitPayment() {
             const txHash = document.getElementById('txHashInput').value.trim();
-            if (!txHash) {
-                alert('❌ Please enter the Transaction Hash (TX)');
-                return;
+            if (!txHash) { alert('❌ Please enter the Transaction Hash (TX)'); return; }
+
+            const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+            if (!savedUser.uid) { alert('❌ Please log in first'); return; }
+
+            try {
+                // استخدام الدوال المستوردة من Firebase
+                const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
+                
+                // إرسال الطلب إلى Firebase
+                await setDoc(doc(window.db || window.firebaseDB, 'tradelix_users', savedUser.uid), {
+                    status: 'pending',
+                    plan: window.currentGoldPlan.name,
+                    planType: 'gold', // إجبار النوع على أنه ذهب
+                    depositAmount: window.currentGoldPlan.price,
+                    txHash: txHash,
+                    submittedAt: serverTimestamp()
+                }, { merge: true });
+
+                alert('✅ Payment submitted successfully! Awaiting admin review.');
+                closeDeposit();
+            } catch (error) {
+                console.error(error);
+                alert('❌ Submission failed, please try again.');
             }
-            alert('✅ Payment submitted successfully! Awaiting admin review.');
-            closeDeposit();
         }
 
         // التشغيل التلقائي
