@@ -1485,46 +1485,7 @@ if (activeBox && lockedBox) {
         lockedBox.classList.remove('hidden'); 
     }
 }
-    // 🔍 اكتشاف الشاشة الحالية بدقة (نبحث عن كلمة gold في ID الشاشة النشطة)
-    const activeScreenId = document.querySelector('.screen.active')?.id || '';
-    let isGoldPage = activeScreenId.toLowerCase().includes('gold') || 
-                     (typeof appMode !== 'undefined' && appMode === 'gold') ||
-                     document.body.innerHTML.includes('XAU/USD PREMIUM');
-
-    let hasAccess = false;
     
-    // 🥇 إذا كنا في صفحة الذهب: يفتح فقط إذا كان نوع الباقة gold أو both
-    if (isGoldPage) {
-        hasAccess = user.status === 'active' && (user.planType === 'gold' || user.planType === 'both');
-    } 
-    // 🪙 إذا كنا في صفحة العملات: يفتح فقط إذا كان نوع الباقة crypto أو both
-    else {
-        hasAccess = user.status === 'active' && (user.planType === 'crypto' || user.planType === 'both');
-    }
-
-    if (hasAccess) { 
-        activeBox.classList.remove('hidden'); 
-        lockedBox.classList.add('hidden'); 
-    } else { 
-        activeBox.classList.add('hidden'); 
-        lockedBox.classList.remove('hidden'); 
-    }
-}
-
-    const currentPageType = isGoldPage ? 'gold' : 'crypto';
-
-    // ✅ الشرط الجديد: يجب أن يكون الحساب نشطاً، ونوع الباقة يطابق الصفحة أو يكون 'both'
-    const hasAccess = user.status === 'active' && 
-                     (user.planType === 'both' || user.planType === currentPageType);
-
-    if (hasAccess) { 
-        activeBox.classList.remove('hidden'); 
-        lockedBox.classList.add('hidden'); 
-    } else { 
-        activeBox.classList.add('hidden'); 
-        lockedBox.classList.remove('hidden'); 
-    }
-}
     
     // 4. تحديث تفاصيل الاشتراك (الصفقات فقط)
 const subActive = document.getElementById('subActive');
