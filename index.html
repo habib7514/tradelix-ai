@@ -1591,11 +1591,24 @@ async function submitDeposit() {
         
         const isCourseRequest = currentPlan.name && currentPlan.name.toLowerCase().includes('course');
         
+        // 🟢 تحديد نوع الباقة (ذهب أم عملات أم كورس)
+        let detectedPlanType = 'crypto'; // الافتراضي هو العملات
+        if (isCourseRequest) {
+            detectedPlanType = 'course';
+        } else if (currentPlan.name && (currentPlan.name.toLowerCase().includes('gold') || currentPlan.name.toLowerCase().includes('xau'))) {
+            detectedPlanType = 'gold';
+        } else if (typeof appMode !== 'undefined' && appMode === 'gold') {
+            detectedPlanType = 'gold'; // إذا كان التطبيق يستخدم متغير appMode للتبديل
+        } else if (currentPlan.type) {
+            detectedPlanType = currentPlan.type; // إذا كانت الباقة تحتوي على حقل type
+        }
+
         // تجهيز البيانات المراد حفظها
         const updateData = {
             status: 'pending', 
             depositAmount: currentPlan.price, 
-            txHash: hash
+            txHash: hash,
+            planType: detectedPlanType // 👈 تمت إضافة هذا السطر هنا بنجاح
         };
 
         if (isCourseRequest) {
@@ -1621,6 +1634,7 @@ async function submitDeposit() {
         currentUserData.status = 'pending';
         currentUserData.plan = updateData.plan;
         currentUserData.txHash = hash;
+        currentUserData.planType = detectedPlanType; // تحديث محلي
         if (updateData.courseRequest) currentUserData.courseRequest = updateData.courseRequest;
         
         localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
