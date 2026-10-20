@@ -23,22 +23,24 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 1. جلب حالة الاشتراك
+        // 1. جلب حالة الاشتراك ومعلومات الحساب
         window.checkSubscriptionStatus = function() {
             const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-            
             if (savedUser.uid) {
                 const userRef = doc(db, 'tradelix_users', savedUser.uid);
                 onSnapshot(userRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         updateStatusUI(data.status || 'inactive');
+                        updateAccountUI(data); // تحديث واجهة الحساب
                     } else {
                         updateStatusUI('inactive');
+                        updateAccountUI({});
                     }
                 });
             } else {
                 updateStatusUI('inactive');
+                updateAccountUI({});
             }
         };
 
@@ -69,7 +71,42 @@
             }
         }
 
-        // 2. الاستماع لإشارات الذهب
+        // 2. تحديث بيانات واجهة الحساب
+        function updateAccountUI(data) {
+            const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+            
+            document.getElementById('accName').textContent = data.name || savedUser.name || '-';
+            document.getElementById('accEmail').textContent = data.email || savedUser.email || '-';
+            
+            const statusEl = document.getElementById('accStatus');
+            statusEl.textContent = (data.status || 'inactive').toUpperCase();
+            if(data.status === 'active') statusEl.style.color = '#00D084';
+            else if(data.status === 'pending') statusEl.style.color = '#F5C518';
+            else statusEl.style.color = '#FF4757';
+
+            document.getElementById('accPlan').textContent = data.plan || '-';
+            document.getElementById('accStart').textContent = data.startDate || '-';
+            document.getElementById('accExpiry').textContent = data.expiryDate || '-';
+
+            let daysLeftText = '-';
+            if (data.expiryDate) {
+                const expiry = new Date(data.expiryDate);
+                const now = new Date();
+                const diffTime = expiry - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays > 0) {
+                    daysLeftText = diffDays + ' Days';
+                } else if (diffDays === 0) {
+                    daysLeftText = 'Expires Today';
+                } else {
+                    daysLeftText = 'Expired';
+                }
+            }
+            document.getElementById('accDays').textContent = daysLeftText;
+        }
+
+        // 3. الاستماع لإشارات الذهب
         window.initSignalListener = function() {
             const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(1));
             onSnapshot(q, (snapshot) => {
@@ -101,7 +138,7 @@
     <style>
         :root { --bg-main: #0a0a0a; --bg-card: #141414; --gold: #F5C518; --green: #00D084; --red: #FF4757; --text-main: #ffffff; --text-muted: #999999; --border: #1F1F1F; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; padding-bottom: 20px; }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; }
         
         /* الهيدر */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; margin-bottom: 16px; border-bottom: 1px solid var(--border); background: var(--bg-card); position: sticky; top: 0; z-index: 100; }
@@ -114,7 +151,6 @@
         
         /* المحتوى */
         .container { padding: 0 20px; max-width: 480px; margin: 0 auto; }
-        
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
         
         /* بطاقة حالة الاشتراك */
@@ -139,16 +175,6 @@
         .stat-icon { margin-bottom: 10px; display: flex; justify-content: center; align-items: center; height: 40px; }
         .stat-value { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
         .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase; }
-
-        /* أزرار التنقل الداخلية (الإشارات والرئيسية) */
-        .nav-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .nav-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.3s; text-decoration: none; }
-        .nav-btn:active { transform: scale(0.95); background: #1a1a1a; }
-        .nav-btn.active { border-color: var(--gold); box-shadow: 0 0 15px rgba(245,197,24,0.15); background: rgba(245,197,24,0.05); }
-        .nav-btn svg { width: 28px; height: 28px; }
-        .nav-btn span { font-size: 14px; font-weight: 900; letter-spacing: 0.5px; }
-        .nav-btn.active span { color: var(--gold); }
-        .nav-btn:not(.active) span { color: var(--text-muted); }
 
         /* بطاقة السعر */
         .price-card { text-align: center; border-color: rgba(245, 197, 24, 0.4); background: linear-gradient(145deg, #1A1500, #0a0a0a); margin-bottom: 30px; }
@@ -180,6 +206,26 @@
         .plan-buy-gold:active { transform: scale(0.95); background: #E5B000; }
         .best-value-badge { position: absolute; top: -10px; right: 20px; background: #F5C518; color: #000; font-size: 10px; font-weight: 900; padding: 4px 10px; border-radius: 10px; letter-spacing: 0.5px; }
 
+        /* شريط التنقل السفلي */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0d0d0d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0 15px 0; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; transition: 0.2s; }
+        .nav-item.active { color: var(--gold); }
+        .nav-item svg { width: 24px; height: 24px; }
+        .nav-item:active { transform: scale(0.9); }
+
+        /* واجهة الحساب (Account Overlay) */
+        .account-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
+        .account-overlay.active { display: block; }
+        .account-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
+        .account-header h2 { font-size: 20px; font-weight: 900; color: var(--gold); }
+        .close-account { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
+        .account-body { padding: 20px; max-width: 480px; margin: 0 auto; }
+        
+        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; font-size: 14px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-row span:first-child { color: var(--text-muted); }
+        .info-row span:last-child { color: var(--text-main); font-weight: 700; }
+
         /* واجهة الإيداع */
         .deposit-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .deposit-overlay.active { display: block; }
@@ -187,10 +233,6 @@
         .deposit-header h2 { font-size: 20px; font-weight: 900; color: var(--gold); }
         .close-deposit { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
         .deposit-body { padding: 20px; max-width: 480px; margin: 0 auto; }
-        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; font-size: 14px; }
-        .info-row:last-child { border-bottom: none; }
-        .info-row span:first-child { color: var(--text-muted); }
-        .info-row span:last-child { color: var(--gold); font-weight: 700; }
         .wallet-box { background: #000; border: 1px dashed var(--gold); border-radius: 12px; padding: 15px; text-align: center; word-break: break-all; font-family: monospace; font-size: 13px; color: var(--gold); margin: 20px 0 10px 0; }
         .copy-btn { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 25px; }
         .copy-btn:active { background: #E5B000; }
@@ -205,6 +247,10 @@
         .signal-header-top { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
         .close-signal { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
         
+        .signal-price-ticker { text-align: center; margin-bottom: 15px; padding: 15px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); margin: 0 20px 15px 20px;}
+        .signal-price-ticker div:first-child { font-size: 11px; color: var(--gold); font-weight: 700; margin-bottom: 5px; }
+        .signal-price-ticker div:last-child { font-size: 26px; font-weight: 900; color: #fff; transition: color 0.2s ease, text-shadow 0.2s ease; }
+
         .signal-card-full { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 16px; padding: 20px; margin: 0 20px 20px 20px; box-shadow: 0 0 20px rgba(245, 197, 24, 0.2); }
         .signal-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .live-badge { background: rgba(0, 208, 132, 0.15); color: var(--green); border: 1px solid var(--green); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
@@ -272,29 +318,6 @@
             </div>
         </div>
 
-        <!-- أزرار التنقل الداخلية (Signals & Home) -->
-        <div class="nav-buttons-grid">
-            <!-- زر الإشارات -->
-            <div class="nav-btn" onclick="openSignalScreen()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 17L9 11L13 15L21 7"/>
-                    <path d="M21 3V7H17"/>
-                    <circle cx="9" cy="11" r="1.5" fill="#F5C518"/>
-                    <circle cx="13" cy="15" r="1.5" fill="#F5C518"/>
-                </svg>
-                <span style="color: var(--gold);">Signals</span>
-            </div>
-
-            <!-- زر الرئيسية (Home) -->
-            <div class="nav-btn active" onclick="goHome()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <span>Home</span>
-            </div>
-        </div>
-
         <!-- بطاقة السعر -->
         <div class="card price-card">
             <div class="price-title">LIVE GOLD PRICE (XAU/USD)</div>
@@ -324,7 +347,7 @@
         </div>
 
         <!-- خطط الاشتراك -->
-        <div class="section-title">💎 Subscription Plans</div>
+        <div class="section-title" id="plansSection">💎 Subscription Plans</div>
         
         <div class="plan-card-gold">
             <div class="plan-info-gold">
@@ -361,12 +384,86 @@
     </div>
 
     <!-- ========================================== -->
+    <!-- شريط التنقل السفلي -->
+    <!-- ========================================== -->
+    <div class="bottom-nav">
+        <!-- Account -->
+        <div class="nav-item" onclick="openAccountScreen()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Account</span>
+        </div>
+        
+        <!-- VIP (Scrolls to plans) -->
+        <div class="nav-item" onclick="scrollToPlans()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12l4 6-10 13L2 9z"></path>
+            </svg>
+            <span>VIP</span>
+        </div>
+
+        <!-- Signals -->
+        <div class="nav-item" onclick="openSignalScreen()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 17L9 11L13 15L21 7"/>
+                <path d="M21 3V7H17"/>
+                <circle cx="9" cy="11" r="1.5" fill="#F5C518"/>
+                <circle cx="13" cy="15" r="1.5" fill="#F5C518"/>
+            </svg>
+            <span>Signals</span>
+        </div>
+
+        <!-- Home (Active) -->
+        <div class="nav-item active" onclick="goHome()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- واجهة الحساب (Account Overlay) -->
+    <!-- ========================================== -->
+    <div id="accountOverlay" class="account-overlay">
+        <div class="account-header">
+            <h2>My Account</h2>
+            <button class="close-account" onclick="closeAccountScreen()">✕</button>
+        </div>
+        <div class="account-body">
+            <!-- بيانات المستخدم -->
+            <div class="card">
+                <h3 style="color: var(--gold); margin-bottom: 15px; font-size: 16px;">👤 User Information</h3>
+                <div class="info-row"><span>Name</span><span id="accName">-</span></div>
+                <div class="info-row"><span>Email</span><span id="accEmail">-</span></div>
+            </div>
+            <!-- تفاصيل الباقة -->
+            <div class="card">
+                <h3 style="color: var(--gold); margin-bottom: 15px; font-size: 16px;">💎 Subscription Details</h3>
+                <div class="info-row"><span>Status</span><span id="accStatus">-</span></div>
+                <div class="info-row"><span>Plan</span><span id="accPlan">-</span></div>
+                <div class="info-row"><span>Start Date</span><span id="accStart">-</span></div>
+                <div class="info-row"><span>Expiry Date</span><span id="accExpiry">-</span></div>
+                <div class="info-row"><span>Days Left</span><span id="accDays">-</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
     <!-- واجهة الإشارات (Signal Overlay) -->
     <!-- ========================================== -->
     <div id="signalOverlay" class="signal-overlay">
         <div class="signal-header-top">
             <h2 style="color: var(--gold); font-size: 20px; font-weight: 900;">Trading Signals</h2>
             <button class="close-signal" onclick="closeSignalScreen()">✕</button>
+        </div>
+
+        <div class="signal-price-ticker">
+            <div>LIVE GOLD PRICE (XAU/USD)</div>
+            <div id="liveGoldPriceSignal">$0.00</div>
         </div>
 
         <div class="signal-card-full">
@@ -409,22 +506,10 @@
         <div class="deposit-body">
             <div class="card" style="border-color: var(--gold);">
                 <h3 style="color: var(--gold); margin-bottom: 15px; font-size: 16px;">💳 Payment Details</h3>
-                <div class="info-row">
-                    <span>Plan</span>
-                    <span id="depositPlanText">-</span>
-                </div>
-                <div class="info-row">
-                    <span>Amount</span>
-                    <span id="depositAmountText">$0</span>
-                </div>
-                <div class="info-row">
-                    <span>Network</span>
-                    <span>BNB Smart Chain</span>
-                </div>
-                <div class="info-row">
-                    <span>Currency</span>
-                    <span>USDT (BEP20)</span>
-                </div>
+                <div class="info-row"><span>Plan</span><span id="depositPlanText">-</span></div>
+                <div class="info-row"><span>Amount</span><span id="depositAmountText">$0</span></div>
+                <div class="info-row"><span>Network</span><span>BNB Smart Chain</span></div>
+                <div class="info-row"><span>Currency</span><span>USDT (BEP20)</span></div>
             </div>
 
             <div class="section-title" style="font-size: 15px; margin-top: 20px;">💰 Wallet Address</div>
@@ -474,19 +559,22 @@
 
             if (currentPrice > 0) {
                 const priceEl = document.getElementById('liveGoldPrice');
-                priceEl.textContent = '$' + currentPrice.toFixed(2);
+                const signalPriceEl = document.getElementById('liveGoldPriceSignal');
+                
+                if (priceEl) priceEl.textContent = '$' + currentPrice.toFixed(2);
+                if (signalPriceEl) signalPriceEl.textContent = '$' + currentPrice.toFixed(2);
 
                 if (previousPrice !== 0) {
                     if (currentPrice > previousPrice) { 
-                        priceEl.style.color = '#00D084';
-                        priceEl.style.textShadow = '0 0 15px #00D084';
+                        if (priceEl) { priceEl.style.color = '#00D084'; priceEl.style.textShadow = '0 0 15px #00D084'; }
+                        if (signalPriceEl) { signalPriceEl.style.color = '#00D084'; signalPriceEl.style.textShadow = '0 0 15px #00D084'; }
                     } else if (currentPrice < previousPrice) { 
-                        priceEl.style.color = '#FF4757';
-                        priceEl.style.textShadow = '0 0 15px #FF4757';
+                        if (priceEl) { priceEl.style.color = '#FF4757'; priceEl.style.textShadow = '0 0 15px #FF4757'; }
+                        if (signalPriceEl) { signalPriceEl.style.color = '#FF4757'; signalPriceEl.style.textShadow = '0 0 15px #FF4757'; }
                     }
                     setTimeout(() => {
-                        priceEl.style.color = '#ffffff';
-                        priceEl.style.textShadow = 'none';
+                        if (priceEl) { priceEl.style.color = '#ffffff'; priceEl.style.textShadow = 'none'; }
+                        if (signalPriceEl) { signalPriceEl.style.color = '#ffffff'; signalPriceEl.style.textShadow = 'none'; }
                     }, 2000);
                 }
                 previousPrice = currentPrice;
@@ -494,13 +582,15 @@
 
             if (change !== 0) {
                 const changeEl = document.getElementById('liveGoldChange');
-                changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-                if (change >= 0) {
-                    changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
-                    changeEl.style.color = '#00D084';
-                } else {
-                    changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
-                    changeEl.style.color = '#FF4757';
+                if (changeEl) {
+                    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                    if (change >= 0) {
+                        changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
+                        changeEl.style.color = '#00D084';
+                    } else {
+                        changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
+                        changeEl.style.color = '#FF4757';
+                    }
                 }
             }
         }
@@ -528,7 +618,11 @@
             loadChart(currentInterval);
         }
 
-        // 5. دوال أزرار التنقل (الإشارات والرئيسية)
+        // 5. دوال التنقل السفلي
+        function scrollToPlans() {
+            document.getElementById('plansSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         function openSignalScreen() {
             document.getElementById('signalOverlay').classList.add('active');
         }
@@ -537,10 +631,18 @@
             document.getElementById('signalOverlay').classList.remove('active');
         }
 
+        function openAccountScreen() {
+            document.getElementById('accountOverlay').classList.add('active');
+        }
+
+        function closeAccountScreen() {
+            document.getElementById('accountOverlay').classList.remove('active');
+        }
+
         function goHome() {
-            // إغلاق أي واجهة مفتوحة (مثل الإشارات أو الإيداع) والعودة لأعلى الصفحة
             closeSignalScreen();
             closeDeposit();
+            closeAccountScreen();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
