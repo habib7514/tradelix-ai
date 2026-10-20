@@ -9,7 +9,6 @@
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        // ✅ تم إضافة setDoc و serverTimestamp لحفظ الطلبات
         import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -22,13 +21,14 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        
+        // ✅ تم إصلاح المشكلة هنا: جعلنا قاعدة البيانات متاحة للجميع
+        window.firebaseDB = getFirestore(app);
+        const db = window.firebaseDB;
 
-        // متغيرات عامة لحفظ بيانات المستخدم الحالي والباقة المختارة
         window.latestUserData = {};
         window.currentGoldPlan = { name: '', price: 0 };
 
-        // 1. جلب حالة الاشتراك ومعلومات الحساب
         window.checkSubscriptionStatus = function() {
             const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
             if (savedUser.uid) {
@@ -36,7 +36,7 @@
                 onSnapshot(userRef, (docSnap) => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        window.latestUserData = data; // حفظ أحدث بيانات
+                        window.latestUserData = data;
                         updateStatusUI(data);
                         updateAccountUI(data);
                     } else {
@@ -50,7 +50,6 @@
             }
         };
 
-        // ✅ تم تعديل هذه الدالة لتفصل بين اشتراك الذهب والعملات
         function updateStatusUI(data) {
             const card = document.getElementById('subStatusCard');
             const badge = document.getElementById('subStatusBadge');
@@ -59,8 +58,6 @@
 
             const status = data.status || 'inactive';
             const planType = data.planType;
-
-            // الشرط: يجب أن يكون الحساب نشطاً ونوع الباقة ذهب أو كلاهما
             const hasGoldAccess = status === 'active' && (planType === 'gold' || planType === 'both');
 
             if(hasGoldAccess) {
@@ -76,7 +73,6 @@
                 title.textContent = 'Awaiting Confirmation';
                 desc.textContent = 'Your deposit is being reviewed by the admin.';
             } else {
-                // إذا كان مشتركاً في العملات فقط، ستظهر له هذه الشاشة الحمراء
                 card.className = 'status-card inactive';
                 badge.textContent = 'INACTIVE';
                 badge.className = 'status-badge inactive';
@@ -85,7 +81,6 @@
             }
         }
 
-        // 2. تحديث بيانات واجهة الحساب
         function updateAccountUI(data) {
             const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
             
@@ -119,7 +114,6 @@
             document.getElementById('accDays').textContent = daysLeftText;
         }
 
-        // 3. الاستماع لإشارات الذهب
         window.initSignalListener = function() {
             const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(1));
             onSnapshot(q, (snapshot) => {
@@ -541,7 +535,6 @@
         let previousPrice = 0;
         let currentInterval = '1';
 
-        // 1. جلب السعر
         async function fetchPrice() {
             let currentPrice = 0;
             let change = 0;
@@ -608,13 +601,11 @@
             }
         }
 
-        // 2. تحميل الشارت
         function loadChart(interval) {
             const container = document.getElementById('chart-container');
             container.innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=${interval}&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en" style="width:100%;height:100%;border:none;"></iframe>`;
         }
 
-        // 3. تغيير الفريم
         function changeChart(interval, btn) {
             currentInterval = interval;
             document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
@@ -622,7 +613,6 @@
             loadChart(interval);
         }
 
-        // 4. دالة التحديث اليدوي
         function refreshAll() {
             const btn = document.getElementById('refreshBtn');
             btn.classList.add('spinning');
@@ -631,12 +621,10 @@
             loadChart(currentInterval);
         }
 
-        // 5. دوال التنقل السفلي
         function scrollToPlans() {
             document.getElementById('plansSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // ✅ حماية صفحة الإشارات من الدخول بدون اشتراك ذهب
         function openSignalScreen() {
             if (!window.latestUserData || window.latestUserData.status !== 'active' || (window.latestUserData.planType !== 'gold' && window.latestUserData.planType !== 'both')) {
                 alert('🔒 You must have an active Gold subscription to view signals.');
@@ -665,7 +653,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 6. دوال واجهة الإيداع
         function openDeposit(planName, price) {
             window.currentGoldPlan = { name: planName, price: price };
             document.getElementById('depositPlanText').textContent = planName;
@@ -687,7 +674,7 @@
             });
         }
 
-        // ✅ تم إصلاح هذه الدالة لحفظ الطلب فعلياً في قاعدة البيانات
+        // ✅ تم إصلاح هذه الدالة لتعمل بشكل صحيح
         async function submitPayment() {
             const txHash = document.getElementById('txHashInput').value.trim();
             if (!txHash) { alert('❌ Please enter the Transaction Hash (TX)'); return; }
@@ -696,14 +683,13 @@
             if (!savedUser.uid) { alert('❌ Please log in first'); return; }
 
             try {
-                // استخدام الدوال المستوردة من Firebase
+                // استدعاء قاعدة البيانات التي تم تعريفها في الأعلى
                 const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
                 
-                // إرسال الطلب إلى Firebase
-                await setDoc(doc(window.db || window.firebaseDB, 'tradelix_users', savedUser.uid), {
+                await setDoc(doc(window.firebaseDB, 'tradelix_users', savedUser.uid), {
                     status: 'pending',
                     plan: window.currentGoldPlan.name,
-                    planType: 'gold', // إجبار النوع على أنه ذهب
+                    planType: 'gold',
                     depositAmount: window.currentGoldPlan.price,
                     txHash: txHash,
                     submittedAt: serverTimestamp()
@@ -712,12 +698,11 @@
                 alert('✅ Payment submitted successfully! Awaiting admin review.');
                 closeDeposit();
             } catch (error) {
-                console.error(error);
-                alert('❌ Submission failed, please try again.');
+                console.error("Firebase Error:", error);
+                alert('❌ Submission failed: ' + error.message);
             }
         }
 
-        // التشغيل التلقائي
         fetchPrice();
         setInterval(fetchPrice, 3000); 
         loadChart('1'); 
