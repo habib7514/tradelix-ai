@@ -506,6 +506,51 @@
     50%      { transform: translateX(4px); }
 }
 /* ═══════════ END GOLD APP BUTTON ═══════════ */
+        /* تصميم المربع التعريفي بالذهب */
+.gold-intro-card {
+    position: relative;
+    background: #1E1E1E;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 15px auto 15px auto;
+    max-width: 300px;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+.gold-intro-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(245, 197, 24, 0.2) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    animation: introShine 4s infinite;
+    pointer-events: none;
+}
+@keyframes introShine {
+    0% { left: -150%; }
+    50%, 100% { left: 150%; }
+}
+.gold-intro-card h3 {
+    color: var(--gold);
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+}
+.gold-intro-card p {
+    color: #AAAAAA;
+    font-size: 12px;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+}
     </style>
     <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
