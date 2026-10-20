@@ -26,6 +26,11 @@
         window.latestUserData = {};
         window.currentGoldPlan = { name: '', price: 0 };
 
+        // دالة مساعدة للتحقق من صلاحية اشتراك الذهب
+        function hasGoldAccess(data) {
+            return data && data.status === 'active' && (data.planType === 'gold' || data.planType === 'both');
+        }
+
         window.checkSubscriptionStatus = function() {
             const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
             if (savedUser.uid) {
@@ -37,11 +42,13 @@
                         updateStatusUI(data);
                         updateAccountUI(data);
                     } else {
+                        window.latestUserData = {};
                         updateStatusUI({});
                         updateAccountUI({});
                     }
                 });
             } else {
+                window.latestUserData = {};
                 updateStatusUI({});
                 updateAccountUI({});
             }
@@ -55,9 +62,9 @@
 
             const status = data.status || 'inactive';
             const planType = data.planType;
-            const hasGoldAccess = status === 'active' && (planType === 'gold' || planType === 'both');
+            const access = hasGoldAccess(data);
 
-            if(hasGoldAccess) {
+            if(access) {
                 card.className = 'status-card active';
                 badge.textContent = 'ACTIVE';
                 badge.className = 'status-badge active';
@@ -86,10 +93,10 @@
             
             const statusEl = document.getElementById('accStatus');
             const status = data.status || 'inactive';
-            const planType = data.planType;
+            const access = hasGoldAccess(data);
             
             statusEl.textContent = status.toUpperCase();
-            if(status === 'active' && (planType === 'gold' || planType === 'both')) statusEl.style.color = '#00D084';
+            if(access) statusEl.style.color = '#00D084';
             else if(status === 'pending') statusEl.style.color = '#F5C518';
             else statusEl.style.color = '#FF4757';
 
@@ -114,6 +121,18 @@
         window.initSignalListener = function() {
             const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(1));
             onSnapshot(q, (snapshot) => {
+                // ✅ منع غير المشتركين من رؤية بيانات الصفقة في الخلفية
+                const user = window.latestUserData;
+                if (!hasGoldAccess(user)) {
+                    document.getElementById('sigPair').textContent = 'XAU/USD Signal';
+                    document.getElementById('sigSL').textContent = '-';
+                    document.getElementById('sigEntry').textContent = '-';
+                    document.getElementById('sigTP').textContent = '-';
+                    document.getElementById('sigStatus').textContent = 'LOCKED';
+                    document.getElementById('sigStatus').style.color = '#FF4757';
+                    return;
+                }
+
                 if (!snapshot.empty) {
                     const signal = snapshot.docs[0].data();
                     document.getElementById('sigPair').textContent = signal.pair || 'XAU/USD Signal';
@@ -133,11 +152,18 @@
             });
         };
 
-        // ✅ دالة لجلب الإشعارات (أحدث 5 صفقات ذهب)
+        // ✅ دالة لجلب الإشعارات مع التحقق من الاشتراك
         window.loadNotifications = function() {
+            const list = document.getElementById('notifList');
+            const user = window.latestUserData;
+            
+            if (!hasGoldAccess(user)) {
+                list.innerHTML = '<p style="color:var(--red); text-align:center;">🔒 Active Gold Subscription required.</p>';
+                return;
+            }
+
             const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(5));
             onSnapshot(q, (snapshot) => {
-                const list = document.getElementById('notifList');
                 if (snapshot.empty) {
                     list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">No notifications yet.</p>';
                     return;
@@ -640,8 +666,13 @@
             document.getElementById('accountOverlay').classList.remove('active');
         }
 
-        // ✅ دوال الإشعارات
+        // ✅ دوال الإشعارات مع التحقق من الصلاحية
         function openNotifications() {
+            if (!window.latestUserData || window.latestUserData.status !== 'active' || (window.latestUserData.planType !== 'gold' && window.latestUserData.planType !== 'both')) {
+                alert('🔒 You must have an active Gold subscription to view signals.');
+                scrollToPlans();
+                return;
+            }
             document.getElementById('notifOverlay').classList.add('active');
             if (typeof loadNotifications === 'function') loadNotifications();
         }
