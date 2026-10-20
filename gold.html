@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tradix Gold - AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-main: #0a0a0a; --bg-card: #141414; --gold: #F5C518; --green: #00D084; --red: #FF4757; --text-main: #ffffff; --text-muted: #999999; --border: #1F1F1F; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; padding-bottom: 20px; }
+        
+        /* الهيدر */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; margin-bottom: 16px; border-bottom: 1px solid var(--border); background: var(--bg-card); position: sticky; top: 0; z-index: 100; }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .back-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(245, 197, 24, 0.15); border: 1px solid rgba(245, 197, 24, 0.5); color: var(--gold); text-decoration: none; }
+        .header-logo { width: 42px; height: 42px; border-radius: 12px; border: 1.5px solid var(--gold); object-fit: cover; }
+        .header-title h1 { font-size: 18px; font-weight: 900; color: var(--gold); }
+        .header-title span { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+        .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; }
+        
+        /* المحتوى */
+        .container { padding: 0 20px; max-width: 480px; margin: 0 auto; }
+        
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
+        
+        /* رسالة الترحيب */
+        .welcome-card { text-align: center; border-color: var(--gold); background: linear-gradient(145deg, #1A1500, #0a0a0a); }
+        @keyframes goldShine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        .gold-shine { background: linear-gradient(90deg, #F5C518 0%, #FFF8DC 50%, #F5C518 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldShine 3s linear infinite; font-weight: 900; font-size: 24px; margin-bottom: 8px; }
+        
+        /* بطاقة السعر */
+        .price-card { text-align: center; border-color: rgba(245, 197, 24, 0.4); background: linear-gradient(145deg, #1A1500, #0a0a0a); }
+        .price-title { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px; }
+        .price-value { font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+        .price-change { display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green); }
+        
+        /* الشارت */
+        .chart-card { padding: 10px; background: #000; }
+        .time-btns { display: flex; gap: 5px; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 10px; overflow-x: auto; }
+        .time-btn { background: transparent; border: none; color: #848E9C; font-weight: 700; font-size: 13px; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+        .time-btn.active { background: #2B3139; color: var(--gold); }
+        #chart-container { width: 100%; height: 350px; border-radius: 10px; overflow: hidden; }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <div class="header">
+        <div class="header-left">
+            <a href="index.html" class="back-btn">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </a>
+            <img src="https://i.postimg.cc/FKqk4pF6/file-00000000358081f69ff796420b71893d.png" class="header-logo" alt="Logo">
+            <div class="header-title">
+                <h1>Tradix Gold</h1>
+                <span>XAU/USD PREMIUM</span>
+            </div>
+        </div>
+        <div class="bell-icon">🔔</div>
+    </div>
+
+    <!-- المحتوى -->
+    <div class="container">
+        <!-- رسالة الترحيب -->
+        <div class="card welcome-card">
+            <h2 class="gold-shine">Welcome to Tradix Gold</h2>
+            <p style="color: #AAAAAA; font-size: 13px;">Your premium gateway to live markets.</p>
+        </div>
+
+        <!-- بطاقة السعر -->
+        <div class="card price-card">
+            <div class="price-title">LIVE GOLD PRICE (XAU/USD)</div>
+            <div id="liveGoldPrice" class="price-value">$0.00</div>
+            <div id="liveGoldChange" class="price-change">+0.00%</div>
+        </div>
+
+        <!-- الشارت -->
+        <div class="card chart-card">
+            <div class="time-btns">
+                <button class="time-btn active" onclick="changeChart('1', this)">1m</button>
+                <button class="time-btn" onclick="changeChart('5', this)">5m</button>
+                <button class="time-btn" onclick="changeChart('15', this)">15m</button>
+                <button class="time-btn" onclick="changeChart('60', this)">1H</button>
+                <button class="time-btn" onclick="changeChart('240', this)">4H</button>
+                <button class="time-btn" onclick="changeChart('W', this)">1W</button>
+            </div>
+            <div id="chart-container"></div>
+        </div>
+    </div>
+
+    <!-- المحرك (JavaScript) -->
+    <script>
+        // 1. جلب السعر
+        async function fetchPrice() {
+            try {
+                const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
+                const data = await res.json();
+                if (data && data.lastPrice) {
+                    const price = parseFloat(data.lastPrice);
+                    const change = parseFloat(data.priceChangePercent);
+                    document.getElementById('liveGoldPrice').textContent = '$' + price.toFixed(2);
+                    
+                    const changeEl = document.getElementById('liveGoldChange');
+                    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                    
+                    if (change >= 0) {
+                        changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
+                        changeEl.style.color = '#00D084';
+                    } else {
+                        changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
+                        changeEl.style.color = '#FF4757';
+                    }
+                }
+            } catch (e) { console.log('Price error', e); }
+        }
+
+        // 2. تحميل الشارت
+        function loadChart(interval) {
+            const container = document.getElementById('chart-container');
+            container.innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&interval=${interval}&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en" style="width:100%;height:100%;border:none;"></iframe>`;
+        }
+
+        // 3. تغيير الفريم
+        function changeChart(interval, btn) {
+            document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadChart(interval);
+        }
+
+        // التشغيل التلقائي عند فتح الصفحة
+        fetchPrice();
+        setInterval(fetchPrice, 5000); // تحديث السعر كل 5 ثواني
+        loadChart('1'); // تشغيل شارت 1 دقيقة افتراضياً
+    </script>
+</body>
+</html>
