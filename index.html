@@ -1448,15 +1448,31 @@ function updateUI() {
     // 3. إظهار/إخفاء الإشارات بناءً على حالة الاشتراك ونوع الباقة
 const activeBox = document.getElementById('activeSignalBox');
 const lockedBox = document.getElementById('lockedSignalBox');
-
 if (activeBox && lockedBox) {
-    // ⏳ انتظار تحميل بيانات المستخدم
-    if (!user || !user.uid) {
-        activeBox.classList.add('hidden');
-        lockedBox.classList.add('hidden');
-        return; 
+    // 🔍 التحقق من القسم الحالي (هل المستخدم في صفحة الذهب أم العملات؟)
+    let isGoldPage = false;
+    if (typeof appMode !== 'undefined' && appMode === 'gold') {
+        isGoldPage = true;
+    } else if (document.getElementById('goldScreen') && document.getElementById('goldScreen').classList.contains('active')) {
+        isGoldPage = true;
+    } else if (window.location.hash.includes('gold')) {
+        isGoldPage = true;
     }
 
+    const currentPageType = isGoldPage ? 'gold' : 'crypto';
+
+    // ✅ الشرط الجديد: يجب أن يكون الحساب نشطاً، ونوع الباقة يطابق الصفحة أو يكون 'both'
+    const hasAccess = user.status === 'active' && 
+                     (user.planType === 'both' || user.planType === currentPageType);
+
+    if (hasAccess) { 
+        activeBox.classList.remove('hidden'); 
+        lockedBox.classList.add('hidden'); 
+    } else { 
+        activeBox.classList.add('hidden'); 
+        lockedBox.classList.remove('hidden'); 
+    }
+}
     // 🔍 اكتشاف الشاشة الحالية بدقة (نبحث عن كلمة gold في ID الشاشة النشطة)
     const activeScreenId = document.querySelector('.screen.active')?.id || '';
     let isGoldPage = activeScreenId.toLowerCase().includes('gold') || 
