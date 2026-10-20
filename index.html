@@ -1448,23 +1448,35 @@ function updateUI() {
     // 3. إظهار/إخفاء الإشارات بناءً على حالة الاشتراك ونوع الباقة
 const activeBox = document.getElementById('activeSignalBox');
 const lockedBox = document.getElementById('lockedSignalBox');
+
 if (activeBox && lockedBox) {
-    // 🔍 التحقق من القسم الحالي (هل المستخدم في صفحة الذهب أم العملات؟)
-    let isGoldPage = false;
-    if (typeof appMode !== 'undefined' && appMode === 'gold') {
-        isGoldPage = true;
-    } else if (document.getElementById('goldScreen') && document.getElementById('goldScreen').classList.contains('active')) {
-        isGoldPage = true;
-    } else if (window.location.hash.includes('gold')) {
-        isGoldPage = true;
+    // ⏳ انتظار تحميل البيانات
+    if (!user || !user.uid) {
+        activeBox.classList.add('hidden');
+        lockedBox.classList.add('hidden');
+        return; 
     }
 
-    const currentPageType = isGoldPage ? 'gold' : 'crypto';
+    // 🔍 اكتشاف الشاشة الحالية بأمان (هل نحن في صفحة الذهب؟)
+    const activeScreen = document.querySelector('.screen.active');
+    const activeScreenId = activeScreen ? activeScreen.id.toLowerCase() : '';
+    
+    // إذا كان اسم الشاشة يحتوي على كلمة gold، أو كان المتغير appMode يساوي gold
+    const isGoldPage = activeScreenId.includes('gold') || 
+                       (typeof appMode !== 'undefined' && appMode === 'gold');
 
-    // ✅ الشرط الجديد: يجب أن يكون الحساب نشطاً، ونوع الباقة يطابق الصفحة أو يكون 'both'
-    const hasAccess = user.status === 'active' && 
-                     (user.planType === 'both' || user.planType === currentPageType);
+    let hasAccess = false;
+    
+    // 🥇 إذا كنا في صفحة الذهب: يجب أن يكون اشتراكه ذهب أو كلاهما
+    if (isGoldPage) {
+        hasAccess = user.status === 'active' && (user.planType === 'gold' || user.planType === 'both');
+    } 
+    // 🪙 إذا كنا في صفحة العملات: يجب أن يكون اشتراكه عملات أو كلاهما
+    else {
+        hasAccess = user.status === 'active' && (user.planType === 'crypto' || user.planType === 'both');
+    }
 
+    // إظهار أو إخفاء الصناديق
     if (hasAccess) { 
         activeBox.classList.remove('hidden'); 
         lockedBox.classList.add('hidden'); 
