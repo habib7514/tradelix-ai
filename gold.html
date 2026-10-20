@@ -32,7 +32,7 @@
         /* بطاقة السعر */
         .price-card { text-align: center; border-color: rgba(245, 197, 24, 0.4); background: linear-gradient(145deg, #1A1500, #0a0a0a); }
         .price-title { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px; }
-        .price-value { font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 8px; transition: color 0.3s ease; }
+        .price-value { font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 8px; transition: color 0.3s ease, text-shadow 0.3s ease; }
         .price-change { display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green); }
         
         /* الشارت */
@@ -91,38 +91,47 @@
 
     <!-- المحرك (JavaScript) -->
     <script>
-        let previousPrice = 0; // متغير لحفظ السعر السابق للمقارنة
+        let previousPrice = 0;
 
-        // 1. جلب السعر وتلوينه حسب الصعود والنزول
+        // 1. جلب السعر من API دقيق يطابق الشارت
         async function fetchPrice() {
             try {
-                const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
+                // جلب سعر الأونصة الحقيقي (مطابق لـ OANDA)
+                const res = await fetch('https://api.gold-api.com/price/XAU');
                 const data = await res.json();
-                if (data && data.lastPrice) {
-                    const price = parseFloat(data.lastPrice);
-                    const change = parseFloat(data.priceChangePercent);
+                
+                if (data && data.price) {
+                    const currentPrice = parseFloat(data.price);
                     const priceEl = document.getElementById('liveGoldPrice');
                     
-                    // تحديث النص
-                    priceEl.textContent = '$' + price.toFixed(2);
-                    
-                    // تلوين السعر إذا تغير عن السابق
+                    // تحديث السعر
+                    priceEl.textContent = '$' + currentPrice.toFixed(2);
+
+                    // تأثير اللون (يستمر 1.5 ثانية مع إضاءة)
                     if (previousPrice !== 0) {
-                        if (price > previousPrice) {
-                            priceEl.style.color = '#00D084'; // أخضر (صعود)
-                        } else if (price < previousPrice) {
-                            priceEl.style.color = '#FF4757'; // أحمر (نزول)
+                        if (currentPrice > previousPrice + 0.05) { // صعود
+                            priceEl.style.color = '#00D084';
+                            priceEl.style.textShadow = '0 0 10px #00D084';
+                        } else if (currentPrice < previousPrice - 0.05) { // نزول
+                            priceEl.style.color = '#FF4757';
+                            priceEl.style.textShadow = '0 0 10px #FF4757';
                         }
-                        
-                        // إعادة اللون للأبيض بعد 800 مللي ثانية
+
+                        // إعادة اللون للأبيض بعد 1.5 ثانية
                         setTimeout(() => {
                             priceEl.style.color = '#ffffff';
-                        }, 800);
+                            priceEl.style.textShadow = 'none';
+                        }, 1500);
                     }
                     
-                    // تحديث السعر السابق
-                    previousPrice = price;
+                    previousPrice = currentPrice;
+                }
 
+                // جلب نسبة التغيير (24 ساعة) من Binance (لأنها غير متوفرة في API الذهب المباشر)
+                const res2 = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
+                const data2 = await res2.json();
+                if (data2 && data2.priceChangePercent) {
+                    const change = parseFloat(data2.priceChangePercent);
                     const changeEl = document.getElementById('liveGoldChange');
                     changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
                     
@@ -150,10 +159,10 @@
             loadChart(interval);
         }
 
-        // التشغيل التلقائي عند فتح الصفحة
+        // التشغيل التلقائي
         fetchPrice();
-        setInterval(fetchPrice, 5000); // تحديث السعر كل 5 ثواني
-        loadChart('1'); // تشغيل شارت 1 دقيقة افتراضياً
+        setInterval(fetchPrice, 3000); // تحديث كل 3 ثواني ليكون أسرع
+        loadChart('1'); 
     </script>
 </body>
 </html>
