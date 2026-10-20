@@ -6,7 +6,6 @@
     <title>Tradix Gold - AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -21,8 +20,6 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        
-        // ✅ تم إصلاح المشكلة هنا: جعلنا قاعدة البيانات متاحة للجميع
         window.firebaseDB = getFirestore(app);
         const db = window.firebaseDB;
 
@@ -147,7 +144,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; }
         
-        /* الهيدر */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; margin-bottom: 16px; border-bottom: 1px solid var(--border); background: var(--bg-card); position: sticky; top: 0; z-index: 100; }
         .header-left { display: flex; align-items: center; gap: 10px; }
         .back-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(245, 197, 24, 0.15); border: 1px solid rgba(245, 197, 24, 0.5); color: var(--gold); text-decoration: none; cursor: pointer; }
@@ -156,11 +152,9 @@
         .header-title span { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
         .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; }
         
-        /* المحتوى */
         .container { padding: 0 20px; max-width: 480px; margin: 0 auto; }
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
         
-        /* بطاقة حالة الاشتراك */
         .status-card { text-align: center; border-radius: 16px; padding: 25px 20px; margin-bottom: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; }
         .status-card::before { content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 150px; height: 150px; border-radius: 50%; filter: blur(50px); opacity: 0.3; z-index: 0; }
         .status-card.active { background: linear-gradient(145deg, #0d2818, #0a0a0a); border: 1px solid rgba(0, 208, 132, 0.4); }
@@ -176,34 +170,29 @@
         .status-card h2 { font-size: 20px; font-weight: 900; margin-bottom: 6px; position: relative; z-index: 1; color: #fff; }
         .status-card p { font-size: 13px; color: var(--text-muted); position: relative; z-index: 1; }
 
-        /* بطاقات الإحصائيات */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .stat-icon { margin-bottom: 10px; display: flex; justify-content: center; align-items: center; height: 40px; }
         .stat-value { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
         .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase; }
 
-        /* بطاقة السعر */
         .price-card { text-align: center; border-color: rgba(245, 197, 24, 0.4); background: linear-gradient(145deg, #1A1500, #0a0a0a); margin-bottom: 30px; }
         .price-title { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px; }
         .price-value { font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 8px; transition: color 0.2s ease, text-shadow 0.2s ease; }
         .price-change { display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green); }
         
-        /* زر التحديث */
         .refresh-btn-wrapper { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 10px; padding-right: 5px; }
         .refresh-icon-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(245, 197, 24, 0.1); border: 1px solid rgba(245, 197, 24, 0.5); color: var(--gold); padding: 8px 14px; border-radius: 20px; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.3s; }
         .refresh-icon-btn:active { background: var(--gold); color: #000; transform: scale(0.95); }
         .refresh-icon-btn svg { transition: transform 0.5s ease; }
         .refresh-icon-btn.spinning svg { transform: rotate(360deg); }
 
-        /* الشارت */
         .chart-card { padding: 10px; background: #000; }
         .time-btns { display: flex; gap: 5px; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 10px; overflow-x: auto; }
         .time-btn { background: transparent; border: none; color: #848E9C; font-weight: 700; font-size: 13px; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
         .time-btn.active { background: #2B3139; color: var(--gold); }
         #chart-container { width: 100%; height: 350px; border-radius: 10px; overflow: hidden; }
 
-        /* خطط الاشتراك */
         .section-title { font-size: 18px; font-weight: 900; color: #fff; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 8px; }
         .plan-card-gold { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; position: relative; }
         .plan-card-gold.premium { border-color: var(--gold); }
@@ -213,27 +202,23 @@
         .plan-buy-gold:active { transform: scale(0.95); background: #E5B000; }
         .best-value-badge { position: absolute; top: -10px; right: 20px; background: #F5C518; color: #000; font-size: 10px; font-weight: 900; padding: 4px 10px; border-radius: 10px; letter-spacing: 0.5px; }
 
-        /* شريط التنقل السفلي */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0d0d0d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0 15px 0; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; transition: 0.2s; }
         .nav-item.active { color: var(--gold); }
         .nav-item svg { width: 24px; height: 24px; }
         .nav-item:active { transform: scale(0.9); }
 
-        /* واجهة الحساب (Account Overlay) */
         .account-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .account-overlay.active { display: block; }
         .account-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
         .account-header h2 { font-size: 20px; font-weight: 900; color: var(--gold); }
         .close-account { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
         .account-body { padding: 20px; max-width: 480px; margin: 0 auto; }
-        
         .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; font-size: 14px; }
         .info-row:last-child { border-bottom: none; }
         .info-row span:first-child { color: var(--text-muted); }
         .info-row span:last-child { color: var(--text-main); font-weight: 700; }
 
-        /* واجهة الإيداع */
         .deposit-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .deposit-overlay.active { display: block; }
         .deposit-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
@@ -248,7 +233,6 @@
         .submit-btn { width: 100%; padding: 16px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; }
         .submit-btn:active { background: #E5B000; }
 
-        /* واجهة الإشارات */
         .signal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .signal-overlay.active { display: block; }
         .signal-header-top { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
@@ -273,7 +257,6 @@
 </head>
 <body>
 
-    <!-- الهيدر الأساسي -->
     <div class="header">
         <div class="header-left">
             <a href="javascript:void(0)" onclick="history.back()" class="back-btn">
@@ -288,17 +271,13 @@
         <div class="bell-icon">🔔</div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
     <div class="container">
-        
-        <!-- بطاقة حالة الاشتراك -->
         <div id="subStatusCard" class="status-card inactive">
             <div id="subStatusBadge" class="status-badge inactive">INACTIVE</div>
             <h2 id="subStatusTitle">No Active Subscription</h2>
             <p id="subStatusDesc">Subscribe below to unlock premium signals.</p>
         </div>
 
-        <!-- بطاقات الإحصائيات -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">
@@ -325,14 +304,12 @@
             </div>
         </div>
 
-        <!-- بطاقة السعر -->
         <div class="card price-card">
             <div class="price-title">LIVE GOLD PRICE (XAU/USD)</div>
             <div id="liveGoldPrice" class="price-value">$0.00</div>
             <div id="liveGoldChange" class="price-change">+0.00%</div>
         </div>
 
-        <!-- زر التحديث -->
         <div class="refresh-btn-wrapper">
             <button class="refresh-icon-btn" onclick="refreshAll()" id="refreshBtn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
@@ -340,7 +317,6 @@
             </button>
         </div>
 
-        <!-- الشارت -->
         <div class="card chart-card">
             <div class="time-btns">
                 <button class="time-btn active" onclick="changeChart('1', this)">1m</button>
@@ -353,7 +329,6 @@
             <div id="chart-container"></div>
         </div>
 
-        <!-- خطط الاشتراك -->
         <div class="section-title" id="plansSection">💎 Subscription Plans</div>
         
         <div class="plan-card-gold">
@@ -390,11 +365,7 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- شريط التنقل السفلي -->
-    <!-- ========================================== -->
     <div class="bottom-nav">
-        <!-- Account -->
         <div class="nav-item" onclick="openAccountScreen()">
             <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -403,7 +374,6 @@
             <span>Account</span>
         </div>
         
-        <!-- VIP (Scrolls to plans) -->
         <div class="nav-item" onclick="scrollToPlans()">
             <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M6 3h12l4 6-10 13L2 9z"></path>
@@ -411,7 +381,6 @@
             <span>VIP</span>
         </div>
 
-        <!-- Signals -->
         <div class="nav-item" onclick="openSignalScreen()">
             <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 17L9 11L13 15L21 7"/>
@@ -422,7 +391,6 @@
             <span>Signals</span>
         </div>
 
-        <!-- Home (Active) -->
         <div class="nav-item active" onclick="goHome()">
             <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -432,22 +400,17 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- واجهة الحساب (Account Overlay) -->
-    <!-- ========================================== -->
     <div id="accountOverlay" class="account-overlay">
         <div class="account-header">
             <h2>My Account</h2>
             <button class="close-account" onclick="closeAccountScreen()">✕</button>
         </div>
         <div class="account-body">
-            <!-- بيانات المستخدم -->
             <div class="card">
                 <h3 style="color: var(--gold); margin-bottom: 15px; font-size: 16px;">👤 User Information</h3>
                 <div class="info-row"><span>Name</span><span id="accName">-</span></div>
                 <div class="info-row"><span>Email</span><span id="accEmail">-</span></div>
             </div>
-            <!-- تفاصيل الباقة -->
             <div class="card">
                 <h3 style="color: var(--gold); margin-bottom: 15px; font-size: 16px;">💎 Subscription Details</h3>
                 <div class="info-row"><span>Status</span><span id="accStatus">-</span></div>
@@ -459,9 +422,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- واجهة الإشارات (Signal Overlay) -->
-    <!-- ========================================== -->
     <div id="signalOverlay" class="signal-overlay">
         <div class="signal-header-top">
             <h2 style="color: var(--gold); font-size: 20px; font-weight: 900;">Trading Signals</h2>
@@ -501,9 +461,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- واجهة الإيداع -->
-    <!-- ========================================== -->
     <div id="depositOverlay" class="deposit-overlay">
         <div class="deposit-header">
             <h2>Deposit / Payment</h2>
@@ -530,7 +487,6 @@
         </div>
     </div>
 
-    <!-- المحرك (JavaScript) -->
     <script>
         let previousPrice = 0;
         let currentInterval = '1';
@@ -540,21 +496,21 @@
             let change = 0;
 
             try {
-                const res = await fetch('https://api.metals.live/v1/spot');
+                const res = await fetch('https://api.gold-api.com/price/XAU');
                 const data = await res.json();
-                if (data && Array.isArray(data)) {
-                    for (let item of data) {
-                        if (item.gold) { currentPrice = parseFloat(item.gold); break; }
-                    }
-                }
-            } catch (e) { console.log('metals.live failed'); }
+                if (data && data.price) currentPrice = parseFloat(data.price);
+            } catch (e) { console.log('gold-api failed'); }
 
             if (!currentPrice || isNaN(currentPrice)) {
                 try {
-                    const res = await fetch('https://api.gold-api.com/price/XAU');
+                    const res = await fetch('https://api.metals.live/v1/spot');
                     const data = await res.json();
-                    if (data && data.price) currentPrice = parseFloat(data.price);
-                } catch (e) { console.log('gold-api fallback failed'); }
+                    if (data && Array.isArray(data)) {
+                        for (let item of data) {
+                            if (item.gold) { currentPrice = parseFloat(item.gold); break; }
+                        }
+                    }
+                } catch (e) { console.log('metals.live fallback failed'); }
             }
 
             try {
@@ -674,7 +630,6 @@
             });
         }
 
-        // ✅ تم إصلاح هذه الدالة لتعمل بشكل صحيح
         async function submitPayment() {
             const txHash = document.getElementById('txHashInput').value.trim();
             if (!txHash) { alert('❌ Please enter the Transaction Hash (TX)'); return; }
@@ -683,7 +638,6 @@
             if (!savedUser.uid) { alert('❌ Please log in first'); return; }
 
             try {
-                // استدعاء قاعدة البيانات التي تم تعريفها في الأعلى
                 const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
                 
                 await setDoc(doc(window.firebaseDB, 'tradelix_users', savedUser.uid), {
@@ -692,7 +646,7 @@
                     planType: 'gold',
                     depositAmount: window.currentGoldPlan.price,
                     txHash: txHash,
-                    submittedAt: serverTimestamp()
+                    submittedAt: serverTimestamp() // ✅ مهم جداً للإشعارات
                 }, { merge: true });
 
                 alert('✅ Payment submitted successfully! Awaiting admin review.');
