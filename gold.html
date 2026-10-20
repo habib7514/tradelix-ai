@@ -5,6 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tradix Gold - AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM",
+            authDomain: "tradelix-ai.firebaseapp.com",
+            projectId: "tradelix-ai",
+            storageBucket: "tradelix-ai.firebasestorage.app",
+            messagingSenderId: "374195897663",
+            appId: "1:374195897663:web:e1ed0ce2c30a4b6aeabf8a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 1. جلب حالة الاشتراك
+        window.checkSubscriptionStatus = function() {
+            const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+            
+            if (savedUser.uid) {
+                const userRef = doc(db, 'tradelix_users', savedUser.uid);
+                onSnapshot(userRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        updateStatusUI(data.status || 'inactive');
+                    } else {
+                        updateStatusUI('inactive');
+                    }
+                });
+            } else {
+                updateStatusUI('inactive');
+            }
+        };
+
+        function updateStatusUI(status) {
+            const card = document.getElementById('subStatusCard');
+            const badge = document.getElementById('subStatusBadge');
+            const title = document.getElementById('subStatusTitle');
+            const desc = document.getElementById('subStatusDesc');
+
+            if(status === 'active') {
+                card.className = 'status-card active';
+                badge.textContent = 'ACTIVE';
+                badge.className = 'status-badge active';
+                title.textContent = 'Subscription Active';
+                desc.textContent = 'You have full access to premium gold signals.';
+            } else if (status === 'pending') {
+                card.className = 'status-card pending';
+                badge.textContent = 'PENDING';
+                badge.className = 'status-badge pending';
+                title.textContent = 'Awaiting Confirmation';
+                desc.textContent = 'Your deposit is being reviewed by the admin.';
+            } else {
+                card.className = 'status-card inactive';
+                badge.textContent = 'INACTIVE';
+                badge.className = 'status-badge inactive';
+                title.textContent = 'No Active Subscription';
+                desc.textContent = 'Subscribe below to unlock premium signals.';
+            }
+        }
+
+        // 2. الاستماع لإشارات الذهب
+        window.initSignalListener = function() {
+            const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(1));
+            onSnapshot(q, (snapshot) => {
+                if (!snapshot.empty) {
+                    const signal = snapshot.docs[0].data();
+                    document.getElementById('sigPair').textContent = signal.pair || 'XAU/USD Signal';
+                    document.getElementById('sigSL').textContent = signal.stopLoss || '-';
+                    document.getElementById('sigEntry').textContent = signal.entry || '-';
+                    document.getElementById('sigTP').textContent = signal.takeProfit || '-';
+                    document.getElementById('sigStatus').textContent = signal.direction || 'ACTIVE';
+                    document.getElementById('sigStatus').style.color = '#00D084';
+                } else {
+                    document.getElementById('sigPair').textContent = 'XAU/USD Signal';
+                    document.getElementById('sigSL').textContent = '-';
+                    document.getElementById('sigEntry').textContent = '-';
+                    document.getElementById('sigTP').textContent = '-';
+                    document.getElementById('sigStatus').textContent = 'WAITING';
+                    document.getElementById('sigStatus').style.color = '#999999';
+                }
+            });
+        };
+        
+        setTimeout(() => {
+            window.checkSubscriptionStatus();
+            window.initSignalListener();
+        }, 1000);
+    </script>
+
     <style>
         :root { --bg-main: #0a0a0a; --bg-card: #141414; --gold: #F5C518; --green: #00D084; --red: #FF4757; --text-main: #ffffff; --text-muted: #999999; --border: #1F1F1F; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -24,11 +117,39 @@
         
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
         
-        /* رسالة الترحيب */
-        .welcome-card { text-align: center; border-color: var(--gold); background: linear-gradient(145deg, #1A1500, #0a0a0a); }
-        @keyframes goldShine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-        .gold-shine { background: linear-gradient(90deg, #F5C518 0%, #FFF8DC 50%, #F5C518 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldShine 3s linear infinite; font-weight: 900; font-size: 24px; margin-bottom: 8px; }
-        
+        /* بطاقة حالة الاشتراك */
+        .status-card { text-align: center; border-radius: 16px; padding: 25px 20px; margin-bottom: 20px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .status-card::before { content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 150px; height: 150px; border-radius: 50%; filter: blur(50px); opacity: 0.3; z-index: 0; }
+        .status-card.active { background: linear-gradient(145deg, #0d2818, #0a0a0a); border: 1px solid rgba(0, 208, 132, 0.4); }
+        .status-card.active::before { background: var(--green); }
+        .status-card.inactive { background: linear-gradient(145deg, #2a0a0a, #0a0a0a); border: 1px solid rgba(255, 71, 87, 0.4); }
+        .status-card.inactive::before { background: var(--red); }
+        .status-card.pending { background: linear-gradient(145deg, #2a2000, #0a0a0a); border: 1px solid rgba(245, 197, 24, 0.4); }
+        .status-card.pending::before { background: var(--gold); }
+        .status-badge { display: inline-block; padding: 6px 18px; border-radius: 20px; font-size: 12px; font-weight: 900; letter-spacing: 1px; margin-bottom: 12px; position: relative; z-index: 1; }
+        .status-badge.active { background: rgba(0, 208, 132, 0.15); color: var(--green); border: 1px solid var(--green); box-shadow: 0 0 10px rgba(0,208,132,0.3); }
+        .status-badge.inactive { background: rgba(255, 71, 87, 0.15); color: var(--red); border: 1px solid var(--red); box-shadow: 0 0 10px rgba(255,71,87,0.3); }
+        .status-badge.pending { background: rgba(245, 197, 24, 0.15); color: var(--gold); border: 1px solid var(--gold); box-shadow: 0 0 10px rgba(245,197,24,0.3); }
+        .status-card h2 { font-size: 20px; font-weight: 900; margin-bottom: 6px; position: relative; z-index: 1; color: #fff; }
+        .status-card p { font-size: 13px; color: var(--text-muted); position: relative; z-index: 1; }
+
+        /* بطاقات الإحصائيات */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .stat-icon { margin-bottom: 10px; display: flex; justify-content: center; align-items: center; height: 40px; }
+        .stat-value { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
+        .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase; }
+
+        /* أزرار التنقل الداخلية (الإشارات والرئيسية) */
+        .nav-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .nav-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 18px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: 0.3s; text-decoration: none; }
+        .nav-btn:active { transform: scale(0.95); background: #1a1a1a; }
+        .nav-btn.active { border-color: var(--gold); box-shadow: 0 0 15px rgba(245,197,24,0.15); background: rgba(245,197,24,0.05); }
+        .nav-btn svg { width: 28px; height: 28px; }
+        .nav-btn span { font-size: 14px; font-weight: 900; letter-spacing: 0.5px; }
+        .nav-btn.active span { color: var(--gold); }
+        .nav-btn:not(.active) span { color: var(--text-muted); }
+
         /* بطاقة السعر */
         .price-card { text-align: center; border-color: rgba(245, 197, 24, 0.4); background: linear-gradient(145deg, #1A1500, #0a0a0a); margin-bottom: 30px; }
         .price-title { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px; }
@@ -48,11 +169,58 @@
         .time-btn { background: transparent; border: none; color: #848E9C; font-weight: 700; font-size: 13px; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
         .time-btn.active { background: #2B3139; color: var(--gold); }
         #chart-container { width: 100%; height: 350px; border-radius: 10px; overflow: hidden; }
+
+        /* خطط الاشتراك */
+        .section-title { font-size: 18px; font-weight: 900; color: #fff; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 8px; }
+        .plan-card-gold { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; position: relative; }
+        .plan-card-gold.premium { border-color: var(--gold); }
+        .plan-info-gold h4 { font-size: 18px; color: var(--gold); margin-bottom: 5px; font-weight: 900; }
+        .plan-info-gold p { color: var(--text-muted); font-size: 13px; }
+        .plan-buy-gold { background: #F5C518; color: #000; border: none; padding: 12px 25px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.2s; }
+        .plan-buy-gold:active { transform: scale(0.95); background: #E5B000; }
+        .best-value-badge { position: absolute; top: -10px; right: 20px; background: #F5C518; color: #000; font-size: 10px; font-weight: 900; padding: 4px 10px; border-radius: 10px; letter-spacing: 0.5px; }
+
+        /* واجهة الإيداع */
+        .deposit-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
+        .deposit-overlay.active { display: block; }
+        .deposit-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
+        .deposit-header h2 { font-size: 20px; font-weight: 900; color: var(--gold); }
+        .close-deposit { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
+        .deposit-body { padding: 20px; max-width: 480px; margin: 0 auto; }
+        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; font-size: 14px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-row span:first-child { color: var(--text-muted); }
+        .info-row span:last-child { color: var(--gold); font-weight: 700; }
+        .wallet-box { background: #000; border: 1px dashed var(--gold); border-radius: 12px; padding: 15px; text-align: center; word-break: break-all; font-family: monospace; font-size: 13px; color: var(--gold); margin: 20px 0 10px 0; }
+        .copy-btn { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 25px; }
+        .copy-btn:active { background: #E5B000; }
+        .tx-input { width: 100%; background: var(--bg-card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: #fff; font-size: 14px; margin-bottom: 15px; outline: none; }
+        .tx-input:focus { border-color: var(--gold); }
+        .submit-btn { width: 100%; padding: 16px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; }
+        .submit-btn:active { background: #E5B000; }
+
+        /* واجهة الإشارات */
+        .signal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
+        .signal-overlay.active { display: block; }
+        .signal-header-top { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+        .close-signal { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
+        
+        .signal-card-full { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 16px; padding: 20px; margin: 0 20px 20px 20px; box-shadow: 0 0 20px rgba(245, 197, 24, 0.2); }
+        .signal-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .live-badge { background: rgba(0, 208, 132, 0.15); color: var(--green); border: 1px solid var(--green); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
+        .live-badge::before { content: ''; width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 1.5s infinite; }
+        .signal-top-row h2 { color: var(--gold); font-size: 18px; font-weight: 900; }
+        .signal-subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; text-align: right; }
+        
+        .signal-grid-full { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .signal-box-full { background: #000; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; }
+        .signal-box-full span { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
+        .signal-box-full strong { display: block; font-size: 18px; font-weight: 900; color: var(--gold); }
     </style>
 </head>
 <body>
 
-    <!-- الهيدر -->
+    <!-- الهيدر الأساسي -->
     <div class="header">
         <div class="header-left">
             <a href="javascript:void(0)" onclick="history.back()" class="back-btn">
@@ -67,12 +235,64 @@
         <div class="bell-icon">🔔</div>
     </div>
 
-    <!-- المحتوى -->
+    <!-- المحتوى الرئيسي -->
     <div class="container">
-        <!-- رسالة الترحيب -->
-        <div class="card welcome-card">
-            <h2 class="gold-shine">Welcome to Tradix Gold</h2>
-            <p style="color: #AAAAAA; font-size: 13px;">Your premium gateway to live markets.</p>
+        
+        <!-- بطاقة حالة الاشتراك -->
+        <div id="subStatusCard" class="status-card inactive">
+            <div id="subStatusBadge" class="status-badge inactive">INACTIVE</div>
+            <h2 id="subStatusTitle">No Active Subscription</h2>
+            <p id="subStatusDesc">Subscribe below to unlock premium signals.</p>
+        </div>
+
+        <!-- بطاقات الإحصائيات -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="#3b82f6" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                </div>
+                <div class="stat-value">+2.5K</div>
+                <div class="stat-label">MEMBERS</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="#ef4444"/>
+                        <circle cx="12" cy="12" r="7" fill="#ffffff"/>
+                        <circle cx="12" cy="12" r="4" fill="#ef4444"/>
+                        <circle cx="12" cy="12" r="1.5" fill="#ffffff"/>
+                        <path d="M12 2v4m0 12v4m10-10h-4M6 12H2" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="stat-value">87%</div>
+                <div class="stat-label">WIN RATE</div>
+            </div>
+        </div>
+
+        <!-- أزرار التنقل الداخلية (Signals & Home) -->
+        <div class="nav-buttons-grid">
+            <!-- زر الإشارات -->
+            <div class="nav-btn" onclick="openSignalScreen()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 17L9 11L13 15L21 7"/>
+                    <path d="M21 3V7H17"/>
+                    <circle cx="9" cy="11" r="1.5" fill="#F5C518"/>
+                    <circle cx="13" cy="15" r="1.5" fill="#F5C518"/>
+                </svg>
+                <span style="color: var(--gold);">Signals</span>
+            </div>
+
+            <!-- زر الرئيسية (Home) -->
+            <div class="nav-btn active" onclick="goHome()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Home</span>
+            </div>
         </div>
 
         <!-- بطاقة السعر -->
@@ -82,7 +302,7 @@
             <div id="liveGoldChange" class="price-change">+0.00%</div>
         </div>
 
-        <!-- زر التحديث (فوق الشارت) -->
+        <!-- زر التحديث -->
         <div class="refresh-btn-wrapper">
             <button class="refresh-icon-btn" onclick="refreshAll()" id="refreshBtn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
@@ -102,6 +322,120 @@
             </div>
             <div id="chart-container"></div>
         </div>
+
+        <!-- خطط الاشتراك -->
+        <div class="section-title">💎 Subscription Plans</div>
+        
+        <div class="plan-card-gold">
+            <div class="plan-info-gold">
+                <h4>Weekly</h4>
+                <p>7 Days Access</p>
+            </div>
+            <button class="plan-buy-gold" onclick="openDeposit('Weekly', 10)">$10</button>
+        </div>
+
+        <div class="plan-card-gold">
+            <div class="plan-info-gold">
+                <h4>15 Days</h4>
+                <p>15 Days Access</p>
+            </div>
+            <button class="plan-buy-gold" onclick="openDeposit('15 Days', 20)">$20</button>
+        </div>
+
+        <div class="plan-card-gold">
+            <div class="plan-info-gold">
+                <h4>Monthly</h4>
+                <p>30 Days Access</p>
+            </div>
+            <button class="plan-buy-gold" onclick="openDeposit('Monthly', 30)">$30</button>
+        </div>
+
+        <div class="plan-card-gold premium">
+            <span class="best-value-badge">BEST VALUE</span>
+            <div class="plan-info-gold">
+                <h4>3 Months</h4>
+                <p>90 Days Access</p>
+            </div>
+            <button class="plan-buy-gold" onclick="openDeposit('3 Months', 70)">$70</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- واجهة الإشارات (Signal Overlay) -->
+    <!-- ========================================== -->
+    <div id="signalOverlay" class="signal-overlay">
+        <div class="signal-header-top">
+            <h2 style="color: var(--gold); font-size: 20px; font-weight: 900;">Trading Signals</h2>
+            <button class="close-signal" onclick="closeSignalScreen()">✕</button>
+        </div>
+
+        <div class="signal-card-full">
+            <div class="signal-top-row">
+                <span class="live-badge">LIVE</span>
+                <h2 id="sigPair">XAU/USD Signal</h2>
+            </div>
+            <p class="signal-subtitle">Gold Spot / US Dollar</p>
+            
+            <div class="signal-grid-full">
+                <div class="signal-box-full">
+                    <span>STOP LOSS</span>
+                    <strong id="sigSL">-</strong>
+                </div>
+                <div class="signal-box-full">
+                    <span>ENTRY</span>
+                    <strong id="sigEntry" style="color: var(--text-main);">-</strong>
+                </div>
+                <div class="signal-box-full">
+                    <span>STATUS</span>
+                    <strong id="sigStatus">-</strong>
+                </div>
+                <div class="signal-box-full">
+                    <span>TAKE PROFIT</span>
+                    <strong id="sigTP" style="color: var(--green);">-</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- واجهة الإيداع -->
+    <!-- ========================================== -->
+    <div id="depositOverlay" class="deposit-overlay">
+        <div class="deposit-header">
+            <h2>Deposit / Payment</h2>
+            <button class="close-deposit" onclick="closeDeposit()">✕</button>
+        </div>
+
+        <div class="deposit-body">
+            <div class="card" style="border-color: var(--gold);">
+                <h3 style="color: var(--gold); margin-bottom: 15px; font-size: 16px;">💳 Payment Details</h3>
+                <div class="info-row">
+                    <span>Plan</span>
+                    <span id="depositPlanText">-</span>
+                </div>
+                <div class="info-row">
+                    <span>Amount</span>
+                    <span id="depositAmountText">$0</span>
+                </div>
+                <div class="info-row">
+                    <span>Network</span>
+                    <span>BNB Smart Chain</span>
+                </div>
+                <div class="info-row">
+                    <span>Currency</span>
+                    <span>USDT (BEP20)</span>
+                </div>
+            </div>
+
+            <div class="section-title" style="font-size: 15px; margin-top: 20px;">💰 Wallet Address</div>
+            <div class="wallet-box" id="walletAddressText">0x4E11E978119cAAB300b5439B909D06341C24a2A7</div>
+            <button class="copy-btn" onclick="copyWallet()">📋 Copy Address</button>
+
+            <div class="section-title" style="font-size: 15px;">🔗 Transaction Hash (TX)</div>
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;">After sending the payment, paste your transaction hash here</p>
+            <input type="text" id="txHashInput" class="tx-input" placeholder="Paste transaction hash">
+            <button class="submit-btn" onclick="submitPayment()">📤 Submit for Review</button>
+        </div>
     </div>
 
     <!-- المحرك (JavaScript) -->
@@ -114,21 +448,16 @@
             let currentPrice = 0;
             let change = 0;
 
-            // محاولة جلب السعر من metals.live
             try {
                 const res = await fetch('https://api.metals.live/v1/spot');
                 const data = await res.json();
                 if (data && Array.isArray(data)) {
                     for (let item of data) {
-                        if (item.gold) {
-                            currentPrice = parseFloat(item.gold);
-                            break;
-                        }
+                        if (item.gold) { currentPrice = parseFloat(item.gold); break; }
                     }
                 }
             } catch (e) { console.log('metals.live failed'); }
 
-            // إذا فشل، نجلب من gold-api
             if (!currentPrice || isNaN(currentPrice)) {
                 try {
                     const res = await fetch('https://api.gold-api.com/price/XAU');
@@ -137,41 +466,32 @@
                 } catch (e) { console.log('gold-api fallback failed'); }
             }
 
-            // جلب نسبة التغيير
             try {
                 const res2 = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
                 const data2 = await res2.json();
                 if (data2 && data2.priceChangePercent) change = parseFloat(data2.priceChangePercent);
             } catch(e) {}
 
-            // تحديث السعر وتلوينه
             if (currentPrice > 0) {
                 const priceEl = document.getElementById('liveGoldPrice');
                 priceEl.textContent = '$' + currentPrice.toFixed(2);
 
-                // إذا كان هناك سعر سابق، نقارنه لتلوين السعر
                 if (previousPrice !== 0) {
                     if (currentPrice > previousPrice) { 
-                        // صعود: لون أخضر وإضاءة
                         priceEl.style.color = '#00D084';
                         priceEl.style.textShadow = '0 0 15px #00D084';
                     } else if (currentPrice < previousPrice) { 
-                        // نزول: لون أحمر وإضاءة
                         priceEl.style.color = '#FF4757';
                         priceEl.style.textShadow = '0 0 15px #FF4757';
                     }
-                    
-                    // إعادة اللون للأبيض بعد 2 ثانية
                     setTimeout(() => {
                         priceEl.style.color = '#ffffff';
                         priceEl.style.textShadow = 'none';
                     }, 2000);
                 }
-                // تحديث السعر السابق
                 previousPrice = currentPrice;
             }
 
-            // تحديث نسبة التغيير
             if (change !== 0) {
                 const changeEl = document.getElementById('liveGoldChange');
                 changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
@@ -204,9 +524,55 @@
             const btn = document.getElementById('refreshBtn');
             btn.classList.add('spinning');
             setTimeout(() => btn.classList.remove('spinning'), 500);
-            
             fetchPrice();
             loadChart(currentInterval);
+        }
+
+        // 5. دوال أزرار التنقل (الإشارات والرئيسية)
+        function openSignalScreen() {
+            document.getElementById('signalOverlay').classList.add('active');
+        }
+
+        function closeSignalScreen() {
+            document.getElementById('signalOverlay').classList.remove('active');
+        }
+
+        function goHome() {
+            // إغلاق أي واجهة مفتوحة (مثل الإشارات أو الإيداع) والعودة لأعلى الصفحة
+            closeSignalScreen();
+            closeDeposit();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 6. دوال واجهة الإيداع
+        function openDeposit(planName, price) {
+            document.getElementById('depositPlanText').textContent = planName;
+            document.getElementById('depositAmountText').textContent = '$' + price;
+            document.getElementById('depositOverlay').classList.add('active');
+        }
+
+        function closeDeposit() {
+            document.getElementById('depositOverlay').classList.remove('active');
+            document.getElementById('txHashInput').value = ''; 
+        }
+
+        function copyWallet() {
+            const walletText = document.getElementById('walletAddressText').textContent;
+            navigator.clipboard.writeText(walletText).then(() => {
+                alert('✅ Wallet address copied!');
+            }).catch(() => {
+                alert('❌ Failed to copy address');
+            });
+        }
+
+        function submitPayment() {
+            const txHash = document.getElementById('txHashInput').value.trim();
+            if (!txHash) {
+                alert('❌ Please enter the Transaction Hash (TX)');
+                return;
+            }
+            alert('✅ Payment submitted successfully! Awaiting admin review.');
+            closeDeposit();
         }
 
         // التشغيل التلقائي
