@@ -30,11 +30,18 @@
         .gold-shine { background: linear-gradient(90deg, #F5C518 0%, #FFF8DC 50%, #F5C518 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: goldShine 3s linear infinite; font-weight: 900; font-size: 24px; margin-bottom: 8px; }
         
         /* بطاقة السعر */
-        .price-card { text-align: center; border-color: rgba(245, 197, 24, 0.4); background: linear-gradient(145deg, #1A1500, #0a0a0a); }
+        .price-card { text-align: center; border-color: rgba(245, 197, 24, 0.4); background: linear-gradient(145deg, #1A1500, #0a0a0a); margin-bottom: 30px; /* المسافة المطلوبة */ }
         .price-title { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px; }
         .price-value { font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 8px; transition: color 0.3s ease, text-shadow 0.3s ease; }
         .price-change { display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 900; background: rgba(0, 208, 132, 0.1); color: var(--green); }
         
+        /* زر التحديث الجديد */
+        .refresh-btn-wrapper { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 10px; padding-right: 5px; }
+        .refresh-icon-btn { display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(245, 197, 24, 0.1); border: 1px solid rgba(245, 197, 24, 0.5); color: var(--gold); padding: 8px 14px; border-radius: 20px; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.3s; }
+        .refresh-icon-btn:active { background: var(--gold); color: #000; transform: scale(0.95); }
+        .refresh-icon-btn svg { transition: transform 0.5s ease; }
+        .refresh-icon-btn.spinning svg { transform: rotate(360deg); }
+
         /* الشارت */
         .chart-card { padding: 10px; background: #000; }
         .time-btns { display: flex; gap: 5px; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 10px; overflow-x: auto; }
@@ -75,6 +82,14 @@
             <div id="liveGoldChange" class="price-change">+0.00%</div>
         </div>
 
+        <!-- زر التحديث (فوق الشارت) -->
+        <div class="refresh-btn-wrapper">
+            <button class="refresh-icon-btn" onclick="refreshAll()" id="refreshBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                Refresh
+            </button>
+        </div>
+
         <!-- الشارت -->
         <div class="card chart-card">
             <div class="time-btns">
@@ -92,58 +107,71 @@
     <!-- المحرك (JavaScript) -->
     <script>
         let previousPrice = 0;
+        let currentInterval = '1';
 
-        // 1. جلب السعر من API دقيق يطابق الشارت
+        // 1. جلب السعر
         async function fetchPrice() {
+            let currentPrice = 0;
+            let change = 0;
+
             try {
-                // جلب سعر الأونصة الحقيقي (مطابق لـ OANDA)
-                const res = await fetch('https://api.gold-api.com/price/XAU');
+                const res = await fetch('https://api.metals.live/v1/spot');
                 const data = await res.json();
-                
-                if (data && data.price) {
-                    const currentPrice = parseFloat(data.price);
-                    const priceEl = document.getElementById('liveGoldPrice');
-                    
-                    // تحديث السعر
-                    priceEl.textContent = '$' + currentPrice.toFixed(2);
-
-                    // تأثير اللون (يستمر 1.5 ثانية مع إضاءة)
-                    if (previousPrice !== 0) {
-                        if (currentPrice > previousPrice + 0.05) { // صعود
-                            priceEl.style.color = '#00D084';
-                            priceEl.style.textShadow = '0 0 10px #00D084';
-                        } else if (currentPrice < previousPrice - 0.05) { // نزول
-                            priceEl.style.color = '#FF4757';
-                            priceEl.style.textShadow = '0 0 10px #FF4757';
+                if (data && Array.isArray(data)) {
+                    for (let item of data) {
+                        if (item.gold) {
+                            currentPrice = parseFloat(item.gold);
+                            break;
                         }
-
-                        // إعادة اللون للأبيض بعد 1.5 ثانية
-                        setTimeout(() => {
-                            priceEl.style.color = '#ffffff';
-                            priceEl.style.textShadow = 'none';
-                        }, 1500);
                     }
-                    
-                    previousPrice = currentPrice;
                 }
+            } catch (e) { console.log('metals.live failed'); }
 
-                // جلب نسبة التغيير (24 ساعة) من Binance (لأنها غير متوفرة في API الذهب المباشر)
+            if (!currentPrice || isNaN(currentPrice)) {
+                try {
+                    const res = await fetch('https://api.gold-api.com/price/XAU');
+                    const data = await res.json();
+                    if (data && data.price) currentPrice = parseFloat(data.price);
+                } catch (e) { console.log('gold-api fallback failed'); }
+            }
+
+            try {
                 const res2 = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
                 const data2 = await res2.json();
-                if (data2 && data2.priceChangePercent) {
-                    const change = parseFloat(data2.priceChangePercent);
-                    const changeEl = document.getElementById('liveGoldChange');
-                    changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-                    
-                    if (change >= 0) {
-                        changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
-                        changeEl.style.color = '#00D084';
-                    } else {
-                        changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
-                        changeEl.style.color = '#FF4757';
+                if (data2 && data2.priceChangePercent) change = parseFloat(data2.priceChangePercent);
+            } catch(e) {}
+
+            if (currentPrice > 0) {
+                const priceEl = document.getElementById('liveGoldPrice');
+                priceEl.textContent = '$' + currentPrice.toFixed(2);
+
+                if (previousPrice !== 0) {
+                    if (currentPrice > previousPrice + 0.05) { 
+                        priceEl.style.color = '#00D084';
+                        priceEl.style.textShadow = '0 0 10px #00D084';
+                    } else if (currentPrice < previousPrice - 0.05) { 
+                        priceEl.style.color = '#FF4757';
+                        priceEl.style.textShadow = '0 0 10px #FF4757';
                     }
+                    setTimeout(() => {
+                        priceEl.style.color = '#ffffff';
+                        priceEl.style.textShadow = 'none';
+                    }, 1500);
                 }
-            } catch (e) { console.log('Price error', e); }
+                previousPrice = currentPrice;
+            }
+
+            if (change !== 0) {
+                const changeEl = document.getElementById('liveGoldChange');
+                changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                if (change >= 0) {
+                    changeEl.style.background = 'rgba(0, 208, 132, 0.1)';
+                    changeEl.style.color = '#00D084';
+                } else {
+                    changeEl.style.background = 'rgba(255, 71, 87, 0.1)';
+                    changeEl.style.color = '#FF4757';
+                }
+            }
         }
 
         // 2. تحميل الشارت
@@ -154,14 +182,25 @@
 
         // 3. تغيير الفريم
         function changeChart(interval, btn) {
+            currentInterval = interval;
             document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             loadChart(interval);
         }
 
+        // 4. دالة التحديث اليدوي
+        function refreshAll() {
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('spinning');
+            setTimeout(() => btn.classList.remove('spinning'), 500);
+            
+            fetchPrice();
+            loadChart(currentInterval);
+        }
+
         // التشغيل التلقائي
         fetchPrice();
-        setInterval(fetchPrice, 3000); // تحديث كل 3 ثواني ليكون أسرع
+        setInterval(fetchPrice, 3000); 
         loadChart('1'); 
     </script>
 </body>
