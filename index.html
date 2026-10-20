@@ -1448,16 +1448,40 @@ function updateUI() {
     // 3. إظهار/إخفاء الإشارات بناءً على حالة الاشتراك ونوع الباقة
 const activeBox = document.getElementById('activeSignalBox');
 const lockedBox = document.getElementById('lockedSignalBox');
+
 if (activeBox && lockedBox) {
-    // 🔍 التحقق من القسم الحالي (هل المستخدم في صفحة الذهب أم العملات؟)
-    let isGoldPage = false;
-    if (typeof appMode !== 'undefined' && appMode === 'gold') {
-        isGoldPage = true;
-    } else if (document.getElementById('goldScreen') && document.getElementById('goldScreen').classList.contains('active')) {
-        isGoldPage = true;
-    } else if (window.location.hash.includes('gold')) {
-        isGoldPage = true;
+    // ⏳ انتظار تحميل بيانات المستخدم
+    if (!user || !user.uid) {
+        activeBox.classList.add('hidden');
+        lockedBox.classList.add('hidden');
+        return; 
     }
+
+    // 🔍 اكتشاف الشاشة الحالية بدقة (نبحث عن كلمة gold في ID الشاشة النشطة)
+    const activeScreenId = document.querySelector('.screen.active')?.id || '';
+    let isGoldPage = activeScreenId.toLowerCase().includes('gold') || 
+                     (typeof appMode !== 'undefined' && appMode === 'gold') ||
+                     document.body.innerHTML.includes('XAU/USD PREMIUM');
+
+    let hasAccess = false;
+    
+    // 🥇 إذا كنا في صفحة الذهب: يفتح فقط إذا كان نوع الباقة gold أو both
+    if (isGoldPage) {
+        hasAccess = user.status === 'active' && (user.planType === 'gold' || user.planType === 'both');
+    } 
+    // 🪙 إذا كنا في صفحة العملات: يفتح فقط إذا كان نوع الباقة crypto أو both
+    else {
+        hasAccess = user.status === 'active' && (user.planType === 'crypto' || user.planType === 'both');
+    }
+
+    if (hasAccess) { 
+        activeBox.classList.remove('hidden'); 
+        lockedBox.classList.add('hidden'); 
+    } else { 
+        activeBox.classList.add('hidden'); 
+        lockedBox.classList.remove('hidden'); 
+    }
+}
 
     const currentPageType = isGoldPage ? 'gold' : 'crypto';
 
