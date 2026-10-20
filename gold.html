@@ -132,6 +132,29 @@
                 }
             });
         };
+
+        // ✅ دالة لجلب الإشعارات (أحدث 5 صفقات ذهب)
+        window.loadNotifications = function() {
+            const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(5));
+            onSnapshot(q, (snapshot) => {
+                const list = document.getElementById('notifList');
+                if (snapshot.empty) {
+                    list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">No notifications yet.</p>';
+                    return;
+                }
+                list.innerHTML = snapshot.docs.map(doc => {
+                    const s = doc.data();
+                    const date = s.createdAt ? new Date(s.createdAt.seconds * 1000).toLocaleString() : 'Just now';
+                    return `
+                        <div style="border-bottom: 1px solid #222; padding: 12px 0;">
+                            <div style="color: var(--gold); font-weight: 900; font-size: 15px;">🥇 New Gold Signal: ${s.pair || 'XAU/USD'}</div>
+                            <div style="color: #fff; font-size: 14px; margin-top: 4px;">Direction: <span style="color:${s.direction === 'BUY' ? '#00D084' : '#FF4757'}; font-weight:900;">${s.direction}</span> @ ${s.entry}</div>
+                            <div style="color: var(--text-muted); font-size: 11px; margin-top: 6px;">${date}</div>
+                        </div>
+                    `;
+                }).join('');
+            });
+        };
         
         setTimeout(() => {
             window.checkSubscriptionStatus();
@@ -150,7 +173,8 @@
         .header-logo { width: 42px; height: 42px; border-radius: 12px; border: 1.5px solid var(--gold); object-fit: cover; }
         .header-title h1 { font-size: 18px; font-weight: 900; color: var(--gold); }
         .header-title span { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
-        .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; }
+        .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; position: relative; }
+        .bell-icon:active { transform: scale(0.9); }
         
         .container { padding: 0 20px; max-width: 480px; margin: 0 auto; }
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
@@ -268,7 +292,8 @@
                 <span>XAU/USD PREMIUM</span>
             </div>
         </div>
-        <div class="bell-icon">🔔</div>
+        <!-- ✅ تم تعديل زر الجرس ليفتح الإشعارات -->
+        <div class="bell-icon" onclick="openNotifications()">🔔</div>
     </div>
 
     <div class="container">
@@ -418,6 +443,19 @@
                 <div class="info-row"><span>Start Date</span><span id="accStart">-</span></div>
                 <div class="info-row"><span>Expiry Date</span><span id="accExpiry">-</span></div>
                 <div class="info-row"><span>Days Left</span><span id="accDays">-</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ واجهة الإشعارات الجديدة -->
+    <div id="notifOverlay" class="account-overlay">
+        <div class="account-header">
+            <h2>🔔 Notifications</h2>
+            <button class="close-account" onclick="closeNotifications()">✕</button>
+        </div>
+        <div class="account-body">
+            <div id="notifList" class="card">
+                <p style="color:var(--text-muted); text-align:center;">Loading notifications...</p>
             </div>
         </div>
     </div>
@@ -602,10 +640,21 @@
             document.getElementById('accountOverlay').classList.remove('active');
         }
 
+        // ✅ دوال الإشعارات
+        function openNotifications() {
+            document.getElementById('notifOverlay').classList.add('active');
+            if (typeof loadNotifications === 'function') loadNotifications();
+        }
+
+        function closeNotifications() {
+            document.getElementById('notifOverlay').classList.remove('active');
+        }
+
         function goHome() {
             closeSignalScreen();
             closeDeposit();
             closeAccountScreen();
+            closeNotifications();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -646,7 +695,7 @@
                     planType: 'gold',
                     depositAmount: window.currentGoldPlan.price,
                     txHash: txHash,
-                    submittedAt: serverTimestamp() // ✅ مهم جداً للإشعارات
+                    submittedAt: serverTimestamp() 
                 }, { merge: true });
 
                 alert('✅ Payment submitted successfully! Awaiting admin review.');
