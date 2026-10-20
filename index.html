@@ -551,6 +551,50 @@
     position: relative;
     z-index: 1;
 }
+        /* كود زر الذهب مع الحركة واللمعان */
+.join-tradix-btn {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    margin: 15px auto 20px auto;
+    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+    color: #000;
+    font-weight: 900;
+    font-size: 18px;
+    padding: 16px 30px;
+    border-radius: 12px;
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 15px rgba(245, 197, 24, 0.5);
+    width: 100%;
+    max-width: 280px;
+    animation: pulseZoom 2s infinite ease-in-out; /* حركة التكبير والتصغير */
+}
+.join-tradix-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    animation: buttonShine 2.5s infinite; /* حركة اللمعان */
+}
+.join-tradix-btn:active {
+    transform: scale(0.95);
+    animation: none; /* إيقاف الحركة عند الضغط */
+}
+
+@keyframes pulseZoom {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+@keyframes buttonShine {
+    0% { left: -100%; }
+    20%, 100% { left: 100%; }
+}
     </style>
     <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
