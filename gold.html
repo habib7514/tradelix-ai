@@ -26,7 +26,6 @@
         window.latestUserData = {};
         window.currentGoldPlan = { name: '', price: 0 };
 
-        // دالة مساعدة للتحقق من صلاحية اشتراك الذهب
         function hasGoldAccess(data) {
             return data && data.status === 'active' && (data.planType === 'gold' || data.planType === 'both');
         }
@@ -259,7 +258,7 @@
         .account-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .account-overlay.active { display: block; }
         .account-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
-        .account-header h2 { font-size: 20px; font-weight: 900; color: var(--gold); }
+        .account-header h2 { font-size: 20px; font-weight: 900; color: var(--gold); margin: 0; }
         .close-account { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
         .account-body { padding: 20px; max-width: 480px; margin: 0 auto; }
         .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; font-size: 14px; }
@@ -270,7 +269,7 @@
         .deposit-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .deposit-overlay.active { display: block; }
         .deposit-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
-        .deposit-header h2 { font-size: 20px; font-weight: 900; color: var(--gold); }
+        .deposit-header h2 { font-size: 20px; font-weight: 900; color: var(--gold); margin: 0; }
         .close-deposit { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
         .deposit-body { padding: 20px; max-width: 480px; margin: 0 auto; }
         .wallet-box { background: #000; border: 1px dashed var(--gold); border-radius: 12px; padding: 15px; text-align: center; word-break: break-all; font-family: monospace; font-size: 13px; color: var(--gold); margin: 20px 0 10px 0; }
@@ -283,10 +282,11 @@
 
         .signal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .signal-overlay.active { display: block; }
-        .signal-header-top { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+        .signal-header-top { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
+        .signal-header-top h2 { font-size: 20px; font-weight: 900; color: var(--gold); margin: 0; }
         .close-signal { background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; }
         
-        .signal-price-ticker { text-align: center; margin-bottom: 15px; padding: 15px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); margin: 0 20px 15px 20px;}
+        .signal-price-ticker { text-align: center; margin-bottom: 15px; padding: 15px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); margin: 20px 20px 15px 20px;}
         .signal-price-ticker div:first-child { font-size: 11px; color: var(--gold); font-weight: 700; margin-bottom: 5px; }
         .signal-price-ticker div:last-child { font-size: 26px; font-weight: 900; color: #fff; transition: color 0.2s ease, text-shadow 0.2s ease; }
 
@@ -340,7 +340,6 @@
             <a href="javascript:void(0)" onclick="history.back()" class="back-btn">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             </a>
-            <!-- ✅ تم تحديث رابط الأيقونة هنا -->
             <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" class="header-logo" alt="Logo">
             <div class="header-title">
                 <h1>Tradix Gold</h1>
@@ -479,9 +478,13 @@
         </div>
     </div>
 
+    <!-- ✅ تمت إضافة الأيقونة في الشاشات المنسدلة -->
     <div id="accountOverlay" class="account-overlay">
         <div class="account-header">
-            <h2>My Account</h2>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--gold); object-fit: cover;">
+                <h2>My Account</h2>
+            </div>
             <button class="close-account" onclick="closeAccountScreen()">✕</button>
         </div>
         <div class="account-body">
@@ -503,7 +506,10 @@
 
     <div id="notifOverlay" class="account-overlay">
         <div class="account-header">
-            <h2>🔔 Notifications</h2>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--gold); object-fit: cover;">
+                <h2>🔔 Notifications</h2>
+            </div>
             <button class="close-account" onclick="closeNotifications()">✕</button>
         </div>
         <div class="account-body">
@@ -515,7 +521,10 @@
 
     <div id="signalOverlay" class="signal-overlay">
         <div class="signal-header-top">
-            <h2 style="color: var(--gold); font-size: 20px; font-weight: 900;">Trading Signals</h2>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--gold); object-fit: cover;">
+                <h2>Trading Signals</h2>
+            </div>
             <button class="close-signal" onclick="closeSignalScreen()">✕</button>
         </div>
 
@@ -554,7 +563,10 @@
 
     <div id="depositOverlay" class="deposit-overlay">
         <div class="deposit-header">
-            <h2>Deposit / Payment</h2>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--gold); object-fit: cover;">
+                <h2>Deposit / Payment</h2>
+            </div>
             <button class="close-deposit" onclick="closeDeposit()">✕</button>
         </div>
 
@@ -683,7 +695,6 @@
             document.getElementById('plansSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // ✅ دالة إظهار التنبيه المخصص
         function showCustomAlert(title, message, icon = 'ℹ️', action = 'none') {
             document.getElementById('alertIcon').textContent = icon;
             document.getElementById('alertTitle').textContent = title;
@@ -702,7 +713,6 @@
             setTimeout(() => overlay.classList.add('show'), 10);
         }
 
-        // ✅ دالة إغلاق التنبيه وتنفيذ الإجراء
         function handleAlertAction() {
             const overlay = document.getElementById('customAlert');
             overlay.classList.remove('show');
