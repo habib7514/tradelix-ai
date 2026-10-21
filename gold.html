@@ -121,7 +121,6 @@
         window.initSignalListener = function() {
             const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(1));
             onSnapshot(q, (snapshot) => {
-                // ✅ منع غير المشتركين من رؤية بيانات الصفقة في الخلفية
                 const user = window.latestUserData;
                 if (!hasGoldAccess(user)) {
                     document.getElementById('sigPair').textContent = 'XAU/USD Signal';
@@ -152,7 +151,6 @@
             });
         };
 
-        // ✅ دالة لجلب الإشعارات مع التحقق من الاشتراك
         window.loadNotifications = function() {
             const list = document.getElementById('notifList');
             const user = window.latestUserData;
@@ -303,6 +301,36 @@
         .signal-box-full { background: #000; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid #222; }
         .signal-box-full span { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
         .signal-box-full strong { display: block; font-size: 18px; font-weight: 900; color: var(--gold); }
+
+        /* ✅ Custom Alert Popup Styles */
+        .custom-alert-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            z-index: 999999; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .custom-alert-overlay.show { display: flex; opacity: 1; }
+        .custom-alert-box {
+            background: var(--bg-card); border: 1.5px solid var(--gold);
+            border-radius: 20px; padding: 30px 20px; max-width: 320px; width: 90%;
+            text-align: center; box-shadow: 0 0 40px rgba(245, 197, 24, 0.15);
+            transform: translateY(20px) scale(0.95); transition: transform 0.3s ease;
+        }
+        .custom-alert-overlay.show .custom-alert-box { transform: translateY(0) scale(1); }
+        .custom-alert-icon { 
+            width: 70px; height: 70px; margin: 0 auto 15px; 
+            background: rgba(245, 197, 24, 0.1); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 32px;
+            border: 1px solid rgba(245, 197, 24, 0.3);
+        }
+        .custom-alert-title { color: var(--gold); font-size: 22px; font-weight: 900; margin-bottom: 10px; }
+        .custom-alert-text { color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.6; }
+        .custom-alert-btn {
+            background: var(--gold); color: #000; border: none; padding: 14px 20px;
+            border-radius: 12px; font-weight: 900; font-size: 16px; width: 100%; cursor: pointer;
+            transition: 0.2s; font-family: inherit;
+        }
+        .custom-alert-btn:active { transform: scale(0.96); background: #E5B000; }
     </style>
 </head>
 <body>
@@ -318,7 +346,6 @@
                 <span>XAU/USD PREMIUM</span>
             </div>
         </div>
-        <!-- ✅ تم تعديل زر الجرس ليفتح الإشعارات -->
         <div class="bell-icon" onclick="openNotifications()">🔔</div>
     </div>
 
@@ -473,7 +500,6 @@
         </div>
     </div>
 
-    <!-- ✅ واجهة الإشعارات الجديدة -->
     <div id="notifOverlay" class="account-overlay">
         <div class="account-header">
             <h2>🔔 Notifications</h2>
@@ -551,9 +577,20 @@
         </div>
     </div>
 
+    <!-- ✅ Custom Premium Alert Modal -->
+    <div id="customAlert" class="custom-alert-overlay">
+        <div class="custom-alert-box">
+            <div class="custom-alert-icon" id="alertIcon">🔒</div>
+            <div class="custom-alert-title" id="alertTitle">Premium Required</div>
+            <div class="custom-alert-text" id="alertMessage">You must have an active Gold subscription to view premium signals.</div>
+            <button class="custom-alert-btn" id="alertBtn" onclick="handleAlertAction()">View Plans</button>
+        </div>
+    </div>
+
     <script>
         let previousPrice = 0;
         let currentInterval = '1';
+        let alertActionType = 'none';
 
         async function fetchPrice() {
             let currentPrice = 0;
@@ -645,10 +682,40 @@
             document.getElementById('plansSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
+        // ✅ دالة إظهار التنبيه المخصص
+        function showCustomAlert(title, message, icon = 'ℹ️', action = 'none') {
+            document.getElementById('alertIcon').textContent = icon;
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').textContent = message;
+            alertActionType = action;
+            
+            const btn = document.getElementById('alertBtn');
+            if (action === 'plans') {
+                btn.textContent = 'View Plans';
+            } else {
+                btn.textContent = 'OK';
+            }
+
+            const overlay = document.getElementById('customAlert');
+            overlay.style.display = 'flex';
+            setTimeout(() => overlay.classList.add('show'), 10);
+        }
+
+        // ✅ دالة إغلاق التنبيه وتنفيذ الإجراء
+        function handleAlertAction() {
+            const overlay = document.getElementById('customAlert');
+            overlay.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                if (alertActionType === 'plans') {
+                    scrollToPlans();
+                }
+            }, 300);
+        }
+
         function openSignalScreen() {
             if (!window.latestUserData || window.latestUserData.status !== 'active' || (window.latestUserData.planType !== 'gold' && window.latestUserData.planType !== 'both')) {
-                alert('🔒 You must have an active Gold subscription to view signals.');
-                scrollToPlans();
+                showCustomAlert('Premium Required', 'You must have an active Gold subscription to view premium signals.', '🔒', 'plans');
                 return;
             }
             document.getElementById('signalOverlay').classList.add('active');
@@ -666,11 +733,9 @@
             document.getElementById('accountOverlay').classList.remove('active');
         }
 
-        // ✅ دوال الإشعارات مع التحقق من الصلاحية
         function openNotifications() {
             if (!window.latestUserData || window.latestUserData.status !== 'active' || (window.latestUserData.planType !== 'gold' && window.latestUserData.planType !== 'both')) {
-                alert('🔒 You must have an active Gold subscription to view signals.');
-                scrollToPlans();
+                showCustomAlert('Premium Required', 'You must have an active Gold subscription to view notifications.', '🔒', 'plans');
                 return;
             }
             document.getElementById('notifOverlay').classList.add('active');
@@ -704,18 +769,18 @@
         function copyWallet() {
             const walletText = document.getElementById('walletAddressText').textContent;
             navigator.clipboard.writeText(walletText).then(() => {
-                alert('✅ Wallet address copied!');
+                showCustomAlert('Success', 'Wallet address copied successfully!', '✅');
             }).catch(() => {
-                alert('❌ Failed to copy address');
+                showCustomAlert('Error', 'Failed to copy address. Please try manually.', '❌');
             });
         }
 
         async function submitPayment() {
             const txHash = document.getElementById('txHashInput').value.trim();
-            if (!txHash) { alert('❌ Please enter the Transaction Hash (TX)'); return; }
+            if (!txHash) { showCustomAlert('Missing Info', 'Please enter the Transaction Hash (TX) first.', '⚠️'); return; }
 
             const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-            if (!savedUser.uid) { alert('❌ Please log in first'); return; }
+            if (!savedUser.uid) { showCustomAlert('Not Logged In', 'Please log in to submit a payment.', '🚫'); return; }
 
             try {
                 const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
@@ -729,11 +794,11 @@
                     submittedAt: serverTimestamp() 
                 }, { merge: true });
 
-                alert('✅ Payment submitted successfully! Awaiting admin review.');
+                showCustomAlert('Success', 'Payment submitted successfully! Awaiting admin review.', '✅');
                 closeDeposit();
             } catch (error) {
                 console.error("Firebase Error:", error);
-                alert('❌ Submission failed: ' + error.message);
+                showCustomAlert('Submission Failed', 'Error: ' + error.message, '❌');
             }
         }
 
