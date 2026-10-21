@@ -1837,7 +1837,13 @@ async function loadLatestSignal() {
         if (!window.firebaseDB) return;
         const u = _getUser();
         if (!u.uid) return;
+        
+        // ✅ التحقق من حالة الحساب
         if (u.status !== 'active') return;
+        
+        // ✅ السطر الجديد: التحقق من نوع الباقة (عملات أو كلاهما)
+        if (u.planType !== 'crypto' && u.planType !== 'both') return;
+        
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
@@ -1991,7 +1997,16 @@ async function _checkSignals() {
             const q = query(collection(window.firebaseDB, 'tradelix_signals'), orderBy('createdAt', 'desc'), limit(30));
             snap = await getDocs(q);
         } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
+        
+        // ✅ التحقق من الحالة أولاً
         if (u.status !== 'active') { _setLastNotified(Date.now()); return; }
+        
+        // ✅ التحقق من نوع الباقة: يجب أن يكون crypto أو both
+        if (u.planType !== 'crypto' && u.planType !== 'both') { 
+            _setLastNotified(Date.now()); 
+            return; 
+        }
+        
         const lastNotified = _getLastNotified();
         const now = Date.now();
         const startFrom = lastNotified > 0 ? lastNotified : now;
