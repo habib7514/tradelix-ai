@@ -171,15 +171,6 @@
         .tradix-app-btn { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; position: relative; z-index: 1; box-shadow: 0 6px 22px rgba(245, 197, 24, 0.45); }
         .tradix-app-btn .dl-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; flex-shrink: 0; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: stretch; padding: 0; padding-bottom: env(safe-area-inset-bottom, 0); margin: 0; z-index: 999999; min-height: 70px; touch-action: manipulation; -webkit-transform: translateZ(0); transform: translateZ(0); will-change: transform; isolation: isolate; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
-        .nav-item { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--text-muted); font-size: 10px; font-weight: 700; text-decoration: none; width: 100%; min-width: 0; min-height: 70px; cursor: pointer; background: transparent; border: none; font-family: inherit; padding: 8px 2px; margin: 0; touch-action: manipulation; -webkit-tap-highlight-color: rgba(245, 197, 24, 0.18); -webkit-user-select: none; user-select: none; -webkit-appearance: none; appearance: none; -webkit-touch-callout: none; outline: none; transition: color 0.12s ease, transform 0.08s ease, background-color 0.12s ease; position: relative; z-index: 10; box-sizing: border-box; overflow: visible; line-height: 1; }
-        .nav-item:active, .nav-item:focus { background: rgba(245, 197, 24, 0.12); color: var(--gold); transform: scale(0.95); outline: none; }
-        .nav-item.active { color: var(--gold); }
-        .nav-item .icon { font-size: 22px; line-height: 22px; height: 22px; width: 22px; display: flex; align-items: center; justify-content: center; pointer-events: none; user-select: none; -webkit-user-select: none; transition: transform 0.12s ease; position: relative; z-index: 1; }
-        .nav-item:active .icon { transform: scale(1.1); }
-        .nav-item > span:not(.icon) { font-size: 10px; line-height: 1.2; pointer-events: none; user-select: none; -webkit-user-select: none; white-space: nowrap; position: relative; z-index: 1; }
-        .nav-item * { pointer-events: none !important; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-
         .hidden { display: none !important; }
         .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--gold); color: #000000; padding: 12px 24px; border-radius: 10px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s; z-index: 99999; max-width: 90%; text-align: center; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -596,25 +587,44 @@
     0% { left: -100%; }
     20%, 100% { left: 100%; }
 }
-        /* --- Bottom Navigation Styles --- */
+
+        /* --- Bottom Navigation Final Fix --- */
 .bottom-nav {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: rgba(24, 26, 32, 0.95);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(240, 185, 11, 0.2);
-    display: flex; justify-content: space-around; align-items: center;
-    padding: 10px 0; padding-bottom: calc(10px + env(safe-area-inset-bottom));
-    z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #181A20 !important; /* لون داكن صلب لمنع الشفافية */
+    border-top: 1px solid rgba(240, 185, 11, 0.2) !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    padding: 10px 0 !important;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    z-index: 999999 !important;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.5) !important;
+    min-height: 65px !important;
 }
 .nav-item {
-    display: flex; flex-direction: column; align-items: center; text-decoration: none;
-    color: #848E9C; font-family: 'Tajawal', sans-serif; font-size: 11px;
-    font-weight: 600; transition: all 0.3s ease; flex: 1;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    color: #848E9C !important;
+    font-family: 'Tajawal', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    flex: 1 !important;
+    padding: 8px 0 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
 }
-.nav-item i { font-size: 20px; margin-bottom: 5px; transition: all 0.3s ease; }
-.nav-item.active { color: #F0B90B; }
-.nav-item.active i { text-shadow: 0 0 12px rgba(240, 185, 11, 0.6); transform: translateY(-2px); }
-.nav-item:active { transform: scale(0.9); }
+.nav-item i { font-size: 20px !important; margin-bottom: 4px !important; transition: all 0.3s ease !important; }
+.nav-item.active { color: #F5C518 !important; }
+.nav-item.active i { text-shadow: 0 0 12px rgba(245, 197, 24, 0.6) !important; transform: translateY(-2px) !important; }
+.nav-item:active { transform: scale(0.9) !important; }
     </style>
     <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json">
@@ -760,7 +770,7 @@
 <div id="chatButtonContainer" style="display:none; margin: 16px 20px;">
     <button onclick="toggleChat()" class="chat-glow-btn">
         <span style="position:relative; z-index:2; display:flex; align-items:center; gap:10px;">
-            💬 غرفة النقاش
+            <i class="fa-solid fa-comments"></i> غرفة النقاش
         </span>
     </button>
 </div>
@@ -844,8 +854,8 @@
         </div>
         <div class="signals-info-tags">
             <span><i class="fa-solid fa-bolt"></i> Instant Alerts</span>
-<span><i class="fa-solid fa-bullseye"></i> 87% Win Rate</span>
-<span><i class="fa-solid fa-lock-open"></i> Cancel Anytime</span>
+            <span><i class="fa-solid fa-bullseye"></i> 87% Win Rate</span>
+            <span><i class="fa-solid fa-lock-open"></i> Cancel Anytime</span>
         </div>
     </div>
 
@@ -855,8 +865,9 @@
 <div class="plan-card"><div class="plan-info"><h4>Monthly</h4><div class="duration">30 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(30, 'Monthly')">$30</button></div>
 <div class="plan-card premium"><span class="plan-badge">BEST VALUE</span><div class="plan-info"><h4>3 Months</h4><div class="duration">90 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(70, 'Quarterly')">$70</button></div>
 
-    <span style="font-size: 20px; color: var(--gold); letter-spacing: 1px; font-weight: 900; text-shadow: 0 0 15px rgba(245,197,24,0.35);">
-    <i class="fa-solid fa-graduation-cap"></i> LEARN TRADING FROM ZERO
+    <div class="section-title" style="margin-top: 24px;">
+        <span style="font-size: 20px; color: var(--gold); letter-spacing: 1px; font-weight: 900; text-shadow: 0 0 15px rgba(245,197,24,0.35);">
+            <i class="fa-solid fa-graduation-cap"></i> LEARN TRADING FROM ZERO
         </span>
     </div>
     <div class="card" id="viewCoursesCard" style="text-align:center; padding: 20px; border-color: var(--gold); background: var(--bg-card); position: relative; overflow: hidden;">
@@ -884,14 +895,15 @@
 </div>
     <a href="gold.html" class="join-tradix-btn" style="display: block; text-align: center; text-decoration: none; margin-top: 15px; margin-bottom: 20px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%); color: #000; font-weight: 900; font-size: 18px; padding: 16px 30px; border-radius: 12px; border: 2px solid #FFD700; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); width: 100%; max-width: 280px; margin-left: auto; margin-right: auto;">Join Tradix Now</a>
 
+    <!-- Home Screen Bottom Nav -->
     <div class="bottom-nav">
-    <button class="nav-item active" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
-    <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
-    <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
-    <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
-    <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
-    <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
-</div>
+        <button class="nav-item active" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
+    </div>
 </div>
 
 <div id="allMarketsScreen" class="screen">
@@ -914,18 +926,19 @@
     </div>
 </div>
     <div class="markets-grid" id="allMarketsGrid"></div>
+    <!-- All Markets Bottom Nav -->
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
-<button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
-<button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
-<button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
-<button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
-<button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
+        <button class="nav-item active" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
     </div>
 </div>
 
 <div id="signalsScreen" class="screen">
-    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Signals</h1><span>LIVE SIGNALS</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;">✕</div></div>
+    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Signals</h1><span>LIVE SIGNALS</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;"><i class="fa-solid fa-xmark"></i></div></div>
     <div id="activeSignalBox" class="hidden">
         <div class="card" style="border-color: var(--green); background: var(--bg-card);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px;">
@@ -947,82 +960,86 @@
         <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 16px;">Subscribe to access live signals with Entry / SL / TP</p>
         <button class="btn-block" onclick="showScreen('homeScreen')">View Plans</button>
     </div>
+    <!-- Signals Bottom Nav -->
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
-        <button class="nav-item active" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item active" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
     </div>
 </div>
 
 <div id="academyScreen" class="screen">
-    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen', 'viewCoursesCard')" style="font-size: 16px;">✕</div></div>
+    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Academy</h1><span>LEARN TRADING</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen', 'viewCoursesCard')" style="font-size: 16px;"><i class="fa-solid fa-xmark"></i></div></div>
     <div class="card" style="background: var(--bg-card); border-color: var(--gold); text-align: center;">
-        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">📚 Learn Trading From Zero</h2>
+        <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;"><i class="fa-solid fa-book-open"></i> Learn Trading From Zero</h2>
         <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6;">4 professional courses to master crypto trading</p>
     </div>
-    <div class="section-title">🎓 Available Courses</div>
-    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ Trading Basics</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Learn core trading concepts and crypto fundamentals</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics', true)">Buy</button></div></div></div>
-    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ Technical Analysis</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Candlestick patterns and technical indicators</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical', true)">Buy</button></div></div></div>
-    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ Risk Management</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Protect your capital and manage risks effectively</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk', true)">Buy</button></div></div></div>
-    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ Advanced Strategies</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Professional strategies for daily trading</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">📹 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">Buy</button></div></div></div>
+    <div class="section-title"><i class="fa-solid fa-graduation-cap"></i> Available Courses</div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">1️⃣ Trading Basics</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Learn core trading concepts and crypto fundamentals</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-video"></i> 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Basics', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">2️⃣ Technical Analysis</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Candlestick patterns and technical indicators</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-video"></i> 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Technical', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">3️⃣ Risk Management</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Protect your capital and manage risks effectively</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-video"></i> 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Risk', true)">Buy</button></div></div></div>
+    <div class="card"><div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px;"><div style="flex: 1;"><h4 style="color: var(--gold); font-size: 15px; margin-bottom: 6px;">4️⃣ Advanced Strategies</h4><p style="color: var(--text-muted); font-size: 12px; line-height: 1.5;">Professional strategies for daily trading</p><div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-video"></i> 5 Lessons</div></div><div style="text-align: center;"><div style="font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$20</div><button class="plan-buy" onclick="goToDeposit(20, 'Course: Advanced')">Buy</button></div></div></div>
+    <!-- Academy Bottom Nav -->
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
-        <button class="nav-item active" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item active" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
     </div>
 </div>
 
 <div id="depositScreen" class="screen">
-    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Deposit</h1><span>PAYMENT</span></div></div><div class="bell-icon" onclick="showScreen('subscriptionScreen')" style="font-size: 16px;">✕</div></div>
+    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Deposit</h1><span>PAYMENT</span></div></div><div class="bell-icon" onclick="showScreen('subscriptionScreen')" style="font-size: 16px;"><i class="fa-solid fa-xmark"></i></div></div>
     <div class="card">
-        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">💳 Payment Details</h3>
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;"><i class="fa-solid fa-credit-card"></i> Payment Details</h3>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Plan</span><span id="depositPlan" style="color: var(--gold); font-weight: 700;">-</span></div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Amount</span><span id="depositAmount" style="color: var(--gold); font-weight: 700;">$0</span></div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Network</span><span style="color: var(--text-main); font-weight: 700;">BNB Smart Chain</span></div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Currency</span><span style="color: var(--text-main); font-weight: 700;">USDT (BEP20)</span></div>
     </div>
-    <div class="section-title">💰 Wallet Address</div>
+    <div class="section-title"><i class="fa-solid fa-wallet"></i> Wallet Address</div>
     <div style="background: #000000; border: 1px dashed var(--gold); border-radius: 10px; padding: 14px; text-align: center; word-break: break-all; font-family: monospace; font-size: 11px; color: var(--gold); margin-bottom: 10px;" id="walletAddr">0x4E11E978119cAAB300b5439B909D06341C24a2A7</div>
-    <button class="btn-block" onclick="copyWallet()">📋 Copy Address</button>
+    <button class="btn-block" onclick="copyWallet()"><i class="fa-solid fa-copy"></i> Copy Address</button>
     <div style="margin-top: 24px;">
-        <div class="section-title">🔗 Transaction Hash (TX)</div>
+        <div class="section-title"><i class="fa-solid fa-link"></i> Transaction Hash (TX)</div>
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px; line-height: 1.6;">After sending the payment, paste your transaction hash here</p>
         <div class="input-group"><input type="text" id="txHash" placeholder="Paste transaction hash"></div>
-        <button class="btn-block" onclick="submitDeposit()">📤 Submit for Review</button>
+        <button class="btn-block" onclick="submitDeposit()"><i class="fa-solid fa-paper-plane"></i> Submit for Review</button>
     </div>
+    <!-- Deposit Bottom Nav -->
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item active" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
     </div>
 </div>
 
 <div id="meetingScreen" class="screen">
-    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Meetings</h1><span>ZOOM SESSIONS</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;">✕</div></div>
+    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Meetings</h1><span>ZOOM SESSIONS</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;"><i class="fa-solid fa-xmark"></i></div></div>
     <div class="card" style="background: var(--bg-card); border-color: var(--gold); text-align: center;">
-        <div style="font-size: 60px; margin-bottom: 12px;">📅</div>
+        <div style="font-size: 60px; margin-bottom: 12px; color: var(--gold);"><i class="fa-regular fa-calendar-days"></i></div>
         <h2 style="color: var(--gold); font-size: 18px; margin-bottom: 8px;">Zoom Meetings</h2>
         <p style="color: var(--text-muted); font-size: 12px; line-height: 1.6; margin-bottom: 16px;">Join live trading sessions with the coach</p>
-        <a href="https://zoom.us/download" class="btn-block" style="text-decoration:none; display:block; text-align:center;">📥 Download Zoom App</a>
+        <a href="https://zoom.us/download" class="btn-block" style="text-decoration:none; display:block; text-align:center;"><i class="fa-solid fa-download"></i> Download Zoom App</a>
     </div>
-    <div class="section-title">🔗 Meeting Links</div>
+    <div class="section-title"><i class="fa-solid fa-link"></i> Meeting Links</div>
     <div id="meetingsList" class="card"><p style="color: var(--text-muted); text-align: center; padding: 20px; font-size: 13px;">No meetings scheduled yet</p></div>
+    <!-- Meetings Bottom Nav -->
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
-        <button class="nav-item active" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item active" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
     </div>
 </div>
 
@@ -1037,14 +1054,14 @@
                 <span>SUBSCRIPTION</span>
             </div>
         </div>
-        <div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;">✕</div>
+        <div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;"><i class="fa-solid fa-xmark"></i></div>
     </div>
     
     <!-- 1. قسم الصفقات (منفصل) -->
-    <div class="section-title" style="margin-top: 10px;">📊 Subscription (Signals)</div>
+    <div class="section-title" style="margin-top: 10px;"><i class="fa-solid fa-chart-line"></i> Subscription (Signals)</div>
     <div id="subActive" class="hidden">
         <div class="card" style="text-align: center; border-color: var(--green);">
-            <div style="font-size: 50px; margin-bottom: 8px;">✅</div>
+            <div style="font-size: 50px; margin-bottom: 8px; color: var(--green);"><i class="fa-solid fa-circle-check"></i></div>
             <h2 style="color: var(--green); font-size: 16px; margin-bottom: 4px;">Active Subscription</h2>
             <p style="color: var(--text-muted); font-size: 12px;">You have full access to all signals</p>
         </div>
@@ -1057,31 +1074,33 @@
     </div>
     
     <div id="subInactive" class="card" style="text-align: center; padding: 20px;">
-        <div style="font-size: 40px; margin-bottom: 8px;">💎</div>
+        <div style="font-size: 40px; margin-bottom: 8px; color: var(--gold);"><i class="fa-solid fa-gem"></i></div>
         <h2 style="color: var(--gold); font-size: 16px; margin-bottom: 4px;">No Active Subscription</h2>
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px;">Choose a plan to access live signals</p>
         <button class="btn-block" onclick="showScreen('homeScreen')">Choose Plan</button>
     </div>
 
     <!-- 2. قسم الكورسات (منفصل) -->
-    <div class="section-title" style="margin-top: 24px;">🎓 My Courses</div>
+    <div class="section-title" style="margin-top: 24px;"><i class="fa-solid fa-graduation-cap"></i> My Courses</div>
     <div class="card" id="myCoursesListContainer">
         <div id="myCoursesListPlan" style="display: flex; flex-direction: column; gap: 8px;">
             <p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>
         </div>
     </div>
     
+    <!-- Subscription Bottom Nav -->
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
-<button class="nav-item" onclick="showScreen('signalsScreen')"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
-<button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
-<button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
-<button class="nav-item active" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
-<button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item active" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
     </div>
 </div>
+
 <div id="profileScreen" class="screen">
-    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Profile</h1><span>MY ACCOUNT</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;">✕</div></div>
+    <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Profile</h1><span>MY ACCOUNT</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;"><i class="fa-solid fa-xmark"></i></div></div>
     <div class="card" style="text-align: center;">
         <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 12px; display: block; border: 3px solid var(--gold); box-shadow: 0 0 25px rgba(245, 197, 24, 0.6); object-fit: cover; background: #000;">
         <h2 id="profileName" style="font-size: 18px; margin-bottom: 4px;">-</h2>
@@ -1100,7 +1119,7 @@
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Country</span><span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span></div>
     </div>
     <!-- INVITE FRIENDS BUTTON -->
-<a href="javascript:void(0)" onclick="showToast('🎁 Referral system coming soon!')" class="invite-friends-btn">
+<a href="javascript:void(0)" onclick="showToast('Referral system coming soon!')" class="invite-friends-btn">
     <span class="invite-icon"><i class="fa-solid fa-gift"></i></span>
     <span class="invite-text">
         <span class="invite-title">Invite Friends</span>
@@ -1116,21 +1135,23 @@
     <div class="card" style="text-align: center;">
         <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;"><i class="fa-solid fa-headset"></i> Contact Admin</h3>
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">For support and inquiries</p>
-        <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ Send Email</a>
+        <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;"><i class="fa-solid fa-envelope"></i> Send Email</a>
     </div>
     <button class="btn-outline" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    
+    <!-- Profile Bottom Nav -->
     <div class="bottom-nav">
         <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
-<button class="nav-item" onclick="showScreen('signalsScreen')"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
-<button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
-<button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
-<button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
-<button class="nav-item active" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item active" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
     </div>
 </div>
 
 <div id="coinChartScreen" class="screen">
-    <div class="header"><div class="header-left"><div class="header-logo" id="coinChartIcon">₿</div><div class="header-title"><h1 id="coinChartName">BTC/USDT</h1><span id="coinChartSub">BINANCE LIVE</span></div></div><div class="bell-icon" onclick="showScreen('allMarketsScreen')">✕</div></div>
+    <div class="header"><div class="header-left"><div class="header-logo" id="coinChartIcon">₿</div><div class="header-title"><h1 id="coinChartName">BTC/USDT</h1><span id="coinChartSub">BINANCE LIVE</span></div></div><div class="bell-icon" onclick="showScreen('allMarketsScreen')"><i class="fa-solid fa-xmark"></i></div></div>
     <div class="card" style="text-align: center;">
         <div id="coinChartPrice" style="font-size: 28px; font-weight: 900; color: var(--gold); margin-bottom: 6px;">$0.00</div>
         <div id="coinChartChange" style="font-size: 14px; font-weight: 700; color: var(--green);">+0.00%</div>
@@ -1145,45 +1166,29 @@
             <div style="background:#000000; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Change</div><div id="coinChg" style="font-size: 13px; font-weight: 900; color: var(--green);">-</div></div>
         </div>
     </div>
+    
+    <!-- Coin Chart Bottom Nav (Belongs to Home) -->
     <div class="bottom-nav">
-    <button class="nav-item active" onclick="showScreen('homeScreen')">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-    </button>
-    <button class="nav-item" onclick="showScreen('signalsScreen')">
-        <i class="fa-solid fa-chart-line"></i>
-        <span>Signals</span>
-    </button>
-    <button class="nav-item" onclick="showScreen('academyScreen')">
-        <i class="fa-solid fa-book-open"></i>
-        <span>Academy</span>
-    </button>
-    <button class="nav-item" onclick="showScreen('meetingScreen')">
-        <i class="fa-regular fa-calendar-days"></i>
-        <span>Meetings</span>
-    </button>
-    <button class="nav-item" onclick="showScreen('subscriptionScreen')">
-        <i class="fa-solid fa-gem"></i>
-        <span>Plan</span>
-    </button>
-    <button class="nav-item" onclick="showScreen('profileScreen')">
-        <i class="fa-regular fa-user"></i>
-        <span>Profile</span>
-    </button>
-</div>
+        <button class="nav-item active" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
+    </div>
 </div>
 
-<!-- ═══════════ ⭐ NOTIFICATIONS MODAL — NEW (مع زر X في الأعلى) ═══════════ -->
+<!-- ═══════════ ⭐ NOTIFICATIONS MODAL — NEW ═══════════ -->
 <div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
     <div style="background:#141414; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto; position:relative;">
         
         <!-- ⭐ زر X في أعلى اليمين -->
-        <button onclick="closeNotifModal()" aria-label="Close" style="position:absolute; top:14px; right:14px; width:40px; height:40px; border-radius:50%; background:rgba(245, 197, 24, 0.15); border:1.5px solid rgba(245, 197, 24, 0.6); color:#F5C518; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10; touch-action:manipulation; -webkit-tap-highlight-color:rgba(245, 197, 24, 0.3); -webkit-appearance:none; appearance:none; transition:all 0.15s ease; box-shadow:0 2px 10px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(245, 197, 24, 0.08); font-family:Tajawal,sans-serif;">✕</button>
+        <button onclick="closeNotifModal()" aria-label="Close" style="position:absolute; top:14px; right:14px; width:40px; height:40px; border-radius:50%; background:rgba(245, 197, 24, 0.15); border:1.5px solid rgba(245, 197, 24, 0.6); color:#F5C518; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10; touch-action:manipulation; -webkit-tap-highlight-color:rgba(245, 197, 24, 0.3); -webkit-appearance:none; appearance:none; transition:all 0.15s ease; box-shadow:0 2px 10px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(245, 197, 24, 0.08); font-family:Tajawal,sans-serif;"><i class="fa-solid fa-xmark"></i></button>
         
         <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; padding-right:40px; padding-left:40px; font-family:Tajawal,sans-serif;"><i class="fa-solid fa-bell"></i> Notifications</h3>
         <div id="notifList" style="font-family:Tajawal,sans-serif;"></div>
         
-        <!-- زر Close السفلي (يبقى كخيار ثاني) -->
+        <!-- زر Close السفلي -->
         <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer; touch-action:manipulation;">Close</button>
     </div>
 </div>
@@ -1551,7 +1556,7 @@ if (coursesList) {
     if (courses.length === 0) {
         coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
     } else {
-        coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+        coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;"><i class="fa-solid fa-book-open"></i> ${c}</div></div>`).join('');
     }
 }
 
@@ -1564,11 +1569,11 @@ if (coursesListPlan) {
     let coursesHtml = '';
     
     if (courses.length > 0) {
-        coursesHtml += courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+        coursesHtml += courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;"><i class="fa-solid fa-book-open"></i> ${c}</div></div>`).join('');
     }
     
     if (pendingCourse && user.status === 'pending') {
-        coursesHtml += `<div style="background: #1a1a1a; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--orange);"><div style="color: var(--orange); font-weight: 700; font-size: 13px;">⏳ معلق: ${pendingCourse}</div></div>`;
+        coursesHtml += `<div style="background: #1a1a1a; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--orange);"><div style="color: var(--orange); font-weight: 700; font-size: 13px;"><i class="fa-solid fa-hourglass-half"></i> معلق: ${pendingCourse}</div></div>`;
     }
     
     if (coursesHtml === '') {
@@ -1820,7 +1825,7 @@ function renderAllMarkets() {
         return coin.toLowerCase().includes(query) || (info && info.name.toLowerCase().includes(query));
     });
     if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 40px; color:#999999;"><div style="font-size:48px; margin-bottom:12px;">🔍</div><h3 style="color:#F5C518;">No results</h3></div>`;
+        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 40px; color:#999999;"><div style="font-size:48px; margin-bottom:12px;"><i class="fa-solid fa-magnifying-glass"></i></div><h3 style="color:#F5C518;">No results</h3></div>`;
         return;
     }
     grid.innerHTML = filtered.map(coin => {
@@ -2186,7 +2191,7 @@ async function loadMeetingsForUser() {
                     catch(e) { dateStr = mt.date; }
                 }
                 const safeLink = (mt.link || '').replace(/'/g, "\\'");
-                return `<div style="border-bottom: 1px solid var(--border); padding: 14px 0;"><div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;">📅 ${mt.title || 'Live Session'}</div>${dateStr ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px;">🕐 ${dateStr}</div>` : ''}${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 10px;">${mt.description}</div>` : ''}<button onclick="handleJoinMeeting('${safeLink}')" style="display:block; width:100%; margin-top: 8px; padding: 12px; background: #F5C518; color: #000000; border: none; cursor: pointer; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px; font-family: inherit;">🎥 Join Meeting</button></div>`;
+                return `<div style="border-bottom: 1px solid var(--border); padding: 14px 0;"><div style="color: var(--gold); font-weight: 700; font-size: 14px; margin-bottom: 6px;"><i class="fa-regular fa-calendar-days"></i> ${mt.title || 'Live Session'}</div>${dateStr ? `<div style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px;"><i class="fa-regular fa-clock"></i> ${dateStr}</div>` : ''}${mt.description ? `<div style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 10px;">${mt.description}</div>` : ''}<button onclick="handleJoinMeeting('${safeLink}')" style="display:block; width:100%; margin-top: 8px; padding: 12px; background: #F5C518; color: #000000; border: none; cursor: pointer; border-radius: 10px; text-align: center; font-weight: 900; font-size: 13px; font-family: inherit;"><i class="fa-solid fa-video"></i> Join Meeting</button></div>`;
             }).join('');
         }, (err) => { console.warn('Meetings snapshot error:', err.message); });
         console.log('📅 Meetings realtime listener started');
@@ -2225,11 +2230,11 @@ document.addEventListener('visibilitychange', () => {
     <div style="display:flex; align-items:center; gap:12px; max-width:480px; margin:0 auto;">
         <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Tradelix AI" style="width:50px; height:50px; border-radius:12px; border:1.5px solid #F5C518; flex-shrink:0; box-shadow:0 0 15px rgba(245,197,24,0.4);">
         <div style="flex:1; min-width:0;">
-            <div style="color:#ffffff; font-weight:900; font-size:14px; margin-bottom:2px; font-family:Tajawal,sans-serif;">📲 Install Tradelix AI</div>
+            <div style="color:#ffffff; font-weight:900; font-size:14px; margin-bottom:2px; font-family:Tajawal,sans-serif;"><i class="fa-solid fa-mobile-screen"></i> Install Tradelix AI</div>
             <div style="color:#888888; font-size:11px; font-family:Tajawal,sans-serif;">Faster + Instant notifications</div>
         </div>
         <button id="pwaInstallBtn" onclick="installPWA()" style="background:linear-gradient(135deg, #F5C518, #E5B000); color:#000000; border:none; padding:12px 20px; border-radius:12px; font-weight:900; font-size:14px; cursor:pointer; font-family:Tajawal,sans-serif; letter-spacing:0.5px; box-shadow:0 4px 15px rgba(245,197,24,0.5); animation:pwaPulse 2s ease-in-out infinite; touch-action:manipulation; white-space:nowrap;">Install</button>
-        <button onclick="closePWABanner()" aria-label="Close" style="background:transparent; border:none; color:#888888; font-size:20px; cursor:pointer; padding:4px 8px; flex-shrink:0; touch-action:manipulation;">✕</button>
+        <button onclick="closePWABanner()" aria-label="Close" style="background:transparent; border:none; color:#888888; font-size:20px; cursor:pointer; padding:4px 8px; flex-shrink:0; touch-action:manipulation;"><i class="fa-solid fa-xmark"></i></button>
     </div>
 </div>
 
@@ -2312,4 +2317,3 @@ if (!user.uid) {
 
 </body>
 </html>
-
