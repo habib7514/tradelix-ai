@@ -112,7 +112,6 @@
         .main-coin-change { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 900; letter-spacing: 0.3px; position: relative; z-index: 1; font-variant-numeric: tabular-nums; }
         .main-coin-change.up { background: rgba(0, 208, 132, 0.12); color: #00D084; border: 1px solid rgba(0, 208, 132, 0.22); }
         .main-coin-change.down { background: rgba(255, 71, 87, 0.12); color: #FF4757; border: 1px solid rgba(255, 71, 87, 0.22); }
-
         .markets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .coin-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.2s; }
         .coin-card:active { transform: scale(0.98); border-color: var(--gold); }
@@ -131,7 +130,6 @@
         .plan-buy { background: #F5C518; color: #000000; border: none; padding: 16px 28px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; font-family: inherit; min-width: 110px; letter-spacing: 0.5px; transition: all 0.2s ease; }
         .plan-buy:active { transform: scale(0.96); background: #E5B000; }
         .plan-badge { position: absolute; top: -8px; right: 16px; background: var(--gold); color: #000000; font-size: 9px; font-weight: 900; padding: 3px 10px; border-radius: 8px; letter-spacing: 1px; }
-
         .signals-info-card { background: #141414; border: 1px solid #1F1F1F; border-radius: 14px; padding: 20px 16px; margin-bottom: 16px; text-align: center; position: relative; overflow: hidden; }
         .signals-info-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(192,192,192,0.08), transparent 70%); border-radius: 50%; pointer-events: none; }
         .signals-info-icon { margin-bottom: 12px; display: flex; justify-content: center; position: relative; z-index: 1; }
@@ -140,7 +138,6 @@
         .signals-info-desc strong { color: #E5E5E5; font-weight: 900; }
         .signals-info-tags { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; font-size: 11px; font-weight: 700; position: relative; z-index: 1; }
         .signals-info-tags span { color: #C0C0C0; background: rgba(192,192,192,0.08); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(192,192,192,0.25); }
-
         .markets-pro-btn { width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px 20px; margin-bottom: 22px; background: linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 50%, #0F0F0F 100%); border: 1.5px solid rgba(245, 197, 24, 0.6); border-radius: 18px; cursor: pointer; font-family: inherit; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(245, 197, 24, 0.08) inset, 0 1px 0 rgba(255, 255, 255, 0.06) inset; -webkit-tap-highlight-color: transparent; touch-action: manipulation; isolation: isolate; }
         .markets-pro-btn::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 20% 50%, rgba(245, 197, 24, 0.15) 0%, transparent 60%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; z-index: 0; }
         .markets-pro-btn::after { content: ''; position: absolute; top: -50%; left: -100%; width: 60%; height: 200%; background: linear-gradient(90deg, transparent, rgba(245, 197, 24, 0.15), transparent); transform: rotate(25deg); transition: left 0.7s ease; pointer-events: none; z-index: 1; }
@@ -155,11 +152,9 @@
         .markets-pro-arrow { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, rgba(245, 197, 24, 0.2), rgba(245, 197, 24, 0.08)); border: 1.5px solid rgba(245, 197, 24, 0.4); display: flex; align-items: center; justify-content: center; color: #F5C518; flex-shrink: 0; position: relative; z-index: 2; transition: all 0.3s ease; box-shadow: 0 0 12px rgba(245, 197, 24, 0.15); }
         .markets-pro-btn:active .markets-pro-arrow { background: #F5C518; color: #000000; transform: translateX(4px) scale(1.05); box-shadow: 0 0 20px rgba(245, 197, 24, 0.7); }
         .markets-pro-arrow svg { display: block; }
-
         .tradix-app-header { display: flex; align-items: center; gap: 10px; margin-top: 24px; margin-bottom: 14px; }
         .tradix-app-rocket-icon { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 8px rgba(245, 197, 24, 0.6)); flex-shrink: 0; }
         .tradix-app-title { font-size: 22px; font-weight: 900; color: var(--gold); letter-spacing: 0.8px; text-shadow: 0 0 14px rgba(245, 197, 24, 0.4), 0 0 4px rgba(245, 197, 24, 0.25); line-height: 1; }
-
         .tradix-app-card { background: linear-gradient(160deg, #141414 0%, #0A0A0A 100%); border: 1.5px solid rgba(245, 197, 24, 0.45); border-radius: 22px; padding: 26px 22px 24px 22px; margin-bottom: 14px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 197, 24, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04); }
         .tradix-app-card::before { content: ''; position: absolute; top: -80px; right: -80px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(245, 197, 24, 0.15) 0%, transparent 65%); border-radius: 50%; pointer-events: none; }
         .tradix-app-logo-wrap { position: relative; z-index: 1; margin-bottom: 18px; display: flex; justify-content: center; }
@@ -169,7 +164,6 @@
         .tradix-app-desc-sub { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px; position: relative; z-index: 1; font-weight: 500; }
         .tradix-app-btn { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; position: relative; z-index: 1; box-shadow: 0 6px 22px rgba(245, 197, 24, 0.45); }
         .tradix-app-btn .dl-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; flex-shrink: 0; }
-
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: stretch; padding: 0; padding-bottom: env(safe-area-inset-bottom, 0); margin: 0; z-index: 999999; min-height: 70px; touch-action: manipulation; -webkit-transform: translateZ(0); transform: translateZ(0); will-change: transform; isolation: isolate; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
         .nav-item { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--text-muted); font-size: 10px; font-weight: 700; text-decoration: none; width: 100%; min-width: 0; min-height: 70px; cursor: pointer; background: transparent; border: none; font-family: inherit; padding: 8px 2px; margin: 0; touch-action: manipulation; -webkit-tap-highlight-color: rgba(245, 197, 24, 0.18); -webkit-user-select: none; user-select: none; -webkit-appearance: none; appearance: none; -webkit-touch-callout: none; outline: none; transition: color 0.12s ease, transform 0.08s ease, background-color 0.12s ease; position: relative; z-index: 10; box-sizing: border-box; overflow: visible; line-height: 1; }
         .nav-item:active, .nav-item:focus { background: rgba(245, 197, 24, 0.12); color: var(--gold); transform: scale(0.95); outline: none; }
@@ -178,11 +172,9 @@
         .nav-item:active .icon { transform: scale(1.1); }
         .nav-item > span:not(.icon) { font-size: 10px; line-height: 1.2; pointer-events: none; user-select: none; -webkit-user-select: none; white-space: nowrap; position: relative; z-index: 1; }
         .nav-item * { pointer-events: none !important; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-
         .hidden { display: none !important; }
         .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--gold); color: #000000; padding: 12px 24px; border-radius: 10px; font-weight: 900; font-size: 14px; opacity: 0; transition: 0.3s; z-index: 99999; max-width: 90%; text-align: center; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
         .markets-header-pro { display: flex; justify-content: space-between; align-items: center; padding: 8px 0 14px 0; margin-bottom: 8px; }
         .markets-title-pro { display: inline-flex; align-items: center; gap: 8px; font-size: 19px; font-weight: 900; letter-spacing: 0.5px; color: #F5C518; text-shadow: 0 0 14px rgba(245, 197, 24, 0.5), 0 0 4px rgba(245, 197, 24, 0.3); line-height: 1; }
         .candle-icon-pro { display: block; filter: drop-shadow(0 0 6px rgba(0, 208, 132, 0.4)); flex-shrink: 0; }
@@ -569,7 +561,7 @@
     box-shadow: 0 0 15px rgba(245, 197, 24, 0.5);
     width: 100%;
     max-width: 280px;
-    animation: pulseZoom 2s infinite ease-in-out; /* حركة التكبير والتصغير */
+    animation: pulseZoom 2s infinite ease-in-out;
 }
 .join-tradix-btn::before {
     content: '';
@@ -580,13 +572,12 @@
     height: 100%;
     background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
     transform: skewX(-25deg);
-    animation: buttonShine 2.5s infinite; /* حركة اللمعان */
+    animation: buttonShine 2.5s infinite;
 }
 .join-tradix-btn:active {
     transform: scale(0.95);
-    animation: none; /* إيقاف الحركة عند الضغط */
+    animation: none;
 }
-
 @keyframes pulseZoom {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
@@ -595,19 +586,21 @@
     0% { left: -100%; }
     20%, 100% { left: 100%; }
 }
+/* ═══════════ REFERRAL GIFT BUTTON ANIMATION ═══════════ */
+@keyframes giftPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(245,197,24,0.6); }
+    50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(245,197,24,1); }
+}
+.gift-animated {
+    animation: giftPulse 1.5s infinite;
+}
     </style>
-    <!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
-
-<!-- PWA Theme Color -->
-<meta name="theme-color" content="#F5C518">
-
-<!-- PWA Apple Support (iOS) -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Tradelix AI">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg">
-
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F5C518">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tradelix AI">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg">
 </head>
 <body>
 <div id="splash">
@@ -668,6 +661,7 @@
         <div class="auth-switch">Don't have an account? <a onclick="showScreen('signupScreen')">Sign Up</a></div>
     </div>
 </div>
+
 <div id="forgotPasswordScreen" class="screen">
     <div class="auth-container">
         <div class="auth-logo">
@@ -676,20 +670,16 @@
             <p>SMARTER TRADING</p>
         </div>
         <h2 class="auth-title">Reset Password</h2>
-        
-        <p style="color: var(--text-muted); font-size: 13px; text-align: center; margin-bottom: 20px; line-height: 1.6;">
-            Enter your email and we'll send you a link to reset your password.
-        </p>
-
+        <p style="color: var(--text-muted); font-size: 13px; text-align: center; margin-bottom: 20px; line-height: 1.6;">Enter your email and we'll send you a link to reset your password.</p>
         <div class="input-group">
             <label>Email Address</label>
             <input type="email" id="resetEmail" placeholder="your@email.com">
         </div>
-        
         <button class="btn-block" onclick="handleForgotPassword()">Send Reset Link</button>
         <div class="auth-switch">Remember your password? <a onclick="showScreen('loginScreen')">Login</a></div>
     </div>
 </div>
+
 <div id="homeScreen" class="screen">
     <div class="header">
         <div class="header-left">
@@ -701,6 +691,13 @@
     <div class="bell-icon" onclick="openNotifModal()">🔔</div>
 </div>
     
+    <!-- 🎁 REFERRAL GIFT BUTTON (Top of page) -->
+    <div id="referralGiftBanner" style="display: none; margin-bottom: 16px;">
+        <button onclick="openGiftModal()" class="gift-animated" style="width: 100%; background: linear-gradient(135deg, #F5C518, #E5B000); color: #000; font-weight: 900; padding: 18px; border-radius: 12px; border: none; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit;">
+            🎁 اختر هديتك الآن!
+        </button>
+    </div>
+
 <!-- SOCIAL BUTTONS ROW -->
 <div class="social-row">
     <div class="join-now-btn">Join Now</div>
@@ -1061,6 +1058,7 @@
         <button class="nav-item" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
     </div>
 </div>
+
 <div id="profileScreen" class="screen">
     <div class="header"><div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;"><img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;"></div><div class="header-title"><h1>Profile</h1><span>MY ACCOUNT</span></div></div><div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;">✕</div></div>
     <div class="card" style="text-align: center;">
@@ -1080,16 +1078,18 @@
         <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-muted);">Phone</span><span id="profPhone" style="color: var(--text-main); font-weight: 700;">-</span></div>
         <div style="display:flex; justify-content:space-between; padding: 10px 0; font-size: 13px;"><span style="color: var(--text-muted);">Country</span><span id="profCountry" style="color: var(--text-main); font-weight: 700;">-</span></div>
     </div>
+    
     <!-- INVITE FRIENDS BUTTON -->
-<a href="javascript:void(0)" onclick="showToast('🎁 Referral system coming soon!')" class="invite-friends-btn">
+<a href="javascript:void(0)" onclick="openReferralModal()" class="invite-friends-btn">
     <span class="invite-icon">🎁</span>
     <span class="invite-text">
         <span class="invite-title">Invite Friends</span>
-        <span class="invite-sub">COMING SOON</span>
+        <span class="invite-sub">Share your link & earn</span>
     </span>
     <span class="invite-arrow">›</span>
 </a>
 <!-- END INVITE FRIENDS BUTTON -->
+
     <div class="card">
         <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
         <div id="myCoursesList"><p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p></div>
@@ -1136,21 +1136,37 @@
     </div>
 </div>
 
-<!-- ═══════════ ⭐ NOTIFICATIONS MODAL — NEW (مع زر X في الأعلى) ═══════════ -->
+<!-- ═══════════ ⭐ NOTIFICATIONS MODAL ═══════════ -->
 <div id="notifModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
     <div style="background:#141414; border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; margin:40px auto; position:relative;">
-        
-        <!-- ⭐ زر X في أعلى اليمين -->
         <button onclick="closeNotifModal()" aria-label="Close" style="position:absolute; top:14px; right:14px; width:40px; height:40px; border-radius:50%; background:rgba(245, 197, 24, 0.15); border:1.5px solid rgba(245, 197, 24, 0.6); color:#F5C518; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10; touch-action:manipulation; -webkit-tap-highlight-color:rgba(245, 197, 24, 0.3); -webkit-appearance:none; appearance:none; transition:all 0.15s ease; box-shadow:0 2px 10px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(245, 197, 24, 0.08); font-family:Tajawal,sans-serif;">✕</button>
-        
         <h3 style="color:var(--gold); margin-bottom:16px; text-align:center; padding-right:40px; padding-left:40px; font-family:Tajawal,sans-serif;">🔔 Notifications</h3>
         <div id="notifList" style="font-family:Tajawal,sans-serif;"></div>
-        
-        <!-- زر Close السفلي (يبقى كخيار ثاني) -->
         <button onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:12px; border:1px solid #444; background:transparent; color:#fff; margin-top:12px; font-family:Tajawal,sans-serif; font-weight:700; cursor:pointer; touch-action:manipulation;">Close</button>
     </div>
 </div>
 <!-- ═══════════ END NOTIFICATIONS MODAL ═══════════ -->
+
+<!-- ═══════════ ⭐ GIFT SELECTION MODAL ═══════════ -->
+<div id="giftModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:99999; padding:16px; overflow-y:auto;">
+    <div style="background:#141414; border:2px solid var(--gold); border-radius:16px; padding:24px; max-width:400px; margin:20vh auto; position:relative; text-align:center;">
+        <button onclick="closeGiftModal()" aria-label="Close" style="position:absolute; top:14px; right:14px; width:40px; height:40px; border-radius:50%; background:rgba(245, 197, 24, 0.15); border:1.5px solid rgba(245, 197, 24, 0.6); color:#F5C518; font-size:18px; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:10;">✕</button>
+        
+        <h3 style="color:var(--gold); margin-bottom:20px; font-weight:900;">🎁 اختر نوع الهدية</h3>
+        
+        <p style="color:#AAAAAA; font-size:14px; margin-bottom:24px;">لقد حصلت على مكافأة من دعوة صديقك!<br>كيف تريد استلامها؟</p>
+        
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            <button onclick="claimGift('crypto')" style="width:100%; padding:16px; border-radius:12px; background:linear-gradient(135deg, #141414, #000); border:2px solid var(--gold); color:var(--gold); font-weight:900; font-size:16px; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:10px; transition:0.3s;">
+                🪙 عملات رقمية (تلقائي)
+            </button>
+            <button onclick="claimGift('gold')" style="width:100%; padding:16px; border-radius:12px; background:linear-gradient(135deg, #2A2A2A, #1A1A1A); border:2px solid #C0C0C0; color:#E5E5E5; font-weight:900; font-size:16px; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:10px; transition:0.3s;">
+                🥇 ذهب (يتطلب موافقة الإدارة)
+            </button>
+        </div>
+    </div>
+</div>
+<!-- ═══════════ END GIFT SELECTION MODAL ═══════════ -->
 
 <div id="toast" class="toast">Message</div>
 <script>
@@ -1163,8 +1179,18 @@ const firebaseConfig = {
     appId: "1:374195897663:web:e1ed0ce2c30a4b6aeabf8a"
 };
 
+// ✅ Capture URL parameter for referral
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ref = urlParams.get('ref');
+    if (ref) {
+        localStorage.setItem('tradelix_pending_ref', ref.toUpperCase());
+        console.log('✅ Referral code captured:', ref);
+    }
+});
+
 let auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged;
-let doc, setDoc, getDoc, serverTimestamp;
+let doc, setDoc, getDoc, serverTimestamp, updateDoc, collection, query, where, getDocs;
 let currentUserData = null;
 
 async function initFirebase() {
@@ -1174,16 +1200,16 @@ async function initFirebase() {
         const fsModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
         const app = appModule.initializeApp(firebaseConfig);
         auth = authModule.getAuth(app);
-        // ✅ حفظ الجلسة بشكل دائم
-try {
-    await authModule.setPersistence(auth, authModule.browserLocalPersistence);
-} catch(e) { console.warn('Persistence error:', e); }
+        try {
+            await authModule.setPersistence(auth, authModule.browserLocalPersistence);
+        } catch(e) { console.warn('Persistence error:', e); }
         db = fsModule.getFirestore(app);
         signInWithEmailAndPassword = authModule.signInWithEmailAndPassword;
         createUserWithEmailAndPassword = authModule.createUserWithEmailAndPassword;
         signOut = authModule.signOut;
         onAuthStateChanged = authModule.onAuthStateChanged;
         doc = fsModule.doc; setDoc = fsModule.setDoc; getDoc = fsModule.getDoc; serverTimestamp = fsModule.serverTimestamp;
+        updateDoc = fsModule.updateDoc; collection = fsModule.collection; query = fsModule.query; where = fsModule.where; getDocs = fsModule.getDocs;
         window.firebaseDB = db; window.firebaseFS = fsModule;
         onAuthStateChanged(auth, async (user) => {
             if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
@@ -1237,7 +1263,6 @@ function showScreen(id, scrollToId = null) {
     if (id === 'allMarketsScreen') renderAllMarkets();
     if (id === 'signalsScreen') loadLatestSignal();
     
-    // ✅ إخفاء البانر في الصفحات غير الرئيسية
     if (id !== 'homeScreen') {
         const banner = document.getElementById('pwaInstallBanner');
         if (banner) {
@@ -1262,11 +1287,40 @@ async function handleSignup() {
         _clearAllUserData();
         const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
         const user = userCredential.user;
-        await setDoc(doc(db, 'tradelix_users', user.uid), {
+        
+        const pendingRef = localStorage.getItem('tradelix_pending_ref');
+        let referredBy = null;
+        
+        if (pendingRef) {
+            try {
+                const q = query(collection(db, 'tradelix_users'), where('referralCode', '==', pendingRef));
+                const snap = await getDocs(q);
+                if (!snap.empty) {
+                    const referrerDoc = snap.docs[0];
+                    const referrerData = referrerDoc.data();
+                    if (referrerData.activatedAt || referrerData.expiryDate || referrerData.plan) {
+                        referredBy = referrerDoc.id;
+                    }
+                }
+            } catch(e) { console.warn('Referral lookup error:', e); }
+        }
+
+        const newUserData = {
             name: name, phone: phone, country: country, email: email,
             status: 'inactive', plan: null, startDate: null, expiryDate: null, txHash: null,
-            createdAt: serverTimestamp()
-        });
+            createdAt: serverTimestamp(),
+            referralCode: user.uid.substring(0, 8).toUpperCase()
+        };
+
+        if (referredBy) {
+            newUserData.referredBy = referredBy;
+            newUserData.rewardGranted = false;
+        }
+
+        await setDoc(doc(db, 'tradelix_users', user.uid), newUserData);
+        
+        localStorage.removeItem('tradelix_pending_ref');
+        
         showToast('✅ Account created!');
         setTimeout(() => showScreen('loginScreen'), 1500);
     } catch (error) {
@@ -1301,10 +1355,7 @@ async function handleForgotPassword() {
     const email = emailInput.value.trim();
     const btn = document.querySelector('#forgotPasswordScreen button');
     
-    if (!email) { 
-        showToast('❌ Enter your email address'); 
-        return; 
-    }
+    if (!email) { showToast('❌ Enter your email address'); return; }
     
     const originalText = btn.innerHTML;
     btn.innerHTML = "Sending...";
@@ -1314,58 +1365,39 @@ async function handleForgotPassword() {
 
     try {
         showToast('⏳ Processing request...');
-        
-        // 1. الحصول على رابط إعادة التعيين من Firebase
         const firebaseResponse = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                requestType: "PASSWORD_RESET",
-                email: email
-            })
+            body: JSON.stringify({ requestType: "PASSWORD_RESET", email: email })
         });
         
         const firebaseData = await firebaseResponse.json();
         
         if (!firebaseResponse.ok) {
-            if (firebaseData.error && firebaseData.error.message === 'EMAIL_NOT_FOUND') {
-                showToast('❌ No account found with this email');
-            } else {
-                showToast('❌ Error: ' + (firebaseData.error?.message || 'Unknown error'));
-            }
+            if (firebaseData.error && firebaseData.error.message === 'EMAIL_NOT_FOUND') showToast('❌ No account found with this email');
+            else showToast('❌ Error: ' + (firebaseData.error?.message || 'Unknown error'));
             btn.innerHTML = originalText;
             btn.disabled = false;
             return;
         }
         
-        // 2. بناء رابط إعادة التعيين
         const oobCode = firebaseData.oobCode;
         const resetLink = `https://tradelix-ai.firebaseapp.com/__/auth/action?mode=resetPassword&oobCode=${oobCode}&apiKey=${FIREBASE_API_KEY}`;
         
-        // 3. إرسال الإيميل عبر دالة Netlify الآمنة
         const netlifyResponse = await fetch('/.netlify/functions/send-reset-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                resetLink: resetLink
-            })
+            body: JSON.stringify({ email: email, resetLink: resetLink })
         });
         
         if (netlifyResponse.ok) {
             showToast('✅ Check your email for the reset link!');
-            setTimeout(() => { 
-                showScreen('loginScreen'); 
-                emailInput.value = ''; 
-            }, 3000);
+            setTimeout(() => { showScreen('loginScreen'); emailInput.value = ''; }, 3000);
         } else {
-            const errorData = await netlifyResponse.json();
-            console.error("Netlify Function Error:", errorData);
             showToast('❌ Failed to send email. Try again later.');
             btn.innerHTML = originalText;
             btn.disabled = false;
         }
-        
     } catch (error) {
         console.error("Error:", error);
         showToast('❌ Network error. Please try again.');
@@ -1373,11 +1405,20 @@ async function handleForgotPassword() {
         btn.disabled = false;
     }
 }
+
 async function loadUserData(uid) {
     try {
         const userDoc = await getDoc(doc(db, 'tradelix_users', uid));
         if (userDoc.exists()) {
-            currentUserData = { uid: uid, ...userDoc.data() };
+            const data = userDoc.data();
+            currentUserData = { uid: uid, ...data };
+            
+            if (!currentUserData.referralCode) {
+                const code = uid.substring(0, 8).toUpperCase();
+                currentUserData.referralCode = code;
+                await updateDoc(doc(db, 'tradelix_users', uid), { referralCode: code });
+            }
+            
             localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
             updateUI();
         } else { _clearAllUserData(); }
@@ -1407,141 +1448,92 @@ function _clearAllUserData() {
 function updateUI() {
     const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
     
-    // 1. تحديث بيانات الترحيب في الصفحة الرئيسية
     if (document.getElementById('welcomeName')) {
         document.getElementById('welcomeName').textContent = user.name || 'User';
         document.getElementById('welcomeEmail').textContent = user.email || '-';
     }
     
-    // 2. تحديث شارة الحالة (ACTIVE / INACTIVE / PENDING)
     const badge = document.getElementById('statusBadge');
     if (badge) {
         if (user.status === 'active') { 
-            badge.style.background = 'rgba(0, 208, 132, 0.15)'; 
-            badge.style.color = '#00D084'; 
-            badge.style.borderColor = '#00D084'; 
-            badge.textContent = 'ACTIVE'; 
+            badge.style.background = 'rgba(0, 208, 132, 0.15)'; badge.style.color = '#00D084'; badge.style.borderColor = '#00D084'; badge.textContent = 'ACTIVE'; 
         } else if (user.status === 'pending') { 
-            badge.style.background = 'rgba(245, 197, 24, 0.15)'; 
-            badge.style.color = '#F5C518'; 
-            badge.style.borderColor = '#F5C518'; 
-            badge.textContent = 'PENDING'; 
+            badge.style.background = 'rgba(245, 197, 24, 0.15)'; badge.style.color = '#F5C518'; badge.style.borderColor = '#F5C518'; badge.textContent = 'PENDING'; 
         } else { 
-            badge.style.background = 'rgba(255, 71, 87, 0.15)'; 
-            badge.style.color = '#FF4757'; 
-            badge.style.borderColor = '#FF4757'; 
-            badge.textContent = 'INACTIVE'; 
+            badge.style.background = 'rgba(255, 71, 87, 0.15)'; badge.style.color = '#FF4757'; badge.style.borderColor = '#FF4757'; badge.textContent = 'INACTIVE'; 
         }
     }
     
-    // 3. إظهار/إخفاء الإشارات بناءً على حالة الاشتراك ونوع الباقة
-const activeBox = document.getElementById('activeSignalBox');
-const lockedBox = document.getElementById('lockedSignalBox');
-
-if (activeBox && lockedBox) {
-    // ⏳ انتظار تحميل البيانات
-    if (!user || !user.uid) {
-        activeBox.classList.add('hidden');
-        lockedBox.classList.add('hidden');
-        return; 
-    }
-
-    // 🔍 اكتشاف الشاشة الحالية بأمان (هل نحن في صفحة الذهب؟)
-    const activeScreen = document.querySelector('.screen.active');
-    const activeScreenId = activeScreen ? activeScreen.id.toLowerCase() : '';
-    
-    // إذا كان اسم الشاشة يحتوي على كلمة gold، أو كان المتغير appMode يساوي gold
-    const isGoldPage = activeScreenId.includes('gold') || 
-                       (typeof appMode !== 'undefined' && appMode === 'gold');
-
-    let hasAccess = false;
-    
-    // 🥇 إذا كنا في صفحة الذهب: يجب أن يكون اشتراكه ذهب أو كلاهما
-    if (isGoldPage) {
-        hasAccess = user.status === 'active' && (user.planType === 'gold' || user.planType === 'both');
-    } 
-    // 🪙 إذا كنا في صفحة العملات: يجب أن يكون اشتراكه عملات أو كلاهما
-    else {
-        hasAccess = user.status === 'active' && (user.planType === 'crypto' || user.planType === 'both');
-    }
-
-    // إظهار أو إخفاء الصناديق
-    if (hasAccess) { 
-        activeBox.classList.remove('hidden'); 
-        lockedBox.classList.add('hidden'); 
-    } else { 
-        activeBox.classList.add('hidden'); 
-        lockedBox.classList.remove('hidden'); 
-    }
-}
-    
-    
-    // 4. تحديث تفاصيل الاشتراك (الصفقات فقط)
-const subActive = document.getElementById('subActive');
-const subInactive = document.getElementById('subInactive');
-if (subActive && subInactive) {
-    const planName = user.plan || '-';
-    // التحقق مما إذا كان المستخدم لديه اشتراك صفقات حقيقي
-    const hasSignalSub = user.plan && (user.plan.includes('VIP') || user.plan.includes('Weekly') || user.plan.includes('Monthly') || user.plan.includes('Quarterly') || user.plan.includes('15Days'));
-
-    if (hasSignalSub) {
-        // إذا كان لديه اشتراك صفقات، نعرضه في قسم الصفقات
-        subActive.classList.remove('hidden'); 
-        subInactive.classList.add('hidden');
-        
-        document.getElementById('subPlan').textContent = planName;
-        document.getElementById('subStart').textContent = user.startDate || '-';
-        document.getElementById('subEnd').textContent = user.expiryDate || '-';
-        
-        if (user.expiryDate) {
-            const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
-            document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
-            document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
+    // ✅ REFERRAL GIFT LOGIC
+    const giftBanner = document.getElementById('referralGiftBanner');
+    if (giftBanner) {
+        // Check if user has a pending gold reward
+        if (user.pendingRewardType === 'gold' && user.referralRewardStatus === 'pending_user_choice') {
+            giftBanner.style.display = 'block';
         } else {
-            document.getElementById('subDays').textContent = '-';
+            giftBanner.style.display = 'none';
         }
-    } else {
-        // إذا لم يكن لديه اشتراك صفقات، نخفي القسم
-        subActive.classList.add('hidden'); 
-        subInactive.classList.remove('hidden'); 
     }
-}
 
-// 5. تحديث قائمة الكورسات في صفحة البروفايل
-const coursesList = document.getElementById('myCoursesList');
-if (coursesList) {
-    const courses = user.courses || [];
-    if (courses.length === 0) {
-        coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-    } else {
-        coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
-    }
-}
+    const activeBox = document.getElementById('activeSignalBox');
+    const lockedBox = document.getElementById('lockedSignalBox');
 
-// 6. تحديث قائمة الكورسات في صفحة الخطة (My Plan)
-const coursesListPlan = document.getElementById('myCoursesListPlan');
-if (coursesListPlan) {
-    const courses = user.courses || [];
-    const pendingCourse = user.courseRequest || null;
-    
-    let coursesHtml = '';
-    
-    if (courses.length > 0) {
-        coursesHtml += courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+    if (activeBox && lockedBox) {
+        if (!user || !user.uid) {
+            activeBox.classList.add('hidden'); lockedBox.classList.add('hidden'); return; 
+        }
+
+        const activeScreen = document.querySelector('.screen.active');
+        const activeScreenId = activeScreen ? activeScreen.id.toLowerCase() : '';
+        const isGoldPage = activeScreenId.includes('gold') || (typeof appMode !== 'undefined' && appMode === 'gold');
+
+        let hasAccess = false;
+        if (isGoldPage) hasAccess = user.status === 'active' && (user.planType === 'gold' || user.planType === 'both');
+        else hasAccess = user.status === 'active' && (user.planType === 'crypto' || user.planType === 'both');
+
+        if (hasAccess) { activeBox.classList.remove('hidden'); lockedBox.classList.add('hidden'); } 
+        else { activeBox.classList.add('hidden'); lockedBox.classList.remove('hidden'); }
     }
     
-    if (pendingCourse && user.status === 'pending') {
-        coursesHtml += `<div style="background: #1a1a1a; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--orange);"><div style="color: var(--orange); font-weight: 700; font-size: 13px;">⏳ معلق: ${pendingCourse}</div></div>`;
+    const subActive = document.getElementById('subActive');
+    const subInactive = document.getElementById('subInactive');
+    if (subActive && subInactive) {
+        const planName = user.plan || '-';
+        const hasSignalSub = user.plan && (user.plan.includes('VIP') || user.plan.includes('Weekly') || user.plan.includes('Monthly') || user.plan.includes('Quarterly') || user.plan.includes('15Days'));
+
+        if (hasSignalSub) {
+            subActive.classList.remove('hidden'); subInactive.classList.add('hidden');
+            document.getElementById('subPlan').textContent = planName;
+            document.getElementById('subStart').textContent = user.startDate || '-';
+            document.getElementById('subEnd').textContent = user.expiryDate || '-';
+            if (user.expiryDate) {
+                const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
+                document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
+                document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
+            } else document.getElementById('subDays').textContent = '-';
+        } else {
+            subActive.classList.add('hidden'); subInactive.classList.remove('hidden'); 
+        }
+    }
+
+    const coursesList = document.getElementById('myCoursesList');
+    if (coursesList) {
+        const courses = user.courses || [];
+        if (courses.length === 0) coursesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+        else coursesList.innerHTML = courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+    }
+
+    const coursesListPlan = document.getElementById('myCoursesListPlan');
+    if (coursesListPlan) {
+        const courses = user.courses || [];
+        const pendingCourse = user.courseRequest || null;
+        let coursesHtml = '';
+        if (courses.length > 0) coursesHtml += courses.map(c => `<div style="background: #000000; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--gold);"><div style="color: var(--gold); font-weight: 700; font-size: 13px;">📚 ${c}</div></div>`).join('');
+        if (pendingCourse && user.status === 'pending') coursesHtml += `<div style="background: #1a1a1a; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--orange);"><div style="color: var(--orange); font-weight: 700; font-size: 13px;">⏳ معلق: ${pendingCourse}</div></div>`;
+        if (coursesHtml === '') coursesListPlan.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
+        else coursesListPlan.innerHTML = coursesHtml;
     }
     
-    if (coursesHtml === '') {
-        coursesListPlan.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p>';
-    } else {
-        coursesListPlan.innerHTML = coursesHtml;
-    }
-}
-    
-    // 7. تحديث بيانات البروفايل
     if (document.getElementById('profileName')) {
         document.getElementById('profileName').textContent = user.name || '-';
         document.getElementById('profileEmail').textContent = user.email || '-';
@@ -1551,15 +1543,159 @@ if (coursesListPlan) {
         document.getElementById('profCountry').textContent = user.country || '-';
     }
     
-    // 8. إظهار بانر التثبيت بعد تسجيل الدخول
     if (user && user.uid && typeof showPWABanner === 'function') {
         setTimeout(showPWABanner, 1500);
     }
+}
+
+// ✅ REFERRAL MODAL LOGIC
+function openReferralModal() {
+    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    if (!user.uid) return;
     
-    // 9. تحديث واجهة الإحالة (إن وجدت)
-    if (typeof updateReferralUI === 'function') {
-        updateReferralUI();
+    const lockedView = document.getElementById('referralLockedView');
+    const unlockedView = document.getElementById('referralUnlockedView');
+    
+    const hasPurchased = !!(user.activatedAt || user.plan || user.expiryDate);
+    
+    if (!hasPurchased) {
+        lockedView.style.display = 'block';
+        unlockedView.style.display = 'none';
+    } else {
+        lockedView.style.display = 'none';
+        unlockedView.style.display = 'block';
+        const code = user.referralCode || user.uid.substring(0, 8).toUpperCase();
+        const baseUrl = window.location.origin + window.location.pathname;
+        document.getElementById('myReferralLink').textContent = `${baseUrl}?ref=${code}`;
+        document.getElementById('myReferralCode').textContent = code;
     }
+    document.getElementById('referralModal').style.display = 'block';
+}
+
+function closeReferralModal() { document.getElementById('referralModal').style.display = 'none'; }
+
+function copyReferralLink() {
+    const link = document.getElementById('myReferralLink').textContent;
+    if (!link || link === '...') return;
+    navigator.clipboard.writeText(link).then(() => showToast('✅ Referral link copied!')).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = link; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        showToast('✅ Referral link copied!');
+    });
+}
+
+// ✅ GIFT MODAL LOGIC
+function openGiftModal() { document.getElementById('giftModal').style.display = 'block'; }
+function closeGiftModal() { document.getElementById('giftModal').style.display = 'none'; }
+
+async function claimGift(type) {
+    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+    if (!user.uid) return;
+    
+    closeGiftModal();
+    
+    if (type === 'crypto') {
+        showToast('✅ تم إضافة أيام العملات الرقمية تلقائياً إلى باقتك!');
+    } else if (type === 'gold') {
+        try {
+            showToast('⏳ جاري إرسال الإشعار للأدمن...');
+            await updateDoc(doc(db, 'tradelix_users', user.uid), {
+                referralRewardStatus: 'requested_gold',
+                goldRewardRequestedAt: serverTimestamp(),
+                pendingRewardType: null
+            });
+            
+            currentUserData.referralRewardStatus = 'requested_gold';
+            currentUserData.pendingRewardType = null;
+            localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
+            
+            showToast('✅ تم إرسال إشعار للأدمن، سيتم تفعيل هدية الذهب قريباً!');
+            updateUI();
+        } catch (error) {
+            console.error('Error claiming gift:', error);
+            showToast('❌ حدث خطأ. حاول مرة أخرى.');
+        }
+    }
+}
+
+// ✅ NOTIFICATIONS SYSTEM (With Sound)
+function getNotifs() { if (!auth || !auth.currentUser) return []; return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
+function setNotifs(arr) { localStorage.setItem('tradelix_notifs', JSON.stringify(arr)); }
+
+function openNotifModal() {
+    const notifs = getNotifs();
+    const list = document.getElementById('notifList');
+    if (notifs.length === 0) list.innerHTML = '<p style="color:#999999; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
+    else list.innerHTML = notifs.map(n => '<div style="background:#000000; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#1F1F1F' : '#F5C518') + ';"><div style="color:#F5C518; font-weight:700; font-size:13px; margin-bottom:4px;">' + n.message + '</div><div style="color:#999999; font-size:11px;">' + n.time + '</div></div>').join('');
+    document.getElementById('notifModal').style.display = 'block';
+    notifs.forEach(n => n.read = true);
+    setNotifs(notifs);
+    updateBadge();
+}
+
+function closeNotifModal() { document.getElementById('notifModal').style.display = 'none'; }
+
+function updateBadge() {
+    const notifs = getNotifs();
+    const unread = notifs.filter(n => !n.read).length;
+    document.querySelectorAll('.bell-icon').forEach(bell => {
+        let badge = bell.querySelector('.notifBadge');
+        if (unread > 0) {
+            if (!badge) { badge = document.createElement('span'); badge.className = 'notifBadge'; bell.appendChild(badge); }
+            badge.textContent = unread;
+        } else if (badge) badge.remove();
+    });
+}
+
+function addNotif(message) {
+    if (!auth || !auth.currentUser) return;
+    const notifs = getNotifs();
+    const recent = notifs.find(n => n.message === message && (Date.now() - n.id) < 30000);
+    if (recent) return;
+    notifs.unshift({ id: Date.now(), message: message, time: new Date().toLocaleString('en-GB'), read: false });
+    if (notifs.length > 50) notifs.length = 50;
+    setNotifs(notifs);
+    updateBadge();
+    
+    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+        try { new Notification('Tradelix AI', { body: message }); } catch(e){}
+    }
+    try {
+        const c = new (window.AudioContext || window.webkitAudioContext)();
+        [0, 0.3].forEach(d => {
+            const o = c.createOscillator(); const g = c.createGain();
+            o.connect(g); g.connect(c.destination);
+            o.frequency.value = 880;
+            g.gain.setValueAtTime(0.3, c.currentTime + d);
+            g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + d + 0.2);
+            o.start(c.currentTime + d); o.stop(c.currentTime + d + 0.2);
+        });
+    } catch(e){}
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    if (typeof showToast === 'function') { try { showToast(message); } catch(e) {} }
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+async function requestNotifPermission() {
+    if (!('Notification' in window)) { if (typeof showToast === 'function') showToast('❌ Notifications not supported'); return; }
+    try {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
+            const box = document.getElementById('notifPermissionBox');
+            if (box) box.style.display = 'none';
+            try { new Notification('Tradelix AI', { body: '✅ Notifications are working!' }); } catch(e) {}
+        } else if (permission === 'denied') {
+            if (typeof showToast === 'function') showToast('❌ Notifications blocked');
+        }
+    } catch(e) { console.error(e); }
 }
 
 function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
@@ -1604,55 +1740,36 @@ async function submitDeposit() {
     if (!user.uid) { showToast('❌ Login first'); return; }
     
     try {
-        // ⭐ التحقق مما إذا كان المستخدم لديه اشتراك صفقات ساري
         const hasSignalSub = user.plan && (user.plan.includes('VIP') || user.plan.includes('Weekly') || user.plan.includes('Monthly') || user.plan.includes('Quarterly') || user.plan.includes('15Days'));
-        
         const isCourseRequest = currentPlan.name && currentPlan.name.toLowerCase().includes('course');
         
-        // 🟢 تحديد نوع الباقة (ذهب أم عملات أم كورس)
-        let detectedPlanType = 'crypto'; // الافتراضي هو العملات
-        if (isCourseRequest) {
-            detectedPlanType = 'course';
-        } else if (currentPlan.name && (currentPlan.name.toLowerCase().includes('gold') || currentPlan.name.toLowerCase().includes('xau'))) {
-            detectedPlanType = 'gold';
-        } else if (typeof appMode !== 'undefined' && appMode === 'gold') {
-            detectedPlanType = 'gold'; // إذا كان التطبيق يستخدم متغير appMode للتبديل
-        } else if (currentPlan.type) {
-            detectedPlanType = currentPlan.type; // إذا كانت الباقة تحتوي على حقل type
-        }
+        let detectedPlanType = 'crypto'; 
+        if (isCourseRequest) detectedPlanType = 'course';
+        else if (currentPlan.name && (currentPlan.name.toLowerCase().includes('gold') || currentPlan.name.toLowerCase().includes('xau'))) detectedPlanType = 'gold';
+        else if (typeof appMode !== 'undefined' && appMode === 'gold') detectedPlanType = 'gold';
+        else if (currentPlan.type) detectedPlanType = currentPlan.type;
 
-        // تجهيز البيانات المراد حفظها
         const updateData = {
             status: 'pending', 
             depositAmount: currentPlan.price, 
             txHash: hash,
-            planType: detectedPlanType // 👈 تمت إضافة هذا السطر هنا بنجاح
+            planType: detectedPlanType
         };
 
         if (isCourseRequest) {
-            // ⭐ إذا كان طلب كورس، نحفظ اسم الكورس في حقل courseRequest
             updateData.courseRequest = currentPlan.name;
-            
-            // إذا كان لديه اشتراك صفقات، نحافظ على اسم الباقة كما هو
-            if (hasSignalSub) {
-                updateData.plan = user.plan; 
-            } else {
-                // إذا لم يكن لديه اشتراك، نضع اسم الكورس في plan
-                updateData.plan = currentPlan.name;
-            }
+            updateData.plan = hasSignalSub ? user.plan : currentPlan.name;
         } else {
-            // إذا كان طلب صفقات، نحدث الخطة ونمسح أي طلب كورس سابق
             updateData.plan = currentPlan.name;
             updateData.courseRequest = null;
         }
         
         await setDoc(doc(db, 'tradelix_users', user.uid), updateData, { merge: true });
         
-        // تحديث البيانات المحلية
         currentUserData.status = 'pending';
         currentUserData.plan = updateData.plan;
         currentUserData.txHash = hash;
-        currentUserData.planType = detectedPlanType; // تحديث محلي
+        currentUserData.planType = detectedPlanType;
         if (updateData.courseRequest) currentUserData.courseRequest = updateData.courseRequest;
         
         localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
@@ -1664,7 +1781,6 @@ async function submitDeposit() {
         showToast('❌ Submission failed'); 
     }
 }
-
 
 const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
 const COINS = ['BTC','ETH','BNB','SOL','XRP','ADA','DOGE','DOT','AVAX','LINK','POL','LTC','TRX','ATOM','UNI','SHIB','APT','ARB','OP','NEAR','INJ','SUI','FIL','ETC','TON','ICP','RENDER','FET','SEI','TIA','STX','IMX','GRT','SAND','MANA','AAVE','MKR','CRV','ALGO','VET','HBAR','EOS','XLM','THETA','RUNE','KAS','TAO','WIF','PEPE','BONK'];
@@ -1838,10 +1954,7 @@ async function loadLatestSignal() {
         const u = _getUser();
         if (!u.uid) return;
         
-        // ✅ التحقق من حالة الحساب
         if (u.status !== 'active') return;
-        
-        // ✅ السطر الجديد: التحقق من نوع الباقة (عملات أو كلاهما)
         if (u.planType !== 'crypto' && u.planType !== 'both') return;
         
         const fs = window.firebaseFS;
@@ -1888,84 +2001,6 @@ async function loadLatestSignal() {
     } catch(e) { console.warn('Load signal error:', e.message); }
 }
 
-function getNotifs() { if (!auth || !auth.currentUser) return []; return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
-function setNotifs(arr) { localStorage.setItem('tradelix_notifs', JSON.stringify(arr)); }
-
-function openNotifModal() {
-    const notifs = getNotifs();
-    const list = document.getElementById('notifList');
-    if (notifs.length === 0) list.innerHTML = '<p style="color:#999999; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
-    else list.innerHTML = notifs.map(n => '<div style="background:#000000; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ' + (n.read ? '#1F1F1F' : '#F5C518') + ';"><div style="color:#F5C518; font-weight:700; font-size:13px; margin-bottom:4px;">' + n.message + '</div><div style="color:#999999; font-size:11px;">' + n.time + '</div></div>').join('');
-    document.getElementById('notifModal').style.display = 'block';
-    notifs.forEach(n => n.read = true);
-    setNotifs(notifs);
-    updateBadge();
-}
-
-function closeNotifModal() { document.getElementById('notifModal').style.display = 'none'; }
-
-function updateBadge() {
-    const notifs = getNotifs();
-    const unread = notifs.filter(n => !n.read).length;
-    document.querySelectorAll('.bell-icon').forEach(bell => {
-        let badge = bell.querySelector('.notifBadge');
-        if (unread > 0) {
-            if (!badge) { badge = document.createElement('span'); badge.className = 'notifBadge'; bell.appendChild(badge); }
-            badge.textContent = unread;
-        } else if (badge) badge.remove();
-    });
-}
-
-function addNotif(message) {
-    if (!auth || !auth.currentUser) return;
-    const notifs = getNotifs();
-    const recent = notifs.find(n => n.message === message && (Date.now() - n.id) < 30000);
-    if (recent) return;
-    notifs.unshift({ id: Date.now(), message: message, time: new Date().toLocaleString('en-GB'), read: false });
-    if (notifs.length > 50) notifs.length = 50;
-    setNotifs(notifs);
-    updateBadge();
-    if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-        try { new Notification('Tradelix AI', { body: message }); } catch(e){}
-    }
-    try {
-        const c = new (window.AudioContext || window.webkitAudioContext)();
-        [0, 0.3].forEach(d => {
-            const o = c.createOscillator(); const g = c.createGain();
-            o.connect(g); g.connect(c.destination);
-            o.frequency.value = 880;
-            g.gain.setValueAtTime(0.3, c.currentTime + d);
-            g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + d + 0.2);
-            o.start(c.currentTime + d); o.stop(c.currentTime + d + 0.2);
-        });
-    } catch(e){}
-    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-    if (typeof showToast === 'function') { try { showToast(message); } catch(e) {} }
-}
-
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-}
-</script>
-<script>
-async function requestNotifPermission() {
-    if (!('Notification' in window)) { if (typeof showToast === 'function') showToast('❌ Notifications not supported'); return; }
-    try {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-            if (typeof showToast === 'function') showToast('✅ Notifications enabled!');
-            const box = document.getElementById('notifPermissionBox');
-            if (box) box.style.display = 'none';
-            try { new Notification('Tradelix AI', { body: '✅ Notifications are working!' }); } catch(e) {}
-        } else if (permission === 'denied') {
-            if (typeof showToast === 'function') showToast('❌ Notifications blocked');
-        }
-    } catch(e) { console.error(e); }
-}
-
 function hideNetlifyBadge() {
     ['[data-netlify-badge]', '#netlify-badge', '.netlify-badge', 'iframe[title="Netlify"]', 'a[href*="netlify.com"]', 'div[class*="netlify"]', 'div[id*="netlify"]'].forEach(sel => {
         document.querySelectorAll(sel).forEach(el => el.remove());
@@ -1998,14 +2033,8 @@ async function _checkSignals() {
             snap = await getDocs(q);
         } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_signals')); }
         
-        // ✅ التحقق من الحالة أولاً
         if (u.status !== 'active') { _setLastNotified(Date.now()); return; }
-        
-        // ✅ التحقق من نوع الباقة: يجب أن يكون crypto أو both
-        if (u.planType !== 'crypto' && u.planType !== 'both') { 
-            _setLastNotified(Date.now()); 
-            return; 
-        }
+        if (u.planType !== 'crypto' && u.planType !== 'both') { _setLastNotified(Date.now()); return; }
         
         const lastNotified = _getLastNotified();
         const now = Date.now();
@@ -2170,6 +2199,31 @@ window.addEventListener('load', async () => {
 document.addEventListener('visibilitychange', () => {
     if (!document.hidden && _isLoggedIn()) { updateBadge(); updateUI(); }
 });
+
+// ✅ GOLD REWARD NOTIFIER
+(function initGoldRewardNotifier() {
+    if (typeof updateUI === 'undefined' || typeof addNotif === 'undefined') {
+        return setTimeout(initGoldRewardNotifier, 500);
+    }
+    const _origUpdateUI = window.updateUI;
+    window.updateUI = function () {
+        _origUpdateUI.apply(this, arguments);
+        checkGoldRewardNotification();
+    };
+    function checkGoldRewardNotification() {
+        const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
+        if (!user.uid) return;
+        if (user.referralRewardStatus === 'activated_gold') {
+            const key = 'tradelix_gold_notified_' + user.uid;
+            if (!localStorage.getItem(key)) {
+                localStorage.setItem(key, '1');
+                try { addNotif('🎉 تمت إضافة أيام الذهب إلى حسابك بنجاح! استمتع بالهدية'); } catch (e) {}
+            }
+        }
+    }
+    setTimeout(checkGoldRewardNotification, 2000);
+    console.log('[Gold Reward Notifier] ✅ Initialized');
+})();
 </script>
 
 <style>
@@ -2183,7 +2237,7 @@ document.addEventListener('visibilitychange', () => {
         pointer-events: none !important; z-index: -99999 !important; transform: scale(0) !important;
     }
 </style>
-    <!-- ═══════════ PWA INSTALL BANNER ═══════════ -->
+
 <div id="pwaInstallBanner" style="display:none; position:fixed; top:0; left:0; right:0; z-index:999999; padding:12px 16px; background:linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); border-bottom:2px solid #F5C518; box-shadow:0 4px 20px rgba(245,197,24,0.3); animation:slideDown 0.5s ease;">
     <div style="display:flex; align-items:center; gap:12px; max-width:480px; margin:0 auto;">
         <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Tradelix AI" style="width:50px; height:50px; border-radius:12px; border:1.5px solid #F5C518; flex-shrink:0; box-shadow:0 0 15px rgba(245,197,24,0.4);">
@@ -2215,17 +2269,12 @@ document.addEventListener('visibilitychange', () => {
 <script>
     let deferredPrompt = null;
     const PWA_BANNER_KEY = 'tradelix_pwa_banner_dismissed';
-
     window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
     console.log('✅ PWA: Install prompt ready — waiting for home screen');
-    // ⚠️ لا نستدعي showPWABanner هنا
-    // سيتم استدعاؤها فقط من داخل showScreen عند فتح homeScreen
 });
-
     function showPWABanner() {
-        // ✅ فقط بعد تسجيل الدخول
 const user = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
 if (!user.uid) {
     console.log('⏭️ PWA: User not logged in');
@@ -2243,7 +2292,6 @@ if (!user.uid) {
             document.body.classList.add('pwa-banner-active');
         }
     }
-
     async function installPWA() {
         if (!deferredPrompt) {
             alert('📲 To install on iPhone:\n\n1. Tap "Share" in Safari\n2. Choose "Add to Home Screen"\n3. Tap "Add"');
@@ -2259,7 +2307,6 @@ if (!user.uid) {
         }
         deferredPrompt = null;
     }
-
     function closePWABanner(installed = false) {
         const banner = document.getElementById('pwaInstallBanner');
         if (banner) {
@@ -2272,6 +2319,5 @@ if (!user.uid) {
         if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
     }
 </script>
-
 </body>
 </html>
