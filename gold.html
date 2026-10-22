@@ -846,10 +846,19 @@
             try {
                 const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
                 
+                // ✅ إصلاح الخلل: التحقق من نوع الباقة الحالية قبل التحديث
+                const currentPlanType = window.latestUserData?.planType || savedUser?.planType || 'none';
+                let newPlanType = 'gold';
+                
+                // إذا كان المستخدم يمتلك اشتراك كريبتو أو كلاهما، نجعله "كلاهما"
+                if (currentPlanType === 'crypto' || currentPlanType === 'both') {
+                    newPlanType = 'both';
+                }
+
                 await setDoc(doc(window.firebaseDB, 'tradelix_users', savedUser.uid), {
                     status: 'pending',
                     plan: window.currentGoldPlan.name,
-                    planType: 'gold',
+                    planType: newPlanType, // <-- استخدام النوع الجديد (gold أو both)
                     depositAmount: window.currentGoldPlan.price,
                     txHash: txHash,
                     submittedAt: serverTimestamp() 
