@@ -718,7 +718,7 @@
     </div>
     <div class="header-title"><h1>TRADELIX AI</h1><span>SMARTER TRADING</span></div>
 </div>
-    <div class="bell-icon" onclick="openNotifModal()">🔔</div>
+    <div class="bell-icon" onclick="openNotifModal()"><i class="fa-solid fa-bell"></i></div>
 </div>
     
 <!-- SOCIAL BUTTONS ROW -->
@@ -898,7 +898,7 @@
 <div id="allMarketsScreen" class="screen">
     <div class="header">
         <div class="header-left"><div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;"><img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="Binance" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(243, 186, 47, 0.6));"></div><div class="header-title"><h1>All Markets</h1><span>BINANCE LIVE • 46 COINS</span></div></div>
-        <div class="bell-icon" onclick="showScreen('homeScreen')">✕</div>
+        <div class="bell-icon" onclick="showScreen('homeScreen')"><i class="fa-solid fa-xmark"></i></div>
     </div>
     <div class="input-group"><input type="text" id="marketSearch" placeholder="🔍 Search by name or symbol..." oninput="filterAllMarkets()"></div>
    <!-- 🚀 بانر عملة Tradelix القادمة -->
@@ -1102,7 +1102,7 @@
     </div>
     <!-- INVITE FRIENDS BUTTON -->
 <a href="javascript:void(0)" onclick="showToast('🎁 Referral system coming soon!')" class="invite-friends-btn">
-    <span class="invite-icon">🎁</span>
+    <span class="invite-icon"><i class="fa-solid fa-gift"></i></span>
     <span class="invite-text">
         <span class="invite-title">Invite Friends</span>
         <span class="invite-sub">COMING SOON</span>
@@ -1111,22 +1111,22 @@
 </a>
 <!-- END INVITE FRIENDS BUTTON -->
     <div class="card">
-        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;">🎓 My Courses</h3>
+        <h3 style="color: var(--gold); margin-bottom: 12px; font-size: 15px;"><i class="fa-solid fa-graduation-cap"></i> My Courses</h3>
         <div id="myCoursesList"><p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">No courses yet</p></div>
     </div>
     <div class="card" style="text-align: center;">
-        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;">💬 Contact Admin</h3>
+        <h3 style="color: var(--gold); margin-bottom: 8px; font-size: 15px;"><i class="fa-solid fa-headset"></i> Contact Admin</h3>
         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">For support and inquiries</p>
         <a href="mailto:mmatrix081@gmail.com" class="btn-block" style="text-decoration:none; display:block; text-align:center;">✉️ Send Email</a>
     </div>
     <button class="btn-outline" onclick="handleLogout()">🚪 Logout</button>
     <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><span class="icon">🏠</span><span>Home</span></button>
-        <button class="nav-item" onclick="showScreen('signalsScreen')"><span class="icon">📊</span><span>Signals</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><span class="icon">📚</span><span>Academy</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><span class="icon">📅</span><span>Meetings</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><span class="icon">💎</span><span>Plan</span></button>
-        <button class="nav-item active" onclick="showScreen('profileScreen')"><span class="icon">👤</span><span>Profile</span></button>
+        <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+<button class="nav-item" onclick="showScreen('signalsScreen')"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+<button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+<button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+<button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+<button class="nav-item active" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
     </div>
 </div>
 
@@ -1138,7 +1138,7 @@
     </div>
     <div class="card" style="padding: 10px;"><div id="chartContainer" style="width: 100%; height: 300px; position: relative; background: #000000; border-radius: 10px; overflow: hidden;"></div></div>
     <div class="card">
-        <h3 style="color: var(--gold); margin-bottom: 10px; font-size: 14px;">📊 24h Statistics</h3>
+        <h3 style="color: var(--gold); margin-bottom: 10px; font-size: 14px;"><i class="fa-solid fa-chart-simple"></i> 24h Statistics</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div style="background:#000000; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h High</div><div id="coinHigh" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
             <div style="background:#000000; padding: 10px; border-radius: 8px;"><div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">24h Low</div><div id="coinLow" style="font-size: 13px; font-weight: 900; color: var(--text-main);">-</div></div>
