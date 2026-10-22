@@ -60,7 +60,6 @@
             const desc = document.getElementById('subStatusDesc');
 
             const status = data.status || 'inactive';
-            const planType = data.planType;
             const access = hasGoldAccess(data);
 
             if(access) {
@@ -117,9 +116,23 @@
             document.getElementById('accDays').textContent = daysLeftText;
         }
 
+        // ✅ التعديل هنا: إضافة مراقبة الصفقات الجديدة وتشغيل الصوت
         window.initSignalListener = function() {
             const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(1));
+            let isFirstLoad = true; // لتجنب تشغيل الصوت عند فتح التطبيق لأول مرة
+
             onSnapshot(q, (snapshot) => {
+                
+                // تشغيل الصوت فقط عند إضافة صفقة جديدة
+                if (!isFirstLoad) {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === "added") {
+                            playNotificationSound();
+                        }
+                    });
+                }
+                isFirstLoad = false;
+
                 const user = window.latestUserData;
                 if (!hasGoldAccess(user)) {
                     document.getElementById('sigPair').textContent = 'XAU/USD Signal';
@@ -302,7 +315,6 @@
         .signal-box-full span { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
         .signal-box-full strong { display: block; font-size: 18px; font-weight: 900; color: var(--gold); }
 
-        /* ✅ Custom Alert Popup Styles */
         .custom-alert-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
@@ -334,6 +346,9 @@
     </style>
 </head>
 <body>
+
+    <!-- ✅ ملف الصوت المخصص للتنبيه -->
+    <audio id="notifAudio" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
 
     <div class="header">
         <div class="header-left">
@@ -478,7 +493,6 @@
         </div>
     </div>
 
-    <!-- ✅ تمت إضافة الأيقونة في الشاشات المنسدلة -->
     <div id="accountOverlay" class="account-overlay">
         <div class="account-header">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -590,7 +604,6 @@
         </div>
     </div>
 
-    <!-- ✅ Custom Premium Alert Modal -->
     <div id="customAlert" class="custom-alert-overlay">
         <div class="custom-alert-box">
             <div class="custom-alert-icon" id="alertIcon">🔒</div>
@@ -604,6 +617,32 @@
         let previousPrice = 0;
         let currentInterval = '1';
         let alertActionType = 'none';
+
+        // ✅ دالة تشغيل الصوت
+        function playNotificationSound() {
+            const audio = document.getElementById('notifAudio');
+            if (audio) {
+                audio.currentTime = 0; // إعادة الصوت من البداية
+                audio.play().catch(e => console.log('Audio play blocked by browser:', e));
+            }
+        }
+
+        // ✅ تفعيل الصوت عند أول لمسة للمستخدم (سياسة المتصفحات)
+        function unlockAudio() {
+            const audio = document.getElementById('notifAudio');
+            if (audio) {
+                audio.volume = 0.01; // خفض الصوت جداً
+                audio.play().then(() => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    audio.volume = 1; // إعادة الصوت للطبيعي
+                }).catch(e => console.log("Audio unlock failed", e));
+            }
+            document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('touchstart', unlockAudio);
+        }
+        document.addEventListener('click', unlockAudio);
+        document.addEventListener('touchstart', unlockAudio);
 
         async function fetchPrice() {
             let currentPrice = 0;
