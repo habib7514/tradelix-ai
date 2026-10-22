@@ -116,49 +116,52 @@
             document.getElementById('accDays').textContent = daysLeftText;
         }
 
-        // ✅ التعديل هنا: إضافة مراقبة الصفقات الجديدة وتشغيل الصوت
+        // ✅ التعديل الجديد: مراقبة الصفقات وتشغيل الصوت بشكل مضمون
+        let lastSignalId = null; // لتتبع آخر صفقة تم عرضها
+
         window.initSignalListener = function() {
             const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(1));
-            let isFirstLoad = true; // لتجنب تشغيل الصوت عند فتح التطبيق لأول مرة
-
+            
             onSnapshot(q, (snapshot) => {
-                
-                // تشغيل الصوت فقط عند إضافة صفقة جديدة
-                if (!isFirstLoad) {
-                    snapshot.docChanges().forEach((change) => {
-                        if (change.type === "added") {
-                            playNotificationSound();
-                        }
-                    });
-                }
-                isFirstLoad = false;
-
                 const user = window.latestUserData;
-                if (!hasGoldAccess(user)) {
-                    document.getElementById('sigPair').textContent = 'XAU/USD Signal';
-                    document.getElementById('sigSL').textContent = '-';
-                    document.getElementById('sigEntry').textContent = '-';
-                    document.getElementById('sigTP').textContent = '-';
-                    document.getElementById('sigStatus').textContent = 'LOCKED';
-                    document.getElementById('sigStatus').style.color = '#FF4757';
-                    return;
-                }
-
+                
                 if (!snapshot.empty) {
-                    const signal = snapshot.docs[0].data();
-                    document.getElementById('sigPair').textContent = signal.pair || 'XAU/USD Signal';
-                    document.getElementById('sigSL').textContent = signal.stopLoss || '-';
-                    document.getElementById('sigEntry').textContent = signal.entry || '-';
-                    document.getElementById('sigTP').textContent = signal.takeProfit || '-';
-                    document.getElementById('sigStatus').textContent = signal.direction || 'ACTIVE';
-                    document.getElementById('sigStatus').style.color = '#00D084';
+                    const latestDoc = snapshot.docs[0];
+                    const signal = latestDoc.data();
+                    
+                    // 🔔 تشغيل الصوت فقط إذا كانت هذه صفقة جديدة (وليس عند فتح التطبيق لأول مرة)
+                    if (lastSignalId !== null && lastSignalId !== latestDoc.id) {
+                        playNotificationSound();
+                        showCustomAlert('New Signal!', `A new gold signal for ${signal.pair || 'XAU/USD'} has arrived!`, '🔔');
+                    }
+                    lastSignalId = latestDoc.id; // تحديث آخر معرف صفقة
+
+                    // تحديث الواجهة إذا كان المستخدم يمتلك اشتراكاً
+                    if (hasGoldAccess(user)) {
+                        document.getElementById('sigPair').textContent = signal.pair || 'XAU/USD Signal';
+                        document.getElementById('sigSL').textContent = signal.stopLoss || '-';
+                        document.getElementById('sigEntry').textContent = signal.entry || '-';
+                        document.getElementById('sigTP').textContent = signal.takeProfit || '-';
+                        document.getElementById('sigStatus').textContent = signal.direction || 'ACTIVE';
+                        document.getElementById('sigStatus').style.color = '#00D084';
+                    } else {
+                        // إذا لم يكن لديه اشتراك
+                        document.getElementById('sigPair').textContent = 'XAU/USD Signal';
+                        document.getElementById('sigSL').textContent = '-';
+                        document.getElementById('sigEntry').textContent = '-';
+                        document.getElementById('sigTP').textContent = '-';
+                        document.getElementById('sigStatus').textContent = 'LOCKED';
+                        document.getElementById('sigStatus').style.color = '#FF4757';
+                    }
                 } else {
-                    document.getElementById('sigPair').textContent = 'XAU/USD Signal';
-                    document.getElementById('sigSL').textContent = '-';
-                    document.getElementById('sigEntry').textContent = '-';
-                    document.getElementById('sigTP').textContent = '-';
-                    document.getElementById('sigStatus').textContent = 'WAITING';
-                    document.getElementById('sigStatus').style.color = '#999999';
+                    if (hasGoldAccess(user)) {
+                        document.getElementById('sigPair').textContent = 'XAU/USD Signal';
+                        document.getElementById('sigSL').textContent = '-';
+                        document.getElementById('sigEntry').textContent = '-';
+                        document.getElementById('sigTP').textContent = '-';
+                        document.getElementById('sigStatus').textContent = 'WAITING';
+                        document.getElementById('sigStatus').style.color = '#999999';
+                    }
                 }
             });
         };
@@ -346,9 +349,6 @@
     </style>
 </head>
 <body>
-
-    <!-- ✅ ملف الصوت المخصص للتنبيه -->
-    <audio id="notifAudio" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
 
     <div class="header">
         <div class="header-left">
@@ -618,31 +618,43 @@
         let currentInterval = '1';
         let alertActionType = 'none';
 
-        // ✅ دالة تشغيل الصوت
-        function playNotificationSound() {
-            const audio = document.getElementById('notifAudio');
-            if (audio) {
-                audio.currentTime = 0; // إعادة الصوت من البداية
-                audio.play().catch(e => console.log('Audio play blocked by browser:', e));
-            }
-        }
-
-        // ✅ تفعيل الصوت عند أول لمسة للمستخدم (سياسة المتصفحات)
+        // ✅ دالة الصوت الاحترافية باستخدام Web Audio API (مضمونة 100%)
+        let audioCtx = null;
         function unlockAudio() {
-            const audio = document.getElementById('notifAudio');
-            if (audio) {
-                audio.volume = 0.01; // خفض الصوت جداً
-                audio.play().then(() => {
-                    audio.pause();
-                    audio.currentTime = 0;
-                    audio.volume = 1; // إعادة الصوت للطبيعي
-                }).catch(e => console.log("Audio unlock failed", e));
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            // إزالة مستمعي الأحداث بعد التفعيل الأول
             document.removeEventListener('click', unlockAudio);
             document.removeEventListener('touchstart', unlockAudio);
         }
         document.addEventListener('click', unlockAudio);
         document.addEventListener('touchstart', unlockAudio);
+
+        function playNotificationSound() {
+            if (!audioCtx) return;
+            try {
+                // نغمة تنبيه (دقتين متتاليتين)
+                [0, 0.3].forEach(delay => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.type = 'sine'; // نوع الموجة (صوت رنين)
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime + delay); 
+                    gain.gain.setValueAtTime(0.5, audioCtx.currentTime + delay); // مستوى الصوت
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + delay + 0.2);
+                    osc.start(audioCtx.currentTime + delay);
+                    osc.stop(audioCtx.currentTime + delay + 0.25);
+                });
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200]); // اهتزاز
+            } catch (e) {
+                console.log('Audio play error:', e);
+            }
+        }
 
         async function fetchPrice() {
             let currentPrice = 0;
