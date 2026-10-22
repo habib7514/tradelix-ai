@@ -1208,7 +1208,19 @@ const firebaseConfig = {
 let auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged;
 let doc, setDoc, getDoc, serverTimestamp;
 let currentUserData = null;
-
+// ✅ إعداد الصوت العام (Global Audio)
+let globalAudioCtx = null;
+function initAudio() {
+    if (!globalAudioCtx) {
+        try { globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+    }
+    if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
+        globalAudioCtx.resume();
+    }
+}
+// تفعيل الصوت عند أي لمسة في التطبيق
+document.addEventListener('click', initAudio);
+document.addEventListener('touchstart', initAudio);
 async function initFirebase() {
     try {
         const appModule = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js");
