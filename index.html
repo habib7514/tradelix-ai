@@ -1665,6 +1665,12 @@ async function submitDeposit() {
         
         // 🟢 تحديد نوع الباقة (ذهب أم عملات أم كورس)
         let detectedPlanType = 'crypto'; // الافتراضي هو العملات
+        
+        // ✅ إصلاح الخلل: إذا كان المستخدم يمتلك اشتراك ذهب أو كلاهما مسبقاً، نجعله "كلاهما"
+        if (user.planType === 'gold' || user.planType === 'both') {
+            detectedPlanType = 'both';
+        }
+
         if (isCourseRequest) {
             detectedPlanType = 'course';
         } else if (currentPlan.name && (currentPlan.name.toLowerCase().includes('gold') || currentPlan.name.toLowerCase().includes('xau'))) {
