@@ -12,15 +12,15 @@
     "categories": ["finance", "business", "productivity"],
     "icons": [
         {
-            "src": "https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png",
+            "src": "https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg",
             "sizes": "512x512",
-            "type": "image/png",
+            "type": "image/jpeg",
             "purpose": "any"
         },
         {
-            "src": "https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/file_00000000ca308208ba7576f8ba73b803.png",
+            "src": "https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg",
             "sizes": "512x512",
-            "type": "image/png",
+            "type": "image/jpeg",
             "purpose": "maskable"
         }
     ]
