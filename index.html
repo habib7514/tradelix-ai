@@ -2252,7 +2252,42 @@ async function _refreshUserData() {
         updateUI();
     } catch(e) { console.warn('User refresh error:', e.message); }
 }
+async function _checkRecommendations() {
+    try {
+        if (!_isLoggedIn()) return;
+        const u = _getUser();
+        if (!u.uid) return;
+        const fs = window.firebaseFS;
+        if (!fs) return;
+        const { collection, getDocs, query, orderBy, limit } = fs;
+        
+        let snap;
+        try {
+            const q = query(collection(window.firebaseDB, 'tradelix_recommendations'), orderBy('createdAt', 'desc'), limit(10));
+            snap = await getDocs(q);
+        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'tradelix_recommendations')); }
 
+        const lastNotifiedKey = 'tradelix_last_rec_notified_' + u.uid;
+        const lastNotified = parseInt(localStorage.getItem(lastNotifiedKey) || '0');
+        const now = Date.now();
+        const startFrom = lastNotified > 0 ? lastNotified : now;
+        let maxNotified = lastNotified;
+
+        snap.forEach(d => {
+            const rec = d.data();
+            const createdMs = (rec.createdAt?.seconds || 0) * 1000;
+            
+            if (createdMs > startFrom && rec.status === 'active') {
+                const msg = `💡 New Recommendation: ${rec.coin}/USDT ${rec.price ? '@ $'+rec.price : ''}`;
+                addNotif(msg); 
+                if (createdMs > maxNotified) maxNotified = createdMs;
+            }
+        });
+        localStorage.setItem(lastNotifiedKey, String(maxNotified || now));
+    } catch(e) { 
+        console.warn('Recommendation poll error:', e.message); 
+    }
+}
 async function _pollCycle() {
     if (!window.firebaseDB) return;
     if (!_isLoggedIn()) { _pollStarted = false; return; }
@@ -2261,6 +2296,7 @@ async function _pollCycle() {
     if (u.uid !== auth.currentUser.uid) return;
     await _refreshUserData();
     await _checkSignals();
+    await _checkRecommendations();
     await _checkMeetings();
     await loadMeetingsForUser();
     await loadLatestSignal();
