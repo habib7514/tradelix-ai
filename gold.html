@@ -142,8 +142,21 @@
                         document.getElementById('sigSL').textContent = signal.stopLoss || '-';
                         document.getElementById('sigEntry').textContent = signal.entry || '-';
                         document.getElementById('sigTP').textContent = signal.takeProfit || '-';
-                        document.getElementById('sigStatus').textContent = signal.direction || 'ACTIVE';
-                        document.getElementById('sigStatus').style.color = '#00D084';
+                        
+                        // ✅ التعديل الوحيد: تغيير لون BUY و SELL
+                        const dir = signal.direction || 'ACTIVE';
+                        const statusEl = document.getElementById('sigStatus');
+                        if (statusEl) {
+                            statusEl.textContent = dir;
+                            if (dir.toUpperCase() === 'SELL') {
+                                statusEl.style.color = '#FF4757'; // أحمر للبيع
+                            } else if (dir.toUpperCase() === 'BUY') {
+                                statusEl.style.color = '#00D084'; // أخضر للشراء
+                            } else {
+                                statusEl.style.color = '#F5C518'; // ذهبي للحالات الأخرى
+                            }
+                        }
+
                     } else {
                         document.getElementById('sigPair').textContent = 'XAU/USD Signal';
                         document.getElementById('sigSL').textContent = '-';
