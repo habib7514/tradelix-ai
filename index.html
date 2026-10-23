@@ -294,6 +294,8 @@
     animation: join-pulse 2s ease-in-out infinite;
     overflow: hidden;
     white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
 }
 .join-now-btn::before {
     content: '';
@@ -766,11 +768,24 @@
         </div>
     </div>
 </div>
+
+<!-- ✅ MOVED HERE: Gold AI Section & Join Tradix Button -->
+<div class="gold-intro-card">
+    <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Discover Tradix Gold AI</h3>
+    <p>Experience real-time gold trading with advanced AI analysis, live prices, and interactive charts.</p>
+</div>
+<a href="gold.html" class="join-tradix-btn" style="display: block; text-align: center; text-decoration: none; margin-top: 15px; margin-bottom: 20px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%); color: #000; font-weight: 900; font-size: 18px; padding: 16px 30px; border-radius: 12px; border: 2px solid #FFD700; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); width: 100%; max-width: 280px; margin-left: auto; margin-right: auto;">Join Tradix Now</a>
+
+<!-- ✅ NEW: Recommendations Button -->
+<div style="text-align: center; margin-bottom: 20px;">
+    <div class="join-now-btn" onclick="showScreen('recommendationsScreen')" style="padding: 16px 30px; font-size: 16px;">Recommendations</div>
+</div>
+
     <!-- 🎯 CHAT BUTTON -->
 <div id="chatButtonContainer" style="display:none; margin: 16px 20px;">
     <button onclick="toggleChat()" class="chat-glow-btn">
         <span style="position:relative; z-index:2; display:flex; align-items:center; gap:10px;">
-            <i class="fa-solid fa-comments"></i> غرفة النقاش
+            <i class="fa-solid fa-comments"></i> Discussion Room
         </span>
     </button>
 </div>
@@ -888,16 +903,35 @@
         </div>
         <button class="btn-block" onclick="showScreen('academyScreen')" style="position: relative; z-index: 1; box-shadow: 0 6px 20px rgba(245,197,24,0.4);"><i class="fa-solid fa-graduation-cap"></i> View Courses</button>
     </div>
-<!-- مربع تعريفي بالذهب -->
-<div class="gold-intro-card">
-    <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Discover Tradix Gold AI</h3>
-    <p>Experience real-time gold trading with advanced AI analysis, live prices, and interactive charts.</p>
-</div>
-    <a href="gold.html" class="join-tradix-btn" style="display: block; text-align: center; text-decoration: none; margin-top: 15px; margin-bottom: 20px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%); color: #000; font-weight: 900; font-size: 18px; padding: 16px 30px; border-radius: 12px; border: 2px solid #FFD700; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); width: 100%; max-width: 280px; margin-left: auto; margin-right: auto;">Join Tradix Now</a>
 
     <!-- Home Screen Bottom Nav -->
     <div class="bottom-nav">
         <button class="nav-item active" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
+        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
+        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
+        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
+        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
+    </div>
+</div>
+
+<!-- ✅ NEW: Recommendations Screen -->
+<div id="recommendationsScreen" class="screen">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-logo" style="background: transparent; padding: 0; overflow: hidden; width: 44px; height: 44px; border-radius: 50%; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); display: flex; align-items: center; justify-content: center;">
+                <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;">
+            </div>
+            <div class="header-title"><h1>Recommendations</h1><span>INVESTMENTS</span></div>
+        </div>
+        <div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    
+    <div id="recsList" style="display: flex; flex-direction: column; gap: 15px; padding-bottom: 20px;"></div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
         <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
         <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
         <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
@@ -1290,6 +1324,7 @@ function showScreen(id, scrollToId = null) {
     updateUI();
     if (id === 'allMarketsScreen') renderAllMarkets();
     if (id === 'signalsScreen') loadLatestSignal();
+    if (id === 'recommendationsScreen') loadRecommendations(); // ✅ Added call
     
     // ✅ إخفاء البانر في الصفحات غير الرئيسية
     if (id !== 'homeScreen') {
@@ -1585,7 +1620,7 @@ if (coursesListPlan) {
     }
     
     if (pendingCourse && user.status === 'pending') {
-        coursesHtml += `<div style="background: #1a1a1a; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--orange);"><div style="color: var(--orange); font-weight: 700; font-size: 13px;"><i class="fa-solid fa-hourglass-half"></i> معلق: ${pendingCourse}</div></div>`;
+        coursesHtml += `<div style="background: #1a1a1a; border-radius: 10px; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--orange);"><div style="color: var(--orange); font-weight: 700; font-size: 13px;"><i class="fa-solid fa-hourglass-half"></i> Pending: ${pendingCourse}</div></div>`;
     }
     
     if (coursesHtml === '') {
@@ -1782,6 +1817,9 @@ async function fetchPrices() {
         renderHomeMarkets();
         renderAllMarkets();
         renderTicker();
+        if (document.getElementById('recommendationsScreen') && document.getElementById('recommendationsScreen').classList.contains('active')) {
+            loadRecommendations(); // Update prices in recommendations if active
+        }
     } catch (e) { console.error('Binance fetch error:', e); }
 }
 
@@ -1890,6 +1928,69 @@ function loadTradingViewChart() {
     iframe.style.width = '100%'; iframe.style.height = '100%';
     iframe.style.border = 'none'; iframe.style.borderRadius = '10px';
     container.appendChild(iframe);
+}
+
+// ✅ NEW: Load Recommendations Function
+async function loadRecommendations() {
+    const listDiv = document.getElementById('recsList');
+    if (!listDiv) return;
+    listDiv.innerHTML = '<p style="text-align:center; color:#999; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</p>';
+
+    try {
+        if (!window.firebaseDB) return;
+        const fs = window.firebaseFS;
+        const { collection, getDocs, query, orderBy } = fs;
+        
+        let snap;
+        try {
+            const q = query(collection(window.firebaseDB, 'tradelix_recommendations'), orderBy('createdAt', 'desc'));
+            snap = await getDocs(q);
+        } catch(e) {
+            snap = await getDocs(collection(window.firebaseDB, 'tradelix_recommendations'));
+        }
+
+        const recs = [];
+        snap.forEach(d => {
+            const data = d.data();
+            if (data.status === 'active') {
+                recs.push({ id: d.id, ...data });
+            }
+        });
+
+        if (recs.length === 0) {
+            listDiv.innerHTML = '<div style="text-align:center; padding: 40px 20px; color:#999;"><i class="fa-solid fa-lightbulb" style="font-size:48px; margin-bottom:16px; color:#F5C518; opacity: 0.5;"></i><br><h3 style="color:#F5C518; margin-bottom: 8px;">No Recommendations Yet</h3><p style="font-size:13px;">Check back later for new investment opportunities.</p></div>';
+            return;
+        }
+
+        listDiv.innerHTML = recs.map(r => {
+            const coin = r.coin;
+            const info = COIN_INFO[coin] || { name: coin, color: '#F5C518', letter: coin.charAt(0) };
+            const livePrice = prices[coin] ? fmtPrice(prices[coin].price) : (r.price ? '$' + r.price : 'Market Price');
+            
+            // Using a reliable public repo for crypto icons
+            const imgUrl = `https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${coin.toLowerCase()}.png`;
+            
+            return `
+                <div class="card" style="background: var(--bg-card); border-color: var(--border); text-align: center; padding: 20px;">
+                    <img src="${imgUrl}" alt="${coin}" style="width: 64px; height: 64px; margin-bottom: 12px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display: none; width: 64px; height: 64px; border-radius: 50%; background: ${info.color}; color: white; font-size: 32px; font-weight: 900; align-items: center; justify-content: center; margin: 0 auto 12px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">${info.letter}</div>
+                    
+                    <h3 style="color: var(--gold); font-size: 20px; margin-bottom: 4px; font-weight: 900;">${coin} / USDT</h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">${info.name}</p>
+                    
+                    <div style="font-size: 28px; font-weight: 900; color: var(--text-main); margin-bottom: 16px; font-variant-numeric: tabular-nums;">${livePrice}</div>
+                    
+                    ${r.notes ? `<p style="font-size: 13px; color: #ccc; background: rgba(245,197,24,0.1); padding: 12px; border-radius: 8px; margin-bottom: 20px; border-left: 3px solid var(--gold); text-align: left;">${r.notes}</p>` : ''}
+                    
+                    <a href="https://www.binance.com/en/trade/${coin}_USDT" target="_blank" class="btn-block" style="display: block; text-decoration: none; background: #00D084; color: #000; padding: 16px; border-radius: 12px; font-weight: 900; font-size: 18px; border: none; box-shadow: 0 6px 20px rgba(0, 208, 132, 0.4);">Buy Now</a>
+                </div>
+            `;
+        }).join('');
+
+    } catch (error) {
+        console.error("Error loading recommendations:", error);
+        listDiv.innerHTML = '<p style="text-align:center; color:#FF4757; padding: 20px;">Failed to load recommendations.</p>';
+    }
 }
 
 async function loadLatestSignal() {
