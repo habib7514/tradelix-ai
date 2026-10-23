@@ -1934,6 +1934,20 @@ function loadTradingViewChart() {
 async function loadRecommendations() {
     const listDiv = document.getElementById('recsList');
     if (!listDiv) return;
+    // ✅ منع غير المشتركين من رؤية التوصيات
+const u = _getUser();
+const hasAccess = u.status === 'active' && (u.planType === 'crypto' || u.planType === 'gold' || u.planType === 'both');
+
+if (!hasAccess) {
+    listDiv.innerHTML = `
+        <div style="text-align:center; padding: 40px 20px; color:#999;">
+            <i class="fa-solid fa-lock" style="font-size:48px; margin-bottom:16px; color:#F5C518; opacity: 0.5;"></i>
+            <h3 style="color:#F5C518; margin-bottom: 8px;">Premium Required</h3>
+            <p style="font-size:13px; margin-bottom: 16px;">Subscribe to access crypto recommendations.</p>
+            <button class="btn-block" onclick="showScreen('homeScreen', 'plansSection')">View Plans</button>
+        </div>`;
+    return;
+}
     listDiv.innerHTML = '<p style="text-align:center; color:#999; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</p>';
 
     try {
@@ -2257,6 +2271,8 @@ async function _checkRecommendations() {
         if (!_isLoggedIn()) return;
         const u = _getUser();
         if (!u.uid) return;
+        const hasAccess = u.status === 'active' && (u.planType === 'crypto' || u.planType === 'gold' || u.planType === 'both');
+if (!hasAccess) return;
         const fs = window.firebaseFS;
         if (!fs) return;
         const { collection, getDocs, query, orderBy, limit } = fs;
