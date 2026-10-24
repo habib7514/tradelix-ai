@@ -2512,6 +2512,78 @@ if (!user.uid) {
         }
         if (!installed) localStorage.setItem(PWA_BANNER_KEY, Date.now().toString());
     }
+    // ==========================================
+// ✅ CHAT LOGIC (USER APP)
+// ==========================================
+let chatUnsub = null;
+
+async function loadChatMessages() {
+    if (!window.firebaseDB) return;
+    const fs = window.firebaseFS;
+    const { collection, query, orderBy, onSnapshot } = fs;
+    
+    const q = query(collection(window.firebaseDB, 'tradelix_chat'), orderBy('createdAt', 'asc'));
+    
+    if (chatUnsub) chatUnsub(); 
+    
+    chatUnsub = onSnapshot(q, (snapshot) => {
+        const chatBox = document.getElementById('chatMessages');
+        if (!chatBox) return;
+        
+        if (snapshot.empty) {
+            chatBox.innerHTML = '<p style="text-align: center; color: #888; margin-top: 20px;">No messages yet. Be the first to say hello!</p>';
+            return;
+        }
+
+        chatBox.innerHTML = '';
+        snapshot.forEach(doc => {
+            const msg = doc.data();
+            const u = _getUser();
+            const isMe = msg.senderId === u.uid;
+            const isAdmin = msg.role === 'admin';
+            
+            const bubbleStyle = isMe 
+                ? 'background: #0099FF; color: #fff; align-self: flex-end; border-radius: 12px 12px 0 12px;' 
+                : (isAdmin ? 'background: #F5C518; color: #000; align-self: flex-start; border-radius: 12px 12px 12px 0;' : 'background: #333; color: #fff; align-self: flex-start; border-radius: 12px 12px 12px 0;');
+            
+            chatBox.innerHTML += `
+                <div style="max-width: 80%; padding: 10px 14px; ${bubbleStyle}">
+                    <div style="font-size: 10px; font-weight: bold; margin-bottom: 4px; opacity: 0.7;">
+                        ${isAdmin ? '👑 Admin' : (isMe ? 'You' : msg.senderName)}
+                    </div>
+                    <div style="font-size: 14px;">${msg.text}</div>
+                </div>
+            `;
+        });
+        
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+}
+
+async function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const u = _getUser();
+    if (!u.uid) { showToast('Please login first'); return; }
+
+    const fs = window.firebaseFS;
+    const { collection, addDoc, serverTimestamp } = fs;
+
+    try {
+        await addDoc(collection(window.firebaseDB, 'tradelix_chat'), {
+            senderId: u.uid,
+            senderName: u.name || 'User',
+            role: 'user',
+            text: text,
+            createdAt: serverTimestamp()
+        });
+        input.value = '';
+    } catch (e) {
+        console.error(e);
+        showToast('❌ Failed to send message');
+    }
+}
 </script>
 
 </body>
