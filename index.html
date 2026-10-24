@@ -1352,6 +1352,7 @@ function showScreen(id, scrollToId = null) {
     if (id === 'allMarketsScreen') renderAllMarkets();
     if (id === 'signalsScreen') loadLatestSignal();
     if (id === 'recommendationsScreen') loadRecommendations(); // ✅ Added call
+    if (id === 'chatScreen') loadChatMessages();
     
     // ✅ إخفاء البانر في الصفحات غير الرئيسية
     if (id !== 'homeScreen') {
