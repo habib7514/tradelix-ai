@@ -1752,7 +1752,16 @@ async function submitDeposit() {
 
 
 const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
-const COINS = ['BTC','ETH','BNB','SOL','XRP','ADA','DOGE','DOT','AVAX','LINK','POL','LTC','TRX','ATOM','UNI','SHIB','APT','ARB','OP','NEAR','INJ','SUI','FIL','ETC','TON','ICP','RENDER','FET','SEI','TIA','STX','IMX','GRT','SAND','MANA','AAVE','MKR','CRV','ALGO','VET','HBAR','EOS','XLM','THETA','RUNE','KAS','TAO','WIF','PEPE','BONK'];
+const COINS = [
+    'BTC','ETH','BNB','SOL','XRP','ADA','DOGE','DOT','AVAX','LINK',
+    'POL','LTC','TRX','ATOM','UNI','SHIB','APT','ARB','OP','NEAR',
+    'INJ','SUI','FIL','ETC','TON','ICP','RENDER','FET','SEI','TIA',
+    'STX','IMX','GRT','SAND','MANA','AAVE','MKR','CRV','ALGO','VET',
+    'HBAR','EOS','XLM','THETA','RUNE','KAS','TAO','WIF','PEPE','BONK',
+    // العملات الجديدة المضافة
+    'WLD','LDO','CHZ','GALA','MINA','DYDX','FLOKI','ENA','BOME','STRK',
+    'JTO','W','ARKM','JUP','PYTH','ORDI','MEME','NOT','ETHFI','OM'
+];
 const MARKET_COINS = COINS.filter(c => !HOME_COINS.includes(c));
 
 const COIN_INFO = {
@@ -1780,7 +1789,19 @@ const COIN_INFO = {
     XLM: { name: 'Stellar', color: '#7D00FF', letter: 'X' }, THETA: { name: 'Theta Network', color: '#2AB8E6', letter: 'T' },
     RUNE: { name: 'THORChain', color: '#33FF99', letter: 'R' }, KAS: { name: 'Kaspa', color: '#70C7BA', letter: 'K' },
     TAO: { name: 'Bittensor', color: '#000000', letter: 'T' }, WIF: { name: 'dogwifhat', color: '#C0A080', letter: 'W' },
-    PEPE: { name: 'Pepe', color: '#3D8B37', letter: 'P' }, BONK: { name: 'Bonk', color: '#FC8C1C', letter: 'B' }
+    PEPE: { name: 'Pepe', color: '#3D8B37', letter: 'P' }, BONK: { name: 'Bonk', color: '#FC8C1C', letter: 'B' },
+    
+    // إعدادات العملات الجديدة
+    WLD: { name: 'Worldcoin', color: '#000000', letter: 'W' }, LDO: { name: 'Lido DAO', color: '#00A3FF', letter: 'L' },
+    CHZ: { name: 'Chiliz', color: '#CD0124', letter: 'C' }, GALA: { name: 'Gala', color: '#000000', letter: 'G' },
+    MINA: { name: 'Mina Protocol', color: '#F5B041', letter: 'M' }, DYDX: { name: 'dYdX', color: '#6966FF', letter: 'D' },
+    FLOKI: { name: 'Floki', color: '#F59E0B', letter: 'F' }, ENA: { name: 'Ethena', color: '#000000', letter: 'E' },
+    BOME: { name: 'Book of Meme', color: '#4B6587', letter: 'B' }, STRK: { name: 'Starknet', color: '#1F1F1F', letter: 'S' },
+    JTO: { name: 'Jito', color: '#1B4D3E', letter: 'J' }, W: { name: 'Wormhole', color: '#FFC72C', letter: 'W' },
+    ARKM: { name: 'Arkham', color: '#0055FF', letter: 'A' }, JUP: { name: 'Jupiter', color: '#24D3A6', letter: 'J' },
+    PYTH: { name: 'Pyth Network', color: '#E6DAFE', letter: 'P' }, ORDI: { name: 'ORDI', color: '#F7931A', letter: 'O' },
+    MEME: { name: 'Memecoin', color: '#3A3A3A', letter: 'M' }, NOT: { name: 'Notcoin', color: '#000000', letter: 'N' },
+    ETHFI: { name: 'Ether.fi', color: '#00C3A3', letter: 'E' }, OM: { name: 'MANTRA', color: '#FF5C00', letter: 'O' }
 };
 
 let prices = {};
