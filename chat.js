@@ -168,6 +168,9 @@ async function initChat() {
 
     if (chatUnsubscribe) chatUnsubscribe();
 
+    // ✅ إضافة هذا المتغير لتجاهل التحميل الأول للرسائل القديمة
+    let isFirstLoad = true;
+
     const q = query(collection(window.firebaseDB, 'tradelix_chat'), orderBy('createdAt', 'asc'));
     
     chatUnsubscribe = onSnapshot(q, (snapshot) => {
@@ -179,19 +182,26 @@ async function initChat() {
 
         if (snapshot.empty) {
             messagesDiv.innerHTML = '<p style="text-align:center; color:#666; font-size:12px; margin-top:20px;">No messages yet. Start the conversation!</p>';
+            isFirstLoad = false; // ✅ إنهاء التحميل الأول
             return;
         }
 
         let newMessagesArrived = false;
 
-        snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-                const msg = change.doc.data();
-                if (msg.senderId !== user.uid && !isPanelOpen) {
-                    newMessagesArrived = true;
+        // ✅ التعديل: لا نحسب الرسائل الجديدة إلا إذا لم تكن هذه أول مرة يتم فيها فتح الشات
+        if (!isFirstLoad) {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const msg = change.doc.data();
+                    if (msg.senderId !== user.uid && !isPanelOpen) {
+                        newMessagesArrived = true;
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        // ✅ بعد انتهاء التحميل الأول، نجعل المتغير false لكي يبدأ باحتساب الرسائل الجديدة
+        isFirstLoad = false;
 
         snapshot.forEach((doc) => {
             const msg = doc.data();
