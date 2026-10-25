@@ -1790,7 +1790,7 @@ async function submitDeposit() {
 
 
 const HOME_COINS = ['BTC', 'ETH', 'BNB', 'SOL'];
-const COINS = ['BTC','ETH','BNB','SOL','XRP','ADA','DOGE','DOT','AVAX','LINK','POL','LTC','TRX','ATOM','UNI','SHIB','APT','ARB','OP','NEAR','INJ','SUI','FIL','ETC','TON','ICP','RENDER','FET','SEI','TIA','STX','IMX','GRT','SAND','MANA','AAVE','MKR','CRV','ALGO','VET','HBAR','EOS','XLM','THETA','RUNE','KAS','TAO','WIF','PEPE','BONK'];
+const COINS = ['BTC','ETH','BNB','SOL','XRP','ADA','DOGE','DOT','AVAX','LINK','POL','LTC','TRX','ATOM','UNI','SHIB','APT','ARB','OP','NEAR','INJ','SUI','FIL','ETC','TON','ICP','RENDER','FET','SEI','TIA','STX','IMX','GRT','SAND','MANA','AAVE','MKR','CRV','ALGO','VET','HBAR','EOS','XLM','THETA','RUNE','KAS','TAO','WIF','PEPE','BONK', 'CHIP', 'AERO', 'ESP', 'BREV', 'MEGA', 'GENIUS', 'KAT', 'T', 'BMT', 'STEEM', 'MTL', 'ZEC', 'WLD', 'ENA'];
 const MARKET_COINS = COINS.filter(c => !HOME_COINS.includes(c));
 
 const COIN_INFO = {
@@ -1818,7 +1818,18 @@ const COIN_INFO = {
     XLM: { name: 'Stellar', color: '#7D00FF', letter: 'X' }, THETA: { name: 'Theta Network', color: '#2AB8E6', letter: 'T' },
     RUNE: { name: 'THORChain', color: '#33FF99', letter: 'R' }, KAS: { name: 'Kaspa', color: '#70C7BA', letter: 'K' },
     TAO: { name: 'Bittensor', color: '#000000', letter: 'T' }, WIF: { name: 'dogwifhat', color: '#C0A080', letter: 'W' },
-    PEPE: { name: 'Pepe', color: '#3D8B37', letter: 'P' }, BONK: { name: 'Bonk', color: '#FC8C1C', letter: 'B' }
+    PEPE: { name: 'Pepe', color: '#3D8B37', letter: 'P' }, BONK: { name: 'Bonk', color: '#FC8C1C', letter: 'B' },
+    CHIP: { name: 'Chip', color: '#9B59B6', letter: 'C' }, AERO: { name: 'Aerodrome', color: '#4DA2FF', letter: 'A' },
+    ESP: { name: 'Espresso', color: '#FF6B6B', letter: 'E' }, BREV: { name: 'Brevis', color: '#4ECDC4', letter: 'B' },
+    MEGA: { name: 'MegaETH', color: '#8A2BE2', letter: 'M' }, GENIUS: { name: 'Gensyn', color: '#00CED1', letter: 'G' },
+    KAT: { name: 'Katana', color: '#FF4500', letter: 'K' },
+    T: { name: 'Threshold', color: '#7B61FF', letter: 'T' },
+    BMT: { name: 'BubbleMaps', color: '#FF6B9D', letter: 'B' },
+    STEEM: { name: 'Steem', color: '#1A6DFF', letter: 'S' },
+    MTL: { name: 'Metal DAO', color: '#FFA500', letter: 'M' },
+    ZEC: { name: 'Zcash', color: '#F4B728', letter: 'Z' },
+    WLD: { name: 'Worldcoin', color: '#000000', letter: 'W' },
+    ENA: { name: 'Ethena', color: '#A6A6A6', letter: 'E' }
 };
 
 let prices = {};
