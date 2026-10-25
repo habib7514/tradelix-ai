@@ -81,31 +81,52 @@ const chatStyles = `
     .chat-msg.mine { align-self: flex-end; }
     .chat-msg.theirs { align-self: flex-start; }
     
-    .chat-msg-name { font-size: 10px; color: #888; margin-bottom: 3px; margin-left: 5px; }
+    .chat-msg-name { font-size: 10px; color: #888; margin-bottom: 3px; margin-left: 5px; display: flex; align-items: center; gap: 5px;}
+    
     .chat-msg-bubble {
         padding: 10px 14px;
         border-radius: 14px;
         font-size: 13.5px;
         line-height: 1.4;
         word-wrap: break-word;
+        position: relative;
     }
+    
+    /* My Messages */
     .chat-msg.mine .chat-msg-bubble {
         background: #F5C518;
         color: #000;
         border-bottom-right-radius: 4px;
     }
+    
+    /* Their Messages */
     .chat-msg.theirs .chat-msg-bubble {
         background: #1F1F1F;
         color: #FFF;
         border-bottom-left-radius: 4px;
         border: 1px solid #333;
     }
+    
+    /* Admin Messages (Red) - Overrides other colors */
     .chat-msg.admin .chat-msg-bubble {
         background: #FF4757;
         color: #FFF;
         border: 1px solid #FF4757;
     }
     
+    /* Delete Button */
+    .chat-delete-btn {
+        background: transparent;
+        border: none;
+        color: #FF4757;
+        cursor: pointer;
+        font-size: 12px;
+        padding: 0;
+        margin-left: 5px;
+        opacity: 0.7;
+    }
+    .chat-delete-btn:hover { opacity: 1; }
+
     .chat-input-area {
         padding: 10px;
         background: #141414;
@@ -166,7 +187,7 @@ document.body.insertAdjacentHTML('beforeend', chatHTML);
 // 3. Global Variables
 let chatUnsubscribe = null;
 let firebaseFSModules = null;
-const ADMIN_EMAILS = ['mmatrix081@gmail.com']; // Add admin emails here
+const ADMIN_EMAILS = ['mmatrix081@gmail.com']; // Ensure this matches the admin email exactly
 
 // 4. Open/Close Chat
 function toggleChatPanel() {
@@ -213,13 +234,15 @@ async function initChat() {
 
     if (chatUnsubscribe) chatUnsubscribe();
 
-    // Using exact collection name from your Firebase rules
     const q = query(collection(window.firebaseDB, 'tradelix_chat'), orderBy('createdAt', 'asc'));
     
     chatUnsubscribe = onSnapshot(q, (snapshot) => {
         const messagesDiv = document.getElementById('chatMessages');
         messagesDiv.innerHTML = '';
         
+        // Check if the person looking at the screen is the Admin
+        const isViewerAdmin = ADMIN_EMAILS.includes(user.email);
+
         if (snapshot.empty) {
             messagesDiv.innerHTML = '<p style="text-align:center; color:#666; font-size:12px; margin-top:20px;">No messages yet. Start the conversation!</p>';
             return;
@@ -228,10 +251,10 @@ async function initChat() {
         snapshot.forEach((doc) => {
             const msg = doc.data();
             const isMine = msg.senderId === user.uid;
-            const isAdmin = ADMIN_EMAILS.includes(msg.senderEmail);
+            const isSenderAdmin = ADMIN_EMAILS.includes(msg.senderEmail);
             
             let msgClass = isMine ? 'mine' : 'theirs';
-            if (isAdmin && !isMine) msgClass += ' admin';
+            if (isSenderAdmin) msgClass += ' admin'; // Add red color if sender is admin
 
             let timeStr = '';
             if (msg.createdAt) {
@@ -239,9 +262,21 @@ async function initChat() {
                 timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             }
 
+            // Show Email if the Viewer is Admin (so admin knows exactly who is sending)
+            let displayName = msg.senderName;
+            if (isViewerAdmin) {
+                displayName += ` (${msg.senderEmail})`;
+            }
+
+            // Show Delete Button ONLY if Viewer is Admin
+            let deleteBtn = '';
+            if (isViewerAdmin) {
+                deleteBtn = `<button class="chat-delete-btn" onclick="deleteChatMessage('${doc.id}')" title="Delete Message">🗑️</button>`;
+            }
+
             const bubble = `
                 <div class="chat-msg ${msgClass}">
-                    ${!isMine ? `<div class="chat-msg-name">${isAdmin ? '👑 Admin' : msg.senderName} • ${timeStr}</div>` : ''}
+                    ${!isMine ? `<div class="chat-msg-name">${isSenderAdmin ? '👑 Admin' : displayName} • ${timeStr} ${deleteBtn}</div>` : ''}
                     <div class="chat-msg-bubble">${msg.text}</div>
                 </div>
             `;
@@ -285,7 +320,23 @@ async function sendChatMessage() {
     }
 }
 
-// 7. Monitor Login State
+// 7. Delete Message (Admin Only)
+async function deleteChatMessage(messageId) {
+    if (!confirm('Are you sure you want to delete this message?')) return;
+    
+    if (!window.firebaseDB || !firebaseFSModules) return;
+    const { doc, deleteDoc } = firebaseFSModules;
+
+    try {
+        await deleteDoc(doc(window.firebaseDB, 'tradelix_chat', messageId));
+        showToast('Message deleted');
+    } catch (error) {
+        console.error("Delete error:", error);
+        showToast('Failed to delete. Check rules.');
+    }
+}
+
+// 8. Monitor Login State
 let lastChatUser = null;
 setInterval(() => {
     const userStr = localStorage.getItem('tradelix_user');
@@ -309,4 +360,4 @@ setInterval(() => {
     }
 }, 2000);
 
-console.log('Chat module loaded successfully');
+console.log('Chat module loaded successfully with Admin features');
