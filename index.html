@@ -2205,7 +2205,57 @@ async function _checkSignals() {
     } catch(e) { console.warn('Signal poll error:', e.message); }
 }
 
-async function _checkMeetings() {
+
+    
+   async function _checkGoldSignals() {
+    try {
+        if (!_isLoggedIn()) return;
+        const u = _getUser();
+        if (!u.uid) return;
+        if (u.uid !== auth.currentUser.uid) return;
+        const fs = window.firebaseFS;
+        if (!fs) return;
+        
+        if (u.status !== 'active') return;
+        if (u.planType !== 'gold' && u.planType !== 'both') return;
+
+        const { collection, getDocs, query, orderBy, limit } = fs;
+        let snap;
+        try {
+            const q = query(collection(window.firebaseDB, 'gold_signals'), orderBy('createdAt', 'desc'), limit(30));
+            snap = await getDocs(q);
+        } catch(e) { snap = await getDocs(collection(window.firebaseDB, 'gold_signals')); }
+
+        const lastNotifiedKey = 'tradelix_last_gold_notified_' + u.uid;
+        const lastNotified = parseInt(localStorage.getItem(lastNotifiedKey) || '0');
+        const now = Date.now();
+        const startFrom = lastNotified > 0 ? lastNotified : now;
+        let maxNotified = lastNotified;
+        
+        const newSignals = [];
+        snap.forEach(d => {
+            const sig = d.data();
+            const createdMs = (sig.createdAt?.seconds || 0) * 1000;
+            if (createdMs > startFrom) {
+                newSignals.push({ id: d.id, ...sig, _createdMs: createdMs });
+            }
+        });
+
+        newSignals.sort((a, b) => a._createdMs - b._createdMs);
+        
+        newSignals.forEach(sig => {
+            const msg = `🥇 Gold: ${sig.pair || 'XAU/USD'} ${sig.direction || ''} @ $${sig.entry || ''}`;
+            addNotif(msg);
+            if (sig._createdMs > maxNotified) maxNotified = sig._createdMs;
+        });
+
+        localStorage.setItem(lastNotifiedKey, String(newSignals.length > 0 ? maxNotified : now));
+        
+    } catch(e) { 
+        console.warn('Gold signal poll error:', e.message); 
+    }
+}
+    async function _checkMeetings() {
     try {
         if (!_isLoggedIn()) return;
         const u = _getUser();
@@ -2312,6 +2362,7 @@ async function _pollCycle() {
     if (u.uid !== auth.currentUser.uid) return;
     await _refreshUserData();
     await _checkSignals();
+    await _checkGoldSignals();
     await _checkRecommendations();
     await _checkMeetings();
     await loadMeetingsForUser();
