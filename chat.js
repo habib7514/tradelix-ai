@@ -4,7 +4,9 @@ console.log("✅ Chat.js script has been loaded!");
 // 💬 CHAT SYSTEM - Tradelix AI (Admin & User Support)
 // ==========================================
 
+// 1. Inject FontAwesome and Styles
 const chatStyles = `
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     .floating-chat-btn {
         position: fixed; bottom: 85px; right: 20px; width: 60px; height: 60px;
@@ -20,6 +22,13 @@ const chatStyles = `
         100% { box-shadow: 0 0 0 0 rgba(245, 197, 24, 0); }
     }
     
+    /* Unread Badge */
+    .chat-unread-badge {
+        position: absolute; top: -2px; right: -2px; background: #FF4757; color: #FFF;
+        border-radius: 50%; padding: 3px 7px; font-size: 12px; font-weight: bold;
+        border: 2px solid #141414; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
     .chat-panel {
         position: fixed; bottom: 150px; right: 20px; width: calc(100% - 40px); max-width: 380px;
         height: 500px; max-height: 70vh; background: #141414; border: 1px solid #F5C518;
@@ -44,7 +53,7 @@ const chatStyles = `
     .chat-msg.mine { align-self: flex-end; }
     .chat-msg.theirs { align-self: flex-start; }
     
-    .chat-msg-name { font-size: 10px; color: #888; margin-bottom: 3px; margin-left: 5px; display: flex; align-items: center; gap: 5px;}
+    .chat-msg-name { font-size: 10px; color: #888; margin-bottom: 3px; margin-left: 5px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;}
     
     .chat-msg-bubble {
         padding: 10px 14px; border-radius: 14px; font-size: 13.5px; line-height: 1.4;
@@ -75,9 +84,11 @@ const chatStyles = `
 `;
 document.head.insertAdjacentHTML('beforeend', chatStyles);
 
+// 2. Create UI (HTML)
 const chatHTML = `
 <div id="floatingChatBtn" class="floating-chat-btn" onclick="toggleChatPanel()" style="display:none;">
     <i class="fa-solid fa-comments"></i>
+    <span id="chatUnreadBadge" class="chat-unread-badge">0</span>
 </div>
 
 <div id="chatPanel" class="chat-panel">
@@ -96,8 +107,10 @@ const chatHTML = `
 `;
 document.body.insertAdjacentHTML('beforeend', chatHTML);
 
+// 3. Global Variables
 let chatUnsubscribe = null;
 let firebaseFSModules = null;
+let unreadCount = 0;
 const ADMIN_EMAILS = ['mmatrix081@gmail.com']; 
 
 function toggleChatPanel() {
@@ -107,8 +120,10 @@ function toggleChatPanel() {
     } else {
         panel.classList.add('active');
         scrollToBottom();
-        const badge = document.getElementById('chatBadge');
-        if (badge) badge.style.display = 'none';
+        // Reset unread count when opening
+        unreadCount = 0;
+        document.getElementById('chatUnreadBadge').style.display = 'none';
+        document.getElementById('chatUnreadBadge').innerText = '0';
     }
 }
 
@@ -121,6 +136,7 @@ function handleChatEnter(e) {
     if (e.key === 'Enter') sendChatMessage();
 }
 
+// 4. Initialize Chat
 async function initChat() {
     let user = {};
     const userStr = localStorage.getItem('tradelix_user');
@@ -130,16 +146,11 @@ async function initChat() {
         user.uid = JSON.parse(adminStr).uid;
         user.email = ADMIN_EMAILS[0]; 
         user.name = 'Admin';
-        console.log("👑 Admin session found. Initializing Admin Chat...");
     } else if (userStr) {
         user = JSON.parse(userStr);
-        console.log("👤 User session found. Initializing User Chat...");
     }
 
-    if (!user.uid) {
-        console.log("❌ No user or admin session found.");
-        return; 
-    }
+    if (!user.uid) return; 
 
     const floatBtn = document.getElementById('floatingChatBtn');
     if (floatBtn) floatBtn.style.display = 'flex';
@@ -148,12 +159,10 @@ async function initChat() {
     if (oldBtn) oldBtn.style.display = 'block';
 
     if (!window.firebaseDB || !window.firebaseFS) {
-        console.log("⏳ Waiting for Firebase to initialize...");
         setTimeout(initChat, 1000); 
         return;
     }
 
-    console.log("✅ Firebase is ready. Loading messages...");
     firebaseFSModules = window.firebaseFS;
     const { collection, query, orderBy, onSnapshot } = firebaseFSModules;
 
@@ -163,14 +172,26 @@ async function initChat() {
     
     chatUnsubscribe = onSnapshot(q, (snapshot) => {
         const messagesDiv = document.getElementById('chatMessages');
-        messagesDiv.innerHTML = '';
-        
+        const isPanelOpen = document.getElementById('chatPanel').classList.contains('active');
         const isViewerAdmin = ADMIN_EMAILS.includes(user.email);
+        
+        messagesDiv.innerHTML = '';
 
         if (snapshot.empty) {
             messagesDiv.innerHTML = '<p style="text-align:center; color:#666; font-size:12px; margin-top:20px;">No messages yet. Start the conversation!</p>';
             return;
         }
+
+        let newMessagesArrived = false;
+
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                const msg = change.doc.data();
+                if (msg.senderId !== user.uid && !isPanelOpen) {
+                    newMessagesArrived = true;
+                }
+            }
+        });
 
         snapshot.forEach((doc) => {
             const msg = doc.data();
@@ -186,8 +207,9 @@ async function initChat() {
                 timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             }
 
-            let displayName = msg.senderName;
-            if (isViewerAdmin && !isMine) {
+            // Fix Undefined Email Logic
+            let displayName = msg.senderName || 'User';
+            if (isViewerAdmin && !isMine && msg.senderEmail && msg.senderEmail !== 'undefined') {
                 displayName += ` (${msg.senderEmail})`;
             }
 
@@ -207,13 +229,21 @@ async function initChat() {
             messagesDiv.insertAdjacentHTML('beforeend', bubble);
         });
         
-        scrollToBottom();
+        if (isPanelOpen) {
+            scrollToBottom();
+        } else if (newMessagesArrived) {
+            unreadCount++;
+            const badge = document.getElementById('chatUnreadBadge');
+            badge.innerText = unreadCount;
+            badge.style.display = 'block';
+        }
     }, (error) => {
         console.error("Chat error:", error);
         document.getElementById('chatMessages').innerHTML = '<p style="color:#FF4757; text-align:center; font-size:12px;">Error loading messages. Check database rules.</p>';
     });
 }
 
+// 5. Send Message
 async function sendChatMessage() {
     const input = document.getElementById('chatInput');
     const text = input.value.trim();
@@ -246,6 +276,7 @@ async function sendChatMessage() {
             senderEmail: user.email || '',
             createdAt: serverTimestamp()
         });
+        scrollToBottom();
     } catch (error) {
         console.error("Send error:", error);
         showToast('Failed to send message');
@@ -253,6 +284,7 @@ async function sendChatMessage() {
     }
 }
 
+// 6. Delete Message (Admin Only)
 async function deleteChatMessage(messageId) {
     if (!confirm('Are you sure you want to delete this message?')) return;
     
@@ -268,6 +300,7 @@ async function deleteChatMessage(messageId) {
     }
 }
 
+// 7. Monitor Login State
 let lastChatUser = null;
 setInterval(() => {
     const userStr = localStorage.getItem('tradelix_user');
