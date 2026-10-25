@@ -213,6 +213,7 @@ async function initChat() {
 
     if (chatUnsubscribe) chatUnsubscribe();
 
+    // Using exact collection name from your Firebase rules
     const q = query(collection(window.firebaseDB, 'tradelix_chat'), orderBy('createdAt', 'asc'));
     
     chatUnsubscribe = onSnapshot(q, (snapshot) => {
