@@ -1614,33 +1614,29 @@ if (activeBox && lockedBox) {
     // 4. تحديث تفاصيل الاشتراك (الصفقات فقط)
 const subActive = document.getElementById('subActive');
 const subInactive = document.getElementById('subInactive');
+
 if (subActive && subInactive) {
     
-    // ⭐ التحقق من تاريخ انتهاء اشتراك الكريبتو المخصص (cryptoExpiry) بدلاً من التاريخ العام
+    // التحقق من وجود تاريخ انتهاء للكريبتو وأنه لم ينتهِ بعد
     const hasValidCryptoExpiry = user.cryptoExpiry && (new Date(user.cryptoExpiry) > new Date());
 
     if (hasValidCryptoExpiry) {
-        // إذا كان لديه اشتراك كريبتو نشط، نعرضه في قسم الصفقات
+        // إذا كان مشتركاً في الكريبتو، نعرض التفاصيل
         subActive.classList.remove('hidden'); 
         subInactive.classList.add('hidden');
         
         document.getElementById('subPlan').textContent = user.plan || 'VIP Crypto';
         document.getElementById('subStart').textContent = user.startDate || '-';
-        
-        // ⭐ عرض تاريخ انتهاء الكريبتو المخصص
         document.getElementById('subEnd').textContent = user.cryptoExpiry;
         
-        // ⭐ حساب الأيام المتبقية بناءً على cryptoExpiry
         const days = Math.ceil((new Date(user.cryptoExpiry) - new Date()) / (1000*60*60*24));
         document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
         document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
-        
     } else {
-        // إذا لم يكن لديه اشتراك كريبتو نشط (أو انتهى)، نخفي القسم
+        // إذا لم يكن مشتركاً أو انتهى اشتراكه
         subActive.classList.add('hidden'); 
         subInactive.classList.remove('hidden'); 
     }
-}
 }
 
 // 5. تحديث قائمة الكورسات في صفحة البروفايل
