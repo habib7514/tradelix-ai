@@ -1615,31 +1615,32 @@ if (activeBox && lockedBox) {
 const subActive = document.getElementById('subActive');
 const subInactive = document.getElementById('subInactive');
 if (subActive && subInactive) {
-    const planName = user.plan || '-';
-    // التحقق مما إذا كان المستخدم لديه اشتراك صفقات حقيقي
-    const hasSignalSub = user.plan && (user.plan.includes('VIP') || user.plan.includes('Weekly') || user.plan.includes('Monthly') || user.plan.includes('Quarterly') || user.plan.includes('15Days'));
+    
+    // ⭐ التحقق من تاريخ انتهاء اشتراك الكريبتو المخصص (cryptoExpiry) بدلاً من التاريخ العام
+    const hasValidCryptoExpiry = user.cryptoExpiry && (new Date(user.cryptoExpiry) > new Date());
 
-    if (hasSignalSub) {
-        // إذا كان لديه اشتراك صفقات، نعرضه في قسم الصفقات
+    if (hasValidCryptoExpiry) {
+        // إذا كان لديه اشتراك كريبتو نشط، نعرضه في قسم الصفقات
         subActive.classList.remove('hidden'); 
         subInactive.classList.add('hidden');
         
-        document.getElementById('subPlan').textContent = planName;
+        document.getElementById('subPlan').textContent = user.plan || 'VIP Crypto';
         document.getElementById('subStart').textContent = user.startDate || '-';
-        document.getElementById('subEnd').textContent = user.expiryDate || '-';
         
-        if (user.expiryDate) {
-            const days = Math.ceil((new Date(user.expiryDate) - new Date()) / (1000*60*60*24));
-            document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
-            document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
-        } else {
-            document.getElementById('subDays').textContent = '-';
-        }
+        // ⭐ عرض تاريخ انتهاء الكريبتو المخصص
+        document.getElementById('subEnd').textContent = user.cryptoExpiry;
+        
+        // ⭐ حساب الأيام المتبقية بناءً على cryptoExpiry
+        const days = Math.ceil((new Date(user.cryptoExpiry) - new Date()) / (1000*60*60*24));
+        document.getElementById('subDays').textContent = days > 0 ? days + ' days' : 'Expired';
+        document.getElementById('subDays').style.color = days > 0 ? '#00D084' : '#FF4757';
+        
     } else {
-        // إذا لم يكن لديه اشتراك صفقات، نخفي القسم
+        // إذا لم يكن لديه اشتراك كريبتو نشط (أو انتهى)، نخفي القسم
         subActive.classList.add('hidden'); 
         subInactive.classList.remove('hidden'); 
     }
+}
 }
 
 // 5. تحديث قائمة الكورسات في صفحة البروفايل
