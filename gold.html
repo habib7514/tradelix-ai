@@ -9,6 +9,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        // ✅ تم إضافة getAuth للتحقق من الجلسة
+        import { getAuth } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM",
@@ -21,6 +23,7 @@
 
         const app = initializeApp(firebaseConfig);
         window.firebaseDB = getFirestore(app);
+        window.firebaseAuth = getAuth(app); // ✅ تفعيل المصادقة
         const db = window.firebaseDB;
 
         window.latestUserData = {};
@@ -116,7 +119,6 @@
             document.getElementById('accDays').textContent = daysLeftText;
         }
 
-        // ✅ مراقبة الصفقات وتشغيل الصوت
         let lastSignalId = null; 
 
         window.initSignalListener = function() {
@@ -129,10 +131,8 @@
                     const latestDoc = snapshot.docs[0];
                     const signal = latestDoc.data();
                     
-                    // تشغيل الصوت فقط إذا كانت هذه صفقة جديدة (وليس عند فتح التطبيق لأول مرة)
                     if (lastSignalId !== null && lastSignalId !== latestDoc.id) {
                         playNotificationSound();
-                        // عرض تنبيه منبثق
                         showCustomAlert('New Signal!', `A new gold signal for ${signal.pair || 'XAU/USD'} has arrived!`, '🔔');
                     }
                     lastSignalId = latestDoc.id; 
@@ -143,17 +143,16 @@
                         document.getElementById('sigEntry').textContent = signal.entry || '-';
                         document.getElementById('sigTP').textContent = signal.takeProfit || '-';
                         
-                        // ✅ التعديل الوحيد: تغيير لون BUY و SELL
                         const dir = signal.direction || 'ACTIVE';
                         const statusEl = document.getElementById('sigStatus');
                         if (statusEl) {
                             statusEl.textContent = dir;
                             if (dir.toUpperCase() === 'SELL') {
-                                statusEl.style.color = '#FF4757'; // أحمر للبيع
+                                statusEl.style.color = '#FF4757'; 
                             } else if (dir.toUpperCase() === 'BUY') {
-                                statusEl.style.color = '#00D084'; // أخضر للشراء
+                                statusEl.style.color = '#00D084'; 
                             } else {
-                                statusEl.style.color = '#F5C518'; // ذهبي للحالات الأخرى
+                                statusEl.style.color = '#F5C518'; 
                             }
                         }
 
@@ -849,6 +848,7 @@
             });
         }
 
+        // ✅ تم تعديل هذه الدالة فقط للتحقق من تسجيل الدخول
         async function submitPayment() {
             const txHash = document.getElementById('txHashInput').value.trim();
             if (!txHash) { showCustomAlert('Missing Info', 'Please enter the Transaction Hash (TX) first.', '⚠️'); return; }
@@ -857,13 +857,21 @@
             if (!savedUser.uid) { showCustomAlert('Not Logged In', 'Please log in to submit a payment.', '🚫'); return; }
 
             try {
+                // ✅ التحقق من جلسة Firebase
+                if (!window.firebaseAuth || !window.firebaseAuth.currentUser) {
+                    showCustomAlert('Session Expired', 'Your login session has expired. Please go back to the main app and log in again.', '🔒');
+                    return;
+                }
+                if (window.firebaseAuth.currentUser.uid !== savedUser.uid) {
+                    showCustomAlert('Error', 'User mismatch. Please log in again.', '❌');
+                    return;
+                }
+
                 const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
                 
-                // ✅ إصلاح الخلل: التحقق من نوع الباقة الحالية قبل التحديث
                 const currentPlanType = window.latestUserData?.planType || savedUser?.planType || 'none';
                 let newPlanType = 'gold';
                 
-                // إذا كان المستخدم يمتلك اشتراك كريبتو أو كلاهما، نجعله "كلاهما"
                 if (currentPlanType === 'crypto' || currentPlanType === 'both') {
                     newPlanType = 'both';
                 }
@@ -871,7 +879,7 @@
                 await setDoc(doc(window.firebaseDB, 'tradelix_users', savedUser.uid), {
                     status: 'pending',
                     plan: window.currentGoldPlan.name,
-                    planType: newPlanType, // <-- استخدام النوع الجديد (gold أو both)
+                    planType: newPlanType, 
                     depositAmount: window.currentGoldPlan.price,
                     txHash: txHash,
                     submittedAt: serverTimestamp() 
