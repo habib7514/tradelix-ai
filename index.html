@@ -11,6 +11,25 @@
         :root { --bg-main: #000000; --bg-card: #141414; --bg-hover: #1E1E1E; --gold: #F5C518; --gold-dark: #E5B000; --green: #00D084; --red: #FF4757; --text-main: #FFFFFF; --text-muted: #999999; --border: #1F1F1F; --btn-gold: #F5C518; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+        
+        /* ✅ الشريط المتحرك الجديد */
+        .rainbow-divider {
+            height: 2px;
+            width: 95%;
+            margin: 12px auto;
+            background: linear-gradient(90deg, transparent, #d4af37, #22c55e, #3b82f6, #ef4444, #d4af37, transparent);
+            background-size: 200% 100%;
+            animation: rainbowMove 3s linear infinite;
+            border-radius: 2px;
+            opacity: 0.85;
+        }
+
+        @keyframes rainbowMove {
+            0% { background-position: 100% 0%; }
+            100% { background-position: -100% 0%; }
+        }
+        /* ✅ نهاية الشريط */
+
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: radial-gradient(circle at center, #141414 0%, #000000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.8s ease, visibility 0.8s; }
         #splash.hide { opacity: 0; visibility: hidden; }
         .splash-logo { width: 180px; height: 180px; position: relative; margin-bottom: 30px; display: flex; align-items: center; justify-content: center; }
@@ -770,6 +789,9 @@
 </div>
 <!-- END SOCIAL BUTTONS ROW -->
     
+    <!-- ✅ الشريط الأول: بين اسم المستخدم و Discover Tradix -->
+    <div class="rainbow-divider"></div>
+    
     <div class="card" style="background: var(--bg-card); border-color: var(--gold);">
     <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
@@ -789,6 +811,9 @@
     <p>Experience real-time gold trading with advanced AI analysis, live prices, and interactive charts.</p>
 </div>
 <a href="gold.html" class="join-tradix-btn" style="display: block; text-align: center; text-decoration: none; margin-top: 15px; margin-bottom: 20px; background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%); color: #000; font-weight: 900; font-size: 18px; padding: 16px 30px; border-radius: 12px; border: 2px solid #FFD700; box-shadow: 0 0 15px rgba(245, 197, 24, 0.5); width: 100%; max-width: 280px; margin-left: auto; margin-right: auto;">Join Tradix Now</a>
+
+    <!-- ✅ الشريط الثاني: بين Join Tradix و Recommendations -->
+    <div class="rainbow-divider"></div>
 
 <!-- ✅ NEW: Recommendations Button -->
 <div style="text-align: center; margin-bottom: 20px;">
@@ -844,6 +869,9 @@
         </span>
     </button>
 
+    <!-- ✅ الشريط الثالث: بين Markets و Premium Signals -->
+    <div class="rainbow-divider"></div>
+
     <div class="signals-info-card">
         <div class="signals-info-icon">
             <svg width="110" height="85" viewBox="0 0 110 85" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 14px rgba(192,192,192,0.2));">
@@ -883,6 +911,9 @@
 <div class="plan-card"><div class="plan-info"><h4>15 Days</h4><div class="duration">15 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(20, '15 Days')">$20</button></div>
 <div class="plan-card"><div class="plan-info"><h4>Monthly</h4><div class="duration">30 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(30, 'Monthly')">$30</button></div>
 <div class="plan-card premium"><span class="plan-badge">BEST VALUE</span><div class="plan-info"><h4>3 Months</h4><div class="duration">90 Days Access</div></div><button class="plan-buy" onclick="goToDeposit(70, 'Quarterly')">$70</button></div>
+
+    <!-- ✅ الشريط الرابع: بين 3 Months و Learn Trading -->
+    <div class="rainbow-divider"></div>
 
     <div class="section-title" style="margin-top: 24px;">
         <span style="font-size: 20px; color: var(--gold); letter-spacing: 1px; font-weight: 900; text-shadow: 0 0 15px rgba(245,197,24,0.35);">
