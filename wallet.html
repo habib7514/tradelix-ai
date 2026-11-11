@@ -9,7 +9,7 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, collection, query, addDoc, serverTimestamp, where, getDocs, updateDoc, deleteDoc, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, collection, query, addDoc, serverTimestamp, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -29,7 +29,7 @@
         let currentUserUID = null;
         let currentUserData = null;
         let audioCtx = null;
-        let unsubNotif = null; // لإلغاء مراقبة الإشعارات عند تسجيل الخروج
+        let unsubNotif = null;
 
         // ⚠️ عنوان محفظتك (BNB Smart Chain)
         const ADMIN_WALLET_ADDRESS = "0x4E11E978119cAAB300b5439B909D06341C24a2A7";
@@ -49,7 +49,6 @@
             const c = getAudioContext(); 
             if (!c) return;
             try {
-                // نغمة مزدوجة (Bell)
                 [0, 0.3].forEach(delay => {
                     const osc = c.createOscillator(); 
                     const gain = c.createGain();
@@ -65,17 +64,29 @@
             } catch(e) { console.error('Sound error:', e); }
         }
 
-        // ✅ تشغيل الصوت عند أول تفاعل من المستخدم (لأن المتصفحات تمنع الصوت التلقائي)
         document.addEventListener('click', () => { getAudioContext(); }, { once: true });
         document.addEventListener('touchstart', () => { getAudioContext(); }, { once: true });
 
+        // ✅ الحل: إضافة تأخير بسيط لمنع الطرد الفوري
+        let isAuthCheckDone = false;
+        
         onAuthStateChanged(window.firebaseAuth, (user) => {
             if (user) {
+                isAuthCheckDone = true;
                 currentUserUID = user.uid;
                 loadWalletData();
                 setupNotifications();
             } else {
-                window.location.href = 'index.html';
+                // إعطاء وقت للـ Firebase للتحقق
+                if (!isAuthCheckDone) {
+                    // ننتظر 1.5 ثانية قبل الحكم النهائي
+                    setTimeout(() => {
+                        if (!currentUserUID) {
+                            // إذا لم يوجد مستخدم بعد التأخير، نعيده للرئيسية
+                            window.location.href = 'index.html';
+                        }
+                    }, 1500);
+                }
             }
         });
 
@@ -184,7 +195,7 @@
             }).join('');
         }
 
-        // ✅ دوال الإشعارات (Firebase + Local)
+        // ✅ دوال الإشعارات
         function getLocalNotifs() { 
             return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); 
         }
@@ -193,10 +204,8 @@
             localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
         }
 
-        // دمج إشعارات Firebase مع الإشعارات المحلية
         let firebaseNotifs = [];
         function getAllNotifs() {
-            // إشعارات Firebase أولاً (الأحدث)
             const combined = [
                 ...firebaseNotifs.map(n => ({
                     message: n.title ? `${n.title} - ${n.body}` : n.body,
@@ -219,14 +228,12 @@
             }
         }
 
-        // ✅ مراقبة الإشعارات من Firebase
         function setupNotifications() {
             if (unsubNotif) unsubNotif();
             
             const q = query(
                 collection(db, 'user_notifications'),
-                where('userId', '==', currentUserUID),
-                limit(50)
+                where('userId', '==', currentUserUID)
             );
             
             unsubNotif = onSnapshot(q, (snapshot) => {
@@ -237,18 +244,15 @@
                     const data = doc.data();
                     firebaseNotifs.push({ id: doc.id, ...data });
                     
-                    // إذا كان الإشعار جديداً وغير مقروء، نشغل الصوت
                     if (data.read === false && !doc.metadata.hasPendingWrites) {
                         hasNew = true;
                     }
                 });
                 
-                // ترتيب الإشعارات (الأحدث أولاً)
                 firebaseNotifs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
                 
                 updateNotifBadge();
                 
-                // تشغيل الصوت إذا كان هناك إشعار جديد
                 if (hasNew) {
                     playNotifSound();
                     if ('Notification' in window && Notification.permission === 'granted') {
@@ -277,7 +281,6 @@
             
             document.getElementById('walletNotifModal').style.display = 'block';
             
-            // تحديد إشعارات Firebase كمقروءة
             firebaseNotifs.forEach(async (n) => {
                 if (!n.read) {
                     try {
@@ -286,7 +289,6 @@
                 }
             });
             
-            // تحديد الإشعارات المحلية كمقروءة
             const local = getLocalNotifs();
             local.forEach(n => n.read = true);
             saveLocalNotifs(local);
