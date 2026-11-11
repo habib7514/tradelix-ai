@@ -69,7 +69,7 @@
                         
                         if (requestBtn) {
                             if ((currentUserData.balance || 0) > 0) {
-                                requestBtn.style.display = 'block';
+                                requestBtn.style.display = 'flex'; 
                             } else {
                                 requestBtn.style.display = 'none';
                             }
@@ -318,10 +318,29 @@
         .balance-card .amount { font-size: 52px; font-weight: 900; color: #fff; line-height: 1.2; }
         .balance-card .profit { font-size: 16px; color: var(--green); margin-top: 10px; font-weight: 700; }
 
-        .action-btns { display: flex; gap: 10px; margin-bottom: 20px; }
+        /* أزرار الإيداع والسحب */
+        .action-btns { display: flex; gap: 10px; margin-bottom: 15px; }
         .action-btns button { flex: 1; padding: 18px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; border: none; }
         .btn-deposit { background: var(--green); color: #000; }
         .btn-withdraw { background: var(--gold); color: #000; }
+
+        /* ✅ زر طلب صفقة جديدة (تم نقله هنا) */
+        .request-trade-btn { 
+            display: none; 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            background: transparent; 
+            border: 1px dashed var(--gold); 
+            color: var(--gold); 
+            border-radius: 12px; 
+            font-weight: 900; 
+            font-size: 15px; 
+            cursor: pointer; 
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
 
         .trade-card { border-color: var(--gold); text-align: center; padding: 40px 20px; border-width: 2px; }
         .trade-card .icon { font-size: 70px; margin-bottom: 20px; }
@@ -385,6 +404,12 @@
             <button class="btn-withdraw" onclick="openWithdrawModal()">⬆️ Withdraw</button>
         </div>
 
+        <!-- ✅ زر طلب صفقة جديدة (تم نقله إلى هنا) -->
+        <button id="requestTradeBtn" class="request-trade-btn" onclick="openRequestTradeModal()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Request New Trade with Balance
+        </button>
+
         <div style="display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17L9 11L13 15L21 7"/><path d="M21 3V7H17"/><circle cx="9" cy="11" r="1.5" fill="currentColor"/><circle cx="13" cy="15" r="1.5" fill="currentColor"/></svg>
             <span>Live Trade</span>
@@ -395,11 +420,6 @@
             <h3 id="liveTradeCoin">No Active Trade</h3>
             <p id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
             <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 18px; font-size: 18px; background: #F0B90B; color: #000; border-radius: 12px; font-weight: 900;" onclick="openBinanceTrade()">View on Binance 📈</button>
-            
-            <!-- زر طلب صفقة جديدة -->
-            <button id="requestTradeBtn" class="btn-block" style="display: none; width: 100%; padding: 15px; margin-top: 10px; background: transparent; border: 1px dashed var(--gold); color: var(--gold); border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer;" onclick="openRequestTradeModal()">
-                + Request New Trade with Balance
-            </button>
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
