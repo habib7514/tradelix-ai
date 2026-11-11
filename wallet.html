@@ -365,6 +365,50 @@
                 closeWithdrawModal();
             } catch(e) { console.error(e); alert('❌ Error sending request'); }
         };
+
+        // ✅ دوال طلب الصفقة الجديدة
+        window.openTradeRequestModal = function() {
+            if (!currentUserData) return alert('Please wait, loading...');
+            
+            // تحديث الرصيد المعروض في النافذة
+            document.getElementById('tradeReqAvailableBalance').textContent = '$' + (currentUserData.balance || 0).toFixed(2);
+            document.getElementById('tradeReqAmount').value = ''; // تفريغ الحقل
+            
+            document.getElementById('tradeRequestModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeTradeRequestModal = function() {
+            document.getElementById('tradeRequestModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+
+        window.submitTradeRequest = async function() {
+            const amount = parseFloat(document.getElementById('tradeReqAmount').value);
+            const balance = currentUserData?.balance || 0;
+
+            if (!currentUserUID) return alert('Login first');
+            if (!amount || amount <= 0) return alert('❌ Please enter a valid amount');
+            if (amount > balance) return alert('❌ Insufficient balance');
+            
+            if (!confirm(`Are you sure you want to request a trade with $${amount.toFixed(2)} from your balance?`)) return;
+
+            try {
+                await addDoc(collection(db, 'trade_requests'), {
+                    userId: currentUserUID,
+                    userName: currentUserData?.name || 'User',
+                    userEmail: currentUserData?.email || '',
+                    amount: amount,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                alert('✅ Trade request sent to admin successfully!');
+                closeTradeRequestModal();
+            } catch(e) { 
+                console.error(e); 
+                alert('❌ Error sending request'); 
+            }
+        };
     </script>
 
     <style>
@@ -390,7 +434,7 @@
         .balance-card .amount { font-size: 52px; font-weight: 900; color: #fff; line-height: 1.2; }
         .balance-card .profit { font-size: 16px; color: var(--green); margin-top: 10px; font-weight: 700; }
 
-        .action-btns { display: flex; gap: 10px; margin-bottom: 20px; }
+        .action-btns { display: flex; gap: 10px; margin-bottom: 15px; }
         .action-btns button { flex: 1; padding: 18px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; border: none; }
         .btn-deposit { background: var(--green); color: #000; }
         .btn-withdraw { background: var(--gold); color: #000; }
@@ -457,6 +501,11 @@
             <button class="btn-deposit" onclick="openDepositModal()">⬇️ Deposit</button>
             <button class="btn-withdraw" onclick="openWithdrawModal()">⬆️ Withdraw</button>
         </div>
+        
+        <!-- ✅ زر طلب صفقة جديدة -->
+        <button class="btn-request-trade" onclick="openTradeRequestModal()" style="width: 100%; padding: 18px; background: linear-gradient(135deg, var(--gold), #d4af37); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; margin-bottom: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            🚀 Request New Trade
+        </button>
 
         <div style="display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17L9 11L13 15L21 7"/><path d="M21 3V7H17"/><circle cx="9" cy="11" r="1.5" fill="currentColor"/><circle cx="13" cy="15" r="1.5" fill="currentColor"/></svg>
@@ -529,6 +578,27 @@
             <div class="input-group"><label>Wallet Address (BNB Chain)</label><input type="text" id="wdAddress" placeholder="0x..."></div>
             <button class="btn-block success" onclick="submitWithdrawRequest()" style="margin-bottom:8px; background: var(--gold); color:#000; padding:14px; border-radius:10px; width:100%; border:none; font-weight:900;">Submit</button>
             <button class="btn-block outline" onclick="closeWithdrawModal()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- ✅ نافذة طلب صفقة جديدة -->
+    <div id="tradeRequestModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>🚀 Request New Trade</h3>
+            <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px; text-align:center;">Enter the amount you want to allocate for this trade from your balance.</p>
+            
+            <div style="background: rgba(245,197,24,0.1); padding: 12px; border-radius: 10px; margin-bottom: 20px; text-align: center; border: 1px solid var(--gold);">
+                <span style="color: var(--text-muted); font-size: 12px;">Available Balance:</span>
+                <div id="tradeReqAvailableBalance" style="color: var(--gold); font-size: 20px; font-weight: 900;">$0.00</div>
+            </div>
+
+            <div class="input-group">
+                <label>Trade Amount ($)</label>
+                <input type="number" id="tradeReqAmount" placeholder="e.g., 10.00">
+            </div>
+            
+            <button class="btn-block success" onclick="submitTradeRequest()" style="margin-bottom:8px; background: var(--gold); color:#000; padding:14px; border-radius:10px; width:100%; border:none; font-weight:900;">📤 Send Request to Admin</button>
+            <button class="btn-block outline" onclick="closeTradeRequestModal()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Cancel</button>
         </div>
     </div>
 
