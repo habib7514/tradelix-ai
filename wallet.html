@@ -78,8 +78,9 @@
             const list = document.getElementById('transactionHistory');
             if (!list) return;
             try {
-                const q1 = query(collection(db, 'trade_deposits'), where('userId', '==', currentUserUID), orderBy('createdAt', 'desc'), limit(3));
-                const q2 = query(collection(db, 'withdraw_requests'), where('userId', '==', currentUserUID), orderBy('createdAt', 'desc'), limit(3));
+                // تم إزالة orderBy لتجنب الحاجة لفهارس مركبة
+                const q1 = query(collection(db, 'trade_deposits'), where('userId', '==', currentUserUID));
+                const q2 = query(collection(db, 'withdraw_requests'), where('userId', '==', currentUserUID));
                 const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
                 
                 let html = '';
@@ -87,6 +88,7 @@
                 snap1.forEach(d => allTx.push({ type: 'Deposit', ...d.data() }));
                 snap2.forEach(d => allTx.push({ type: 'Withdraw', ...d.data() }));
                 
+                // الترتيب برمجياً بدلاً من orderBy
                 allTx.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
                 if (allTx.length === 0) {
@@ -94,15 +96,18 @@
                     return;
                 }
 
-                html = allTx.map(tx => {
+                html = allTx.slice(0, 5).map(tx => {
                     const color = tx.status === 'approved' || tx.status === 'paid' ? '#00D084' : (tx.status === 'rejected' ? '#FF4757' : '#F5C518');
                     return `<div style="border-bottom: 1px solid #222; padding: 8px 0; display: flex; justify-content: space-between; font-size: 12px;">
                         <span style="color:#fff;">${tx.type} - $${tx.amount}</span>
-                        <span style="color:${color}; font-weight:700;">${tx.status.toUpperCase()}</span>
+                        <span style="color:${color}; font-weight:700;">${(tx.status || 'pending').toUpperCase()}</span>
                     </div>`;
                 }).join('');
                 list.innerHTML = html;
-            } catch(e) { console.error(e); }
+            } catch(e) { 
+                console.error("History error:", e); 
+                list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px;">Error loading history.</p>';
+            }
         }
 
         // ✅ دوال سجل الصفقات
