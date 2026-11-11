@@ -9,7 +9,7 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, addDoc, serverTimestamp, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, collection, query, addDoc, serverTimestamp, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -66,85 +66,93 @@
                         viewBtn.style.display = 'none';
                     }
                     
-                    if (document.getElementById('tradeHistoryModal').style.display === 'block') {
-                        renderClosedTrades();
-                    }
+                    // تحديث السجل فوراً عند تغير البيانات
+                    renderMainHistory();
                 }
             });
             loadTransactionHistory();
         }
 
+        // جلب الإيداعات والسحابات (التي تظهر بجانب الصفقات)
         async function loadTransactionHistory() {
-            const list = document.getElementById('transactionHistory');
-            if (!list) return;
             try {
-                // تم إزالة orderBy لتجنب الحاجة لفهارس مركبة
                 const q1 = query(collection(db, 'trade_deposits'), where('userId', '==', currentUserUID));
                 const q2 = query(collection(db, 'withdraw_requests'), where('userId', '==', currentUserUID));
                 const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
                 
-                let html = '';
                 const allTx = [];
                 snap1.forEach(d => allTx.push({ type: 'Deposit', ...d.data() }));
                 snap2.forEach(d => allTx.push({ type: 'Withdraw', ...d.data() }));
                 
-                // الترتيب برمجياً بدلاً من orderBy
                 allTx.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-
-                if (allTx.length === 0) {
-                    list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px;">No transactions yet.</p>';
-                    return;
-                }
-
-                html = allTx.slice(0, 5).map(tx => {
-                    const color = tx.status === 'approved' || tx.status === 'paid' ? '#00D084' : (tx.status === 'rejected' ? '#FF4757' : '#F5C518');
-                    return `<div style="border-bottom: 1px solid #222; padding: 8px 0; display: flex; justify-content: space-between; font-size: 12px;">
-                        <span style="color:#fff;">${tx.type} - $${tx.amount}</span>
-                        <span style="color:${color}; font-weight:700;">${(tx.status || 'pending').toUpperCase()}</span>
-                    </div>`;
-                }).join('');
-                list.innerHTML = html;
+                window.userTransactions = allTx;
+                
+                renderMainHistory();
             } catch(e) { 
                 console.error("History error:", e); 
-                list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px;">Error loading history.</p>';
             }
         }
 
-        // ✅ دوال سجل الصفقات
-        window.openTradeHistory = function() {
-            renderClosedTrades();
-            document.getElementById('tradeHistoryModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
+        // دمج الصفقات المغلقة مع الإيداعات والسحابات وعرضها في القسم الرئيسي
+        function renderMainHistory() {
+            const list = document.getElementById('transactionHistory');
+            if (!list) return;
 
-        window.closeTradeHistory = function() {
-            document.getElementById('tradeHistoryModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function renderClosedTrades() {
-            const list = document.getElementById('closedTradesList');
-            const trades = currentUserData?.closedTrades || [];
+            // 1. جلب الصفقات المغلقة من بيانات المستخدم
+            const closedTrades = currentUserData?.closedTrades || [];
             
-            if (trades.length === 0) {
-                list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px; padding: 20px;">No closed trades yet.</p>';
+            // 2. دمجها مع الإيداعات والسحابات (إن وجدت)
+            const combinedHistory = [...closedTrades];
+            
+            if (window.userTransactions && window.userTransactions.length > 0) {
+                window.userTransactions.forEach(tx => {
+                    combinedHistory.push({
+                        isTx: true,
+                        type: tx.type,
+                        amount: tx.amount,
+                        status: tx.status,
+                        time: tx.createdAt?.seconds ? tx.createdAt.seconds * 1000 : Date.now()
+                    });
+                });
+            }
+
+            // 3. إذا كان السجل فارغاً تماماً
+            if (combinedHistory.length === 0) {
+                list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px; padding: 10px;">No history yet.</p>';
                 return;
             }
 
-            list.innerHTML = trades.map(t => {
-                const isWin = t.pnl >= 0;
-                const color = isWin ? '#00D084' : '#FF4757';
-                const pnlStr = isWin ? `+$${t.pnl.toFixed(2)}` : `-$${Math.abs(t.pnl).toFixed(2)}`;
-                
-                return `
-                    <div style="background: #0a0a0a; border-radius: 10px; padding: 12px; margin-bottom: 8px; border-left: 3px solid ${color}; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div style="color: #fff; font-weight: 700; font-size: 14px;">${t.coin}</div>
-                            <div style="color: #666; font-size: 11px;">${new Date(t.closedAt).toLocaleString()}</div>
+            // 4. ترتيب كل شيء حسب الوقت (الأحدث أولاً)
+            combinedHistory.sort((a, b) => {
+                const timeA = a.isTx ? a.time : (a.closedAt || 0);
+                const timeB = b.isTx ? b.time : (b.closedAt || 0);
+                return timeB - timeA;
+            });
+
+            // 5. عرض القائمة
+            list.innerHTML = combinedHistory.map(item => {
+                if (item.isTx) {
+                    // عرض الإيداع أو السحب
+                    const color = item.status === 'approved' || item.status === 'paid' ? '#00D084' : (item.status === 'rejected' ? '#FF4757' : '#F5C518');
+                    return `<div style="border-bottom: 1px solid #222; padding: 10px 0; display: flex; justify-content: space-between; font-size: 13px;">
+                        <span style="color:#fff;">${item.type} - $${item.amount}</span>
+                        <span style="color:${color}; font-weight:700;">${(item.status || 'pending').toUpperCase()}</span>
+                    </div>`;
+                } else {
+                    // عرض الصفقة المغلقة
+                    const isWin = item.pnl >= 0;
+                    const color = isWin ? '#00D084' : '#FF4757';
+                    const pnlStr = isWin ? `+$${item.pnl.toFixed(2)}` : `-$${Math.abs(item.pnl).toFixed(2)}`;
+                    return `
+                        <div style="border-bottom: 1px solid #222; padding: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="color: #fff; font-weight: 700; font-size: 14px;">${item.coin} Trade</div>
+                                <div style="color: #666; font-size: 11px;">${new Date(item.closedAt).toLocaleString()}</div>
+                            </div>
+                            <div style="color: ${color}; font-weight: 900; font-size: 15px;">${pnlStr}</div>
                         </div>
-                        <div style="color: ${color}; font-weight: 900; font-size: 16px;">${pnlStr}</div>
-                    </div>
-                `;
+                    `;
+                }
             }).join('');
         }
 
@@ -275,9 +283,6 @@
         .trade-card h3 { color: var(--gold); font-size: 26px; margin-bottom: 10px; font-weight: 900; }
         .trade-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
 
-        .history-btn { width: 100%; padding: 15px; margin-top: 10px; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .history-btn:active { background: rgba(255,255,255,0.05); }
-
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0d0d0d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0 15px 0; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; transition: 0.2s; }
         .nav-item.active { color: var(--gold); }
@@ -346,11 +351,7 @@
             <h3 id="liveTradeCoin">No Active Trade</h3>
             <p id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
             <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 18px; font-size: 18px; background: #F0B90B; color: #000; border-radius: 12px; font-weight: 900;" onclick="openBinanceTrade()">View on Binance 📈</button>
-            
-            <button class="history-btn" onclick="openTradeHistory()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
-                View Trade History
-            </button>
+            <!-- تم إزالة زر View Trade History من هنا بناءً على طلبك -->
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
@@ -358,6 +359,7 @@
             <span>History</span>
         </div>
         
+        <!-- هنا سيتم عرض كل شيء: الإيداعات، السحابات، والصفقات المغلقة معاً -->
         <div class="card" id="transactionHistory">
             <p style="color: #999; text-align: center; font-size: 13px;">Loading...</p>
         </div>
@@ -377,17 +379,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
             <span>Gold</span>
         </a>
-    </div>
-
-    <!-- نافذة سجل الصفقات المغلقة -->
-    <div id="tradeHistoryModal" class="modal-overlay">
-        <div class="modal-box" style="border-color: var(--border);">
-            <h3 style="color: var(--gold);">📜 Trade History</h3>
-            <div id="closedTradesList" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
-                <!-- سيتم ملؤها بالجافاسكريبت -->
-            </div>
-            <button class="btn-block outline" onclick="closeTradeHistory()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Close</button>
-        </div>
     </div>
 
     <!-- نافذة الإشعارات -->
