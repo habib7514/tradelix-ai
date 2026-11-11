@@ -29,12 +29,16 @@
         let currentUserUID = null;
         let currentUserData = null;
 
+        // ⚠️ عنوان محفظتك (BNB Smart Chain)
+        const ADMIN_WALLET_ADDRESS = "0x4E11E978119cAAB300b5439B909D06341C24a2A7";
+
         onAuthStateChanged(window.firebaseAuth, (user) => {
             if (user) {
                 currentUserUID = user.uid;
                 loadWalletData();
+                updateNotifBadge();
             } else {
-                window.location.href = 'index.html'; // إذا لم يسجل دخول يرجع للرئيسية
+                window.location.href = 'index.html';
             }
         });
 
@@ -60,6 +64,10 @@
                         coinEl.textContent = 'No Active Trade';
                         statusEl.textContent = 'When admin opens a trade for you, it will appear here.';
                         viewBtn.style.display = 'none';
+                    }
+                    
+                    if (document.getElementById('tradeHistoryModal').style.display === 'block') {
+                        renderClosedTrades();
                     }
                 }
             });
@@ -97,10 +105,93 @@
             } catch(e) { console.error(e); }
         }
 
-        window.openDepositModal = function() { document.getElementById('depositModal').style.display = 'flex'; }
-        window.closeDepositModal = function() { document.getElementById('depositModal').style.display = 'none'; }
-        window.openWithdrawModal = function() { document.getElementById('withdrawModal').style.display = 'flex'; }
-        window.closeWithdrawModal = function() { document.getElementById('withdrawModal').style.display = 'none'; }
+        // ✅ دوال سجل الصفقات
+        window.openTradeHistory = function() {
+            renderClosedTrades();
+            document.getElementById('tradeHistoryModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.closeTradeHistory = function() {
+            document.getElementById('tradeHistoryModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function renderClosedTrades() {
+            const list = document.getElementById('closedTradesList');
+            const trades = currentUserData?.closedTrades || [];
+            
+            if (trades.length === 0) {
+                list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px; padding: 20px;">No closed trades yet.</p>';
+                return;
+            }
+
+            list.innerHTML = trades.map(t => {
+                const isWin = t.pnl >= 0;
+                const color = isWin ? '#00D084' : '#FF4757';
+                const pnlStr = isWin ? `+$${t.pnl.toFixed(2)}` : `-$${Math.abs(t.pnl).toFixed(2)}`;
+                
+                return `
+                    <div style="background: #0a0a0a; border-radius: 10px; padding: 12px; margin-bottom: 8px; border-left: 3px solid ${color}; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="color: #fff; font-weight: 700; font-size: 14px;">${t.coin}</div>
+                            <div style="color: #666; font-size: 11px;">${new Date(t.closedAt).toLocaleString()}</div>
+                        </div>
+                        <div style="color: ${color}; font-weight: 900; font-size: 16px;">${pnlStr}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ✅ دوال الإشعارات
+        function getNotifs() { return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
+        
+        function updateNotifBadge() {
+            const notifs = getNotifs();
+            const unread = notifs.filter(n => !n.read).length;
+            const badge = document.getElementById('walletNotifBadge');
+            if (badge) {
+                if (unread > 0) { badge.style.display = 'flex'; badge.textContent = unread; }
+                else { badge.style.display = 'none'; }
+            }
+        }
+
+        window.openNotifModal = function() {
+            const notifs = getNotifs();
+            const list = document.getElementById('walletNotifList');
+            if (notifs.length === 0) list.innerHTML = '<p style="color:#999; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
+            else list.innerHTML = notifs.map(n => `<div style="background:#000000; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ${n.read ? '#1F1F1F' : '#F5C518'};"><div style="color:#F5C518; font-weight:700; font-size:13px; margin-bottom:4px;">${n.message}</div><div style="color:#999999; font-size:11px;">${n.time}</div></div>`).join('');
+            document.getElementById('walletNotifModal').style.display = 'block';
+            
+            notifs.forEach(n => n.read = true);
+            localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
+            updateNotifBadge();
+        }
+        
+        window.closeNotifModal = function() { document.getElementById('walletNotifModal').style.display = 'none'; }
+
+        // ✅ دوال الإيداع والسحب
+        window.openDepositModal = function() { 
+            document.getElementById('walletAddressDisplay').textContent = ADMIN_WALLET_ADDRESS;
+            document.getElementById('depositModal').style.display = 'flex'; 
+            document.body.style.overflow = 'hidden';
+        }
+        window.closeDepositModal = function() { 
+            document.getElementById('depositModal').style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
+        window.openWithdrawModal = function() { 
+            document.getElementById('withdrawModal').style.display = 'flex'; 
+            document.body.style.overflow = 'hidden';
+        }
+        window.closeWithdrawModal = function() { 
+            document.getElementById('withdrawModal').style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
+
+        window.copyAddress = function() {
+            navigator.clipboard.writeText(ADMIN_WALLET_ADDRESS).then(() => alert('✅ Address copied!')).catch(() => alert('❌ Failed to copy'));
+        }
 
         window.submitDepositRequest = async function() {
             const amount = parseFloat(document.getElementById('depAmount').value);
@@ -126,8 +217,8 @@
         window.submitWithdrawRequest = async function() {
             const amount = parseFloat(document.getElementById('wdAmount').value);
             const address = document.getElementById('wdAddress').value.trim();
-            if (!amount || !address) return alert('Please fill all fields');
             if (!currentUserUID) return alert('Login first');
+            if (!amount || !address) return alert('Please fill all fields');
             if (amount > (currentUserData?.balance || 0)) return alert('❌ Insufficient balance');
 
             try {
@@ -158,35 +249,44 @@
         .header-title h1 { font-size: 18px; font-weight: 900; color: var(--gold); }
         .header-title span { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
         
+        .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; position: relative; }
+        .notifBadge { position: absolute; top: -4px; right: -4px; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 10px; display: none; align-items: center; justify-content: center; box-shadow: 0 0 8px rgba(255, 71, 87, 0.8); }
+
         .container { padding: 0 20px; max-width: 480px; margin: 0 auto; }
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
         
-        .balance-card { text-align: center; border-color: var(--gold); background: linear-gradient(145deg, #1A1500, #0a0a0a); }
-        .balance-card h3 { color: var(--gold); font-size: 14px; margin-bottom: 10px; }
-        .balance-card .amount { font-size: 42px; font-weight: 900; color: #fff; }
-        .balance-card .profit { font-size: 14px; color: var(--green); margin-top: 8px; }
+        .balance-card { text-align: center; border-color: var(--gold); background: linear-gradient(145deg, #1A1500, #0a0a0a); padding: 30px 20px; position: relative; }
+        .balance-card h3 { color: var(--gold); font-size: 16px; margin-bottom: 15px; font-weight: 900; }
+        .balance-card .amount { font-size: 52px; font-weight: 900; color: #fff; line-height: 1.2; }
+        .balance-card .profit { font-size: 16px; color: var(--green); margin-top: 10px; font-weight: 700; }
 
         .action-btns { display: flex; gap: 10px; margin-bottom: 20px; }
-        .action-btns button { flex: 1; padding: 15px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; border: none; }
+        .action-btns button { flex: 1; padding: 18px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; border: none; }
         .btn-deposit { background: var(--green); color: #000; }
         .btn-withdraw { background: var(--gold); color: #000; }
 
-        .trade-card { border-color: var(--gold); text-align: center; padding: 25px 20px; }
-        .trade-card .icon { font-size: 50px; margin-bottom: 10px; }
-        .trade-card h3 { color: var(--gold); font-size: 20px; margin-bottom: 5px; }
-        .trade-card p { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+        .trade-card { border-color: var(--gold); text-align: center; padding: 40px 20px; border-width: 2px; }
+        .trade-card .icon { font-size: 70px; margin-bottom: 20px; }
+        .trade-card h3 { color: var(--gold); font-size: 26px; margin-bottom: 10px; font-weight: 900; }
+        .trade-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
+
+        .history-btn { width: 100%; padding: 15px; margin-top: 10px; border-radius: 12px; font-weight: 900; font-size: 15px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .history-btn:active { background: rgba(255,255,255,0.05); }
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0d0d0d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0 15px 0; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; transition: 0.2s; }
         .nav-item.active { color: var(--gold); }
         .nav-item svg { width: 24px; height: 24px; }
 
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 99999; padding: 20px; align-items: center; justify-content: center; }
-        .modal-box { background: #141414; border: 1px solid var(--gold); border-radius: 16px; padding: 24px; width: 100%; max-width: 400px; }
-        .modal-box h3 { color: var(--gold); text-align: center; margin-bottom: 15px; }
-        .input-group { margin-bottom: 14px; }
-        .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
-        .input-group input { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 14px; border-radius: 10px; color: #fff; font-size: 15px; outline: none; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 99999; padding: 20px; align-items: flex-start; justify-content: center; overflow-y: auto; }
+        .modal-box { background: #141414; border: 1px solid var(--gold); border-radius: 16px; padding: 25px; width: 100%; max-width: 400px; margin-top: 50px; margin-bottom: 50px; }
+        .modal-box h3 { color: var(--gold); text-align: center; margin-bottom: 20px; font-size: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
+        .input-group input { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 15px; border-radius: 10px; color: #fff; font-size: 15px; outline: none; }
+        
+        .wallet-address-box { background: #000; border: 1px dashed var(--gold); border-radius: 10px; padding: 15px; text-align: center; word-break: break-all; font-family: monospace; font-size: 13px; color: var(--gold); margin-bottom: 15px; }
+        .copy-btn { width: 100%; padding: 12px; background: var(--gold); color: #000; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -202,33 +302,57 @@
                 <span>TRADING & BALANCE</span>
             </div>
         </div>
+        
+        <div class="bell-icon" onclick="openNotifModal()">
+            <i class="fa-solid fa-bell"></i>
+            <span id="walletNotifBadge" class="notifBadge"></span>
+        </div>
     </div>
 
     <div class="container">
-        <!-- كارت الرصيد -->
+        <!-- كارت الرصيد مع زر الواتساب -->
         <div class="card balance-card">
             <h3>Available Balance</h3>
             <div id="userBalanceDisplay" class="amount">$0.00</div>
             <p class="profit">Total Profit: <span id="userProfitDisplay">$0.00</span></p>
+
+            <a href="https://chat.whatsapp.com/JeyqvQ2w1qXKUpK2mfmUyd?s=cl&p=a&iam=2" target="_blank" rel="noopener noreferrer" 
+               style="position: absolute; bottom: 15px; right: 15px; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; background: rgba(37, 211, 102, 0.15); border: 1.5px solid #25D366; box-shadow: 0 0 15px rgba(37, 211, 102, 0.4); transition: transform 0.2s; cursor: pointer;"
+               onmouseover="this.style.transform='scale(1.1)'" 
+               onmouseout="this.style.transform='scale(1)'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#25D366">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+            </a>
         </div>
 
-        <!-- أزرار الإيداع والسحب -->
         <div class="action-btns">
             <button class="btn-deposit" onclick="openDepositModal()">⬇️ Deposit</button>
             <button class="btn-withdraw" onclick="openWithdrawModal()">⬆️ Withdraw</button>
         </div>
 
-        <!-- كارت الصفقة المباشرة -->
-        <div style="font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">📈 Live Trade</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17L9 11L13 15L21 7"/><path d="M21 3V7H17"/><circle cx="9" cy="11" r="1.5" fill="currentColor"/><circle cx="13" cy="15" r="1.5" fill="currentColor"/></svg>
+            <span>Live Trade</span>
+        </div>
+        
         <div class="card trade-card">
             <div class="icon">📡</div>
             <h3 id="liveTradeCoin">No Active Trade</h3>
             <p id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
-            <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 15px; font-size: 16px; background: #F0B90B; color: #000;" onclick="openBinanceTrade()">View on Binance 📈</button>
+            <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 18px; font-size: 18px; background: #F0B90B; color: #000; border-radius: 12px; font-weight: 900;" onclick="openBinanceTrade()">View on Binance 📈</button>
+            
+            <button class="history-btn" onclick="openTradeHistory()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+                View Trade History
+            </button>
         </div>
 
-        <!-- سجل العمليات -->
-        <div style="font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">📜 History</div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>History</span>
+        </div>
+        
         <div class="card" id="transactionHistory">
             <p style="color: #999; text-align: center; font-size: 13px;">Loading...</p>
         </div>
@@ -250,10 +374,35 @@
         </a>
     </div>
 
+    <!-- نافذة سجل الصفقات المغلقة -->
+    <div id="tradeHistoryModal" class="modal-overlay">
+        <div class="modal-box" style="border-color: var(--border);">
+            <h3 style="color: var(--gold);">📜 Trade History</h3>
+            <div id="closedTradesList" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
+                <!-- سيتم ملؤها بالجافاسكريبت -->
+            </div>
+            <button class="btn-block outline" onclick="closeTradeHistory()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Close</button>
+        </div>
+    </div>
+
+    <!-- نافذة الإشعارات -->
+    <div id="walletNotifModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>🔔 Notifications</h3>
+            <div id="walletNotifList" style="margin-bottom: 20px;"></div>
+            <button class="btn-block outline" onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Close</button>
+        </div>
+    </div>
+
     <!-- نافذة الإيداع -->
     <div id="depositModal" class="modal-overlay">
         <div class="modal-box">
             <h3>Deposit Funds</h3>
+            <div style="background: rgba(245,197,24,0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--gold);">
+                <p style="color: var(--gold); font-size: 12px; font-weight: 700; margin-bottom: 8px; text-align: center;">Network: BNB Smart Chain (BEP20)</p>
+                <div id="walletAddressDisplay" class="wallet-address-box">0x...</div>
+                <button class="copy-btn" onclick="copyAddress()">📋 Copy Address</button>
+            </div>
             <div class="input-group"><label>Amount (USDT)</label><input type="number" id="depAmount" placeholder="e.g., 5.00"></div>
             <div class="input-group"><label>TX Hash</label><input type="text" id="depHash" placeholder="Paste transaction hash"></div>
             <button class="btn-block success" onclick="submitDepositRequest()" style="margin-bottom:8px; background: var(--green); color:#000; padding:14px; border-radius:10px; width:100%; border:none; font-weight:900;">Submit</button>
