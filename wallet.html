@@ -9,7 +9,7 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, collection, query, addDoc, serverTimestamp, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, collection, query, addDoc, serverTimestamp, where, getDocs, updateDoc, deleteDoc, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -28,15 +28,52 @@
 
         let currentUserUID = null;
         let currentUserData = null;
+        let audioCtx = null;
+        let unsubNotif = null; // لإلغاء مراقبة الإشعارات عند تسجيل الخروج
 
         // ⚠️ عنوان محفظتك (BNB Smart Chain)
         const ADMIN_WALLET_ADDRESS = "0x4E11E978119cAAB300b5439B909D06341C24a2A7";
+
+        // ✅ دالة الصوت (للإشعارات)
+        function getAudioContext() {
+            if (!audioCtx) { 
+                try { 
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
+                } catch(e) {} 
+            }
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        function playNotifSound() {
+            const c = getAudioContext(); 
+            if (!c) return;
+            try {
+                // نغمة مزدوجة (Bell)
+                [0, 0.3].forEach(delay => {
+                    const osc = c.createOscillator(); 
+                    const gain = c.createGain();
+                    osc.connect(gain); 
+                    gain.connect(c.destination);
+                    osc.frequency.setValueAtTime(880, c.currentTime + delay);
+                    gain.gain.setValueAtTime(0.2, c.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.01, c.currentTime + delay + 0.2);
+                    osc.start(c.currentTime + delay); 
+                    osc.stop(c.currentTime + delay + 0.2);
+                });
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+            } catch(e) { console.error('Sound error:', e); }
+        }
+
+        // ✅ تشغيل الصوت عند أول تفاعل من المستخدم (لأن المتصفحات تمنع الصوت التلقائي)
+        document.addEventListener('click', () => { getAudioContext(); }, { once: true });
+        document.addEventListener('touchstart', () => { getAudioContext(); }, { once: true });
 
         onAuthStateChanged(window.firebaseAuth, (user) => {
             if (user) {
                 currentUserUID = user.uid;
                 loadWalletData();
-                updateNotifBadge();
+                setupNotifications();
             } else {
                 window.location.href = 'index.html';
             }
@@ -66,14 +103,13 @@
                         viewBtn.style.display = 'none';
                     }
                     
-                    // تحديث السجل فوراً عند تغير البيانات
                     renderMainHistory();
                 }
             });
             loadTransactionHistory();
         }
 
-        // جلب الإيداعات والسحابات (التي تظهر بجانب الصفقات)
+        // جلب الإيداعات والسحابات
         async function loadTransactionHistory() {
             try {
                 const q1 = query(collection(db, 'trade_deposits'), where('userId', '==', currentUserUID));
@@ -98,10 +134,7 @@
             const list = document.getElementById('transactionHistory');
             if (!list) return;
 
-            // 1. جلب الصفقات المغلقة من بيانات المستخدم
             const closedTrades = currentUserData?.closedTrades || [];
-            
-            // 2. دمجها مع الإيداعات والسحابات (إن وجدت)
             const combinedHistory = [...closedTrades];
             
             if (window.userTransactions && window.userTransactions.length > 0) {
@@ -116,30 +149,25 @@
                 });
             }
 
-            // 3. إذا كان السجل فارغاً تماماً
             if (combinedHistory.length === 0) {
                 list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px; padding: 10px;">No history yet.</p>';
                 return;
             }
 
-            // 4. ترتيب كل شيء حسب الوقت (الأحدث أولاً)
             combinedHistory.sort((a, b) => {
                 const timeA = a.isTx ? a.time : (a.closedAt || 0);
                 const timeB = b.isTx ? b.time : (b.closedAt || 0);
                 return timeB - timeA;
             });
 
-            // 5. عرض القائمة
             list.innerHTML = combinedHistory.map(item => {
                 if (item.isTx) {
-                    // عرض الإيداع أو السحب
                     const color = item.status === 'approved' || item.status === 'paid' ? '#00D084' : (item.status === 'rejected' ? '#FF4757' : '#F5C518');
                     return `<div style="border-bottom: 1px solid #222; padding: 10px 0; display: flex; justify-content: space-between; font-size: 13px;">
                         <span style="color:#fff;">${item.type} - $${item.amount}</span>
                         <span style="color:${color}; font-weight:700;">${(item.status || 'pending').toUpperCase()}</span>
                     </div>`;
                 } else {
-                    // عرض الصفقة المغلقة
                     const isWin = item.pnl >= 0;
                     const color = isWin ? '#00D084' : '#FF4757';
                     const pnlStr = isWin ? `+$${item.pnl.toFixed(2)}` : `-$${Math.abs(item.pnl).toFixed(2)}`;
@@ -156,11 +184,33 @@
             }).join('');
         }
 
-        // ✅ دوال الإشعارات
-        function getNotifs() { return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
-        
+        // ✅ دوال الإشعارات (Firebase + Local)
+        function getLocalNotifs() { 
+            return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); 
+        }
+
+        function saveLocalNotifs(notifs) {
+            localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
+        }
+
+        // دمج إشعارات Firebase مع الإشعارات المحلية
+        let firebaseNotifs = [];
+        function getAllNotifs() {
+            // إشعارات Firebase أولاً (الأحدث)
+            const combined = [
+                ...firebaseNotifs.map(n => ({
+                    message: n.title ? `${n.title} - ${n.body}` : n.body,
+                    time: n.createdAt?.seconds ? new Date(n.createdAt.seconds * 1000).toLocaleString('en-GB') : new Date().toLocaleString('en-GB'),
+                    read: n.read || false,
+                    id: n.id
+                })),
+                ...getLocalNotifs()
+            ];
+            return combined;
+        }
+
         function updateNotifBadge() {
-            const notifs = getNotifs();
+            const notifs = getAllNotifs();
             const unread = notifs.filter(n => !n.read).length;
             const badge = document.getElementById('walletNotifBadge');
             if (badge) {
@@ -169,19 +219,84 @@
             }
         }
 
+        // ✅ مراقبة الإشعارات من Firebase
+        function setupNotifications() {
+            if (unsubNotif) unsubNotif();
+            
+            const q = query(
+                collection(db, 'user_notifications'),
+                where('userId', '==', currentUserUID),
+                limit(50)
+            );
+            
+            unsubNotif = onSnapshot(q, (snapshot) => {
+                firebaseNotifs = [];
+                let hasNew = false;
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    firebaseNotifs.push({ id: doc.id, ...data });
+                    
+                    // إذا كان الإشعار جديداً وغير مقروء، نشغل الصوت
+                    if (data.read === false && !doc.metadata.hasPendingWrites) {
+                        hasNew = true;
+                    }
+                });
+                
+                // ترتيب الإشعارات (الأحدث أولاً)
+                firebaseNotifs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                
+                updateNotifBadge();
+                
+                // تشغيل الصوت إذا كان هناك إشعار جديد
+                if (hasNew) {
+                    playNotifSound();
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        try { new Notification('🔔 Tradelix', { body: 'You have a new notification!' }); } catch(e) {}
+                    }
+                }
+            }, (error) => {
+                console.error("Notifications listener error:", error);
+            });
+        }
+
         window.openNotifModal = function() {
-            const notifs = getNotifs();
+            const notifs = getAllNotifs();
             const list = document.getElementById('walletNotifList');
-            if (notifs.length === 0) list.innerHTML = '<p style="color:#999; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
-            else list.innerHTML = notifs.map(n => `<div style="background:#000000; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ${n.read ? '#1F1F1F' : '#F5C518'};"><div style="color:#F5C518; font-weight:700; font-size:13px; margin-bottom:4px;">${n.message}</div><div style="color:#999999; font-size:11px;">${n.time}</div></div>`).join('');
+            
+            if (notifs.length === 0) {
+                list.innerHTML = '<p style="color:#999; text-align:center; padding:20px; font-size:13px;">No notifications yet</p>';
+            } else {
+                list.innerHTML = notifs.map(n => `
+                    <div style="background:#000000; border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid ${n.read ? '#1F1F1F' : '#F5C518'};">
+                        <div style="color:#F5C518; font-weight:700; font-size:13px; margin-bottom:4px;">${n.message}</div>
+                        <div style="color:#999999; font-size:11px;">${n.time}</div>
+                    </div>
+                `).join('');
+            }
+            
             document.getElementById('walletNotifModal').style.display = 'block';
             
-            notifs.forEach(n => n.read = true);
-            localStorage.setItem('tradelix_notifs', JSON.stringify(notifs));
+            // تحديد إشعارات Firebase كمقروءة
+            firebaseNotifs.forEach(async (n) => {
+                if (!n.read) {
+                    try {
+                        await updateDoc(doc(db, 'user_notifications', n.id), { read: true });
+                    } catch(e) { console.error(e); }
+                }
+            });
+            
+            // تحديد الإشعارات المحلية كمقروءة
+            const local = getLocalNotifs();
+            local.forEach(n => n.read = true);
+            saveLocalNotifs(local);
+            
             updateNotifBadge();
-        }
+        };
         
-        window.closeNotifModal = function() { document.getElementById('walletNotifModal').style.display = 'none'; }
+        window.closeNotifModal = function() { 
+            document.getElementById('walletNotifModal').style.display = 'none'; 
+        };
 
         // ✅ دوال الإيداع والسحب
         window.openDepositModal = function() { 
@@ -351,7 +466,6 @@
             <h3 id="liveTradeCoin">No Active Trade</h3>
             <p id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
             <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 18px; font-size: 18px; background: #F0B90B; color: #000; border-radius: 12px; font-weight: 900;" onclick="openBinanceTrade()">View on Binance 📈</button>
-            <!-- تم إزالة زر View Trade History من هنا بناءً على طلبك -->
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
@@ -359,7 +473,6 @@
             <span>History</span>
         </div>
         
-        <!-- هنا سيتم عرض كل شيء: الإيداعات، السحابات، والصفقات المغلقة معاً -->
         <div class="card" id="transactionHistory">
             <p style="color: #999; text-align: center; font-size: 13px;">Loading...</p>
         </div>
