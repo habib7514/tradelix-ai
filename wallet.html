@@ -29,8 +29,8 @@
         let currentUserUID = null;
         let currentUserData = null;
 
-        // ⚠️ عنوان محفظتك (تم تحديثه إلى العنوان الجديد)
-        const ADMIN_WALLET_ADDRESS = "0x07534b134e34bace144ace3baf6ae8b892ef9ecf";
+        // ⚠️ عنوان محفظتك (BNB Smart Chain)
+        const ADMIN_WALLET_ADDRESS = "0x4E11E978119cAAB300b5439B909D06341C24a2A7";
 
         onAuthStateChanged(window.firebaseAuth, (user) => {
             if (user) {
@@ -54,46 +54,35 @@
                     const coinEl = document.getElementById('liveTradeCoin');
                     const statusEl = document.getElementById('liveTradeStatus');
                     const viewBtn = document.getElementById('viewBinanceBtn');
-                    const requestBtn = document.getElementById('requestTradeBtn');
 
                     if (currentUserData.activeTrade) {
                         coinEl.textContent = currentUserData.activeTrade + ' Trade';
                         statusEl.textContent = 'Active Trade - Check on Binance';
                         viewBtn.style.display = 'block';
                         viewBtn.onclick = () => { if(currentUserData.activeTradeLink) window.open(currentUserData.activeTradeLink, '_blank'); };
-                        if (requestBtn) requestBtn.style.display = 'none';
                     } else {
                         coinEl.textContent = 'No Active Trade';
                         statusEl.textContent = 'When admin opens a trade for you, it will appear here.';
                         viewBtn.style.display = 'none';
-                        
-                        if (requestBtn) {
-                            if ((currentUserData.balance || 0) > 0) {
-                                requestBtn.style.display = 'flex'; 
-                            } else {
-                                requestBtn.style.display = 'none';
-                            }
-                        }
                     }
                     
+                    // تحديث السجل فوراً عند تغير البيانات
                     renderMainHistory();
                 }
             });
             loadTransactionHistory();
         }
 
+        // جلب الإيداعات والسحابات (التي تظهر بجانب الصفقات)
         async function loadTransactionHistory() {
             try {
                 const q1 = query(collection(db, 'trade_deposits'), where('userId', '==', currentUserUID));
                 const q2 = query(collection(db, 'withdraw_requests'), where('userId', '==', currentUserUID));
-                const q3 = query(collection(db, 'trade_requests'), where('userId', '==', currentUserUID));
-                
-                const [snap1, snap2, snap3] = await Promise.all([getDocs(q1), getDocs(q2), getDocs(q3)]);
+                const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
                 
                 const allTx = [];
                 snap1.forEach(d => allTx.push({ type: 'Deposit', ...d.data() }));
                 snap2.forEach(d => allTx.push({ type: 'Withdraw', ...d.data() }));
-                snap3.forEach(d => allTx.push({ type: 'Trade Request', ...d.data() }));
                 
                 allTx.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
                 window.userTransactions = allTx;
@@ -104,11 +93,15 @@
             }
         }
 
+        // دمج الصفقات المغلقة مع الإيداعات والسحابات وعرضها في القسم الرئيسي
         function renderMainHistory() {
             const list = document.getElementById('transactionHistory');
             if (!list) return;
 
+            // 1. جلب الصفقات المغلقة من بيانات المستخدم
             const closedTrades = currentUserData?.closedTrades || [];
+            
+            // 2. دمجها مع الإيداعات والسحابات (إن وجدت)
             const combinedHistory = [...closedTrades];
             
             if (window.userTransactions && window.userTransactions.length > 0) {
@@ -123,29 +116,30 @@
                 });
             }
 
+            // 3. إذا كان السجل فارغاً تماماً
             if (combinedHistory.length === 0) {
                 list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px; padding: 10px;">No history yet.</p>';
                 return;
             }
 
+            // 4. ترتيب كل شيء حسب الوقت (الأحدث أولاً)
             combinedHistory.sort((a, b) => {
                 const timeA = a.isTx ? a.time : (a.closedAt || 0);
                 const timeB = b.isTx ? b.time : (b.closedAt || 0);
                 return timeB - timeA;
             });
 
+            // 5. عرض القائمة
             list.innerHTML = combinedHistory.map(item => {
                 if (item.isTx) {
-                    let statusText = (item.status || 'pending').toUpperCase();
-                    let color = item.status === 'approved' || item.status === 'paid' ? '#00D084' : (item.status === 'rejected' ? '#FF4757' : '#F5C518');
-                    if (item.type === 'Trade Request') {
-                        statusText = item.status === 'approved' ? 'OPENED' : statusText;
-                    }
+                    // عرض الإيداع أو السحب
+                    const color = item.status === 'approved' || item.status === 'paid' ? '#00D084' : (item.status === 'rejected' ? '#FF4757' : '#F5C518');
                     return `<div style="border-bottom: 1px solid #222; padding: 10px 0; display: flex; justify-content: space-between; font-size: 13px;">
                         <span style="color:#fff;">${item.type} - $${item.amount}</span>
-                        <span style="color:${color}; font-weight:700;">${statusText}</span>
+                        <span style="color:${color}; font-weight:700;">${(item.status || 'pending').toUpperCase()}</span>
                     </div>`;
                 } else {
+                    // عرض الصفقة المغلقة
                     const isWin = item.pnl >= 0;
                     const color = isWin ? '#00D084' : '#FF4757';
                     const pnlStr = isWin ? `+$${item.pnl.toFixed(2)}` : `-$${Math.abs(item.pnl).toFixed(2)}`;
@@ -161,45 +155,6 @@
                 }
             }).join('');
         }
-
-        // ✅ دوال طلب تداول جديد
-        window.openRequestTradeModal = function() {
-            if (!currentUserData || (currentUserData.balance || 0) <= 0) {
-                return alert('You do not have enough balance to request a trade.');
-            }
-            document.getElementById('reqTradeBalance').textContent = '$' + currentUserData.balance.toFixed(2);
-            document.getElementById('reqTradeAmount').value = currentUserData.balance.toFixed(2);
-            document.getElementById('requestTradeModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        window.closeRequestTradeModal = function() {
-            document.getElementById('requestTradeModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        window.submitTradeRequest = async function() {
-            const amount = parseFloat(document.getElementById('reqTradeAmount').value);
-            if (!amount || amount <= 0) return alert('Please enter a valid amount.');
-            if (amount > currentUserData.balance) return alert('❌ Amount exceeds your available balance.');
-
-            try {
-                await addDoc(collection(db, 'trade_requests'), {
-                    userId: currentUserUID,
-                    userName: currentUserData?.name || 'User',
-                    userEmail: currentUserData?.email || '',
-                    amount: amount,
-                    status: 'pending',
-                    createdAt: serverTimestamp()
-                });
-                alert('✅ Trade request sent successfully! Admin will review it shortly.');
-                closeRequestTradeModal();
-                loadTransactionHistory();
-            } catch(e) { 
-                console.error(e); 
-                alert('❌ Error sending trade request'); 
-            }
-        };
 
         // ✅ دوال الإشعارات
         function getNotifs() { return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); }
@@ -318,29 +273,10 @@
         .balance-card .amount { font-size: 52px; font-weight: 900; color: #fff; line-height: 1.2; }
         .balance-card .profit { font-size: 16px; color: var(--green); margin-top: 10px; font-weight: 700; }
 
-        /* أزرار الإيداع والسحب */
-        .action-btns { display: flex; gap: 10px; margin-bottom: 15px; }
+        .action-btns { display: flex; gap: 10px; margin-bottom: 20px; }
         .action-btns button { flex: 1; padding: 18px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; border: none; }
         .btn-deposit { background: var(--green); color: #000; }
         .btn-withdraw { background: var(--gold); color: #000; }
-
-        /* ✅ زر طلب صفقة جديدة (تم نقله هنا) */
-        .request-trade-btn { 
-            display: none; 
-            width: 100%; 
-            padding: 15px; 
-            margin-bottom: 20px; 
-            background: transparent; 
-            border: 1px dashed var(--gold); 
-            color: var(--gold); 
-            border-radius: 12px; 
-            font-weight: 900; 
-            font-size: 15px; 
-            cursor: pointer; 
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
 
         .trade-card { border-color: var(--gold); text-align: center; padding: 40px 20px; border-width: 2px; }
         .trade-card .icon { font-size: 70px; margin-bottom: 20px; }
@@ -384,6 +320,7 @@
     </div>
 
     <div class="container">
+        <!-- كارت الرصيد مع زر الواتساب -->
         <div class="card balance-card">
             <h3>Available Balance</h3>
             <div id="userBalanceDisplay" class="amount">$0.00</div>
@@ -404,12 +341,6 @@
             <button class="btn-withdraw" onclick="openWithdrawModal()">⬆️ Withdraw</button>
         </div>
 
-        <!-- ✅ زر طلب صفقة جديدة (تم نقله إلى هنا) -->
-        <button id="requestTradeBtn" class="request-trade-btn" onclick="openRequestTradeModal()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-            Request New Trade with Balance
-        </button>
-
         <div style="display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17L9 11L13 15L21 7"/><path d="M21 3V7H17"/><circle cx="9" cy="11" r="1.5" fill="currentColor"/><circle cx="13" cy="15" r="1.5" fill="currentColor"/></svg>
             <span>Live Trade</span>
@@ -420,6 +351,7 @@
             <h3 id="liveTradeCoin">No Active Trade</h3>
             <p id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
             <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 18px; font-size: 18px; background: #F0B90B; color: #000; border-radius: 12px; font-weight: 900;" onclick="openBinanceTrade()">View on Binance 📈</button>
+            <!-- تم إزالة زر View Trade History من هنا بناءً على طلبك -->
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
@@ -427,11 +359,13 @@
             <span>History</span>
         </div>
         
+        <!-- هنا سيتم عرض كل شيء: الإيداعات، السحابات، والصفقات المغلقة معاً -->
         <div class="card" id="transactionHistory">
             <p style="color: #999; text-align: center; font-size: 13px;">Loading...</p>
         </div>
     </div>
 
+    <!-- Bottom Nav -->
     <div class="bottom-nav">
         <a href="index.html" class="nav-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -445,20 +379,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
             <span>Gold</span>
         </a>
-    </div>
-
-    <!-- نافذة طلب تداول جديد -->
-    <div id="requestTradeModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3>📈 Request New Trade</h3>
-            <p style="text-align: center; color: var(--text-muted); font-size: 12px; margin-bottom: 15px;">Your available balance: <span id="reqTradeBalance" style="color: var(--gold); font-weight: 900;">$0.00</span></p>
-            <div class="input-group">
-                <label>Amount to Trade ($)</label>
-                <input type="number" id="reqTradeAmount" placeholder="e.g., 10.00">
-            </div>
-            <button class="btn-block success" onclick="submitTradeRequest()" style="margin-bottom:8px; background: var(--green); color:#000; padding:14px; border-radius:10px; width:100%; border:none; font-weight:900;">Submit Request</button>
-            <button class="btn-block outline" onclick="closeRequestTradeModal()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Cancel</button>
-        </div>
     </div>
 
     <!-- نافذة الإشعارات -->
