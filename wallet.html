@@ -1,1 +1,276 @@
-.
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tradelix Wallet - Trading</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, addDoc, serverTimestamp, where, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPHGtTeDNamwyR2kfg-b9ABp7pNyyiPKM",
+            authDomain: "tradelix-ai.firebaseapp.com",
+            projectId: "tradelix-ai",
+            storageBucket: "tradelix-ai.firebasestorage.app",
+            messagingSenderId: "374195897663",
+            appId: "1:374195897663:web:e1ed0ce2c30a4b6aeabf8a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.firebaseDB = getFirestore(app);
+        window.firebaseAuth = getAuth(app);
+        const db = window.firebaseDB;
+
+        let currentUserUID = null;
+        let currentUserData = null;
+
+        onAuthStateChanged(window.firebaseAuth, (user) => {
+            if (user) {
+                currentUserUID = user.uid;
+                loadWalletData();
+            } else {
+                window.location.href = 'index.html'; // إذا لم يسجل دخول يرجع للرئيسية
+            }
+        });
+
+        function loadWalletData() {
+            if (!currentUserUID) return;
+            const userRef = doc(db, 'tradelix_users', currentUserUID);
+            onSnapshot(userRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    currentUserData = docSnap.data();
+                    document.getElementById('userBalanceDisplay').textContent = '$' + (currentUserData.balance || 0).toFixed(2);
+                    document.getElementById('userProfitDisplay').textContent = '$' + (currentUserData.totalProfit || 0).toFixed(2);
+                    
+                    const coinEl = document.getElementById('liveTradeCoin');
+                    const statusEl = document.getElementById('liveTradeStatus');
+                    const viewBtn = document.getElementById('viewBinanceBtn');
+
+                    if (currentUserData.activeTrade) {
+                        coinEl.textContent = currentUserData.activeTrade + ' Trade';
+                        statusEl.textContent = 'Active Trade - Check on Binance';
+                        viewBtn.style.display = 'block';
+                        viewBtn.onclick = () => { if(currentUserData.activeTradeLink) window.open(currentUserData.activeTradeLink, '_blank'); };
+                    } else {
+                        coinEl.textContent = 'No Active Trade';
+                        statusEl.textContent = 'When admin opens a trade for you, it will appear here.';
+                        viewBtn.style.display = 'none';
+                    }
+                }
+            });
+            loadTransactionHistory();
+        }
+
+        async function loadTransactionHistory() {
+            const list = document.getElementById('transactionHistory');
+            if (!list) return;
+            try {
+                const q1 = query(collection(db, 'trade_deposits'), where('userId', '==', currentUserUID), orderBy('createdAt', 'desc'), limit(3));
+                const q2 = query(collection(db, 'withdraw_requests'), where('userId', '==', currentUserUID), orderBy('createdAt', 'desc'), limit(3));
+                const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
+                
+                let html = '';
+                const allTx = [];
+                snap1.forEach(d => allTx.push({ type: 'Deposit', ...d.data() }));
+                snap2.forEach(d => allTx.push({ type: 'Withdraw', ...d.data() }));
+                
+                allTx.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                if (allTx.length === 0) {
+                    list.innerHTML = '<p style="color: #999; text-align: center; font-size: 13px;">No transactions yet.</p>';
+                    return;
+                }
+
+                html = allTx.map(tx => {
+                    const color = tx.status === 'approved' || tx.status === 'paid' ? '#00D084' : (tx.status === 'rejected' ? '#FF4757' : '#F5C518');
+                    return `<div style="border-bottom: 1px solid #222; padding: 8px 0; display: flex; justify-content: space-between; font-size: 12px;">
+                        <span style="color:#fff;">${tx.type} - $${tx.amount}</span>
+                        <span style="color:${color}; font-weight:700;">${tx.status.toUpperCase()}</span>
+                    </div>`;
+                }).join('');
+                list.innerHTML = html;
+            } catch(e) { console.error(e); }
+        }
+
+        window.openDepositModal = function() { document.getElementById('depositModal').style.display = 'flex'; }
+        window.closeDepositModal = function() { document.getElementById('depositModal').style.display = 'none'; }
+        window.openWithdrawModal = function() { document.getElementById('withdrawModal').style.display = 'flex'; }
+        window.closeWithdrawModal = function() { document.getElementById('withdrawModal').style.display = 'none'; }
+
+        window.submitDepositRequest = async function() {
+            const amount = parseFloat(document.getElementById('depAmount').value);
+            const hash = document.getElementById('depHash').value.trim();
+            if (!amount || !hash) return alert('Please fill all fields');
+            if (!currentUserUID) return alert('Login first');
+
+            try {
+                await addDoc(collection(db, 'trade_deposits'), {
+                    userId: currentUserUID,
+                    userName: currentUserData?.name || 'User',
+                    userEmail: currentUserData?.email || '',
+                    amount: amount,
+                    txHash: hash,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                alert('✅ Deposit request sent!');
+                closeDepositModal();
+            } catch(e) { console.error(e); alert('❌ Error sending request'); }
+        };
+
+        window.submitWithdrawRequest = async function() {
+            const amount = parseFloat(document.getElementById('wdAmount').value);
+            const address = document.getElementById('wdAddress').value.trim();
+            if (!amount || !address) return alert('Please fill all fields');
+            if (!currentUserUID) return alert('Login first');
+            if (amount > (currentUserData?.balance || 0)) return alert('❌ Insufficient balance');
+
+            try {
+                await addDoc(collection(db, 'withdraw_requests'), {
+                    userId: currentUserUID,
+                    userName: currentUserData?.name || 'User',
+                    userEmail: currentUserData?.email || '',
+                    amount: amount,
+                    address: address,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                alert('✅ Withdraw request sent!');
+                closeWithdrawModal();
+            } catch(e) { console.error(e); alert('❌ Error sending request'); }
+        };
+    </script>
+
+    <style>
+        :root { --bg-main: #0a0a0a; --bg-card: #141414; --gold: #F5C518; --green: #00D084; --red: #FF4757; --text-main: #ffffff; --text-muted: #999999; --border: #1F1F1F; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; margin-bottom: 16px; border-bottom: 1px solid var(--border); background: var(--bg-card); position: sticky; top: 0; z-index: 100; }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .back-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(245, 197, 24, 0.15); border: 1px solid rgba(245, 197, 24, 0.5); color: var(--gold); text-decoration: none; cursor: pointer; }
+        .header-logo { width: 42px; height: 42px; border-radius: 12px; border: 1.5px solid var(--gold); object-fit: cover; }
+        .header-title h1 { font-size: 18px; font-weight: 900; color: var(--gold); }
+        .header-title span { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+        
+        .container { padding: 0 20px; max-width: 480px; margin: 0 auto; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
+        
+        .balance-card { text-align: center; border-color: var(--gold); background: linear-gradient(145deg, #1A1500, #0a0a0a); }
+        .balance-card h3 { color: var(--gold); font-size: 14px; margin-bottom: 10px; }
+        .balance-card .amount { font-size: 42px; font-weight: 900; color: #fff; }
+        .balance-card .profit { font-size: 14px; color: var(--green); margin-top: 8px; }
+
+        .action-btns { display: flex; gap: 10px; margin-bottom: 20px; }
+        .action-btns button { flex: 1; padding: 15px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer; border: none; }
+        .btn-deposit { background: var(--green); color: #000; }
+        .btn-withdraw { background: var(--gold); color: #000; }
+
+        .trade-card { border-color: var(--gold); text-align: center; padding: 25px 20px; }
+        .trade-card .icon { font-size: 50px; margin-bottom: 10px; }
+        .trade-card h3 { color: var(--gold); font-size: 20px; margin-bottom: 5px; }
+        .trade-card p { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0d0d0d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0 15px 0; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; transition: 0.2s; }
+        .nav-item.active { color: var(--gold); }
+        .nav-item svg { width: 24px; height: 24px; }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 99999; padding: 20px; align-items: center; justify-content: center; }
+        .modal-box { background: #141414; border: 1px solid var(--gold); border-radius: 16px; padding: 24px; width: 100%; max-width: 400px; }
+        .modal-box h3 { color: var(--gold); text-align: center; margin-bottom: 15px; }
+        .input-group { margin-bottom: 14px; }
+        .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+        .input-group input { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 14px; border-radius: 10px; color: #fff; font-size: 15px; outline: none; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-left">
+            <a href="index.html" class="back-btn">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </a>
+            <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" class="header-logo" alt="Logo">
+            <div class="header-title">
+                <h1>Tradelix Wallet</h1>
+                <span>TRADING & BALANCE</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- كارت الرصيد -->
+        <div class="card balance-card">
+            <h3>Available Balance</h3>
+            <div id="userBalanceDisplay" class="amount">$0.00</div>
+            <p class="profit">Total Profit: <span id="userProfitDisplay">$0.00</span></p>
+        </div>
+
+        <!-- أزرار الإيداع والسحب -->
+        <div class="action-btns">
+            <button class="btn-deposit" onclick="openDepositModal()">⬇️ Deposit</button>
+            <button class="btn-withdraw" onclick="openWithdrawModal()">⬆️ Withdraw</button>
+        </div>
+
+        <!-- كارت الصفقة المباشرة -->
+        <div style="font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">📈 Live Trade</div>
+        <div class="card trade-card">
+            <div class="icon">📡</div>
+            <h3 id="liveTradeCoin">No Active Trade</h3>
+            <p id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
+            <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 15px; font-size: 16px; background: #F0B90B; color: #000;" onclick="openBinanceTrade()">View on Binance 📈</button>
+        </div>
+
+        <!-- سجل العمليات -->
+        <div style="font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">📜 History</div>
+        <div class="card" id="transactionHistory">
+            <p style="color: #999; text-align: center; font-size: 13px;">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>Home</span>
+        </a>
+        <a href="wallet.html" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <span>Wallet</span>
+        </a>
+        <a href="gold.html" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+            <span>Gold</span>
+        </a>
+    </div>
+
+    <!-- نافذة الإيداع -->
+    <div id="depositModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Deposit Funds</h3>
+            <div class="input-group"><label>Amount (USDT)</label><input type="number" id="depAmount" placeholder="e.g., 5.00"></div>
+            <div class="input-group"><label>TX Hash</label><input type="text" id="depHash" placeholder="Paste transaction hash"></div>
+            <button class="btn-block success" onclick="submitDepositRequest()" style="margin-bottom:8px; background: var(--green); color:#000; padding:14px; border-radius:10px; width:100%; border:none; font-weight:900;">Submit</button>
+            <button class="btn-block outline" onclick="closeDepositModal()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- نافذة السحب -->
+    <div id="withdrawModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Withdraw Funds</h3>
+            <div class="input-group"><label>Amount (USDT)</label><input type="number" id="wdAmount" placeholder="e.g., 5.00"></div>
+            <div class="input-group"><label>Wallet Address (BNB Chain)</label><input type="text" id="wdAddress" placeholder="0x..."></div>
+            <button class="btn-block success" onclick="submitWithdrawRequest()" style="margin-bottom:8px; background: var(--gold); color:#000; padding:14px; border-radius:10px; width:100%; border:none; font-weight:900;">Submit</button>
+            <button class="btn-block outline" onclick="closeWithdrawModal()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Cancel</button>
+        </div>
+    </div>
+
+</body>
+</html>
