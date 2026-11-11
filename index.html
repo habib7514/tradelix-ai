@@ -12,7 +12,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
         
-        /* ✅ الشريط المتحرك */
         .rainbow-divider {
             height: 2px;
             width: 95%;
@@ -28,7 +27,6 @@
             100% { background-position: -100% 0%; }
         }
 
-        /* ✅ زر المحفظة الجديد المتحرك */
         .wallet-main-btn {
             display: flex;
             align-items: center;
@@ -636,7 +634,7 @@
 </div>
     
     <!-- ✅ زر المحفظة الجديد (بدلاً من السوشيال ميديا) -->
-    <button class="wallet-main-btn" onclick="showScreen('walletScreen')">
+    <button class="wallet-main-btn" onclick="window.location.href='wallet.html'">
         <i class="fa-solid fa-wallet"></i>
         <span>My Wallet & Balance</span>
     </button>
@@ -799,75 +797,6 @@
         <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
         <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
         <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
-    </div>
-</div>
-
-<!-- ✅ NEW: Wallet Screen -->
-<div id="walletScreen" class="screen">
-    <div class="header">
-        <div class="header-left"><div class="header-logo">W</div><div class="header-title"><h1>My Wallet</h1><span>BALANCE & TRADES</span></div></div>
-        <div class="bell-icon" onclick="showScreen('homeScreen')" style="font-size: 16px;"><i class="fa-solid fa-xmark"></i></div>
-    </div>
-
-    <!-- كارت الرصيد -->
-    <div class="card" style="background: linear-gradient(145deg, #1A1500, #0a0a0a); border-color: var(--gold); text-align: center;">
-        <h3 style="color: var(--gold); font-size: 14px; margin-bottom: 10px;">Available Balance</h3>
-        <div id="userBalanceDisplay" style="font-size: 42px; font-weight: 900; color: #fff;">$0.00</div>
-        <p style="color: var(--text-muted); font-size: 12px; margin-top: 8px;">Total Profit: <span id="userProfitDisplay" style="color: var(--green);">$0.00</span></p>
-    </div>
-
-    <!-- أزرار الإجراءات -->
-    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button class="btn-block" style="background: var(--green); color: #fff;" onclick="openDepositModal()">⬇️ Deposit</button>
-        <button class="btn-block" style="background: var(--gold); color: #000;" onclick="openWithdrawModal()">⬆️ Withdraw</button>
-    </div>
-
-    <!-- كارت الصفقة المباشرة (Live Trade) -->
-    <div class="section-title"><i class="fa-solid fa-satellite-dish"></i> Live Trade</div>
-    <div class="card" style="border-color: var(--gold); text-align: center; padding: 20px;" id="liveTradeCard">
-        <div style="font-size: 40px; margin-bottom: 10px;">📡</div>
-        <h3 style="color: var(--gold); margin-bottom: 5px;" id="liveTradeCoin">No Active Trade</h3>
-        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px;" id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
-        <button class="btn-block" id="viewBinanceBtn" style="background: #F0B90B; color: #000; font-weight: 900; display: none;" onclick="openBinanceTrade()">View on Binance 📈</button>
-    </div>
-
-    <!-- سجل العمليات -->
-    <div class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> History</div>
-    <div class="card" id="transactionHistory">
-        <p style="color: var(--text-muted); text-align: center; font-size: 13px;">No transactions yet.</p>
-    </div>
-
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-        <button class="nav-item" onclick="showScreen('homeScreen')"><i class="fa-solid fa-house"></i><span>Home</span></button>
-        <button class="nav-item" onclick="goToSignals()"><i class="fa-solid fa-chart-line"></i><span>Signals</span></button>
-        <button class="nav-item" onclick="showScreen('academyScreen')"><i class="fa-solid fa-book-open"></i><span>Academy</span></button>
-        <button class="nav-item" onclick="showScreen('meetingScreen')"><i class="fa-regular fa-calendar-days"></i><span>Meetings</span></button>
-        <button class="nav-item" onclick="showScreen('subscriptionScreen')"><i class="fa-solid fa-gem"></i><span>Plan</span></button>
-        <button class="nav-item active" onclick="showScreen('walletScreen')"><i class="fa-solid fa-wallet"></i><span>Wallet</span></button>
-        <button class="nav-item" onclick="showScreen('profileScreen')"><i class="fa-regular fa-user"></i><span>Profile</span></button>
-    </div>
-</div>
-
-<!-- ✅ Deposit Modal -->
-<div id="depositModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:99999; padding:20px; align-items:center; justify-content:center;">
-    <div style="background:#141414; border:1px solid var(--gold); border-radius:16px; padding:24px; width:100%; max-width:400px;">
-        <h3 style="color:var(--gold); text-align:center; margin-bottom:15px;">Deposit Funds</h3>
-        <div class="input-group"><label>Amount (USDT)</label><input type="number" id="depAmount" placeholder="e.g., 5.00"></div>
-        <div class="input-group"><label>TX Hash</label><input type="text" id="depHash" placeholder="Paste transaction hash"></div>
-        <button class="btn-block success" onclick="submitDepositRequest()" style="margin-bottom:8px;">Submit</button>
-        <button class="btn-block outline" onclick="closeDepositModal()">Cancel</button>
-    </div>
-</div>
-
-<!-- ✅ Withdraw Modal -->
-<div id="withdrawModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:99999; padding:20px; align-items:center; justify-content:center;">
-    <div style="background:#141414; border:1px solid var(--gold); border-radius:16px; padding:24px; width:100%; max-width:400px;">
-        <h3 style="color:var(--gold); text-align:center; margin-bottom:15px;">Withdraw Funds</h3>
-        <div class="input-group"><label>Amount (USDT)</label><input type="number" id="wdAmount" placeholder="e.g., 5.00"></div>
-        <div class="input-group"><label>Your Wallet Address (BNB Chain)</label><input type="text" id="wdAddress" placeholder="0x..."></div>
-        <button class="btn-block success" onclick="submitWithdrawRequest()" style="margin-bottom:8px;">Submit Request</button>
-        <button class="btn-block outline" onclick="closeWithdrawModal()">Cancel</button>
     </div>
 </div>
 
@@ -1223,7 +1152,6 @@ let auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOu
 let doc, setDoc, getDoc, serverTimestamp, addDoc, collection, query, orderBy, where, limit, onSnapshot, updateDoc, deleteDoc;
 let currentUserData = null;
 
-// ✅ التقاط كود الإحالة من الرابط
 let incomingReferrer = null;
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -1231,13 +1159,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (ref) {
         incomingReferrer = ref;
         localStorage.setItem('tradelix_referrer', ref);
-        console.log('✅ Referral detected:', ref);
     } else {
         incomingReferrer = localStorage.getItem('tradelix_referrer');
     }
 });
 
-// ✅ إعداد الصوت العام (Global Audio)
 let globalAudioCtx = null;
 function initAudio() {
     if (!globalAudioCtx) {
@@ -1270,7 +1196,6 @@ async function initFirebase() {
         onAuthStateChanged(auth, async (user) => {
             if (user) { await loadUserData(user.uid); setTimeout(_startPolling, 2000); }
             else { 
-                console.log('⚠️ No Firebase user — checking localStorage');
                 setTimeout(() => {
                     const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
                     if (!savedUser.uid) {
@@ -1283,7 +1208,6 @@ async function initFirebase() {
                 }, 2000);
             }
         });
-        console.log('✅ Firebase initialized');
     } catch(e) { console.error('Firebase error:', e); }
 }
 
@@ -1319,7 +1243,6 @@ function showScreen(id, scrollToId = null) {
     if (id === 'allMarketsScreen') renderAllMarkets();
     if (id === 'signalsScreen') loadLatestSignal();
     if (id === 'recommendationsScreen') loadRecommendations();
-    if (id === 'walletScreen') loadWalletData();
     
     if (id !== 'homeScreen') {
         const banner = document.getElementById('pwaInstallBanner');
@@ -1440,7 +1363,6 @@ async function loadUserData(uid) {
             currentUserData = { uid: uid, ...userDoc.data() };
             localStorage.setItem('tradelix_user', JSON.stringify(currentUserData));
             updateUI();
-            loadWalletData();
         } else { _clearAllUserData(); }
     } catch (error) { console.error('Error loading user:', error); }
 }
@@ -1558,108 +1480,6 @@ function updateUI() {
     
     if (user && user.uid && typeof showPWABanner === 'function') setTimeout(showPWABanner, 1500);
     if (typeof updateReferralUI === 'function') updateReferralUI();
-}
-
-function loadWalletData() {
-    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (!user.uid) return;
-
-    const balanceEl = document.getElementById('userBalanceDisplay');
-    const profitEl = document.getElementById('userProfitDisplay');
-    if (balanceEl) balanceEl.textContent = '$' + (user.balance || 0).toFixed(2);
-    if (profitEl) profitEl.textContent = '$' + (user.totalProfit || 0).toFixed(2);
-
-    const tradeCard = document.getElementById('liveTradeCard');
-    const coinEl = document.getElementById('liveTradeCoin');
-    const statusEl = document.getElementById('liveTradeStatus');
-    const viewBtn = document.getElementById('viewBinanceBtn');
-
-    if (user.activeTrade) {
-        coinEl.textContent = user.activeTrade + ' Trade';
-        statusEl.textContent = 'Active Trade - Check on Binance';
-        viewBtn.style.display = 'block';
-        viewBtn.onclick = () => { if(user.activeTradeLink) window.open(user.activeTradeLink, '_blank'); };
-    } else {
-        coinEl.textContent = 'No Active Trade';
-        statusEl.textContent = 'When admin opens a trade for you, it will appear here.';
-        viewBtn.style.display = 'none';
-    }
-
-    loadTransactionHistory(user.uid);
-}
-
-async function loadTransactionHistory(uid) {
-    const list = document.getElementById('transactionHistory');
-    try {
-        const q1 = query(collection(db, 'deposit_requests'), where('userId', '==', uid), orderBy('createdAt', 'desc'), limit(3));
-        const q2 = query(collection(db, 'withdraw_requests'), where('userId', '==', uid), orderBy('createdAt', 'desc'), limit(3));
-        const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
-        
-        let html = '';
-        const allTx = [];
-        snap1.forEach(d => allTx.push({ type: 'Deposit', ...d.data() }));
-        snap2.forEach(d => allTx.push({ type: 'Withdraw', ...d.data() }));
-        
-        allTx.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-
-        if (allTx.length === 0) {
-            list.innerHTML = '<p style="color: var(--text-muted); text-align: center; font-size: 13px;">No transactions yet.</p>';
-            return;
-        }
-
-        html = allTx.map(tx => {
-            const color = tx.status === 'approved' || tx.status === 'paid' ? 'var(--green)' : (tx.status === 'rejected' ? 'var(--red)' : 'var(--gold)');
-            return `<div style="border-bottom: 1px solid #222; padding: 8px 0; display: flex; justify-content: space-between; font-size: 12px;">
-                <span style="color:#fff;">${tx.type} - $${tx.amount}</span>
-                <span style="color:${color}; font-weight:700;">${tx.status.toUpperCase()}</span>
-            </div>`;
-        }).join('');
-        list.innerHTML = html;
-    } catch(e) { console.error(e); }
-}
-
-function openDepositModal() { document.getElementById('depositModal').style.display = 'flex'; }
-function closeDepositModal() { document.getElementById('depositModal').style.display = 'none'; }
-function openWithdrawModal() { document.getElementById('withdrawModal').style.display = 'flex'; }
-function closeWithdrawModal() { document.getElementById('withdrawModal').style.display = 'none'; }
-function openBinanceTrade() {
-    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (user.activeTradeLink) window.open(user.activeTradeLink, '_blank');
-}
-
-async function submitDepositRequest() {
-    const amount = parseFloat(document.getElementById('depAmount').value);
-    const hash = document.getElementById('depHash').value.trim();
-    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (!amount || !hash) return showToast('❌ Fill all fields');
-    if (!user.uid) return showToast('❌ Login first');
-
-    try {
-        await addDoc(collection(db, 'deposit_requests'), {
-            userId: user.uid, userName: user.name || 'User', userEmail: user.email,
-            amount: amount, txHash: hash, status: 'pending', createdAt: serverTimestamp()
-        });
-        showToast('✅ Deposit request sent!');
-        closeDepositModal();
-    } catch(e) { console.error(e); showToast('❌ Error'); }
-}
-
-async function submitWithdrawRequest() {
-    const amount = parseFloat(document.getElementById('wdAmount').value);
-    const address = document.getElementById('wdAddress').value.trim();
-    const user = currentUserData || JSON.parse(localStorage.getItem('tradelix_user') || '{}');
-    if (!amount || !address) return showToast('❌ Fill all fields');
-    if (!user.uid) return showToast('❌ Login first');
-    if (amount > (user.balance || 0)) return showToast('❌ Insufficient balance');
-
-    try {
-        await addDoc(collection(db, 'withdraw_requests'), {
-            userId: user.uid, userName: user.name || 'User', userEmail: user.email,
-            amount: amount, address: address, status: 'pending', createdAt: serverTimestamp()
-        });
-        showToast('✅ Withdraw request sent!');
-        closeWithdrawModal();
-    } catch(e) { console.error(e); showToast('❌ Error'); }
 }
 
 function goToSignals() { showScreen('signalsScreen'); loadLatestSignal(); }
@@ -2176,7 +1996,6 @@ function showToast(msg) {
     setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ✅ مراقبة التغييرات في Firebase للإشعارات
 async function _refreshUserData() {
     try {
         if (!_isLoggedIn()) return;
@@ -2203,7 +2022,6 @@ async function _refreshUserData() {
         localStorage.setItem('tradelix_user', JSON.stringify(updated));
         if (currentUserData) Object.assign(currentUserData, data);
         updateUI();
-        loadWalletData();
     } catch(e) { console.warn('User refresh error:', e.message); }
 }
 
