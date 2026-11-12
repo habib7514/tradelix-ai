@@ -8,7 +8,6 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        // ✅ تم إضافة getDocs لجلب الإشعارات من مجموعتين
         import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, setDoc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         import { getAuth } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
@@ -72,7 +71,6 @@
                 title.textContent = 'Subscription Active';
                 desc.textContent = 'You have full access to premium gold signals.';
                 
-                // ✅ إذا كان المستخدم في شاشة الفوركس واشترك للتو، نقوم بتحديث الإشارة فوراً
                 if(document.getElementById('forexOverlay').classList.contains('active')) {
                     window.initGlobalForexListener(); 
                 }
@@ -204,7 +202,6 @@
             });
         };
 
-        // ✅ مستمع إشارات الفوركس
         window.initGlobalForexListener = function() {
             const q = query(collection(db, 'forex_signals'), orderBy('createdAt', 'desc'), limit(1));
             
@@ -214,7 +211,6 @@
                     const signal = latestDoc.data();
                     
                     if (lastForexSignalId !== null && lastForexSignalId !== latestDoc.id) {
-                        // ✅ لا نصدر صوتاً أو إشعاراً إلا إذا كان مشتركاً
                         if (hasGoldAccess(window.latestUserData)) {
                             playNotificationSound(); 
                             unreadCount++; 
@@ -224,7 +220,6 @@
                     }
                     lastForexSignalId = latestDoc.id;
 
-                    // ✅ تحديث الواجهة: إذا كان مشتركاً يرى الأرقام، وإلا يقفل الشاشة
                     if (hasGoldAccess(window.latestUserData)) {
                         updateForexUI(signal);
                     } else {
@@ -234,7 +229,6 @@
             });
         };
 
-        // ✅ دالة عرض الإشارة للمشتركين
         function updateForexUI(signal) {
             const fxPair = document.getElementById('fxSigPair');
             if (fxPair) {
@@ -250,7 +244,6 @@
             }
         }
 
-        // ✅ دالة إخفاء الإشارة لغير المشتركين
         function lockForexSignalUI() {
             const fxPair = document.getElementById('fxSigPair');
             if (fxPair) {
@@ -449,11 +442,12 @@
         .signal-box-full span { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
         .signal-box-full strong { display: block; font-size: 18px; font-weight: 900; color: var(--gold); }
 
+        /* ✅ تحسين تصميم قائمة العملات */
         .forex-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .forex-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .forex-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border); padding: 12px 15px; border-radius: 12px; cursor: pointer; transition: 0.2s; }
         .forex-item:active { transform: scale(0.98); border-color: var(--gold); }
-        .forex-pair-name { font-weight: 900; font-size: 16px; color: #fff; }
-        .forex-pair-price { font-weight: 700; font-size: 16px; color: var(--gold); transition: color 0.3s; }
+        .forex-pair-name { font-weight: 900; font-size: 15px; color: #fff; }
+        .forex-pair-price { font-weight: 700; font-size: 15px; color: var(--gold); transition: color 0.3s; }
         
         .forex-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .forex-overlay.active { display: block; }
@@ -1048,24 +1042,32 @@
         }
 
         // ==========================================
-        // ✅ أكواد الفوركس
+        // ✅ قائمة الأزواج الموسعة
         // ==========================================
         const forexPairs = [
+            // Majors
             { symbol: 'EURUSD', tvSymbol: 'OANDA:EURUSD', name: 'EUR/USD' },
             { symbol: 'GBPUSD', tvSymbol: 'OANDA:GBPUSD', name: 'GBP/USD' },
             { symbol: 'USDJPY', tvSymbol: 'OANDA:USDJPY', name: 'USD/JPY' },
             { symbol: 'AUDUSD', tvSymbol: 'OANDA:AUDUSD', name: 'AUD/USD' },
             { symbol: 'USDCAD', tvSymbol: 'OANDA:USDCAD', name: 'USD/CAD' },
-            { symbol: 'XAUUSD', tvSymbol: 'OANDA:XAUUSD', name: 'Gold (XAU/USD)' }
+            { symbol: 'NZDUSD', tvSymbol: 'OANDA:NZDUSD', name: 'NZD/USD' },
+            { symbol: 'USDCHF', tvSymbol: 'OANDA:USDCHF', name: 'USD/CHF' },
+            // Crosses (Minors)
+            { symbol: 'EURGBP', tvSymbol: 'OANDA:EURGBP', name: 'EUR/GBP' },
+            { symbol: 'EURJPY', tvSymbol: 'OANDA:EURJPY', name: 'EUR/JPY' },
+            { symbol: 'GBPJPY', tvSymbol: 'OANDA:GBPJPY', name: 'GBP/JPY' },
+            { symbol: 'AUDJPY', tvSymbol: 'OANDA:AUDJPY', name: 'AUD/JPY' },
+            // Metals
+            { symbol: 'XAUUSD', tvSymbol: 'OANDA:XAUUSD', name: 'Gold (XAU/USD)' },
+            { symbol: 'XAGUSD', tvSymbol: 'OANDA:XAGUSD', name: 'Silver (XAG/USD)' }
         ];
 
-        // ✅ تم إزالة شرط الاشتراك من هنا لكي يفتح الزر للجميع
         window.openForexScreen = function() {
             document.getElementById('forexOverlay').classList.add('active');
             generateForexList(); 
             fetchForexPrices(); 
             
-            // نقوم بقفل واجهة الإشارة إذا لم يكن مشتركاً
             if (!hasGoldAccess(window.latestUserData)) {
                 lockForexSignalUI();
             }
@@ -1095,7 +1097,14 @@
             try {
                 const goldRes = await fetch('https://api.gold-api.com/price/XAU');
                 const goldData = await goldRes.json();
-                const basePrices = { 'EURUSD': 1.0850, 'GBPUSD': 1.2650, 'USDJPY': 149.50, 'AUDUSD': 0.6550, 'USDCAD': 1.3550 };
+                
+                // تحديث الأسعار الأساسية لتشمل الأزواج الجديدة
+                const basePrices = { 
+                    'EURUSD': 1.0850, 'GBPUSD': 1.2650, 'USDJPY': 149.50, 'AUDUSD': 0.6550, 'USDCAD': 1.3550,
+                    'NZDUSD': 0.6050, 'USDCHF': 0.8850, 'EURGBP': 0.8570, 'EURJPY': 162.20, 'GBPJPY': 189.10,
+                    'AUDJPY': 97.90, 'XAGUSD': 24.50
+                };
+                
                 if (window.fxPriceInterval) clearInterval(window.fxPriceInterval);
                 
                 window.fxPriceInterval = setInterval(() => {
@@ -1106,14 +1115,23 @@
                         if (pair.symbol === 'XAUUSD' && goldData && goldData.price) {
                             price = goldData.price;
                         } else {
-                            const base = basePrices[pair.symbol];
+                            const base = basePrices[pair.symbol] || 1.0000;
                             const change = (Math.random() - 0.5) * (base * 0.001);
                             price = base + change;
                             basePrices[pair.symbol] = price; 
                         }
+                        
+                        // تحديد عدد الخانات العشرية بناءً على الزوج
+                        let decimals = 5;
+                        if (pair.symbol.includes('JPY')) decimals = 3;
+                        else if (pair.symbol === 'XAUUSD' || pair.symbol === 'XAGUSD') decimals = 2;
+
                         const oldPrice = parseFloat(el.textContent.replace(/[^0-9.]/g, '')) || 0;
-                        el.textContent = price.toFixed(pair.symbol === 'USDJPY' ? 3 : 5);
-                        if (price > oldPrice) { el.style.color = '#00D084'; } else if (price < oldPrice) { el.style.color = '#FF4757'; }
+                        el.textContent = price.toFixed(decimals);
+                        
+                        if (price > oldPrice) { el.style.color = '#00D084'; } 
+                        else if (price < oldPrice) { el.style.color = '#FF4757'; }
+                        
                         setTimeout(() => el.style.color = 'var(--gold)', 500);
                     });
                 }, 2000);
