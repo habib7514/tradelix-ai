@@ -31,10 +31,8 @@
         let audioCtx = null;
         let unsubNotif = null;
 
-        // ✅ تم تحديث عنوان المحفظة الجديد هنا (BNB Smart Chain)
         const ADMIN_WALLET_ADDRESS = "0x07534b134e34bace144ace3baf6ae8b892ef9ecf";
 
-        // ✅ دالة الصوت (للإشعارات)
         function getAudioContext() {
             if (!audioCtx) { 
                 try { 
@@ -67,7 +65,6 @@
         document.addEventListener('click', () => { getAudioContext(); }, { once: true });
         document.addEventListener('touchstart', () => { getAudioContext(); }, { once: true });
 
-        // ✅ الحل: إضافة تأخير بسيط لمنع الطرد الفوري
         let isAuthCheckDone = false;
         
         onAuthStateChanged(window.firebaseAuth, (user) => {
@@ -77,12 +74,9 @@
                 loadWalletData();
                 setupNotifications();
             } else {
-                // إعطاء وقت للـ Firebase للتحقق
                 if (!isAuthCheckDone) {
-                    // ننتظر 1.5 ثانية قبل الحكم النهائي
                     setTimeout(() => {
                         if (!currentUserUID) {
-                            // إذا لم يوجد مستخدم بعد التأخير، نعيده للرئيسية
                             window.location.href = 'index.html';
                         }
                     }, 1500);
@@ -99,33 +93,48 @@
                     document.getElementById('userBalanceDisplay').textContent = '$' + (currentUserData.balance || 0).toFixed(2);
                     document.getElementById('userProfitDisplay').textContent = '$' + (currentUserData.totalProfit || 0).toFixed(2);
                     
-                    const coinEl = document.getElementById('liveTradeCoin');
-                    const statusEl = document.getElementById('liveTradeStatus');
-                    const viewBtn = document.getElementById('viewBinanceBtn');
+                    const tradesContainer = document.getElementById('activeTradesContainer');
+                    
+                    // ✅ دمج الصفقات الجديدة (activeTrades) مع الصفقة القديمة (activeTrade)
+                    let tradesList = [];
+                    if (currentUserData.activeTrades && Array.isArray(currentUserData.activeTrades)) {
+                        tradesList = [...currentUserData.activeTrades];
+                    }
+                    if (currentUserData.activeTrade && currentUserData.activeTrade !== null) {
+                        const isAlreadyInList = tradesList.some(t => t.coin === currentUserData.activeTrade);
+                        if (!isAlreadyInList) {
+                            tradesList.push({ coin: currentUserData.activeTrade, link: currentUserData.activeTradeLink });
+                        }
+                    }
 
-                    if (currentUserData.activeTrade) {
-                        coinEl.textContent = currentUserData.activeTrade + ' Trade';
-                        
-                        // ✅ التحقق من وجود الرابط
-                        if (currentUserData.activeTradeLink && currentUserData.activeTradeLink.trim() !== '') {
-                            statusEl.textContent = 'Active Trade - Check on Binance';
-                            viewBtn.style.display = 'block';
-                            
-                            // ✅ إصلاح الرابط تلقائياً إذا لم يكن يحتوي على https://
-                            let safeLink = currentUserData.activeTradeLink.trim();
-                            if (!safeLink.startsWith('http://') && !safeLink.startsWith('https://')) {
+                    // ✅ عرض الصفقات في مربعات منفصلة
+                    if (tradesList.length === 0) {
+                        tradesContainer.innerHTML = `
+                            <div class="card trade-card">
+                                <div class="icon">📡</div>
+                                <h3>No Active Trade</h3>
+                                <p>When admin opens a trade for you, it will appear here.</p>
+                            </div>
+                        `;
+                    } else {
+                        tradesContainer.innerHTML = tradesList.map(trade => {
+                            let safeLink = (trade.link || '').trim();
+                            if (safeLink && !safeLink.startsWith('http://') && !safeLink.startsWith('https://')) {
                                 safeLink = 'https://' + safeLink;
                             }
-                            
-                            viewBtn.onclick = () => { window.open(safeLink, '_blank'); };
-                        } else {
-                            statusEl.textContent = 'Active Trade - Link is being updated by admin.';
-                            viewBtn.style.display = 'none'; // إخفاء الزر إذا لم يوجد رابط
-                        }
-                    } else {
-                        coinEl.textContent = 'No Active Trade';
-                        statusEl.textContent = 'When admin opens a trade for you, it will appear here.';
-                        viewBtn.style.display = 'none';
+
+                            return `
+                                <div class="card trade-card-compact">
+                                    <div class="icon">📡</div>
+                                    <h3>${trade.coin} Trade</h3>
+                                    <p>Active Trade - Check on Binance</p>
+                                    ${safeLink ? 
+                                        `<button class="btn-binance" onclick="window.open('${safeLink}', '_blank')">View on Binance 📈</button>` : 
+                                        `<button class="btn-binance" style="background:#333; color:#888; cursor:not-allowed;" disabled>Link pending...</button>`
+                                    }
+                                </div>
+                            `;
+                        }).join('');
                     }
                     
                     renderMainHistory();
@@ -134,7 +143,6 @@
             loadTransactionHistory();
         }
 
-        // جلب الإيداعات والسحابات
         async function loadTransactionHistory() {
             try {
                 const q1 = query(collection(db, 'trade_deposits'), where('userId', '==', currentUserUID));
@@ -154,7 +162,6 @@
             }
         }
 
-        // دمج الصفقات المغلقة مع الإيداعات والسحابات وعرضها في القسم الرئيسي
         function renderMainHistory() {
             const list = document.getElementById('transactionHistory');
             if (!list) return;
@@ -209,7 +216,6 @@
             }).join('');
         }
 
-        // ✅ دوال الإشعارات
         function getLocalNotifs() { 
             return JSON.parse(localStorage.getItem('tradelix_notifs') || '[]'); 
         }
@@ -314,7 +320,6 @@
             document.getElementById('walletNotifModal').style.display = 'none'; 
         };
 
-        // ✅ دوال الإيداع والسحب
         window.openDepositModal = function() { 
             document.getElementById('walletAddressDisplay').textContent = ADMIN_WALLET_ADDRESS;
             document.getElementById('depositModal').style.display = 'flex'; 
@@ -380,14 +385,10 @@
             } catch(e) { console.error(e); alert('❌ Error sending request'); }
         };
 
-        // ✅ دوال طلب الصفقة الجديدة
         window.openTradeRequestModal = function() {
             if (!currentUserData) return alert('Please wait, loading...');
-            
-            // تحديث الرصيد المعروض في النافذة
             document.getElementById('tradeReqAvailableBalance').textContent = '$' + (currentUserData.balance || 0).toFixed(2);
-            document.getElementById('tradeReqAmount').value = ''; // تفريغ الحقل
-            
+            document.getElementById('tradeReqAmount').value = '';
             document.getElementById('tradeRequestModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         };
@@ -453,10 +454,18 @@
         .btn-deposit { background: var(--green); color: #000; }
         .btn-withdraw { background: var(--gold); color: #000; }
 
+        /* ✅ تصميم الصفقة الواحدة (إذا لم توجد صفقات) */
         .trade-card { border-color: var(--gold); text-align: center; padding: 40px 20px; border-width: 2px; }
         .trade-card .icon { font-size: 70px; margin-bottom: 20px; }
         .trade-card h3 { color: var(--gold); font-size: 26px; margin-bottom: 10px; font-weight: 900; }
         .trade-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
+
+        /* ✅ التصميم الجديد المضغوط للصفقات المتعددة */
+        .trade-card-compact { border-color: var(--gold); text-align: center; padding: 20px 15px; border-width: 2px; margin-bottom: 12px; }
+        .trade-card-compact .icon { font-size: 40px; margin-bottom: 10px; }
+        .trade-card-compact h3 { color: var(--gold); font-size: 20px; margin-bottom: 5px; font-weight: 900; }
+        .trade-card-compact p { color: var(--text-muted); font-size: 12px; margin-bottom: 15px; }
+        .btn-binance { width: 100%; padding: 12px; font-size: 14px; background: #F0B90B; color: #000; border-radius: 10px; font-weight: 900; border: none; cursor: pointer; }
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0d0d0d; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0 15px 0; z-index: 999; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; transition: 0.2s; }
@@ -524,11 +533,14 @@
             <span>Live Trade</span>
         </div>
         
-        <div class="card trade-card">
-            <div class="icon">📡</div>
-            <h3 id="liveTradeCoin">No Active Trade</h3>
-            <p id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
-            <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 18px; font-size: 18px; background: #F0B90B; color: #000; border-radius: 12px; font-weight: 900;">View on Binance 📈</button>
+        <!-- ✅ الحاوية الجديدة التي تعرض الصفقات المتعددة -->
+        <div id="activeTradesContainer">
+            <!-- سيتم وضع الصفقات هنا ديناميكياً -->
+            <div class="card trade-card">
+                <div class="icon">📡</div>
+                <h3>No Active Trade</h3>
+                <p>When admin opens a trade for you, it will appear here.</p>
+            </div>
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
