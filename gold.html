@@ -71,18 +71,31 @@
                 badge.className = 'status-badge active';
                 title.textContent = 'Subscription Active';
                 desc.textContent = 'You have full access to premium gold signals.';
+                
+                // ✅ إذا كان المستخدم في شاشة الفوركس واشترك للتو، نقوم بتحديث الإشارة فوراً
+                if(document.getElementById('forexOverlay').classList.contains('active')) {
+                    window.initGlobalForexListener(); 
+                }
             } else if (status === 'pending') {
                 card.className = 'status-card pending';
                 badge.textContent = 'PENDING';
                 badge.className = 'status-badge pending';
                 title.textContent = 'Awaiting Confirmation';
                 desc.textContent = 'Your deposit is being reviewed by the admin.';
+                
+                if(document.getElementById('forexOverlay').classList.contains('active')) {
+                    lockForexSignalUI();
+                }
             } else {
                 card.className = 'status-card inactive';
                 badge.textContent = 'INACTIVE';
                 badge.className = 'status-badge inactive';
                 title.textContent = 'No Gold Subscription';
                 desc.textContent = 'Subscribe to a gold plan below to unlock premium signals.';
+                
+                if(document.getElementById('forexOverlay').classList.contains('active')) {
+                    lockForexSignalUI();
+                }
             }
         }
 
@@ -120,10 +133,9 @@
         }
 
         let lastSignalId = null; 
-        let lastForexSignalId = null; // ✅ متغير للفوركس
-        let unreadCount = 0; // ✅ متغير لعداد الإشعارات
+        let lastForexSignalId = null; 
+        let unreadCount = 0; 
 
-        // ✅ دالة تحديث العداد على الجرس
         window.updateNotifBadge = function() {
             const badge = document.getElementById('notifBadge');
             if (unreadCount > 0) {
@@ -146,7 +158,7 @@
                     
                     if (lastSignalId !== null && lastSignalId !== latestDoc.id) {
                         playNotificationSound();
-                        unreadCount++; // ✅ زيادة العداد
+                        unreadCount++; 
                         updateNotifBadge();
                         showCustomAlert('New Signal!', `A new gold signal for ${signal.pair || 'XAU/USD'} has arrived!`, '🔔');
                     }
@@ -192,7 +204,7 @@
             });
         };
 
-        // ✅ مستمع إشارات الفوركس في الخلفية
+        // ✅ مستمع إشارات الفوركس
         window.initGlobalForexListener = function() {
             const q = query(collection(db, 'forex_signals'), orderBy('createdAt', 'desc'), limit(1));
             
@@ -202,23 +214,27 @@
                     const signal = latestDoc.data();
                     
                     if (lastForexSignalId !== null && lastForexSignalId !== latestDoc.id) {
+                        // ✅ لا نصدر صوتاً أو إشعاراً إلا إذا كان مشتركاً
                         if (hasGoldAccess(window.latestUserData)) {
                             playNotificationSound(); 
-                            unreadCount++; // ✅ زيادة العداد
+                            unreadCount++; 
                             updateNotifBadge();
                             showCustomAlert('New Forex Signal!', `A new signal for ${signal.pair || 'Forex'} has arrived!`, '💱');
                         }
                     }
                     lastForexSignalId = latestDoc.id;
 
+                    // ✅ تحديث الواجهة: إذا كان مشتركاً يرى الأرقام، وإلا يقفل الشاشة
                     if (hasGoldAccess(window.latestUserData)) {
                         updateForexUI(signal);
+                    } else {
+                        lockForexSignalUI();
                     }
                 }
             });
         };
 
-        // ✅ دالة تحديث واجهة الفوركس
+        // ✅ دالة عرض الإشارة للمشتركين
         function updateForexUI(signal) {
             const fxPair = document.getElementById('fxSigPair');
             if (fxPair) {
@@ -234,7 +250,20 @@
             }
         }
 
-        // ✅ تحديث دالة الإشعارات لتشمل الذهب والفوركس
+        // ✅ دالة إخفاء الإشارة لغير المشتركين
+        function lockForexSignalUI() {
+            const fxPair = document.getElementById('fxSigPair');
+            if (fxPair) {
+                fxPair.textContent = 'LOCKED';
+                document.getElementById('fxSigEntry').textContent = '-';
+                document.getElementById('fxSigSL').textContent = '-';
+                document.getElementById('fxSigTP').textContent = '-';
+                const statusEl = document.getElementById('fxSigStatus');
+                statusEl.textContent = 'PREMIUM';
+                statusEl.style.color = '#FF4757';
+            }
+        }
+
         window.loadNotifications = async function() {
             const list = document.getElementById('notifList');
             const user = window.latestUserData;
@@ -293,7 +322,7 @@
         setTimeout(() => {
             window.checkSubscriptionStatus();
             window.initSignalListener();
-            window.initGlobalForexListener(); // ✅ تشغيل مستمع الفوركس
+            window.initGlobalForexListener();
         }, 1000);
     </script>
 
@@ -311,7 +340,6 @@
         
         .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; position: relative; }
         .bell-icon:active { transform: scale(0.9); }
-        /* ✅ تصميم عداد الإشعارات */
         .bell-badge { display: none; position: absolute; top: 0px; right: 0px; background: var(--red); color: #fff; font-size: 10px; font-weight: 900; width: 18px; height: 18px; border-radius: 50%; text-align: center; line-height: 18px; border: 2px solid var(--bg-card); }
         
         .container { padding: 0 20px; max-width: 480px; margin: 0 auto; }
@@ -338,7 +366,6 @@
         .stat-value { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
         .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase; }
 
-        /* ✅ تصميم الزر المتحرك (Shimmer) */
         .shimmer-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: 900; font-family: inherit; cursor: pointer; color: #000; background: linear-gradient(270deg, #F5C518, #FFD700, #00D084, #F5C518); background-size: 300% 300%; animation: shimmerGlow 4s ease infinite; box-shadow: 0 0 15px rgba(245, 197, 24, 0.4); transition: transform 0.2s, box-shadow 0.2s; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
         .shimmer-btn:active { transform: scale(0.96); box-shadow: 0 0 5px rgba(245, 197, 24, 0.4); }
         @keyframes shimmerGlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -422,14 +449,12 @@
         .signal-box-full span { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
         .signal-box-full strong { display: block; font-size: 18px; font-weight: 900; color: var(--gold); }
 
-        /* ✅ تصميم قائمة العملات */
         .forex-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .forex-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; cursor: pointer; transition: 0.2s; }
         .forex-item:active { transform: scale(0.98); border-color: var(--gold); }
         .forex-pair-name { font-weight: 900; font-size: 16px; color: #fff; }
         .forex-pair-price { font-weight: 700; font-size: 16px; color: var(--gold); transition: color 0.3s; }
         
-        /* ✅ شاشة الفوركس والشارت */
         .forex-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
         .forex-overlay.active { display: block; }
 
@@ -476,7 +501,6 @@
                 <span>XAU/USD PREMIUM</span>
             </div>
         </div>
-        <!-- ✅ تم إضافة العداد هنا -->
         <div class="bell-icon" onclick="openNotifications()">🔔<span id="notifBadge" class="bell-badge">0</span></div>
     </div>
 
@@ -513,7 +537,6 @@
             </div>
         </div>
 
-        <!-- ✅ تم إضافة الزر المتحرك فوق سعر الذهب -->
         <button onclick="openForexScreen()" class="shimmer-btn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 8px;">
                 <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
@@ -728,7 +751,6 @@
         </div>
     </div>
 
-    <!-- ✅ شاشة الفوركس الجديدة (تطابق الهيدر تماماً) -->
     <div id="forexOverlay" class="forex-overlay">
         <div class="header">
             <div class="header-left">
@@ -767,7 +789,6 @@
         </div>
     </div>
 
-    <!-- ✅ شاشة الشارت المنبثقة -->
     <div id="chartOverlay" class="forex-overlay" style="z-index: 10000;">
         <div class="signal-header-top">
             <h2 id="chartTitle">Chart</h2>
@@ -790,7 +811,6 @@
         let currentInterval = '1';
         let alertActionType = 'none';
 
-        // ✅ دالة الصوت الاحترافية
         let audioCtx = null;
         function unlockAudio() {
             if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
@@ -951,10 +971,9 @@
                 showCustomAlert('Premium Required', 'You must have an active Gold subscription to view notifications.', '🔒', 'plans');
                 return;
             }
-            // ✅ تصفير العداد عند فتح الإشعارات
             unreadCount = 0;
             updateNotifBadge();
-            document.getElementById('notifBadgeForex').style.display = 'none'; // إخفاء العداد في شاشة الفوركس أيضاً
+            document.getElementById('notifBadgeForex').style.display = 'none';
             
             document.getElementById('notifOverlay').classList.add('active');
             if (typeof loadNotifications === 'function') loadNotifications();
@@ -1029,7 +1048,7 @@
         }
 
         // ==========================================
-        // ✅ أكواد الفوركس الجديدة
+        // ✅ أكواد الفوركس
         // ==========================================
         const forexPairs = [
             { symbol: 'EURUSD', tvSymbol: 'OANDA:EURUSD', name: 'EUR/USD' },
@@ -1040,14 +1059,16 @@
             { symbol: 'XAUUSD', tvSymbol: 'OANDA:XAUUSD', name: 'Gold (XAU/USD)' }
         ];
 
+        // ✅ تم إزالة شرط الاشتراك من هنا لكي يفتح الزر للجميع
         window.openForexScreen = function() {
-            if (!hasGoldAccess(window.latestUserData)) {
-                showCustomAlert('Gold Subscription Required', 'You must have an active Gold subscription to unlock Forex signals.', '🔒', 'plans');
-                return;
-            }
             document.getElementById('forexOverlay').classList.add('active');
             generateForexList(); 
             fetchForexPrices(); 
+            
+            // نقوم بقفل واجهة الإشارة إذا لم يكن مشتركاً
+            if (!hasGoldAccess(window.latestUserData)) {
+                lockForexSignalUI();
+            }
         }
 
         window.closeForexScreen = function() {
@@ -1111,7 +1132,6 @@
             document.getElementById('fx-chart-container').innerHTML = '';
         }
 
-        // تشغيل الدوال الأساسية
         fetchPrice();
         setInterval(fetchPrice, 3000); 
         loadChart('1'); 
