@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script type="module">
+        // ✅ تم إضافة deleteDoc هنا للحذف التلقائي
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, collection, query, addDoc, serverTimestamp, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, collection, query, addDoc, serverTimestamp, where, getDocs, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -262,6 +263,7 @@
             }
         }
 
+        // ✅ التعديل: فلترة وحذف الإشعارات القديمة تلقائياً
         function setupNotifications() {
             if (unsubNotif) unsubNotif();
             
@@ -270,10 +272,24 @@
                 where('userId', '==', currentUserUID)
             );
             
-            unsubNotif = onSnapshot(q, (snapshot) => {
-                firebaseNotifs = [];
-                let hasNew = false;
+            unsubNotif = onSnapshot(q, async (snapshot) => {
+                let allNotifs = [];
+                
+                snapshot.forEach(doc => {
+                    allNotifs.push({ id: doc.id, ...doc.data() });
+                });
 
+                // ترتيب الإشعارات من الأحدث للأقدم
+                allNotifs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                // فصل آخر 10 إشعارات عن الباقي
+                const latest10 = allNotifs.slice(0, 10);
+                const toDelete = allNotifs.slice(10);
+
+                // تحديث الإشعارات المعروضة (آخر 10 فقط)
+                firebaseNotifs = latest10;
+                
+                let hasNew = false;
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === 'added') {
                         const data = change.doc.data();
@@ -282,12 +298,6 @@
                         }
                     }
                 });
-
-                snapshot.forEach(doc => {
-                    firebaseNotifs.push({ id: doc.id, ...doc.data() });
-                });
-
-                firebaseNotifs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
                 
                 updateNotifBadge();
                 
@@ -297,6 +307,18 @@
                         try { new Notification('🔔 Tradelix', { body: 'You have a new notification!' }); } catch(e) {}
                     }
                 }
+
+                // ✅ الحذف التلقائي: مسح الإشعارات التي تجاوزت الـ 10 من قاعدة البيانات
+                if (toDelete.length > 0) {
+                    for (const notif of toDelete) {
+                        try {
+                            await deleteDoc(doc(db, 'user_notifications', notif.id));
+                        } catch(e) { 
+                            console.error("Error deleting old notification:", e); 
+                        }
+                    }
+                }
+
             }, (error) => {
                 console.error("Notifications listener error:", error);
             });
