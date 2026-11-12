@@ -62,8 +62,24 @@
             } catch(e) { console.error('Sound error:', e); }
         }
 
-        document.addEventListener('click', () => { getAudioContext(); }, { once: true });
-        document.addEventListener('touchstart', () => { getAudioContext(); }, { once: true });
+        // ✅ التعديل الجديد: دالة لفتح قفل الصوت في المتصفح لضمان عمل الإشعارات دائماً
+        function unlockAudio() {
+            const c = getAudioContext();
+            if (c && c.state === 'suspended') {
+                c.resume().then(() => {
+                    const buffer = c.createBuffer(1, 1, 22050);
+                    const source = c.createBufferSource();
+                    source.buffer = buffer;
+                    source.connect(c.destination);
+                    source.start(0);
+                });
+            }
+        }
+
+        // ✅ تفعيل الصوت مع أي حركة أو لمسة (بدون once: true لكي يعمل دائماً)
+        ['click', 'touchstart', 'touchend', 'keydown'].forEach(event => {
+            document.addEventListener(event, unlockAudio);
+        });
 
         let isAuthCheckDone = false;
         
