@@ -105,9 +105,23 @@
 
                     if (currentUserData.activeTrade) {
                         coinEl.textContent = currentUserData.activeTrade + ' Trade';
-                        statusEl.textContent = 'Active Trade - Check on Binance';
-                        viewBtn.style.display = 'block';
-                        viewBtn.onclick = () => { if(currentUserData.activeTradeLink) window.open(currentUserData.activeTradeLink, '_blank'); };
+                        
+                        // ✅ التحقق من وجود الرابط
+                        if (currentUserData.activeTradeLink && currentUserData.activeTradeLink.trim() !== '') {
+                            statusEl.textContent = 'Active Trade - Check on Binance';
+                            viewBtn.style.display = 'block';
+                            
+                            // ✅ إصلاح الرابط تلقائياً إذا لم يكن يحتوي على https://
+                            let safeLink = currentUserData.activeTradeLink.trim();
+                            if (!safeLink.startsWith('http://') && !safeLink.startsWith('https://')) {
+                                safeLink = 'https://' + safeLink;
+                            }
+                            
+                            viewBtn.onclick = () => { window.open(safeLink, '_blank'); };
+                        } else {
+                            statusEl.textContent = 'Active Trade - Link is being updated by admin.';
+                            viewBtn.style.display = 'none'; // إخفاء الزر إذا لم يوجد رابط
+                        }
                     } else {
                         coinEl.textContent = 'No Active Trade';
                         statusEl.textContent = 'When admin opens a trade for you, it will appear here.';
@@ -481,7 +495,6 @@
     </div>
 
     <div class="container">
-        <!-- كارت الرصيد مع زر الواتساب -->
         <div class="card balance-card">
             <h3>Available Balance</h3>
             <div id="userBalanceDisplay" class="amount">$0.00</div>
@@ -502,7 +515,6 @@
             <button class="btn-withdraw" onclick="openWithdrawModal()">⬆️ Withdraw</button>
         </div>
         
-        <!-- ✅ زر طلب صفقة جديدة -->
         <button class="btn-request-trade" onclick="openTradeRequestModal()" style="width: 100%; padding: 18px; background: linear-gradient(135deg, var(--gold), #d4af37); color: #000; border: none; border-radius: 12px; font-weight: 900; font-size: 16px; margin-bottom: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
             🚀 Request New Trade
         </button>
@@ -516,7 +528,7 @@
             <div class="icon">📡</div>
             <h3 id="liveTradeCoin">No Active Trade</h3>
             <p id="liveTradeStatus">When admin opens a trade for you, it will appear here.</p>
-            <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 18px; font-size: 18px; background: #F0B90B; color: #000; border-radius: 12px; font-weight: 900;" onclick="openBinanceTrade()">View on Binance 📈</button>
+            <button id="viewBinanceBtn" class="btn-deposit" style="display: none; width: 100%; padding: 18px; font-size: 18px; background: #F0B90B; color: #000; border-radius: 12px; font-weight: 900;">View on Binance 📈</button>
         </div>
 
         <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--gold); margin-bottom: 10px;">
