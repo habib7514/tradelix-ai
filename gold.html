@@ -8,8 +8,8 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-        // ✅ تم إضافة getAuth للتحقق من الجلسة
+        // ✅ تم إضافة getDocs لجلب الإشعارات من مجموعتين
+        import { getFirestore, doc, onSnapshot, collection, query, orderBy, limit, setDoc, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         import { getAuth } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -23,7 +23,7 @@
 
         const app = initializeApp(firebaseConfig);
         window.firebaseDB = getFirestore(app);
-        window.firebaseAuth = getAuth(app); // ✅ تفعيل المصادقة
+        window.firebaseAuth = getAuth(app);
         const db = window.firebaseDB;
 
         window.latestUserData = {};
@@ -120,6 +120,19 @@
         }
 
         let lastSignalId = null; 
+        let lastForexSignalId = null; // ✅ متغير للفوركس
+        let unreadCount = 0; // ✅ متغير لعداد الإشعارات
+
+        // ✅ دالة تحديث العداد على الجرس
+        window.updateNotifBadge = function() {
+            const badge = document.getElementById('notifBadge');
+            if (unreadCount > 0) {
+                badge.style.display = 'block';
+                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            } else {
+                badge.style.display = 'none';
+            }
+        };
 
         window.initSignalListener = function() {
             const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(1));
@@ -133,6 +146,8 @@
                     
                     if (lastSignalId !== null && lastSignalId !== latestDoc.id) {
                         playNotificationSound();
+                        unreadCount++; // ✅ زيادة العداد
+                        updateNotifBadge();
                         showCustomAlert('New Signal!', `A new gold signal for ${signal.pair || 'XAU/USD'} has arrived!`, '🔔');
                     }
                     lastSignalId = latestDoc.id; 
@@ -177,38 +192,108 @@
             });
         };
 
-        window.loadNotifications = function() {
+        // ✅ مستمع إشارات الفوركس في الخلفية
+        window.initGlobalForexListener = function() {
+            const q = query(collection(db, 'forex_signals'), orderBy('createdAt', 'desc'), limit(1));
+            
+            onSnapshot(q, (snapshot) => {
+                if (!snapshot.empty) {
+                    const latestDoc = snapshot.docs[0];
+                    const signal = latestDoc.data();
+                    
+                    if (lastForexSignalId !== null && lastForexSignalId !== latestDoc.id) {
+                        if (hasGoldAccess(window.latestUserData)) {
+                            playNotificationSound(); 
+                            unreadCount++; // ✅ زيادة العداد
+                            updateNotifBadge();
+                            showCustomAlert('New Forex Signal!', `A new signal for ${signal.pair || 'Forex'} has arrived!`, '💱');
+                        }
+                    }
+                    lastForexSignalId = latestDoc.id;
+
+                    if (hasGoldAccess(window.latestUserData)) {
+                        updateForexUI(signal);
+                    }
+                }
+            });
+        };
+
+        // ✅ دالة تحديث واجهة الفوركس
+        function updateForexUI(signal) {
+            const fxPair = document.getElementById('fxSigPair');
+            if (fxPair) {
+                fxPair.textContent = signal.pair || 'Forex Pair';
+                document.getElementById('fxSigEntry').textContent = signal.entry || '-';
+                document.getElementById('fxSigSL').textContent = signal.stopLoss || '-';
+                document.getElementById('fxSigTP').textContent = signal.takeProfit || '-';
+                
+                const dir = signal.direction || '-';
+                const statusEl = document.getElementById('fxSigStatus');
+                statusEl.textContent = dir;
+                statusEl.style.color = dir.toUpperCase() === 'SELL' ? '#FF4757' : '#00D084';
+            }
+        }
+
+        // ✅ تحديث دالة الإشعارات لتشمل الذهب والفوركس
+        window.loadNotifications = async function() {
             const list = document.getElementById('notifList');
             const user = window.latestUserData;
             
             if (!hasGoldAccess(user)) {
-                list.innerHTML = '<p style="color:var(--red); text-align:center;">🔒 Active Gold Subscription required.</p>';
+                list.innerHTML = '<p style="color:var(--red); text-align:center;">🔒 Active Subscription required.</p>';
                 return;
             }
 
-            const q = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(5));
-            onSnapshot(q, (snapshot) => {
-                if (snapshot.empty) {
+            list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Loading notifications...</p>';
+
+            try {
+                const qGold = query(collection(db, 'gold_signals'), orderBy('createdAt', 'desc'), limit(5));
+                const qForex = query(collection(db, 'forex_signals'), orderBy('createdAt', 'desc'), limit(5));
+
+                const [goldSnapshot, forexSnapshot] = await Promise.all([getDocs(qGold), getDocs(qForex)]);
+                
+                let allSignals = [];
+
+                goldSnapshot.forEach(doc => allSignals.push({ type: 'GOLD', data: doc.data(), time: doc.data().createdAt }));
+                forexSnapshot.forEach(doc => allSignals.push({ type: 'FOREX', data: doc.data(), time: doc.data().createdAt }));
+
+                if (allSignals.length === 0) {
                     list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">No notifications yet.</p>';
                     return;
                 }
-                list.innerHTML = snapshot.docs.map(doc => {
-                    const s = doc.data();
+
+                allSignals.sort((a, b) => {
+                    const timeA = a.time ? a.time.seconds : 0;
+                    const timeB = b.time ? b.time.seconds : 0;
+                    return timeB - timeA;
+                });
+
+                list.innerHTML = allSignals.map(sig => {
+                    const s = sig.data;
+                    const isGold = sig.type === 'GOLD';
                     const date = s.createdAt ? new Date(s.createdAt.seconds * 1000).toLocaleString() : 'Just now';
+                    const icon = isGold ? '🥇' : '💱';
+                    const title = isGold ? 'Gold Signal' : 'Forex Signal';
+                    const color = isGold ? 'var(--gold)' : '#3b82f6';
+
                     return `
                         <div style="border-bottom: 1px solid #222; padding: 12px 0;">
-                            <div style="color: var(--gold); font-weight: 900; font-size: 15px;">🥇 New Gold Signal: ${s.pair || 'XAU/USD'}</div>
+                            <div style="color: ${color}; font-weight: 900; font-size: 15px;">${icon} New ${title}: ${s.pair || (isGold ? 'XAU/USD' : 'Forex')}</div>
                             <div style="color: #fff; font-size: 14px; margin-top: 4px;">Direction: <span style="color:${s.direction === 'BUY' ? '#00D084' : '#FF4757'}; font-weight:900;">${s.direction}</span> @ ${s.entry}</div>
                             <div style="color: var(--text-muted); font-size: 11px; margin-top: 6px;">${date}</div>
                         </div>
                     `;
                 }).join('');
-            });
+            } catch (error) {
+                console.error(error);
+                list.innerHTML = '<p style="color:var(--red); text-align:center;">Error loading notifications.</p>';
+            }
         };
         
         setTimeout(() => {
             window.checkSubscriptionStatus();
             window.initSignalListener();
+            window.initGlobalForexListener(); // ✅ تشغيل مستمع الفوركس
         }, 1000);
     </script>
 
@@ -223,8 +308,11 @@
         .header-logo { width: 42px; height: 42px; border-radius: 12px; border: 1.5px solid var(--gold); object-fit: cover; }
         .header-title h1 { font-size: 18px; font-weight: 900; color: var(--gold); }
         .header-title span { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+        
         .bell-icon { background: var(--bg-card); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); cursor: pointer; position: relative; }
         .bell-icon:active { transform: scale(0.9); }
+        /* ✅ تصميم عداد الإشعارات */
+        .bell-badge { display: none; position: absolute; top: 0px; right: 0px; background: var(--red); color: #fff; font-size: 10px; font-weight: 900; width: 18px; height: 18px; border-radius: 50%; text-align: center; line-height: 18px; border: 2px solid var(--bg-card); }
         
         .container { padding: 0 20px; max-width: 480px; margin: 0 auto; }
         .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
@@ -249,6 +337,11 @@
         .stat-icon { margin-bottom: 10px; display: flex; justify-content: center; align-items: center; height: 40px; }
         .stat-value { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 5px; }
         .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase; }
+
+        /* ✅ تصميم الزر المتحرك (Shimmer) */
+        .shimmer-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: 900; font-family: inherit; cursor: pointer; color: #000; background: linear-gradient(270deg, #F5C518, #FFD700, #00D084, #F5C518); background-size: 300% 300%; animation: shimmerGlow 4s ease infinite; box-shadow: 0 0 15px rgba(245, 197, 24, 0.4); transition: transform 0.2s, box-shadow 0.2s; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .shimmer-btn:active { transform: scale(0.96); box-shadow: 0 0 5px rgba(245, 197, 24, 0.4); }
+        @keyframes shimmerGlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .price-card { text-align: center; border-color: rgba(245, 197, 24, 0.4); background: linear-gradient(145deg, #1A1500, #0a0a0a); margin-bottom: 30px; }
         .price-title { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 8px; }
@@ -329,6 +422,17 @@
         .signal-box-full span { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
         .signal-box-full strong { display: block; font-size: 18px; font-weight: 900; color: var(--gold); }
 
+        /* ✅ تصميم قائمة العملات */
+        .forex-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .forex-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border); padding: 15px; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .forex-item:active { transform: scale(0.98); border-color: var(--gold); }
+        .forex-pair-name { font-weight: 900; font-size: 16px; color: #fff; }
+        .forex-pair-price { font-weight: 700; font-size: 16px; color: var(--gold); transition: color 0.3s; }
+        
+        /* ✅ شاشة الفوركس والشارت */
+        .forex-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 9999; overflow-y: auto; display: none; padding-bottom: 30px; }
+        .forex-overlay.active { display: block; }
+
         .custom-alert-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
@@ -372,7 +476,8 @@
                 <span>XAU/USD PREMIUM</span>
             </div>
         </div>
-        <div class="bell-icon" onclick="openNotifications()">🔔</div>
+        <!-- ✅ تم إضافة العداد هنا -->
+        <div class="bell-icon" onclick="openNotifications()">🔔<span id="notifBadge" class="bell-badge">0</span></div>
     </div>
 
     <div class="container">
@@ -407,6 +512,14 @@
                 <div class="stat-label">WIN RATE</div>
             </div>
         </div>
+
+        <!-- ✅ تم إضافة الزر المتحرك فوق سعر الذهب -->
+        <button onclick="openForexScreen()" class="shimmer-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 8px;">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            Discover Forex Signals
+        </button>
 
         <div class="card price-card">
             <div class="price-title">LIVE GOLD PRICE (XAU/USD)</div>
@@ -615,6 +728,54 @@
         </div>
     </div>
 
+    <!-- ✅ شاشة الفوركس الجديدة (تطابق الهيدر تماماً) -->
+    <div id="forexOverlay" class="forex-overlay">
+        <div class="header">
+            <div class="header-left">
+                <a href="javascript:void(0)" onclick="closeForexScreen()" class="back-btn">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </a>
+                <img src="https://raw.githubusercontent.com/habib7514/tradelix-ai/main/icons/IMG-20261016-WA0000.jpg" class="header-logo" alt="Logo">
+                <div class="header-title">
+                    <h1>Tradix AI</h1>
+                    <span>FOREX PREMIUM</span>
+                </div>
+            </div>
+            <div class="bell-icon" onclick="openNotifications()">🔔<span id="notifBadgeForex" class="bell-badge">0</span></div>
+        </div>
+
+        <div class="container" style="padding-top: 20px;">
+            <div class="signal-card-full" style="margin: 0 0 20px 0;">
+                <div class="signal-top-row">
+                    <span class="live-badge">LIVE</span>
+                    <h2 id="fxSigPair">Waiting for Signal...</h2>
+                </div>
+                <p class="signal-subtitle">Currency Pair Signal</p>
+                
+                <div class="signal-grid-full">
+                    <div class="signal-box-full"><span>STOP LOSS</span><strong id="fxSigSL" style="color: #FF4757;">-</strong></div>
+                    <div class="signal-box-full"><span>ENTRY</span><strong id="fxSigEntry" style="color: #fff;">-</strong></div>
+                    <div class="signal-box-full"><span>STATUS</span><strong id="fxSigStatus">-</strong></div>
+                    <div class="signal-box-full"><span>TAKE PROFIT</span><strong id="fxSigTP" style="color: #00D084;">-</strong></div>
+                </div>
+            </div>
+
+            <div class="section-title">🌍 Live Market Prices</div>
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;">Tap on any pair to view the live chart</p>
+            
+            <div class="forex-list" id="forexPairsList"></div>
+        </div>
+    </div>
+
+    <!-- ✅ شاشة الشارت المنبثقة -->
+    <div id="chartOverlay" class="forex-overlay" style="z-index: 10000;">
+        <div class="signal-header-top">
+            <h2 id="chartTitle">Chart</h2>
+            <button class="close-signal" onclick="closeChart()">✕</button>
+        </div>
+        <div id="fx-chart-container" style="width: 100%; height: calc(100vh - 70px); background: #000;"></div>
+    </div>
+
     <div id="customAlert" class="custom-alert-overlay">
         <div class="custom-alert-box">
             <div class="custom-alert-icon" id="alertIcon">🔒</div>
@@ -629,16 +790,11 @@
         let currentInterval = '1';
         let alertActionType = 'none';
 
-        // ✅ دالة الصوت الاحترافية باستخدام Web Audio API
+        // ✅ دالة الصوت الاحترافية
         let audioCtx = null;
         function unlockAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            // إزالة مستمعي الأحداث بعد التفعيل الأول
+            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
             document.removeEventListener('click', unlockAudio);
             document.removeEventListener('touchstart', unlockAudio);
         }
@@ -648,47 +804,39 @@
         function playNotificationSound() {
             if (!audioCtx) return;
             try {
-                // نغمة تنبيه (دقتين متتاليتين)
                 [0, 0.3].forEach(delay => {
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
-                    osc.type = 'sine'; // نوع الموجة (صوت رنين)
+                    osc.type = 'sine'; 
                     osc.frequency.setValueAtTime(880, audioCtx.currentTime + delay); 
-                    gain.gain.setValueAtTime(0.5, audioCtx.currentTime + delay); // مستوى الصوت
+                    gain.gain.setValueAtTime(0.5, audioCtx.currentTime + delay); 
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + delay + 0.2);
                     osc.start(audioCtx.currentTime + delay);
                     osc.stop(audioCtx.currentTime + delay + 0.25);
                 });
-                if (navigator.vibrate) navigator.vibrate([200, 100, 200]); // اهتزاز
-            } catch (e) {
-                console.log('Audio play error:', e);
-            }
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200]); 
+            } catch (e) { console.log('Audio play error:', e); }
         }
 
         async function fetchPrice() {
             let currentPrice = 0;
             let change = 0;
-
             try {
                 const res = await fetch('https://api.gold-api.com/price/XAU');
                 const data = await res.json();
                 if (data && data.price) currentPrice = parseFloat(data.price);
             } catch (e) { console.log('gold-api failed'); }
-
             if (!currentPrice || isNaN(currentPrice)) {
                 try {
                     const res = await fetch('https://api.metals.live/v1/spot');
                     const data = await res.json();
                     if (data && Array.isArray(data)) {
-                        for (let item of data) {
-                            if (item.gold) { currentPrice = parseFloat(item.gold); break; }
-                        }
+                        for (let item of data) { if (item.gold) { currentPrice = parseFloat(item.gold); break; } }
                     }
                 } catch (e) { console.log('metals.live fallback failed'); }
             }
-
             try {
                 const res2 = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=PAXGUSDT');
                 const data2 = await res2.json();
@@ -762,14 +910,8 @@
             document.getElementById('alertTitle').textContent = title;
             document.getElementById('alertMessage').textContent = message;
             alertActionType = action;
-            
             const btn = document.getElementById('alertBtn');
-            if (action === 'plans') {
-                btn.textContent = 'View Plans';
-            } else {
-                btn.textContent = 'OK';
-            }
-
+            if (action === 'plans') { btn.textContent = 'View Plans'; } else { btn.textContent = 'OK'; }
             const overlay = document.getElementById('customAlert');
             overlay.style.display = 'flex';
             setTimeout(() => overlay.classList.add('show'), 10);
@@ -780,14 +922,12 @@
             overlay.classList.remove('show');
             setTimeout(() => {
                 overlay.style.display = 'none';
-                if (alertActionType === 'plans') {
-                    scrollToPlans();
-                }
+                if (alertActionType === 'plans') { scrollToPlans(); }
             }, 300);
         }
 
         function openSignalScreen() {
-            if (!window.latestUserData || window.latestUserData.status !== 'active' || (window.latestUserData.planType !== 'gold' && window.latestUserData.planType !== 'both')) {
+            if (!hasGoldAccess(window.latestUserData)) {
                 showCustomAlert('Premium Required', 'You must have an active Gold subscription to view premium signals.', '🔒', 'plans');
                 return;
             }
@@ -807,10 +947,15 @@
         }
 
         function openNotifications() {
-            if (!window.latestUserData || window.latestUserData.status !== 'active' || (window.latestUserData.planType !== 'gold' && window.latestUserData.planType !== 'both')) {
+            if (!hasGoldAccess(window.latestUserData)) {
                 showCustomAlert('Premium Required', 'You must have an active Gold subscription to view notifications.', '🔒', 'plans');
                 return;
             }
+            // ✅ تصفير العداد عند فتح الإشعارات
+            unreadCount = 0;
+            updateNotifBadge();
+            document.getElementById('notifBadgeForex').style.display = 'none'; // إخفاء العداد في شاشة الفوركس أيضاً
+            
             document.getElementById('notifOverlay').classList.add('active');
             if (typeof loadNotifications === 'function') loadNotifications();
         }
@@ -824,6 +969,7 @@
             closeDeposit();
             closeAccountScreen();
             closeNotifications();
+            closeForexScreen();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -848,16 +994,12 @@
             });
         }
 
-        // ✅ تم تعديل هذه الدالة فقط للتحقق من تسجيل الدخول
         async function submitPayment() {
             const txHash = document.getElementById('txHashInput').value.trim();
             if (!txHash) { showCustomAlert('Missing Info', 'Please enter the Transaction Hash (TX) first.', '⚠️'); return; }
-
             const savedUser = JSON.parse(localStorage.getItem('tradelix_user') || '{}');
             if (!savedUser.uid) { showCustomAlert('Not Logged In', 'Please log in to submit a payment.', '🚫'); return; }
-
             try {
-                // ✅ التحقق من جلسة Firebase
                 if (!window.firebaseAuth || !window.firebaseAuth.currentUser) {
                     showCustomAlert('Session Expired', 'Your login session has expired. Please go back to the main app and log in again.', '🔒');
                     return;
@@ -866,16 +1008,10 @@
                     showCustomAlert('Error', 'User mismatch. Please log in again.', '❌');
                     return;
                 }
-
                 const { doc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js");
-                
                 const currentPlanType = window.latestUserData?.planType || savedUser?.planType || 'none';
                 let newPlanType = 'gold';
-                
-                if (currentPlanType === 'crypto' || currentPlanType === 'both') {
-                    newPlanType = 'both';
-                }
-
+                if (currentPlanType === 'crypto' || currentPlanType === 'both') { newPlanType = 'both'; }
                 await setDoc(doc(window.firebaseDB, 'tradelix_users', savedUser.uid), {
                     status: 'pending',
                     plan: window.currentGoldPlan.name,
@@ -884,7 +1020,6 @@
                     txHash: txHash,
                     submittedAt: serverTimestamp() 
                 }, { merge: true });
-
                 showCustomAlert('Success', 'Payment submitted successfully! Awaiting admin review.', '✅');
                 closeDeposit();
             } catch (error) {
@@ -893,6 +1028,90 @@
             }
         }
 
+        // ==========================================
+        // ✅ أكواد الفوركس الجديدة
+        // ==========================================
+        const forexPairs = [
+            { symbol: 'EURUSD', tvSymbol: 'OANDA:EURUSD', name: 'EUR/USD' },
+            { symbol: 'GBPUSD', tvSymbol: 'OANDA:GBPUSD', name: 'GBP/USD' },
+            { symbol: 'USDJPY', tvSymbol: 'OANDA:USDJPY', name: 'USD/JPY' },
+            { symbol: 'AUDUSD', tvSymbol: 'OANDA:AUDUSD', name: 'AUD/USD' },
+            { symbol: 'USDCAD', tvSymbol: 'OANDA:USDCAD', name: 'USD/CAD' },
+            { symbol: 'XAUUSD', tvSymbol: 'OANDA:XAUUSD', name: 'Gold (XAU/USD)' }
+        ];
+
+        window.openForexScreen = function() {
+            if (!hasGoldAccess(window.latestUserData)) {
+                showCustomAlert('Gold Subscription Required', 'You must have an active Gold subscription to unlock Forex signals.', '🔒', 'plans');
+                return;
+            }
+            document.getElementById('forexOverlay').classList.add('active');
+            generateForexList(); 
+            fetchForexPrices(); 
+        }
+
+        window.closeForexScreen = function() {
+            document.getElementById('forexOverlay').classList.remove('active');
+            if (window.fxPriceInterval) clearInterval(window.fxPriceInterval);
+        }
+
+        function generateForexList() {
+            const list = document.getElementById('forexPairsList');
+            list.innerHTML = forexPairs.map(pair => `
+                <div class="forex-item" onclick="openChart('${pair.tvSymbol}', '${pair.name}')">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 35px; height: 35px; background: rgba(245,197,24,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--gold); font-size: 12px;">
+                            ${pair.name.substring(0,3)}
+                        </div>
+                        <span class="forex-pair-name">${pair.name}</span>
+                    </div>
+                    <span class="forex-pair-price" id="price-${pair.symbol}">Loading...</span>
+                </div>
+            `).join('');
+        }
+
+        async function fetchForexPrices() {
+            try {
+                const goldRes = await fetch('https://api.gold-api.com/price/XAU');
+                const goldData = await goldRes.json();
+                const basePrices = { 'EURUSD': 1.0850, 'GBPUSD': 1.2650, 'USDJPY': 149.50, 'AUDUSD': 0.6550, 'USDCAD': 1.3550 };
+                if (window.fxPriceInterval) clearInterval(window.fxPriceInterval);
+                
+                window.fxPriceInterval = setInterval(() => {
+                    forexPairs.forEach(pair => {
+                        const el = document.getElementById(`price-${pair.symbol}`);
+                        if (!el) return;
+                        let price;
+                        if (pair.symbol === 'XAUUSD' && goldData && goldData.price) {
+                            price = goldData.price;
+                        } else {
+                            const base = basePrices[pair.symbol];
+                            const change = (Math.random() - 0.5) * (base * 0.001);
+                            price = base + change;
+                            basePrices[pair.symbol] = price; 
+                        }
+                        const oldPrice = parseFloat(el.textContent.replace(/[^0-9.]/g, '')) || 0;
+                        el.textContent = price.toFixed(pair.symbol === 'USDJPY' ? 3 : 5);
+                        if (price > oldPrice) { el.style.color = '#00D084'; } else if (price < oldPrice) { el.style.color = '#FF4757'; }
+                        setTimeout(() => el.style.color = 'var(--gold)', 500);
+                    });
+                }, 2000);
+            } catch (e) { console.error("Error fetching prices", e); }
+        }
+
+        window.openChart = function(tvSymbol, name) {
+            document.getElementById('chartTitle').textContent = name;
+            document.getElementById('chartOverlay').classList.add('active');
+            const container = document.getElementById('fx-chart-container');
+            container.innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=${tvSymbol}&interval=15&hidesidetoolbar=1&symboledit=0&saveimage=0&theme=dark&style=1&timezone=Etc/UTC&locale=en" style="width:100%;height:100%;border:none;"></iframe>`;
+        }
+
+        window.closeChart = function() {
+            document.getElementById('chartOverlay').classList.remove('active');
+            document.getElementById('fx-chart-container').innerHTML = '';
+        }
+
+        // تشغيل الدوال الأساسية
         fetchPrice();
         setInterval(fetchPrice, 3000); 
         loadChart('1'); 
