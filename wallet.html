@@ -47,6 +47,8 @@
             const c = getAudioContext(); 
             if (!c) return;
             try {
+                if (c.state === 'suspended') c.resume();
+                
                 [0, 0.3].forEach(delay => {
                     const osc = c.createOscillator(); 
                     const gain = c.createGain();
@@ -62,7 +64,6 @@
             } catch(e) { console.error('Sound error:', e); }
         }
 
-        // ✅ التعديل الجديد: دالة لفتح قفل الصوت في المتصفح لضمان عمل الإشعارات دائماً
         function unlockAudio() {
             const c = getAudioContext();
             if (c && c.state === 'suspended') {
@@ -76,7 +77,6 @@
             }
         }
 
-        // ✅ تفعيل الصوت مع أي حركة أو لمسة (بدون once: true لكي يعمل دائماً)
         ['click', 'touchstart', 'touchend', 'keydown'].forEach(event => {
             document.addEventListener(event, unlockAudio);
         });
@@ -111,7 +111,6 @@
                     
                     const tradesContainer = document.getElementById('activeTradesContainer');
                     
-                    // ✅ دمج الصفقات الجديدة (activeTrades) مع الصفقة القديمة (activeTrade)
                     let tradesList = [];
                     if (currentUserData.activeTrades && Array.isArray(currentUserData.activeTrades)) {
                         tradesList = [...currentUserData.activeTrades];
@@ -123,7 +122,6 @@
                         }
                     }
 
-                    // ✅ عرض الصفقات في مربعات منفصلة
                     if (tradesList.length === 0) {
                         tradesContainer.innerHTML = `
                             <div class="card trade-card">
@@ -275,16 +273,20 @@
             unsubNotif = onSnapshot(q, (snapshot) => {
                 firebaseNotifs = [];
                 let hasNew = false;
-                
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    firebaseNotifs.push({ id: doc.id, ...data });
-                    
-                    if (data.read === false && !doc.metadata.hasPendingWrites) {
-                        hasNew = true;
+
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        const data = change.doc.data();
+                        if (data.read === false && !change.doc.metadata.hasPendingWrites) {
+                            hasNew = true;
+                        }
                     }
                 });
-                
+
+                snapshot.forEach(doc => {
+                    firebaseNotifs.push({ id: doc.id, ...doc.data() });
+                });
+
                 firebaseNotifs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
                 
                 updateNotifBadge();
@@ -470,13 +472,11 @@
         .btn-deposit { background: var(--green); color: #000; }
         .btn-withdraw { background: var(--gold); color: #000; }
 
-        /* ✅ تصميم الصفقة الواحدة (إذا لم توجد صفقات) */
         .trade-card { border-color: var(--gold); text-align: center; padding: 40px 20px; border-width: 2px; }
         .trade-card .icon { font-size: 70px; margin-bottom: 20px; }
         .trade-card h3 { color: var(--gold); font-size: 26px; margin-bottom: 10px; font-weight: 900; }
         .trade-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
 
-        /* ✅ التصميم الجديد المضغوط للصفقات المتعددة */
         .trade-card-compact { border-color: var(--gold); text-align: center; padding: 20px 15px; border-width: 2px; margin-bottom: 12px; }
         .trade-card-compact .icon { font-size: 40px; margin-bottom: 10px; }
         .trade-card-compact h3 { color: var(--gold); font-size: 20px; margin-bottom: 5px; font-weight: 900; }
@@ -489,7 +489,7 @@
         .nav-item svg { width: 24px; height: 24px; }
 
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 99999; padding: 20px; align-items: flex-start; justify-content: center; overflow-y: auto; }
-        .modal-box { background: #141414; border: 1px solid var(--gold); border-radius: 16px; padding: 25px; width: 100%; max-width: 400px; margin-top: 50px; margin-bottom: 50px; }
+        .modal-box { background: #141414; border: 1px solid var(--gold); border-radius: 16px; padding: 25px; width: 100%; max-width: 400px; margin-top: 50px; margin-bottom: 50px; position: relative; }
         .modal-box h3 { color: var(--gold); text-align: center; margin-bottom: 20px; font-size: 20px; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
@@ -549,9 +549,7 @@
             <span>Live Trade</span>
         </div>
         
-        <!-- ✅ الحاوية الجديدة التي تعرض الصفقات المتعددة -->
         <div id="activeTradesContainer">
-            <!-- سيتم وضع الصفقات هنا ديناميكياً -->
             <div class="card trade-card">
                 <div class="icon">📡</div>
                 <h3>No Active Trade</h3>
@@ -588,7 +586,8 @@
     <!-- نافذة الإشعارات -->
     <div id="walletNotifModal" class="modal-overlay">
         <div class="modal-box">
-            <h3>🔔 Notifications</h3>
+            <button onclick="closeNotifModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(245,197,24,0.15); border: 1px solid rgba(245,197,24,0.5); border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; color: #F5C518; font-size: 16px; font-weight: bold; cursor: pointer; z-index: 10;">✕</button>
+            <h3 style="padding: 0 20px;">🔔 Notifications</h3>
             <div id="walletNotifList" style="margin-bottom: 20px;"></div>
             <button class="btn-block outline" onclick="closeNotifModal()" style="width:100%; padding:14px; border-radius:10px; border:1px solid #444; background:transparent; color:#fff;">Close</button>
         </div>
